@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html  lang="pl">
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Na przełaj przez Data Mining z pakietem R</title>
+  <meta name="description" content="Zbiór przykładów użycia wybranych funkcji statystycznych i Data Mining dostępnych w programie R.">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
+
+  <meta property="og:title" content="Na przełaj przez Data Mining z pakietem R" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Zbiór przykładów użycia wybranych funkcji statystycznych i Data Mining dostępnych w programie R." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Na przełaj przez Data Mining z pakietem R" />
+  
+  <meta name="twitter:description" content="Zbiór przykładów użycia wybranych funkcji statystycznych i Data Mining dostępnych w programie R." />
+  
+
+<meta name="author" content="Przemysław Biecek, Krzysztof Trajkowski">
+
+
+<meta name="date" content="2019-04-08">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+
+<link rel="next" href="part-2.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; position: absolute; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; }
+pre.numberSource a.sourceLine:empty
+  { position: absolute; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Na przełaj przez Data Mining<br/> z pakietem R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Kilka słów zamiast wstępu</a></li>
+<li class="chapter" data-level="2" data-path="part-2.html"><a href="part-2.html"><i class="fa fa-check"></i><b>2</b> Redukcja wymiaru</a><ul>
+<li class="chapter" data-level="2.1" data-path="part-2.html"><a href="part-2.html#part_21"><i class="fa fa-check"></i><b>2.1</b> Analiza składowych głównych (PCA, ang. Principal Components Analysis)</a></li>
+<li class="chapter" data-level="2.2" data-path="part-2.html"><a href="part-2.html#part_22"><i class="fa fa-check"></i><b>2.2</b> Nieliniowe skalowanie wielowymiarowe (Sammon Mapping)</a></li>
+<li class="chapter" data-level="2.3" data-path="part-2.html"><a href="part-2.html#part_23"><i class="fa fa-check"></i><b>2.3</b> Skalowanie wielowymiarowe Kruskalla (MDS, ang. Multidimensional Scaling)</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="part-3.html"><a href="part-3.html"><i class="fa fa-check"></i><b>3</b> Analiza skupień</a><ul>
+<li class="chapter" data-level="3.1" data-path="part-3.html"><a href="part-3.html#part_31"><i class="fa fa-check"></i><b>3.1</b> Metoda k-średnich</a></li>
+<li class="chapter" data-level="3.2" data-path="part-3.html"><a href="part-3.html#part_32"><i class="fa fa-check"></i><b>3.2</b> Metoda grupowania wokół centroidów (PAM, ang. Partitioning Around Medoids)</a></li>
+<li class="chapter" data-level="3.3" data-path="part-3.html"><a href="part-3.html#part_33"><i class="fa fa-check"></i><b>3.3</b> Metoda aglomeracyjnego klastrowania hierarchicznego</a></li>
+<li class="chapter" data-level="3.4" data-path="part-3.html"><a href="part-3.html#part_34"><i class="fa fa-check"></i><b>3.4</b> Ile skupień wybrać?</a></li>
+<li class="chapter" data-level="3.5" data-path="part-3.html"><a href="part-3.html#part_35"><i class="fa fa-check"></i><b>3.5</b> Inne metody analizy skupień</a></li>
+<li class="chapter" data-level="3.6" data-path="part-3.html"><a href="part-3.html#part_36"><i class="fa fa-check"></i><b>3.6</b> Case study</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="part-4.html"><a href="part-4.html"><i class="fa fa-check"></i><b>4</b> Analiza dyskryminacji</a><ul>
+<li class="chapter" data-level="4.1" data-path="part-4.html"><a href="part-4.html#part_41"><i class="fa fa-check"></i><b>4.1</b> Dyskryminacja liniowa i kwadratowa</a></li>
+<li class="chapter" data-level="4.2" data-path="part-4.html"><a href="part-4.html#part_42"><i class="fa fa-check"></i><b>4.2</b> Metoda najbliższych sąsiadów</a></li>
+<li class="chapter" data-level="4.3" data-path="part-4.html"><a href="part-4.html#part_43"><i class="fa fa-check"></i><b>4.3</b> Naiwny klasyfikator Bayesowski</a></li>
+<li class="chapter" data-level="4.4" data-path="part-4.html"><a href="part-4.html#part_44"><i class="fa fa-check"></i><b>4.4</b> Drzewa decyzyjne</a></li>
+<li class="chapter" data-level="4.5" data-path="part-4.html"><a href="part-4.html#part_45"><i class="fa fa-check"></i><b>4.5</b> Lasy losowe</a></li>
+<li class="chapter" data-level="4.6" data-path="part-4.html"><a href="part-4.html#part_46"><i class="fa fa-check"></i><b>4.6</b> Inne klasyfikatory</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="part-5.html"><a href="part-5.html"><i class="fa fa-check"></i><b>5</b> Analiza kanoniczna</a><ul>
+<li class="chapter" data-level="5.1" data-path="part-5.html"><a href="part-5.html#part_51"><i class="fa fa-check"></i><b>5.1</b> Problem</a></li>
+<li class="chapter" data-level="5.2" data-path="part-5.html"><a href="part-5.html#part_52"><i class="fa fa-check"></i><b>5.2</b> Rozwiązanie</a></li>
+<li class="chapter" data-level="5.3" data-path="part-5.html"><a href="part-5.html#part_53"><i class="fa fa-check"></i><b>5.3</b> Założenia</a></li>
+<li class="chapter" data-level="5.4" data-path="part-5.html"><a href="part-5.html#part_54"><i class="fa fa-check"></i><b>5.4</b> Jak to zrobić w R</a></li>
+<li class="chapter" data-level="5.5" data-path="part-5.html"><a href="part-5.html#part_55"><i class="fa fa-check"></i><b>5.5</b> Przykładowe wyniki</a></li>
+<li class="chapter" data-level="5.6" data-path="part-5.html"><a href="part-5.html#part_56"><i class="fa fa-check"></i><b>5.6</b> Studium przypadku</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="part-6.html"><a href="part-6.html"><i class="fa fa-check"></i><b>6</b> Analiza korespondencji (odpowiedniości)</a><ul>
+<li class="chapter" data-level="6.1" data-path="part-6.html"><a href="part-6.html#part_61"><i class="fa fa-check"></i><b>6.1</b> Problem</a></li>
+<li class="chapter" data-level="6.2" data-path="part-6.html"><a href="part-6.html#part_62"><i class="fa fa-check"></i><b>6.2</b> Rozwiązanie</a></li>
+<li class="chapter" data-level="6.3" data-path="part-6.html"><a href="part-6.html#part_63"><i class="fa fa-check"></i><b>6.3</b> Jak to zrobić w R?</a></li>
+<li class="chapter" data-level="6.4" data-path="part-6.html"><a href="part-6.html#part_64"><i class="fa fa-check"></i><b>6.4</b> Studium przypadku</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="part-7.html"><a href="part-7.html"><i class="fa fa-check"></i><b>7</b> Przykład analizy szeregów czasowych</a><ul>
+<li class="chapter" data-level="7.1" data-path="part-7.html"><a href="part-7.html#part_71"><i class="fa fa-check"></i><b>7.1</b> Wprowadzenie</a></li>
+<li class="chapter" data-level="7.2" data-path="part-7.html"><a href="part-7.html#part_72"><i class="fa fa-check"></i><b>7.2</b> Identyfikacja trendu i sezonowości</a><ul>
+<li class="chapter" data-level="7.2.1" data-path="part-7.html"><a href="part-7.html#part_721"><i class="fa fa-check"></i><b>7.2.1</b> Analiza wariancji - ANOVA</a></li>
+<li class="chapter" data-level="7.2.2" data-path="part-7.html"><a href="part-7.html#part_722"><i class="fa fa-check"></i><b>7.2.2</b> Funkcja autokorelacji - ACF</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="part-7.html"><a href="part-7.html#part_73"><i class="fa fa-check"></i><b>7.3</b> Modele autoregresyjne ARIMA</a><ul>
+<li class="chapter" data-level="7.3.1" data-path="part-7.html"><a href="part-7.html#part_731"><i class="fa fa-check"></i><b>7.3.1</b> Estymacja</a></li>
+<li class="chapter" data-level="7.3.2" data-path="part-7.html"><a href="part-7.html#part_732"><i class="fa fa-check"></i><b>7.3.2</b> Weryfikacja</a></li>
+<li class="chapter" data-level="7.3.3" data-path="part-7.html"><a href="part-7.html#part_733"><i class="fa fa-check"></i><b>7.3.3</b> Prognozowanie</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="part-7.html"><a href="part-7.html#part_74"><i class="fa fa-check"></i><b>7.4</b> Modele adaptacyjne</a><ul>
+<li class="chapter" data-level="7.4.1" data-path="part-7.html"><a href="part-7.html#part_741"><i class="fa fa-check"></i><b>7.4.1</b> Estymacja</a></li>
+<li class="chapter" data-level="7.4.2" data-path="part-7.html"><a href="part-7.html#part_742"><i class="fa fa-check"></i><b>7.4.2</b> Prognozowanie</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="part-8.html"><a href="part-8.html"><i class="fa fa-check"></i><b>8</b> Przykład analizy tabel wielodzielczych</a><ul>
+<li class="chapter" data-level="8.1" data-path="part-8.html"><a href="part-8.html#part_81"><i class="fa fa-check"></i><b>8.1</b> Wprowadzenie</a></li>
+<li class="chapter" data-level="8.2" data-path="part-8.html"><a href="part-8.html#part_82"><i class="fa fa-check"></i><b>8.2</b> Test chi-kwadrat</a></li>
+<li class="chapter" data-level="8.3" data-path="part-8.html"><a href="part-8.html#part_83"><i class="fa fa-check"></i><b>8.3</b> Model logitowy</a></li>
+<li class="chapter" data-level="8.4" data-path="part-8.html"><a href="part-8.html#part_84"><i class="fa fa-check"></i><b>8.4</b> Model logitowy</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="part-9.html"><a href="part-9.html"><i class="fa fa-check"></i><b>9</b> Przykład badania rozkładu stopy zwrotu z akcji</a><ul>
+<li class="chapter" data-level="9.1" data-path="part-9.html"><a href="part-9.html#part_9.1"><i class="fa fa-check"></i><b>9.1</b> Wprowadzenie</a></li>
+<li class="chapter" data-level="9.2" data-path="part-9.html"><a href="part-9.html#part_9.2"><i class="fa fa-check"></i><b>9.2</b> Statystyki opisowe</a></li>
+<li class="chapter" data-level="9.3" data-path="part-9.html"><a href="part-9.html#part_9.3"><i class="fa fa-check"></i><b>9.3</b> Rozkład normalny</a></li>
+<li class="chapter" data-level="9.4" data-path="part-9.html"><a href="part-9.html#part_9.4"><i class="fa fa-check"></i><b>9.4</b> Rozkład Cauchy’ego</a></li>
+<li class="chapter" data-level="9.5" data-path="part-9.html"><a href="part-9.html#part_9.5"><i class="fa fa-check"></i><b>9.5</b> Rozkład Laplace’a</a></li>
+<li class="chapter" data-level="9.6" data-path="part-9.html"><a href="part-9.html#part_9.6"><i class="fa fa-check"></i><b>9.6</b> Rozkład Stabilny</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="part-10.html"><a href="part-10.html"><i class="fa fa-check"></i><b>10</b> Przykład budowy dynamicznego modelu liniowego</a><ul>
+<li class="chapter" data-level="10.1" data-path="part-10.html"><a href="part-10.html#part_10.1"><i class="fa fa-check"></i><b>10.1</b> Wprowadzenie</a></li>
+<li class="chapter" data-level="10.2" data-path="part-10.html"><a href="part-10.html#part_10.2"><i class="fa fa-check"></i><b>10.2</b> Badanie wewnętrznej struktury procesu</a><ul>
+<li class="chapter" data-level="10.2.1" data-path="part-10.html"><a href="part-10.html#part_10.2.1"><i class="fa fa-check"></i><b>10.2.1</b> Trend</a></li>
+<li class="chapter" data-level="10.2.2" data-path="part-10.html"><a href="part-10.html#part_10.2.2"><i class="fa fa-check"></i><b>10.2.2</b> Sezonowość</a></li>
+<li class="chapter" data-level="10.2.3" data-path="part-10.html"><a href="part-10.html#part_10.2.3"><i class="fa fa-check"></i><b>10.2.3</b> Stopień autoregresji – funkcja PACF</a></li>
+<li class="chapter" data-level="10.2.4" data-path="part-10.html"><a href="part-10.html#part_10.2.4"><i class="fa fa-check"></i><b>10.2.4</b> Stopień integracji – test ADF/PP</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="part-10.html"><a href="part-10.html#part_10.3"><i class="fa fa-check"></i><b>10.3</b> Weryfikacja modelu</a><ul>
+<li class="chapter" data-level="10.3.1" data-path="part-10.html"><a href="part-10.html#part_10.3.1"><i class="fa fa-check"></i><b>10.3.1</b> Estymacja dynamicznego modelu liniowego</a></li>
+<li class="chapter" data-level="10.3.2" data-path="part-10.html"><a href="part-10.html#part_10.3.2"><i class="fa fa-check"></i><b>10.3.2</b> Ocena jakości modelu</a></li>
+</ul></li>
+<li class="chapter" data-level="10.4" data-path="part-10.html"><a href="part-10.html#part_10.4"><i class="fa fa-check"></i><b>10.4</b> Diagnostyka modelu</a><ul>
+<li class="chapter" data-level="10.4.1" data-path="part-10.html"><a href="part-10.html#part_10.4.1"><i class="fa fa-check"></i><b>10.4.1</b> Normalność procesu resztowego</a></li>
+<li class="chapter" data-level="10.4.2" data-path="part-10.html"><a href="part-10.html#part_10.4.2"><i class="fa fa-check"></i><b>10.4.2</b> Autokorelacja procesu resztowego</a></li>
+<li class="chapter" data-level="10.4.3" data-path="part-10.html"><a href="part-10.html#part_10.4.3"><i class="fa fa-check"></i><b>10.4.3</b> Heteroskedastyczność procesu resztowego</a></li>
+<li class="chapter" data-level="10.4.4" data-path="part-10.html"><a href="part-10.html#part_10.4.4"><i class="fa fa-check"></i><b>10.4.4</b> Stabilność parametrów modelu</a></li>
+<li class="chapter" data-level="10.4.5" data-path="part-10.html"><a href="part-10.html#part_10.4.5"><i class="fa fa-check"></i><b>10.4.5</b> Postać analityczna modelu</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="part-11.html"><a href="part-11.html"><i class="fa fa-check"></i><b>11</b> Przegląd wybranych testów statystycznych</a><ul>
+<li class="chapter" data-level="11.1" data-path="part-11.html"><a href="part-11.html#part_11.1"><i class="fa fa-check"></i><b>11.1</b> Testy normalności</a></li>
+<li class="chapter" data-level="11.2" data-path="part-11.html"><a href="part-11.html#part_11.2"><i class="fa fa-check"></i><b>11.2</b> Testy asymptotyczne</a></li>
+<li class="chapter" data-level="11.3" data-path="part-11.html"><a href="part-11.html#part_11.3"><i class="fa fa-check"></i><b>11.3</b> Testy dla proporcji</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="part-12.html"><a href="part-12.html"><i class="fa fa-check"></i><b>12</b> Przykład analizy liczby przestępstw w Polsce w 2009 r.</a><ul>
+<li class="chapter" data-level="12.1" data-path="part-12.html"><a href="part-12.html#part_12.1"><i class="fa fa-check"></i><b>12.1</b> Wprowadzenie</a></li>
+<li class="chapter" data-level="12.2" data-path="part-12.html"><a href="part-12.html#part_12.2"><i class="fa fa-check"></i><b>12.2</b> Mapy</a></li>
+<li class="chapter" data-level="12.3" data-path="part-12.html"><a href="part-12.html#part_12.3"><i class="fa fa-check"></i><b>12.3</b> Analiza wariancji</a></li>
+<li class="chapter" data-level="12.4" data-path="part-12.html"><a href="part-12.html#part_12.4"><i class="fa fa-check"></i><b>12.4</b> Modele dla liczebności</a></li>
+<li class="chapter" data-level="12.5" data-path="part-12.html"><a href="part-12.html#part_12.5"><i class="fa fa-check"></i><b>12.5</b> Modele dla częstości</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="part-13.html"><a href="part-13.html"><i class="fa fa-check"></i><b>13</b> Modele regresji</a><ul>
+<li class="chapter" data-level="13.1" data-path="part-13.html"><a href="part-13.html#part_13.1"><i class="fa fa-check"></i><b>13.1</b> Wprowadzenie</a></li>
+<li class="chapter" data-level="13.2" data-path="part-13.html"><a href="part-13.html#part_13.2"><i class="fa fa-check"></i><b>13.2</b> Estymacja modelu liniowego</a><ul>
+<li class="chapter" data-level="13.2.1" data-path="part-13.html"><a href="part-13.html#part_13.2.1"><i class="fa fa-check"></i><b>13.2.1</b> Metoda najmniejszych kwadratów</a></li>
+<li class="chapter" data-level="13.2.2" data-path="part-13.html"><a href="part-13.html#part_13.2.2"><i class="fa fa-check"></i><b>13.2.2</b> Poprawność specyfikacji modelu</a></li>
+<li class="chapter" data-level="13.2.3" data-path="part-13.html"><a href="part-13.html#part_13.2.3"><i class="fa fa-check"></i><b>13.2.3</b> Normalność</a></li>
+<li class="chapter" data-level="13.2.4" data-path="part-13.html"><a href="part-13.html#part_13.2.4"><i class="fa fa-check"></i><b>13.2.4</b> Heteroskedastyczność</a></li>
+<li class="chapter" data-level="13.2.5" data-path="part-13.html"><a href="part-13.html#part_13.2.5"><i class="fa fa-check"></i><b>13.2.5</b> Obserwacje odstające</a></li>
+<li class="chapter" data-level="13.2.6" data-path="part-13.html"><a href="part-13.html#part_13.2.6"><i class="fa fa-check"></i><b>13.2.6</b> Metoda najmniejszych wartości bezwzględnych</a></li>
+</ul></li>
+<li class="chapter" data-level="13.3" data-path="part-13.html"><a href="part-13.html#part_13.3"><i class="fa fa-check"></i><b>13.3</b> Estymacja modelu nieliniowego</a><ul>
+<li class="chapter" data-level="13.3.1" data-path="part-13.html"><a href="part-13.html#part_13.3.1"><i class="fa fa-check"></i><b>13.3.1</b> Model kwadratowy</a></li>
+<li class="chapter" data-level="13.3.2" data-path="part-13.html"><a href="part-13.html#part_13.3.2"><i class="fa fa-check"></i><b>13.3.2</b> Model wykładniczy</a></li>
+<li class="chapter" data-level="13.3.3" data-path="part-13.html"><a href="part-13.html#part_13.3.3"><i class="fa fa-check"></i><b>13.3.3</b> Model hiperboliczny</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="part-14.html"><a href="part-14.html"><i class="fa fa-check"></i><b>14</b> Zbiory danych</a><ul>
+<li class="chapter" data-level="14.1" data-path="part-14.html"><a href="part-14.html#part_14.1"><i class="fa fa-check"></i><b>14.1</b> Zbiór danych GUSowskich</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="bibliografia.html"><a href="bibliografia.html"><i class="fa fa-check"></i>Bibliografia</a></li>
+<li class="divider"></li>
+<li><a href="http://www.biecek.pl/NaPrzelajPrzezDataMining/" target="blank">strona projektu</a></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Na przełaj przez Data Mining z pakietem R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="header">
+<h1 class="title">Na przełaj przez Data Mining z pakietem R</h1>
+<p class="author"><em>Przemysław Biecek, Krzysztof Trajkowski</em></p>
+<p class="date"><em>2019-04-08</em></p>
+</div>
+<div id="part_1" class="section level1">
+<h1><span class="header-section-number">Rozdział 1</span> Kilka słów zamiast wstępu</h1>
+<blockquote>
+<p><em>na przełaj “najkrótszą drogą, nie trzymając się wytycznej trasy”</em></p>
+<p>— Słownik Języka Polskiego PWN</p>
+</blockquote>
+<blockquote>
+<p><em>“Kto chodzi na skróty, ten nie śpi w domu”</em></p>
+<p>— Mądrość ludowa ;-)</p>
+</blockquote>
+<blockquote>
+<p><em>“Nie ma drogi na skróty, do miejsca do którego, warto dojść”</em></p>
+<p>— Edith</p>
+</blockquote>
+<p>W połowie roku 2010 te notatki zostały “otwarte”. Osoby chcące je rozwijać
+są do tego gorąco zachęcane. Poniżej znajduje się aktualna lista autorów kolejnych
+rozdziałów:</p>
+<ul>
+<li><p>Rozdziały 2 do 6 przygotowuje Przemek Biecek</p>
+<p>. <a href="mailto:przemyslaw.biecek@gmail.com">przemyslaw.biecek@gmail.com</a></p></li>
+<li><p>Rozdziały 7 do 13 przygotowuje Krzysiek Trajkowski</p>
+<p>. <a href="mailto:seaproject@poczta.onet.pl">seaproject@poczta.onet.pl</a></p></li>
+</ul>
+<p>Notatki zatytułowane „na przełaj” przygotowane są jako materiały pomocnicze.
+Każdy może z nich korzystać, pamiętając jednak że:</p>
+<ul>
+<li><p>Notatki zostały przygotowane tak, bym ułatwić wykonywanie pewnych analiz
+w R, nacisk został położony na poznanie pakietu R jako narzędzia do wykonywania danych analiz.</p></li>
+<li><p>Notatki NIE ZOSTAŁY przygotowane tak by uczyć się z nich metodologii.
+NIE SĄ tutaj dyskutowane zagadnienia teoretyczne, nie ma tu wyprowadzeń,
+nie ma sprawdzenia niektórych założeń. Od tego są książki, staram się w bibliografii zamieszać lepsze pozycje które udało mi się znaleźć.</p></li>
+<li><p>Notatki przygotowuję ucząc się danych metod, NIE SĄ więc to materiały zebrane przez eksperta, czasami nie są to nawet materiały czytane po raz drugi.
+Chętnie usłyszę co w takich notatkach powinno się znaleźć dodatkowo, co jest
+niejasne lub co jest błędem tak merytorycznym jak i językowym.</p></li>
+</ul>
+<p>Analiza danych to nie tylko klasyczna statystyka z zagadnieniami estymacji i testowania (najczęściej wykładanymi na standardowych kursach statystyki). Znaczny
+zbiór metod analizy danych nazywany technikami eksploracji danych lub data mining dotyczy zagadnień klasyfikacji, identyfikacji, analizy skupień oraz modelowania
+złożonych procesów. Właśnie te metody będą nas interesować w poniższym rozdziale.</p>
+<p>Data mining to szybko rosnąca grupa metod analizy danych rozwijana nie tylko
+przez statystyków ale głównie przez biologów, genetyków, cybernetyków, informatyków, ekonomistów, osoby pracujące nad rozpoznawaniem obrazów, myśli i wiele
+innych grup zawodowych. Podobnie jak w poprzednich rozdziałach nie będziemy dokładnie omawiać poszczególnych algorytmów ani szczegółowo dyskutować kontekstu
+aplikacyjnego danej metody. Zakładamy, że czytelnik zna te metody, zna ich założenia i podstawy teoretyczne ale jest zainteresowany w jakich funkcjach pakietu R
+są one zaimplementowane. Stąd też skrótowe traktowanie wielu zagadnień. Osoby
+szukające więcej informacji o sposobie działania poszczególnych algorytmów znajdą
+z pewnością wiele pozycji poświęconym konkretnym metodom, szczególnie polecam
+książki <span class="citation">(Koronacki i Ćwik <a href="#ref-KC2005">2005</a>)</span> oraz <span class="citation">(Hastie, Tibshirami, i Friedman <a href="#ref-HTF2001">2001</a>)</span>.</p>
+<p>Przedstawione metody zostały podzielone na trzy grupy. Pierwsza z nich to metody związane z zagadnieniem redukcji wymiaru. Te metody są również wykorzystywane do ekstrakcji cech oraz do wstępnej obróbki danych, stanowią więc często
+etap pośredni w analizach. Druga grupa metod związana jest z zagadnieniem analizy
+skupień (w innej nomenklaturze nazywanym uczeniem bez nadzoru). Przedstawiane będą metody hierarchiczne oraz grupujące. Ostatnia grupa metod związana jest
+z zagadnieniem dyskryminacji (w innej nomenklaturze - uczeniem pod nadzorem lub
+klasyfikacją).</p>
+
+</div>
+<h3>Bibliografia</h3>
+<div id="refs" class="references">
+<div id="ref-KC2005">
+<p>Koronacki, J., i J. Ćwik. 2005. <em>Statystyczne systemy uczące się</em>. WNT.</p>
+</div>
+<div id="ref-HTF2001">
+<p>Hastie, T., R. Tibshirami, i J. Friedman. 2001. <em>The Elements of Statistical Learning: Data Mining, Inference, and Prediction</em>. Springer-Verlang.</p>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+
+<a href="part-2.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": ["NaPrzelajR.pdf", "NaPrzelajR.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

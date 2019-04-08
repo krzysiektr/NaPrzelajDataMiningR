@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html  lang="pl">
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Rozdział 12 Przykład analizy liczby przestępstw w Polsce w 2009 r. | Na przełaj przez Data Mining z pakietem R</title>
+  <meta name="description" content="Zbiór przykładów użycia wybranych funkcji statystycznych i Data Mining dostępnych w programie R.">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
+
+  <meta property="og:title" content="Rozdział 12 Przykład analizy liczby przestępstw w Polsce w 2009 r. | Na przełaj przez Data Mining z pakietem R" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Zbiór przykładów użycia wybranych funkcji statystycznych i Data Mining dostępnych w programie R." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Rozdział 12 Przykład analizy liczby przestępstw w Polsce w 2009 r. | Na przełaj przez Data Mining z pakietem R" />
+  
+  <meta name="twitter:description" content="Zbiór przykładów użycia wybranych funkcji statystycznych i Data Mining dostępnych w programie R." />
+  
+
+<meta name="author" content="Przemysław Biecek, Krzysztof Trajkowski">
+
+
+<meta name="date" content="2019-04-08">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="part-11.html">
+<link rel="next" href="part-13.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; position: absolute; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; }
+pre.numberSource a.sourceLine:empty
+  { position: absolute; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Na przełaj przez Data Mining<br/> z pakietem R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Kilka słów zamiast wstępu</a></li>
+<li class="chapter" data-level="2" data-path="part-2.html"><a href="part-2.html"><i class="fa fa-check"></i><b>2</b> Redukcja wymiaru</a><ul>
+<li class="chapter" data-level="2.1" data-path="part-2.html"><a href="part-2.html#part_21"><i class="fa fa-check"></i><b>2.1</b> Analiza składowych głównych (PCA, ang. Principal Components Analysis)</a></li>
+<li class="chapter" data-level="2.2" data-path="part-2.html"><a href="part-2.html#part_22"><i class="fa fa-check"></i><b>2.2</b> Nieliniowe skalowanie wielowymiarowe (Sammon Mapping)</a></li>
+<li class="chapter" data-level="2.3" data-path="part-2.html"><a href="part-2.html#part_23"><i class="fa fa-check"></i><b>2.3</b> Skalowanie wielowymiarowe Kruskalla (MDS, ang. Multidimensional Scaling)</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="part-3.html"><a href="part-3.html"><i class="fa fa-check"></i><b>3</b> Analiza skupień</a><ul>
+<li class="chapter" data-level="3.1" data-path="part-3.html"><a href="part-3.html#part_31"><i class="fa fa-check"></i><b>3.1</b> Metoda k-średnich</a></li>
+<li class="chapter" data-level="3.2" data-path="part-3.html"><a href="part-3.html#part_32"><i class="fa fa-check"></i><b>3.2</b> Metoda grupowania wokół centroidów (PAM, ang. Partitioning Around Medoids)</a></li>
+<li class="chapter" data-level="3.3" data-path="part-3.html"><a href="part-3.html#part_33"><i class="fa fa-check"></i><b>3.3</b> Metoda aglomeracyjnego klastrowania hierarchicznego</a></li>
+<li class="chapter" data-level="3.4" data-path="part-3.html"><a href="part-3.html#part_34"><i class="fa fa-check"></i><b>3.4</b> Ile skupień wybrać?</a></li>
+<li class="chapter" data-level="3.5" data-path="part-3.html"><a href="part-3.html#part_35"><i class="fa fa-check"></i><b>3.5</b> Inne metody analizy skupień</a></li>
+<li class="chapter" data-level="3.6" data-path="part-3.html"><a href="part-3.html#part_36"><i class="fa fa-check"></i><b>3.6</b> Case study</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="part-4.html"><a href="part-4.html"><i class="fa fa-check"></i><b>4</b> Analiza dyskryminacji</a><ul>
+<li class="chapter" data-level="4.1" data-path="part-4.html"><a href="part-4.html#part_41"><i class="fa fa-check"></i><b>4.1</b> Dyskryminacja liniowa i kwadratowa</a></li>
+<li class="chapter" data-level="4.2" data-path="part-4.html"><a href="part-4.html#part_42"><i class="fa fa-check"></i><b>4.2</b> Metoda najbliższych sąsiadów</a></li>
+<li class="chapter" data-level="4.3" data-path="part-4.html"><a href="part-4.html#part_43"><i class="fa fa-check"></i><b>4.3</b> Naiwny klasyfikator Bayesowski</a></li>
+<li class="chapter" data-level="4.4" data-path="part-4.html"><a href="part-4.html#part_44"><i class="fa fa-check"></i><b>4.4</b> Drzewa decyzyjne</a></li>
+<li class="chapter" data-level="4.5" data-path="part-4.html"><a href="part-4.html#part_45"><i class="fa fa-check"></i><b>4.5</b> Lasy losowe</a></li>
+<li class="chapter" data-level="4.6" data-path="part-4.html"><a href="part-4.html#part_46"><i class="fa fa-check"></i><b>4.6</b> Inne klasyfikatory</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="part-5.html"><a href="part-5.html"><i class="fa fa-check"></i><b>5</b> Analiza kanoniczna</a><ul>
+<li class="chapter" data-level="5.1" data-path="part-5.html"><a href="part-5.html#part_51"><i class="fa fa-check"></i><b>5.1</b> Problem</a></li>
+<li class="chapter" data-level="5.2" data-path="part-5.html"><a href="part-5.html#part_52"><i class="fa fa-check"></i><b>5.2</b> Rozwiązanie</a></li>
+<li class="chapter" data-level="5.3" data-path="part-5.html"><a href="part-5.html#part_53"><i class="fa fa-check"></i><b>5.3</b> Założenia</a></li>
+<li class="chapter" data-level="5.4" data-path="part-5.html"><a href="part-5.html#part_54"><i class="fa fa-check"></i><b>5.4</b> Jak to zrobić w R</a></li>
+<li class="chapter" data-level="5.5" data-path="part-5.html"><a href="part-5.html#part_55"><i class="fa fa-check"></i><b>5.5</b> Przykładowe wyniki</a></li>
+<li class="chapter" data-level="5.6" data-path="part-5.html"><a href="part-5.html#part_56"><i class="fa fa-check"></i><b>5.6</b> Studium przypadku</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="part-6.html"><a href="part-6.html"><i class="fa fa-check"></i><b>6</b> Analiza korespondencji (odpowiedniości)</a><ul>
+<li class="chapter" data-level="6.1" data-path="part-6.html"><a href="part-6.html#part_61"><i class="fa fa-check"></i><b>6.1</b> Problem</a></li>
+<li class="chapter" data-level="6.2" data-path="part-6.html"><a href="part-6.html#part_62"><i class="fa fa-check"></i><b>6.2</b> Rozwiązanie</a></li>
+<li class="chapter" data-level="6.3" data-path="part-6.html"><a href="part-6.html#part_63"><i class="fa fa-check"></i><b>6.3</b> Jak to zrobić w R?</a></li>
+<li class="chapter" data-level="6.4" data-path="part-6.html"><a href="part-6.html#part_64"><i class="fa fa-check"></i><b>6.4</b> Studium przypadku</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="part-7.html"><a href="part-7.html"><i class="fa fa-check"></i><b>7</b> Przykład analizy szeregów czasowych</a><ul>
+<li class="chapter" data-level="7.1" data-path="part-7.html"><a href="part-7.html#part_71"><i class="fa fa-check"></i><b>7.1</b> Wprowadzenie</a></li>
+<li class="chapter" data-level="7.2" data-path="part-7.html"><a href="part-7.html#part_72"><i class="fa fa-check"></i><b>7.2</b> Identyfikacja trendu i sezonowości</a><ul>
+<li class="chapter" data-level="7.2.1" data-path="part-7.html"><a href="part-7.html#part_721"><i class="fa fa-check"></i><b>7.2.1</b> Analiza wariancji - ANOVA</a></li>
+<li class="chapter" data-level="7.2.2" data-path="part-7.html"><a href="part-7.html#part_722"><i class="fa fa-check"></i><b>7.2.2</b> Funkcja autokorelacji - ACF</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="part-7.html"><a href="part-7.html#part_73"><i class="fa fa-check"></i><b>7.3</b> Modele autoregresyjne ARIMA</a><ul>
+<li class="chapter" data-level="7.3.1" data-path="part-7.html"><a href="part-7.html#part_731"><i class="fa fa-check"></i><b>7.3.1</b> Estymacja</a></li>
+<li class="chapter" data-level="7.3.2" data-path="part-7.html"><a href="part-7.html#part_732"><i class="fa fa-check"></i><b>7.3.2</b> Weryfikacja</a></li>
+<li class="chapter" data-level="7.3.3" data-path="part-7.html"><a href="part-7.html#part_733"><i class="fa fa-check"></i><b>7.3.3</b> Prognozowanie</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="part-7.html"><a href="part-7.html#part_74"><i class="fa fa-check"></i><b>7.4</b> Modele adaptacyjne</a><ul>
+<li class="chapter" data-level="7.4.1" data-path="part-7.html"><a href="part-7.html#part_741"><i class="fa fa-check"></i><b>7.4.1</b> Estymacja</a></li>
+<li class="chapter" data-level="7.4.2" data-path="part-7.html"><a href="part-7.html#part_742"><i class="fa fa-check"></i><b>7.4.2</b> Prognozowanie</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="part-8.html"><a href="part-8.html"><i class="fa fa-check"></i><b>8</b> Przykład analizy tabel wielodzielczych</a><ul>
+<li class="chapter" data-level="8.1" data-path="part-8.html"><a href="part-8.html#part_81"><i class="fa fa-check"></i><b>8.1</b> Wprowadzenie</a></li>
+<li class="chapter" data-level="8.2" data-path="part-8.html"><a href="part-8.html#part_82"><i class="fa fa-check"></i><b>8.2</b> Test chi-kwadrat</a></li>
+<li class="chapter" data-level="8.3" data-path="part-8.html"><a href="part-8.html#part_83"><i class="fa fa-check"></i><b>8.3</b> Model logitowy</a></li>
+<li class="chapter" data-level="8.4" data-path="part-8.html"><a href="part-8.html#part_84"><i class="fa fa-check"></i><b>8.4</b> Model logitowy</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="part-9.html"><a href="part-9.html"><i class="fa fa-check"></i><b>9</b> Przykład badania rozkładu stopy zwrotu z akcji</a><ul>
+<li class="chapter" data-level="9.1" data-path="part-9.html"><a href="part-9.html#part_9.1"><i class="fa fa-check"></i><b>9.1</b> Wprowadzenie</a></li>
+<li class="chapter" data-level="9.2" data-path="part-9.html"><a href="part-9.html#part_9.2"><i class="fa fa-check"></i><b>9.2</b> Statystyki opisowe</a></li>
+<li class="chapter" data-level="9.3" data-path="part-9.html"><a href="part-9.html#part_9.3"><i class="fa fa-check"></i><b>9.3</b> Rozkład normalny</a></li>
+<li class="chapter" data-level="9.4" data-path="part-9.html"><a href="part-9.html#part_9.4"><i class="fa fa-check"></i><b>9.4</b> Rozkład Cauchy’ego</a></li>
+<li class="chapter" data-level="9.5" data-path="part-9.html"><a href="part-9.html#part_9.5"><i class="fa fa-check"></i><b>9.5</b> Rozkład Laplace’a</a></li>
+<li class="chapter" data-level="9.6" data-path="part-9.html"><a href="part-9.html#part_9.6"><i class="fa fa-check"></i><b>9.6</b> Rozkład Stabilny</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="part-10.html"><a href="part-10.html"><i class="fa fa-check"></i><b>10</b> Przykład budowy dynamicznego modelu liniowego</a><ul>
+<li class="chapter" data-level="10.1" data-path="part-10.html"><a href="part-10.html#part_10.1"><i class="fa fa-check"></i><b>10.1</b> Wprowadzenie</a></li>
+<li class="chapter" data-level="10.2" data-path="part-10.html"><a href="part-10.html#part_10.2"><i class="fa fa-check"></i><b>10.2</b> Badanie wewnętrznej struktury procesu</a><ul>
+<li class="chapter" data-level="10.2.1" data-path="part-10.html"><a href="part-10.html#part_10.2.1"><i class="fa fa-check"></i><b>10.2.1</b> Trend</a></li>
+<li class="chapter" data-level="10.2.2" data-path="part-10.html"><a href="part-10.html#part_10.2.2"><i class="fa fa-check"></i><b>10.2.2</b> Sezonowość</a></li>
+<li class="chapter" data-level="10.2.3" data-path="part-10.html"><a href="part-10.html#part_10.2.3"><i class="fa fa-check"></i><b>10.2.3</b> Stopień autoregresji – funkcja PACF</a></li>
+<li class="chapter" data-level="10.2.4" data-path="part-10.html"><a href="part-10.html#part_10.2.4"><i class="fa fa-check"></i><b>10.2.4</b> Stopień integracji – test ADF/PP</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="part-10.html"><a href="part-10.html#part_10.3"><i class="fa fa-check"></i><b>10.3</b> Weryfikacja modelu</a><ul>
+<li class="chapter" data-level="10.3.1" data-path="part-10.html"><a href="part-10.html#part_10.3.1"><i class="fa fa-check"></i><b>10.3.1</b> Estymacja dynamicznego modelu liniowego</a></li>
+<li class="chapter" data-level="10.3.2" data-path="part-10.html"><a href="part-10.html#part_10.3.2"><i class="fa fa-check"></i><b>10.3.2</b> Ocena jakości modelu</a></li>
+</ul></li>
+<li class="chapter" data-level="10.4" data-path="part-10.html"><a href="part-10.html#part_10.4"><i class="fa fa-check"></i><b>10.4</b> Diagnostyka modelu</a><ul>
+<li class="chapter" data-level="10.4.1" data-path="part-10.html"><a href="part-10.html#part_10.4.1"><i class="fa fa-check"></i><b>10.4.1</b> Normalność procesu resztowego</a></li>
+<li class="chapter" data-level="10.4.2" data-path="part-10.html"><a href="part-10.html#part_10.4.2"><i class="fa fa-check"></i><b>10.4.2</b> Autokorelacja procesu resztowego</a></li>
+<li class="chapter" data-level="10.4.3" data-path="part-10.html"><a href="part-10.html#part_10.4.3"><i class="fa fa-check"></i><b>10.4.3</b> Heteroskedastyczność procesu resztowego</a></li>
+<li class="chapter" data-level="10.4.4" data-path="part-10.html"><a href="part-10.html#part_10.4.4"><i class="fa fa-check"></i><b>10.4.4</b> Stabilność parametrów modelu</a></li>
+<li class="chapter" data-level="10.4.5" data-path="part-10.html"><a href="part-10.html#part_10.4.5"><i class="fa fa-check"></i><b>10.4.5</b> Postać analityczna modelu</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="part-11.html"><a href="part-11.html"><i class="fa fa-check"></i><b>11</b> Przegląd wybranych testów statystycznych</a><ul>
+<li class="chapter" data-level="11.1" data-path="part-11.html"><a href="part-11.html#part_11.1"><i class="fa fa-check"></i><b>11.1</b> Testy normalności</a></li>
+<li class="chapter" data-level="11.2" data-path="part-11.html"><a href="part-11.html#part_11.2"><i class="fa fa-check"></i><b>11.2</b> Testy asymptotyczne</a></li>
+<li class="chapter" data-level="11.3" data-path="part-11.html"><a href="part-11.html#part_11.3"><i class="fa fa-check"></i><b>11.3</b> Testy dla proporcji</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="part-12.html"><a href="part-12.html"><i class="fa fa-check"></i><b>12</b> Przykład analizy liczby przestępstw w Polsce w 2009 r.</a><ul>
+<li class="chapter" data-level="12.1" data-path="part-12.html"><a href="part-12.html#part_12.1"><i class="fa fa-check"></i><b>12.1</b> Wprowadzenie</a></li>
+<li class="chapter" data-level="12.2" data-path="part-12.html"><a href="part-12.html#part_12.2"><i class="fa fa-check"></i><b>12.2</b> Mapy</a></li>
+<li class="chapter" data-level="12.3" data-path="part-12.html"><a href="part-12.html#part_12.3"><i class="fa fa-check"></i><b>12.3</b> Analiza wariancji</a></li>
+<li class="chapter" data-level="12.4" data-path="part-12.html"><a href="part-12.html#part_12.4"><i class="fa fa-check"></i><b>12.4</b> Modele dla liczebności</a></li>
+<li class="chapter" data-level="12.5" data-path="part-12.html"><a href="part-12.html#part_12.5"><i class="fa fa-check"></i><b>12.5</b> Modele dla częstości</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="part-13.html"><a href="part-13.html"><i class="fa fa-check"></i><b>13</b> Modele regresji</a><ul>
+<li class="chapter" data-level="13.1" data-path="part-13.html"><a href="part-13.html#part_13.1"><i class="fa fa-check"></i><b>13.1</b> Wprowadzenie</a></li>
+<li class="chapter" data-level="13.2" data-path="part-13.html"><a href="part-13.html#part_13.2"><i class="fa fa-check"></i><b>13.2</b> Estymacja modelu liniowego</a><ul>
+<li class="chapter" data-level="13.2.1" data-path="part-13.html"><a href="part-13.html#part_13.2.1"><i class="fa fa-check"></i><b>13.2.1</b> Metoda najmniejszych kwadratów</a></li>
+<li class="chapter" data-level="13.2.2" data-path="part-13.html"><a href="part-13.html#part_13.2.2"><i class="fa fa-check"></i><b>13.2.2</b> Poprawność specyfikacji modelu</a></li>
+<li class="chapter" data-level="13.2.3" data-path="part-13.html"><a href="part-13.html#part_13.2.3"><i class="fa fa-check"></i><b>13.2.3</b> Normalność</a></li>
+<li class="chapter" data-level="13.2.4" data-path="part-13.html"><a href="part-13.html#part_13.2.4"><i class="fa fa-check"></i><b>13.2.4</b> Heteroskedastyczność</a></li>
+<li class="chapter" data-level="13.2.5" data-path="part-13.html"><a href="part-13.html#part_13.2.5"><i class="fa fa-check"></i><b>13.2.5</b> Obserwacje odstające</a></li>
+<li class="chapter" data-level="13.2.6" data-path="part-13.html"><a href="part-13.html#part_13.2.6"><i class="fa fa-check"></i><b>13.2.6</b> Metoda najmniejszych wartości bezwzględnych</a></li>
+</ul></li>
+<li class="chapter" data-level="13.3" data-path="part-13.html"><a href="part-13.html#part_13.3"><i class="fa fa-check"></i><b>13.3</b> Estymacja modelu nieliniowego</a><ul>
+<li class="chapter" data-level="13.3.1" data-path="part-13.html"><a href="part-13.html#part_13.3.1"><i class="fa fa-check"></i><b>13.3.1</b> Model kwadratowy</a></li>
+<li class="chapter" data-level="13.3.2" data-path="part-13.html"><a href="part-13.html#part_13.3.2"><i class="fa fa-check"></i><b>13.3.2</b> Model wykładniczy</a></li>
+<li class="chapter" data-level="13.3.3" data-path="part-13.html"><a href="part-13.html#part_13.3.3"><i class="fa fa-check"></i><b>13.3.3</b> Model hiperboliczny</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="part-14.html"><a href="part-14.html"><i class="fa fa-check"></i><b>14</b> Zbiory danych</a><ul>
+<li class="chapter" data-level="14.1" data-path="part-14.html"><a href="part-14.html#part_14.1"><i class="fa fa-check"></i><b>14.1</b> Zbiór danych GUSowskich</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="bibliografia.html"><a href="bibliografia.html"><i class="fa fa-check"></i>Bibliografia</a></li>
+<li class="divider"></li>
+<li><a href="http://www.biecek.pl/NaPrzelajPrzezDataMining/" target="blank">strona projektu</a></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Na przełaj przez Data Mining z pakietem R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="part_12" class="section level1">
+<h1><span class="header-section-number">Rozdział 12</span> Przykład analizy liczby przestępstw w Polsce w 2009 r.</h1>
+<hr />
+<div id="part_12.1" class="section level2">
+<h2><span class="header-section-number">12.1</span> Wprowadzenie</h2>
+<p>Do analizy liczby przestępstw w Polsce wykorzystamy dane które są dostępne w bazie
+danych GUS. Tabela przedstawia liczbę przestępstw stwierdzonych w zakończonych
+postępowaniach przygotowawczych w 2009 roku.</p>
+<pre class="sourceCode r"><code class="sourceCode r">krym &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">77967</span>, <span class="dv">36815</span>, <span class="dv">49457</span>, <span class="dv">31104</span>, <span class="dv">22182</span>, <span class="dv">62488</span>, <span class="dv">103680</span>, <span class="dv">18582</span>, <span class="dv">23852</span>, <span class="dv">16086</span>,
+          <span class="dv">53998</span>, <span class="dv">117557</span>, <span class="dv">18725</span>, <span class="dv">25482</span>, <span class="dv">66610</span>, <span class="dv">39012</span>)
+gosp &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">11169</span>, <span class="dv">10337</span>, <span class="dv">5870</span>, <span class="dv">4854</span>, <span class="dv">5506</span>, <span class="dv">11824</span>, <span class="dv">14045</span>, <span class="dv">2648</span>, <span class="dv">4551</span>, <span class="dv">2561</span>,
+          <span class="dv">26185</span>, <span class="dv">19481</span>, <span class="dv">9108</span>, <span class="dv">4943</span>, <span class="dv">12425</span>, <span class="dv">5758</span>)
+zyc_zdr &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">2705</span>, <span class="dv">1396</span>, <span class="dv">1957</span>, <span class="dv">1604</span>, <span class="dv">1073</span>, <span class="dv">2496</span>, <span class="dv">3496</span>, <span class="dv">923</span>, <span class="dv">1326</span>, <span class="dv">1015</span>, <span class="dv">2437</span>,
+             <span class="dv">5050</span>, <span class="dv">879</span>, <span class="dv">1506</span>, <span class="dv">2410</span>, <span class="dv">1435</span>)
+wol &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">4498</span>, <span class="dv">1883</span>, <span class="dv">2765</span>, <span class="dv">1849</span>, <span class="dv">1628</span>, <span class="dv">4009</span>, <span class="dv">4225</span>, <span class="dv">1421</span>, <span class="dv">1597</span>, <span class="dv">921</span>, <span class="dv">3511</span>,
+         <span class="dv">6670</span>, <span class="dv">921</span>, <span class="dv">1498</span>, <span class="dv">3818</span>, <span class="dv">2160</span>)
+rodz_opie &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">3430</span>, <span class="dv">1669</span>, <span class="dv">3191</span>, <span class="dv">3086</span>, <span class="dv">1109</span>, <span class="dv">2751</span>, <span class="dv">5041</span>, <span class="dv">1210</span>, <span class="dv">1486</span>, <span class="dv">923</span>,
+               <span class="dv">1723</span>, <span class="dv">6853</span>, <span class="dv">1267</span>, <span class="dv">1805</span>, <span class="dv">3123</span>, <span class="dv">1099</span>)
+mien &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">60385</span>, <span class="dv">33400</span>, <span class="dv">34622</span>, <span class="dv">22119</span>, <span class="dv">16262</span>, <span class="dv">47333</span>, <span class="dv">81870</span>, <span class="dv">13896</span>, <span class="dv">17535</span>, <span class="dv">11940</span>,
+          <span class="dv">46273</span>, <span class="dv">93888</span>, <span class="dv">16267</span>, <span class="dv">19794</span>, <span class="dv">45119</span>, <span class="dv">30558</span>)
+drog &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">15936</span>, <span class="dv">8931</span>, <span class="dv">12362</span>, <span class="dv">10011</span>, <span class="dv">7403</span>, <span class="dv">10330</span>, <span class="dv">21876</span>, <span class="dv">5578</span>, <span class="dv">7961</span>, <span class="dv">5696</span>,
+          <span class="dv">8341</span>, <span class="dv">14934</span>, <span class="dv">6180</span>, <span class="dv">6575</span>, <span class="dv">15134</span>, <span class="dv">10900</span>)
+woj &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;dolnośląskie&quot;</span>, <span class="st">&quot;kuj_pom&quot;</span>, <span class="st">&quot;łódzkie&quot;</span>, <span class="st">&quot;lubelskie&quot;</span>, <span class="st">&quot;lubuskie&quot;</span>, <span class="st">&quot;małopolskie&quot;</span>,
+         <span class="st">&quot;mazowieckie&quot;</span>, <span class="st">&quot;opolskie&quot;</span>, <span class="st">&quot;podkarpackie&quot;</span>, <span class="st">&quot;podlaskie&quot;</span>, <span class="st">&quot;pomorskie&quot;</span>, <span class="st">&quot;śląskie&quot;</span>,
+         <span class="st">&quot;świętokrzyskie&quot;</span>, <span class="st">&quot;war_mazur&quot;</span>, <span class="st">&quot;wielkopolskie&quot;</span>, <span class="st">&quot;zach_pomorskie&quot;</span>)
+G &lt;-<span class="kw">data.frame</span>(krym,gosp,zyc_zdr,wol,rodz_opie,mien,drog,
+               <span class="dt">row.names =</span> woj) </code></pre>
+<p>gdzie:</p>
+<ul>
+<li><p><code>krym</code> – przestępstwa o charakterze kryminalnym,</p></li>
+<li><p><code>gosp</code> – przestępstwa o charakterze gospodarczym,</p></li>
+<li><p><code>zyc_zdr</code> – przestępstwa przeciwko życiu i zdrowiu,</p></li>
+<li><p><code>wol</code> – przestępstwa przeciwko wolności, wolności sumienia i wyznania, wolności
+seksualnej i obyczjności,</p></li>
+<li><p><code>rodz_opie</code> – przestępstwa przeciwko rodzinie i opiece,</p></li>
+<li><p><code>mien</code> – przestępstwa przeciwko mieniu,</p></li>
+<li><p><code>drog</code> – przestępstwa drogowe.</p></li>
+</ul>
+<p>Zanim przystąpimy do analiz warto przekształcić tabelę <code>g</code> w tabelę kontyngencji.
+Można to zrobić w następujący sposób:</p>
+<pre class="sourceCode r"><code class="sourceCode r">g &lt;-<span class="st"> </span>G[,<span class="op">-</span><span class="dv">8</span>]
+m &lt;-<span class="st"> </span><span class="kw">array</span>(
+  <span class="kw">c</span>(g[,<span class="dv">1</span>],g[,<span class="dv">2</span>],g[,<span class="dv">3</span>],g[,<span class="dv">4</span>],g[,<span class="dv">5</span>],g[,<span class="dv">6</span>],g[,<span class="dv">7</span>]), <span class="co"># kolumny tabeli</span>
+  <span class="dt">dim=</span><span class="kw">c</span>(<span class="kw">length</span>(g[,<span class="dv">1</span>]),<span class="kw">length</span>(g[<span class="dv">1</span>,])),           <span class="co"># liczba wierszy, kolumn</span>
+  <span class="dt">dimnames =</span> <span class="kw">list</span>(
+    województwo=<span class="kw">c</span>(<span class="kw">rownames</span>(g)),    <span class="co"># nazwy wierszy</span>
+    przestępczość=<span class="kw">c</span>(<span class="kw">colnames</span>(g)))) <span class="co"># nazwy kolumn</span></code></pre>
+<p>W pierwszej kolejności zbadamy czy występuje zależność między województwami a
+rodzajem przestępstwa. Zrobimy to za pomocą testu niezależności <span class="math inline">\(\chi^2\)</span>.</p>
+<pre class="sourceCode r"><code class="sourceCode r">vcd<span class="op">::</span><span class="kw">assocstats</span>(m)</code></pre>
+<pre><code>##                    X^2 df P(&gt; X^2)
+## Likelihood Ratio 46183 90        0
+## Pearson          50592 90        0
+## 
+## Phi-Coefficient   : NA 
+## Contingency Coeff.: 0.166 
+## Cramer&#39;s V        : 0.069</code></pre>
+<p>Wartość p-value jest równa 0. Zatem występuje pewna zależność między zmiennymi.
+Do oceny siły tego związku wykorzystamy współczynniki kontyngencji oraz Cramera.
+Wynoszą one odpowiednio: <span class="math inline">\(0,166\)</span> i <span class="math inline">\(0,069\)</span> czyli badana zależność nie jest zbyt wysoka.</p>
+
+</div>
+<div id="part_12.2" class="section level2">
+<h2><span class="header-section-number">12.2</span> Mapy</h2>
+<p>Gdy tabela kontyngencji jest dość sporych rozmiarów, warto liczebności w niej występujące przedstawić za pomocą różnych funkcji graficznych. Jedną z możliwości
+jest wykorzystanie komendy <a href="https://rdrr.io/r/stats/heatmap.html"><code>heatmap</code></a> króra rysuje tzw. “mapa ciepła”.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;RColorBrewer&quot;</span>)
+<span class="kw">par</span>(<span class="dt">mfcol=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>),<span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">1</span>,<span class="dv">1</span>)<span class="op">+</span><span class="fl">0.1</span>,
+    <span class="dt">mgp=</span><span class="kw">c</span>(<span class="dv">3</span>,<span class="fl">0.6</span>,<span class="dv">0</span>),<span class="dt">las=</span><span class="dv">1</span>)
+<span class="kw">heatmap</span>(<span class="kw">as.matrix</span>(g), <span class="dt">Colv=</span><span class="ot">NA</span>, <span class="dt">scale=</span><span class="st">&quot;column&quot;</span>,
+        <span class="dt">col=</span> <span class="kw">rev</span>(<span class="kw">brewer.pal</span>(<span class="dv">11</span>,<span class="st">&quot;Spectral&quot;</span>)))</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:wy121"></span>
+<img src="NaPrzelajR_files/figure-html/wy121-1.png" alt="Mapa ciepła." width="50%" />
+<p class="caption">
+Rysunek 12.1: Mapa ciepła.
+</p>
+</div>
+<p>Na podstawie otrzymanej tzw. “mapy ciepła”&quot; (rys. <a href="part-12.html#fig:wy121">12.1</a>) możemy wyodrębnić
+kilka grup województw. W skład pierwszej z nich wchodzą dwa województwa: śląskie
+i mazowieckie. Charakteryzują się one dużymi liczebnościami przestępstw. Kolejna
+grupa to: wielkopolskie, małopolskie, pomorskie (duża liczeność przestępstw gospodarczych), dolnośląskie o średniej przestępczości. Ostatnią grupę stanowią głównie województwa ze wschodniej części kraju: podkarpackie, warmińsko-mazurskie,
+lubelskie, podlaskie, świętokrzyskie oraz lubuskie, zachodnio-pomorskie, łódzkie,
+kujawsko-pomorskie i opolskie. W tych województwach liczba przestępstw była najmniejsza.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">heatmap</span>(<span class="kw">as.matrix</span>(<span class="kw">t</span>(g)), <span class="dt">Colv=</span><span class="ot">NA</span>, <span class="dt">scale=</span><span class="st">&quot;column&quot;</span>,
+<span class="dt">col=</span> <span class="kw">rev</span>(<span class="kw">brewer.pal</span>(<span class="dv">11</span>,<span class="st">&quot;Spectral&quot;</span>)))</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:wy122"></span>
+<img src="NaPrzelajR_files/figure-html/wy122-1.png" alt="Mapa ciepła." width="50%" />
+<p class="caption">
+Rysunek 12.2: Mapa ciepła.
+</p>
+</div>
+<p>Po transformacji tabeli <code>g</code> i utworzeniu rys. <a href="part-12.html#fig:wy122">12.2</a> nasuwają się kolejne wnioski. We
+wszystkich województwach przestępstwa o charakterze kryminalnym oraz przeciwko mieniu są popełniane najczęściej. Natomiast najrzadziej przestępstwa przeciwko
+wolności, wolności sumienia i wyznania, wolności seksualnej i obyczjności, rodzinie i opiece a także życiu i zdrowiu.</p>
+<p>Inną graficzną formą przedstawienia naszych danych jest mapa Polski z podziałem na województwa. Do takiej prezentacji danych (rys. <a href="part-12.html#fig:wy123">12.3</a> i <a href="part-12.html#fig:wy124">12.4</a>) wykorzystamy pakiet <a href="https://rdrr.io/rforge/mapoland/"><code>mapoland</code></a>. Dane można wizualizować na mapach także wczytując formaty plików shapefile które są dostępne pod adresem: <a href="http://www.gugik.gov.pl/pzgik/dane-bez-oplat/dane-z-panstwowego-rejestru-granic-i-powierzchni-jednostek-podzialow-terytorialnych-kraju-prg">GUGiK</a>. Aby importować tego typu dane warto skorzystać z pakietu <a href="https://rdrr.io/cran/rgdal/"><code>rgdal</code></a>.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;mapoland&quot;</span>)
+<span class="kw">library</span>(<span class="st">&quot;classInt&quot;</span>)
+<span class="kw">library</span>(<span class="st">&quot;RColorBrewer&quot;</span>)
+<span class="co"># dane:</span>
+przest &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(<span class="kw">apply</span>(G, <span class="dv">1</span>, sum))
+NAM &lt;-<span class="st"> </span><span class="kw">sapply</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">16</span>,
+              <span class="cf">function</span>(i) <span class="kw">paste</span>(<span class="kw">format</span>(przest[i],<span class="dt">big.mark=</span><span class="st">&quot; &quot;</span>),<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>,<span class="kw">rownames</span>(G)[i],<span class="dt">sep=</span><span class="st">&quot; &quot;</span>))
+<span class="kw">names</span>(NAM) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">4</span>,<span class="dv">10</span>, <span class="dv">6</span>,<span class="dv">8</span>,<span class="dv">12</span>,<span class="dv">14</span>,<span class="dv">16</span>,<span class="dv">18</span>,<span class="dv">20</span>,<span class="dv">22</span>,<span class="dv">24</span>,<span class="dv">26</span>,<span class="dv">28</span>,<span class="dv">30</span>,<span class="dv">32</span>) <span class="co"># TERYT</span>
+a &lt;-<span class="st"> </span><span class="kw">structure</span>(przest, <span class="dt">names=</span><span class="kw">rownames</span>(NAM))
+s &lt;-<span class="st"> </span><span class="kw">getShape</span>(<span class="st">&quot;voiv&quot;</span>)
+<span class="co"># kolory:</span>
+przedzialy &lt;-<span class="st"> </span><span class="dv">3</span>
+kolory &lt;-<span class="st"> </span><span class="kw">brewer.pal</span>(przedzialy,<span class="st">&quot;Greens&quot;</span>)
+klasy &lt;-<span class="st"> </span><span class="kw">classIntervals</span>(przest, przedzialy,<span class="dt">style=</span><span class="st">&quot;fixed&quot;</span>,
+                        <span class="dt">fixedBreaks=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">100000</span>,<span class="dv">200000</span>,<span class="dv">300000</span>))
+tabela.kolorow &lt;-<span class="st"> </span><span class="kw">findColours</span>(klasy,kolory)
+<span class="co"># rysunek:</span>
+<span class="kw">par</span>(<span class="dt">mfcol=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>),<span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>)<span class="op">+</span><span class="fl">0.1</span>,<span class="dt">mgp=</span><span class="kw">c</span>(<span class="dv">3</span>,<span class="fl">0.6</span>,<span class="dv">0</span>),
+    <span class="dt">bg=</span><span class="st">&quot;lightgoldenrodyellow&quot;</span>,<span class="dt">las=</span><span class="dv">1</span>)
+<span class="kw">plot</span>(<span class="dv">1</span>,<span class="dt">axes=</span>F,<span class="dt">xlab=</span><span class="st">&quot;&quot;</span>,<span class="dt">ylab=</span><span class="st">&quot;&quot;</span>,<span class="dt">main=</span><span class="st">&quot;&quot;</span>, <span class="dt">col=</span><span class="st">&quot;white&quot;</span>)
+u &lt;-<span class="st"> </span><span class="kw">par</span>(<span class="st">&quot;usr&quot;</span>)
+<span class="kw">rect</span>(u[<span class="dv">1</span>], u[<span class="dv">3</span>], u[<span class="dv">2</span>], u[<span class="dv">4</span>], <span class="dt">col=</span><span class="st">&quot;white&quot;</span>)
+<span class="kw">par</span>(<span class="dt">new=</span>plot)
+<span class="kw">plot</span>(s, <span class="dt">col=</span>tabela.kolorow)
+<span class="kw">text</span>( <span class="kw">coordinates</span>(s), <span class="dt">labels=</span>NAM, <span class="dt">col=</span><span class="st">&quot;black&quot;</span>,<span class="dt">cex=</span><span class="dv">1</span>)
+<span class="kw">legend</span>(<span class="st">&quot;bottomleft&quot;</span>,
+       <span class="kw">c</span>(<span class="st">&quot;mniej niż 100 000&quot;</span>,<span class="st">&quot;[100 000 - 200 000)&quot;</span>,<span class="st">&quot;200 000 i więcej&quot;</span>),
+       <span class="dt">fill=</span><span class="kw">attr</span>(tabela.kolorow,<span class="st">&quot;palette&quot;</span>),<span class="dt">cex=</span><span class="dv">1</span>,<span class="dt">bty=</span><span class="st">&quot;n&quot;</span>)</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:wy123"></span>
+<img src="NaPrzelajR_files/figure-html/wy123-1.png" alt="Liczba przestępstw w 2009 r." width="70%" />
+<p class="caption">
+Rysunek 12.3: Liczba przestępstw w 2009 r.
+</p>
+</div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># dane:</span>
+lud &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">2876627</span>, <span class="dv">2069083</span>, <span class="dv">2541832</span>, <span class="dv">2157202</span>, <span class="dv">1010047</span>, <span class="dv">3298270</span>, <span class="dv">5222167</span>, <span class="dv">1031097</span>,
+         <span class="dv">2101732</span>, <span class="dv">1189731</span>, <span class="dv">2230099</span>, <span class="dv">4640725</span>, <span class="dv">1270120</span>, <span class="dv">1427118</span>, <span class="dv">3408281</span>, <span class="dv">1693198</span>)
+pw &lt;-<span class="st"> </span>przest<span class="op">/</span>lud <span class="co"># częstość przestępstw w województwach</span>
+pwL &lt;-<span class="st"> </span>pw<span class="op">*</span><span class="dv">100000</span>
+NAM &lt;-<span class="st"> </span><span class="kw">sapply</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">16</span>, <span class="cf">function</span>(i) <span class="kw">paste</span>(<span class="kw">format</span>(pw[i],<span class="dt">digits=</span><span class="dv">3</span>),
+                                      <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>,<span class="kw">rownames</span>(G)[i],<span class="dt">sep=</span><span class="st">&quot; &quot;</span>))
+<span class="kw">names</span>(NAM) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">4</span>,<span class="dv">10</span>, <span class="dv">6</span>,<span class="dv">8</span>,<span class="dv">12</span>,<span class="dv">14</span>,<span class="dv">16</span>,<span class="dv">18</span>,<span class="dv">20</span>,<span class="dv">22</span>,<span class="dv">24</span>,<span class="dv">26</span>,<span class="dv">28</span>,<span class="dv">30</span>,<span class="dv">32</span>) <span class="co"># TERYT</span>
+a &lt;-<span class="st"> </span><span class="kw">structure</span>(przest, <span class="dt">names=</span><span class="kw">rownames</span>(NAM))
+s &lt;-<span class="st"> </span><span class="kw">getShape</span>(<span class="st">&quot;voiv&quot;</span>)
+<span class="co"># kolory:</span>
+przedzialy &lt;-<span class="st"> </span><span class="dv">4</span>
+kolory &lt;-<span class="st"> </span><span class="kw">brewer.pal</span>(przedzialy,<span class="st">&quot;Reds&quot;</span>)
+klasy &lt;-<span class="st"> </span><span class="kw">classIntervals</span>(pw, przedzialy,<span class="dt">style=</span><span class="st">&quot;fixed&quot;</span>,
+                        <span class="dt">fixedBreaks=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="fl">0.03</span>,<span class="fl">0.04</span>,<span class="fl">0.05</span>,<span class="fl">0.06</span>,<span class="dv">1</span>))
+tabela.kolorow &lt;-<span class="st"> </span><span class="kw">findColours</span>(klasy,kolory)
+<span class="co"># rysunek:</span>
+<span class="kw">par</span>(<span class="dt">mfcol=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>),<span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>)<span class="op">+</span><span class="fl">0.1</span>,<span class="dt">mgp=</span><span class="kw">c</span>(<span class="dv">3</span>,<span class="fl">0.6</span>,<span class="dv">0</span>),
+    <span class="dt">bg=</span><span class="st">&quot;lightgoldenrodyellow&quot;</span>,<span class="dt">las=</span><span class="dv">1</span>)
+<span class="kw">plot</span>(<span class="dv">1</span>,<span class="dt">axes=</span>F,<span class="dt">xlab=</span><span class="st">&quot;&quot;</span>,<span class="dt">ylab=</span><span class="st">&quot;&quot;</span>,<span class="dt">main=</span><span class="st">&quot;&quot;</span>, <span class="dt">col=</span><span class="st">&quot;white&quot;</span>)
+u &lt;-<span class="st"> </span><span class="kw">par</span>(<span class="st">&quot;usr&quot;</span>)
+<span class="kw">rect</span>(u[<span class="dv">1</span>], u[<span class="dv">3</span>], u[<span class="dv">2</span>], u[<span class="dv">4</span>], <span class="dt">col=</span><span class="st">&quot;white&quot;</span>)
+<span class="kw">par</span>(<span class="dt">new=</span>plot)
+<span class="kw">plot</span>(s, <span class="dt">col=</span>tabela.kolorow)
+<span class="kw">text</span>( <span class="kw">coordinates</span>(s), <span class="dt">labels=</span>NAM, <span class="dt">col=</span><span class="st">&quot;black&quot;</span>,<span class="dt">cex=</span><span class="dv">1</span>)
+<span class="kw">legend</span>(<span class="st">&quot;bottomleft&quot;</span>,
+       <span class="kw">c</span>(<span class="st">&quot;mniej niż 0.03&quot;</span>,<span class="st">&quot;[0.03 - 0.04)&quot;</span>,<span class="st">&quot;[0.04 - 0.05)&quot;</span>, <span class="st">&quot;[0.05 - 0.06)&quot;</span>, <span class="st">&quot;0.06 i więcej&quot;</span>),
+       <span class="dt">fill=</span><span class="kw">attr</span>(tabela.kolorow,<span class="st">&quot;palette&quot;</span>),<span class="dt">cex=</span>.<span class="dv">8</span>,<span class="dt">bty=</span><span class="st">&quot;n&quot;</span>)</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:wy124"></span>
+<img src="NaPrzelajR_files/figure-html/wy124-1.png" alt="Częstość przestępstw w 2009 r." width="70%" />
+<p class="caption">
+Rysunek 12.4: Częstość przestępstw w 2009 r.
+</p>
+</div>
+<p>Przestępstwa w przeliczeniu na jednego mieszkańca (rys. <a href="part-12.html#fig:wy124">12.4</a>) najczęściej odnotowywano w dwóch województwach: dolnośląskim i pomorskim. Najmniej zachowań zabronionych prawem zanotowano w województwie podkarpackim.</p>
+
+</div>
+<div id="part_12.3" class="section level2">
+<h2><span class="header-section-number">12.3</span> Analiza wariancji</h2>
+<p>Analiza wariancji to kolejna metoda którą wykorzystamy w naszych badaniach.
+Za pomocą komendy <a href="https://rdrr.io/r/stats/anova.html"><code>anova</code></a> porównamy wartości średnie dla poszczególnych województw oraz kategorii przestępstw.</p>
+<pre class="sourceCode r"><code class="sourceCode r">y &lt;-<span class="st"> </span><span class="kw">c</span>(g[,<span class="dv">1</span>],g[,<span class="dv">2</span>],g[,<span class="dv">3</span>],g[,<span class="dv">4</span>],g[,<span class="dv">5</span>],g[,<span class="dv">6</span>],g[,<span class="dv">7</span>])
+woj &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="kw">rownames</span>(g),<span class="dv">7</span>); woj=<span class="kw">factor</span>(woj)
+przest &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="kw">colnames</span>(g),<span class="dt">each=</span><span class="dv">16</span>); przest=<span class="kw">factor</span>(przest)
+<span class="kw">anova</span>(<span class="kw">lm</span>(y<span class="op">~</span>woj<span class="op">+</span>przest))</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: y
+##           Df     Sum Sq    Mean Sq F value    Pr(&gt;F)    
+## woj       15 9.9360e+09  662403078  4.0995  1.18e-05 ***
+## przest     6 3.3188e+10 5531403342 34.2326 &lt; 2.2e-16 ***
+## Residuals 90 1.4542e+10  161582725                      
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>Analiza wariancji wskazuje, że śrenie liczebości czynów zabronionych dla województw (p-value = 1,18e-05) oraz ich charakteru (p-value = 2,2e-16) różnią się na poziomie istotności <span class="math inline">\(\alpha = 0,05\)</span> (rys. <a href="part-12.html#fig:wy125">12.5</a>).</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># średnie i mediany:</span>
+<span class="kw">par</span>(<span class="dt">mfcol=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>),<span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">1</span>,<span class="dv">1</span>)<span class="op">+</span><span class="fl">0.1</span>, <span class="dt">mgp=</span><span class="kw">c</span>(<span class="dv">3</span>,<span class="fl">0.6</span>,<span class="dv">0</span>),<span class="dt">las=</span><span class="dv">1</span>)
+<span class="kw">plot.design</span>(<span class="kw">data.frame</span>(woj,przest,y),<span class="dt">fun=</span>mean,<span class="dt">col=</span><span class="st">&#39;darkred&#39;</span>,<span class="dt">lwd=</span><span class="dv">2</span>)
+<span class="kw">plot.design</span>(<span class="kw">data.frame</span>(woj,przest,y),<span class="dt">fun=</span>median,<span class="dt">col=</span><span class="st">&#39;darkred&#39;</span>,<span class="dt">lwd=</span><span class="dv">2</span>)</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:wy125"></span>
+<img src="NaPrzelajR_files/figure-html/wy125-1.png" alt="Średnie i mediany." width="100%" />
+<p class="caption">
+Rysunek 12.5: Średnie i mediany.
+</p>
+</div>
+<p>Wartości średnie dla województw są następujące:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tapply</span>(y,woj,mean)</code></pre>
+<pre><code>##   dolnośląskie        kuj_pom      lubelskie       lubuskie        łódzkie 
+##      25155.714      13490.143      10661.000       7880.429      15746.286 
+##    małopolskie    mazowieckie       opolskie   podkarpackie      podlaskie 
+##      20175.857      33461.857       6322.571       8329.714       5591.714 
+##      pomorskie        śląskie świętokrzyskie      war_mazur  wielkopolskie 
+##      20352.571      37776.143       7621.000       8800.429      21234.143 
+## zach_pomorskie 
+##      12988.857</code></pre>
+<p>Natomiast dla rodzaju przestępstwa:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tapply</span>(y,przest,mean)</code></pre>
+<pre><code>##      drog      gosp      krym      mien rodz_opie       wol   zyc_zdr 
+## 10509.250  9454.062 47724.812 36953.812  2485.375  2710.875  1981.750</code></pre>
+<p>Ponieważ średnie różnią się na poziomie istotności <span class="math inline">\(\alpha = 0,05\)</span>, możemy być zainteresowani odpowiedzią na następujące pytanie: Jak duże są różnice między badanymi wartościami w porównaiu z województwem ślaskim oraz przestępczością kryminalną. Odpowiedź na tak postawione pytanie otrzymamy wykonyjąc odpowiednią komendę:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># punkt odniesienia: województwo śląskie:</span>
+woj &lt;-<span class="st"> </span><span class="kw">relevel</span>(woj, <span class="dt">ref=</span><span class="st">&quot;śląskie&quot;</span>)
+<span class="co"># punkt odniesienia: przestępstwa kryminalne:</span>
+przest &lt;-<span class="st"> </span><span class="kw">relevel</span>(przest, <span class="dt">ref=</span><span class="st">&quot;krym&quot;</span>)
+lmtest<span class="op">::</span><span class="kw">coeftest</span>(<span class="kw">lm</span>(y<span class="op">~</span>woj<span class="op">+</span>przest))</code></pre>
+<pre><code>## 
+## t test of coefficients:
+## 
+##                   Estimate Std. Error  t value  Pr(&gt;|t|)    
+## (Intercept)        69526.7     5633.8  12.3410 &lt; 2.2e-16 ***
+## wojdolnośląskie   -12620.4     6794.6  -1.8574 0.0665213 .  
+## wojkuj_pom        -24286.0     6794.6  -3.5743 0.0005671 ***
+## wojlubelskie      -27115.1     6794.6  -3.9907 0.0001341 ***
+## wojlubuskie       -29895.7     6794.6  -4.3999 2.967e-05 ***
+## wojłódzkie        -22029.9     6794.6  -3.2423 0.0016638 ** 
+## wojmałopolskie    -17600.3     6794.6  -2.5903 0.0111839 *  
+## wojmazowieckie     -4314.3     6794.6  -0.6350 0.5270663    
+## wojopolskie       -31453.6     6794.6  -4.6292 1.229e-05 ***
+## wojpodkarpackie   -29446.4     6794.6  -4.3338 3.807e-05 ***
+## wojpodlaskie      -32184.4     6794.6  -4.7368 8.060e-06 ***
+## wojpomorskie      -17423.6     6794.6  -2.5643 0.0119944 *  
+## wojświętokrzyskie -30155.1     6794.6  -4.4381 2.566e-05 ***
+## wojwar_mazur      -28975.7     6794.6  -4.2645 4.933e-05 ***
+## wojwielkopolskie  -16542.0     6794.6  -2.4346 0.0168824 *  
+## wojzach_pomorskie -24787.3     6794.6  -3.6481 0.0004424 ***
+## przestdrog        -37215.6     4494.2  -8.2808 1.073e-12 ***
+## przestgosp        -38270.7     4494.2  -8.5156 3.498e-13 ***
+## przestmien        -10771.0     4494.2  -2.3966 0.0186146 *  
+## przestrodz_opie   -45239.4     4494.2 -10.0662 &lt; 2.2e-16 ***
+## przestwol         -45013.9     4494.2 -10.0160 2.646e-16 ***
+## przestzyc_zdr     -45743.1     4494.2 -10.1782 &lt; 2.2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>Na podstawie powyższych obliczeń możemy sformułować kilka wniosków. Największa
+różnica w średnich występuje między województwem śląskim a podlaskim (rys. <a href="part-12.html#fig:wy125">12.5</a> i wynosi <span class="math inline">\(-32184,4\)</span>. Natomiast najmniejsza różnica jest między województwem
+śląskim a mazowieckim i jest równa <span class="math inline">\(-4314,3\)</span>. Jeśli porównamy wartość średnią przestępstw kryminalnych z pozostałymi to dojdziemy do wniosku, że największ różnica
+występuje między przestępstwami kryminalnymi i przeciwko zdrowiu i życiu a najmniejsza wynosi <span class="math inline">\(-10771\)</span> i dotyczy przestępstw kryminalnych oraz przeciwko mieniu.
+Na wykresach (<a href="part-12.html#fig:wy127">12.6</a> i <a href="part-12.html#fig:wy128">12.7</a>) zostały zaprezentowane różnice w liczebnościach zachowań niezgodnych z prawem.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">interaction.plot</span>(woj,przest,y,<span class="dt">col=</span><span class="dv">1</span><span class="op">:</span><span class="dv">7</span>,<span class="dt">las=</span><span class="dv">1</span>,<span class="dt">lwd=</span><span class="dv">2</span>)</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:wy127"></span>
+<img src="NaPrzelajR_files/figure-html/wy127-1.png" alt="Rozkład liczebności." width="70%" />
+<p class="caption">
+Rysunek 12.6: Rozkład liczebności.
+</p>
+</div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">interaction.plot</span>(przest,woj,y,<span class="dt">col=</span><span class="dv">1</span><span class="op">:</span><span class="dv">16</span>,<span class="dt">las=</span><span class="dv">1</span>,<span class="dt">lwd=</span><span class="dv">2</span>)</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:wy128"></span>
+<img src="NaPrzelajR_files/figure-html/wy128-1.png" alt="Rozkład liczebności." width="70%" />
+<p class="caption">
+Rysunek 12.7: Rozkład liczebności.
+</p>
+</div>
+
+</div>
+<div id="part_12.4" class="section level2">
+<h2><span class="header-section-number">12.4</span> Modele dla liczebności</h2>
+<p>Do modelowania liczebności wystąpień określonego zjawiska (np. liczba przestępstw)
+możemy wykorzystać model Piossona lub ujemny dwumianowy. W pierwszej kolejności zaprezentujemy model Poissona.</p>
+<pre class="sourceCode r"><code class="sourceCode r">pois &lt;-<span class="st"> </span><span class="kw">glm</span>(y<span class="op">~</span>woj<span class="op">+</span>przest,<span class="dt">family=</span>poisson)
+<span class="kw">summary</span>(pois)</code></pre>
+<pre><code>## 
+## Call:
+## glm(formula = y ~ woj + przest, family = poisson)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -68.004   -8.790   -0.525    9.825  111.295  
+## 
+## Coefficients:
+##                    Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept)       11.633905   0.002129 5464.68   &lt;2e-16 ***
+## wojdolnośląskie   -0.406593   0.003076 -132.19   &lt;2e-16 ***
+## wojkuj_pom        -1.029719   0.003791 -271.62   &lt;2e-16 ***
+## wojlubelskie      -1.265086   0.004145 -305.20   &lt;2e-16 ***
+## wojlubuskie       -1.567295   0.004681 -334.84   &lt;2e-16 ***
+## wojłódzkie        -0.875073   0.003585 -244.07   &lt;2e-16 ***
+## wojmałopolskie    -0.627191   0.003296 -190.30   &lt;2e-16 ***
+## wojmazowieckie    -0.121272   0.002837  -42.74   &lt;2e-16 ***
+## wojopolskie       -1.787552   0.005136 -348.06   &lt;2e-16 ***
+## wojpodkarpackie   -1.511849   0.004575 -330.45   &lt;2e-16 ***
+## wojpodlaskie      -1.910392   0.005416 -352.75   &lt;2e-16 ***
+## wojpomorskie      -0.618470   0.003286 -188.19   &lt;2e-16 ***
+## wojświętokrzyskie -1.600770   0.004746 -337.27   &lt;2e-16 ***
+## wojwar_mazur      -1.456877   0.004474 -325.65   &lt;2e-16 ***
+## wojwielkopolskie  -0.576067   0.003242 -177.70   &lt;2e-16 ***
+## wojzach_pomorskie -1.067586   0.003844 -277.69   &lt;2e-16 ***
+## przestdrog        -1.513196   0.002694 -561.73   &lt;2e-16 ***
+## przestgosp        -1.619007   0.002814 -575.27   &lt;2e-16 ***
+## przestmien        -0.255783   0.001732 -147.65   &lt;2e-16 ***
+## przestrodz_opie   -2.955028   0.005144 -574.50   &lt;2e-16 ***
+## przestwol         -2.868180   0.004936 -581.06   &lt;2e-16 ***
+## przestzyc_zdr     -3.181471   0.005731 -555.11   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for poisson family taken to be 1)
+## 
+##     Null deviance: 2553250  on 111  degrees of freedom
+## Residual deviance:   46183  on  90  degrees of freedom
+## AIC: 47424
+## 
+## Number of Fisher Scoring iterations: 4</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Badanie istotności statystycznej całego modelu:</span>
+lmtest<span class="op">::</span><span class="kw">lrtest</span>(pois)</code></pre>
+<pre><code>## Likelihood ratio test
+## 
+## Model 1: y ~ woj + przest
+## Model 2: y ~ 1
+##   #Df   LogLik  Df   Chisq Pr(&gt;Chisq)    
+## 1  22   -23690                           
+## 2   1 -1277223 -21 2507066  &lt; 2.2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>Oszacowany model Poissona okazał się istotny statystycznie. Jednak założenie dotyczące równości wariancji i średniej nie zostało spełnione:
+<span class="math display">\[
+H_0:\;\phi=1\quad\mbox{vs.}\quad H_1:\;\phi\neq 1
+\]</span></p>
+<pre class="sourceCode r"><code class="sourceCode r">AER<span class="op">::</span><span class="kw">dispersiontest</span>(pois, <span class="dt">alt=</span><span class="st">&quot;two.sided&quot;</span>)</code></pre>
+<pre><code>## 
+##  Dispersion test
+## 
+## data:  pois
+## z = 2.8493, p-value = 0.004382
+## alternative hypothesis: true dispersion is not equal to 1
+## sample estimates:
+## dispersion 
+##   451.6853</code></pre>
+<p>Tak więc na poziomie istotności <span class="math inline">\(\alpha = 0,05\)</span> odrzucamy hipotezę zerową, która zakłada, że dyspersja (czyli iloraz wariancji i średniej) jest równa 1. A zatem sprawdźmy czy występuje problem nadmiernego rozproszenia (wariancja jest większa od średniej):
+<span class="math display">\[
+H_0:\;\phi\leq1\quad\mbox{vs.}\quad H_1:\;\phi&gt; 1
+\]</span></p>
+<pre class="sourceCode r"><code class="sourceCode r">AER<span class="op">::</span><span class="kw">dispersiontest</span>(pois)</code></pre>
+<pre><code>## 
+##  Overdispersion test
+## 
+## data:  pois
+## z = 2.8493, p-value = 0.002191
+## alternative hypothesis: true dispersion is greater than 1
+## sample estimates:
+## dispersion 
+##   451.6853</code></pre>
+<p>Na poziomie istotności <span class="math inline">\(\alpha = 0,05\)</span> przymujemy hipotezę alternatywną, która zakłada, że występuje nadmierne rozproszenie (overdispersion). W takiej syuacji możemy zastosować model ujemny dwumianowy.</p>
+<pre class="sourceCode r"><code class="sourceCode r">nb &lt;-<span class="st"> </span>MASS<span class="op">::</span><span class="kw">glm.nb</span>(y<span class="op">~</span>woj<span class="op">+</span>przest); <span class="kw">summary</span>(nb)</code></pre>
+<pre><code>## 
+## Call:
+## MASS::glm.nb(formula = y ~ woj + przest, init.theta = 21.74640825, 
+##     link = log)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -2.6804  -0.5515  -0.0864   0.5432   3.9689  
+## 
+## Coefficients:
+##                   Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept)       11.57767    0.09512 121.714  &lt; 2e-16 ***
+## wojdolnośląskie   -0.45311    0.11477  -3.948 7.88e-05 ***
+## wojkuj_pom        -1.05428    0.11485  -9.180  &lt; 2e-16 ***
+## wojlubelskie      -1.10428    0.11485  -9.615  &lt; 2e-16 ***
+## wojlubuskie       -1.46951    0.11493 -12.786  &lt; 2e-16 ***
+## wojłódzkie        -0.84128    0.11481  -7.327 2.35e-13 ***
+## wojmałopolskie    -0.63055    0.11479  -5.493 3.95e-08 ***
+## wojmazowieckie    -0.20431    0.11475  -1.780 0.074998 .  
+## wojopolskie       -1.68246    0.11499 -14.632  &lt; 2e-16 ***
+## wojpodkarpackie   -1.39677    0.11491 -12.155  &lt; 2e-16 ***
+## wojpodlaskie      -1.81041    0.11503 -15.739  &lt; 2e-16 ***
+## wojpomorskie      -0.57400    0.11478  -5.001 5.71e-07 ***
+## wojświętokrzyskie -1.49467    0.11494 -13.004  &lt; 2e-16 ***
+## wojwar_mazur      -1.34852    0.11490 -11.736  &lt; 2e-16 ***
+## wojwielkopolskie  -0.56953    0.11478  -4.962 6.98e-07 ***
+## wojzach_pomorskie -1.13722    0.11486  -9.901  &lt; 2e-16 ***
+## przestdrog        -1.38273    0.07587 -18.224  &lt; 2e-16 ***
+## przestgosp        -1.57685    0.07588 -20.780  &lt; 2e-16 ***
+## przestmien        -0.25984    0.07584  -3.426 0.000612 ***
+## przestrodz_opie   -2.91336    0.07604 -38.312  &lt; 2e-16 ***
+## przestwol         -2.83470    0.07603 -37.285  &lt; 2e-16 ***
+## przestzyc_zdr     -3.11696    0.07609 -40.963  &lt; 2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for Negative Binomial(21.7464) family taken to be 1)
+## 
+##     Null deviance: 4061.80  on 111  degrees of freedom
+## Residual deviance:  112.78  on  90  degrees of freedom
+## AIC: 2002
+## 
+## Number of Fisher Scoring iterations: 1
+## 
+## 
+##               Theta:  21.75 
+##           Std. Err.:  2.90 
+## 
+##  2 x log-likelihood:  -1955.994</code></pre>
+<p>Znając wartość parametru rozproszenia <span class="math inline">\(\theta = 21,7464\)</span> oraz jego błąd standardowy <span class="math inline">\(\sigma_\theta = 2,90\)</span> możemy ocenić jego istotność statystyczną badając następujące hipotezy:
+<span class="math display">\[
+H_0:\;\theta=0\quad\mbox{vs.}\quad H_1:\;\theta\neq 0
+\]</span></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">pnorm</span>(<span class="dv">2</span><span class="op">*</span>(<span class="dv">1</span><span class="op">-</span><span class="kw">abs</span>(<span class="fl">21.7464</span><span class="op">/</span><span class="fl">2.9</span>)))</code></pre>
+<pre><code>## [1] 6.318995e-39</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Badanie istotności statystycznej całego modelu:</span>
+lmtest<span class="op">::</span><span class="kw">lrtest</span>(nb)</code></pre>
+<pre><code>## Likelihood ratio test
+## 
+## Model 1: y ~ woj + przest
+## Model 2: y ~ 1
+##   #Df  LogLik  Df  Chisq Pr(&gt;Chisq)    
+## 1  23  -978.0                          
+## 2   2 -1191.5 -21 426.95  &lt; 2.2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>Model ujemny dwumianowy możemy estymować także z wykorzystaniem funkcji
+<a href="https://rdrr.io/r/stats/glm.html"><code>glm</code></a> oraz opcji <a href="https://rdrr.io/cran/MASS/man/negative.binomial.html"><code>MASS::negative.binomial</code></a>:</p>
+<pre class="sourceCode r"><code class="sourceCode r">th &lt;-<span class="st"> </span>MASS<span class="op">::</span><span class="kw">theta.ml</span>(nb,<span class="kw">fitted</span>(nb))
+th</code></pre>
+<pre><code>## [1] 21.74641
+## attr(,&quot;SE&quot;)
+## [1] 2.899898</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Estymacja modelu ujemnego dwumianowego:</span>
+n &lt;-<span class="st"> </span><span class="kw">glm</span>(y<span class="op">~</span>woj<span class="op">+</span>przest, <span class="dt">family=</span>MASS<span class="op">::</span><span class="kw">negative.binomial</span>(th))
+<span class="co"># Porównanie modelu Poissona oraz ujemnego dwumianowego:</span>
+lmtest<span class="op">::</span><span class="kw">lrtest</span>(pois,nb)</code></pre>
+<pre><code>## Likelihood ratio test
+## 
+## Model 1: y ~ woj + przest
+## Model 2: y ~ woj + przest
+##   #Df LogLik Df Chisq Pr(&gt;Chisq)    
+## 1  22 -23690                        
+## 2  23   -978  1 45424  &lt; 2.2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>Przeprowadzony test ilorazu wiarygodności - <a href="https://rdrr.io/cran/lmtest/man/lrtest.html"><code>lmtest::lrtest</code></a> wykazał, że model
+ujemny dwumianowy - <code>nb</code> ma znacznie wyższy logarytm funkcji wiarygodności. Zatem na podstawie modelu ujemnego dwumianowego należy stwierdzić, że we wszystkich województwach odnotowano mniejszą liczbę przestępstw (ujemne parametry)
+niż w województwie śląskim. Taka sama sytuacja występuje gdy porównamy wszystkie rodzaje czynów zabronionych z przestępstwami o charakterze kryminalnym. Aby
+dowiedzieć się jak duże są to różnice należy obliczyć ilorazy wiarygodności.</p>
+<pre class="sourceCode r"><code class="sourceCode r">ORpois1 &lt;-<span class="st"> </span><span class="kw">round</span>((<span class="kw">exp</span>(<span class="kw">coef</span>(pois))<span class="op">-</span><span class="dv">1</span>)<span class="op">*</span><span class="dv">100</span>,<span class="dv">4</span>)
+ORnb &lt;-<span class="st"> </span><span class="kw">round</span>((<span class="kw">exp</span>(<span class="kw">coef</span>(nb))<span class="op">-</span><span class="dv">1</span>)<span class="op">*</span><span class="dv">100</span>,<span class="dv">4</span>)
+<span class="kw">cbind</span>(ORpois1,ORnb)</code></pre>
+<pre><code>##                         ORpois1          ORnb
+## (Intercept)       11285915.3797 10668768.3273
+## wojdolnośląskie        -33.4085      -36.4350
+## wojkuj_pom             -64.2893      -65.1558
+## wojlubelskie           -71.7785      -66.8550
+## wojlubuskie            -79.1391      -76.9962
+## wojłódzkie             -58.3169      -56.8840
+## wojmałopolskie         -46.5910      -46.7701
+## wojmazowieckie         -11.4207      -18.4792
+## wojopolskie            -83.2631      -81.4084
+## wojpodkarpackie        -77.9498      -75.2606
+## wojpodlaskie           -85.1978      -83.6413
+## wojpomorskie           -46.1232      -43.6730
+## wojświętokrzyskie      -79.8259      -77.5678
+## wojwar_mazur           -76.7037      -74.0376
+## wojwielkopolskie       -43.7895      -43.4210
+## wojzach_pomorskie      -65.6162      -67.9290
+## przestdrog             -77.9795      -74.9108
+## przestgosp             -80.1905      -79.3375
+## przestmien             -22.5690      -22.8826
+## przestrodz_opie        -94.7923      -94.5707
+## przestwol              -94.3198      -94.1264
+## przestzyc_zdr          -95.8475      -95.5708</code></pre>
+<p>Interpretacja otrzymanych ilorazów wiarygodności na podstawie modelu ujemnego
+dwumianowego jest następująca:</p>
+<ul>
+<li><p>Aż o <span class="math inline">\(83,6\%\)</span> mniej popełniono przestępstw w województwie podlaskim niż w
+województwie śląskim.</p></li>
+<li><p>W województwie mazowieckim popełniono tylko o <span class="math inline">\(18,5\%\)</span> mniej przestępstw
+niż w województwie ślaskim.</p></li>
+<li><p>Najmniejsze różnice w liczebności przestępstw w porównaniu z województwem
+śląskim zanotowano w następujących województwach: dolnośląskim (<span class="math inline">\(-36,4\%\)</span>),
+małopolskim (<span class="math inline">\(-46,8\%\)</span>), mazowieckim (<span class="math inline">\(-18,5\%\)</span>), pomorskim (<span class="math inline">\(-43,7\%\)</span>) i wielkopolskim (<span class="math inline">\(-43,4\%\)</span>).</p></li>
+<li><p>Z kolei największe różnice zanotowano w województwach: kujawsko-pomorskim
+(<span class="math inline">\(-65,2\%\)</span>), lubelskim (<span class="math inline">\(-66,9\%\)</span>), lubuskim (<span class="math inline">\(-77\%\)</span>), łódzkim (<span class="math inline">\(-56,9\%\)</span>), opolskim (<span class="math inline">\(-81,4\%\)</span>), podkarpackim (<span class="math inline">\(-75,3\%\)</span>), podlaskim (<span class="math inline">\(-83,6\%\)</span>), świętokrzyskim (<span class="math inline">\(-77,6\%\)</span>), warmińsko-mazurskim (<span class="math inline">\(-74\%\)</span>) oraz zachodnio-pomorskim (<span class="math inline">\(-68\%\)</span>).</p></li>
+<li><p>Przestępstw przeciwko mieniu popełniono tylko o <span class="math inline">\(22,9\%\)</span> mniej niż kryminalnych.</p></li>
+<li><p>Przestępstw o charakterze gospodarczym popełniono o <span class="math inline">\(79,3\%\)</span> mniej niż kryminalnych, natomiast w przypadku pozostałych było ich mniej o ponad <span class="math inline">\(90\%\)</span>.</p></li>
+</ul>
+
+</div>
+<div id="part_12.5" class="section level2">
+<h2><span class="header-section-number">12.5</span> Modele dla częstości</h2>
+<p>Do modelowania częstości wystąpień określonego zjawiska (liczba przestępstw na jednego mieszkańca) wykorzystamy modele Poisona oraz modele logitowe. W pierwszej
+kolejności zostanie przedstawiony model Poissona w którym zostanie wykorzystana
+funkcja <a href="https://rdrr.io/r/stats/offset.html"><code>offset</code></a>.</p>
+<pre class="sourceCode r"><code class="sourceCode r">L &lt;-<span class="st"> </span><span class="kw">rep</span>(lud,<span class="dv">7</span>) <span class="co"># liczebności</span>
+W &lt;-<span class="st"> </span>y<span class="op">/</span>L      <span class="co"># częstości</span>
+pois1 &lt;-<span class="st"> </span><span class="kw">glm</span>(y<span class="op">~</span>woj<span class="op">+</span>przest, <span class="dt">family=</span>poisson,<span class="dt">offset=</span><span class="kw">log</span>(L)) <span class="co"># model pois1</span>
+<span class="kw">summary</span>(pois1)</code></pre>
+<pre><code>## 
+## Call:
+## glm(formula = y ~ woj + przest, family = poisson, offset = log(L))
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -68.004   -8.790   -0.525    9.825  111.295  
+## 
+## Coefficients:
+##                    Estimate Std. Error   z value Pr(&gt;|z|)    
+## (Intercept)       -3.716476   0.002129 -1745.704   &lt;2e-16 ***
+## wojdolnośląskie    0.071659   0.003076    23.298   &lt;2e-16 ***
+## wojkuj_pom        -0.221953   0.003791   -58.548   &lt;2e-16 ***
+## wojlubelskie      -0.499027   0.004145  -120.390   &lt;2e-16 ***
+## wojlubuskie       -0.042422   0.004681    -9.063   &lt;2e-16 ***
+## wojłódzkie        -0.273088   0.003585   -76.170   &lt;2e-16 ***
+## wojmałopolskie    -0.285719   0.003296   -86.692   &lt;2e-16 ***
+## wojmazowieckie    -0.239313   0.002837   -84.342   &lt;2e-16 ***
+## wojopolskie       -0.283304   0.005136   -55.163   &lt;2e-16 ***
+## wojpodkarpackie   -0.719740   0.004575  -157.315   &lt;2e-16 ***
+## wojpodlaskie      -0.549248   0.005416  -101.418   &lt;2e-16 ***
+## wojpomorskie       0.114354   0.003286    34.796   &lt;2e-16 ***
+## wojświętokrzyskie -0.305011   0.004746   -64.264   &lt;2e-16 ***
+## wojwar_mazur      -0.277664   0.004474   -62.065   &lt;2e-16 ***
+## wojwielkopolskie  -0.267405   0.003242   -82.486   &lt;2e-16 ***
+## wojzach_pomorskie -0.059334   0.003844   -15.434   &lt;2e-16 ***
+## przestdrog        -1.513196   0.002694  -561.726   &lt;2e-16 ***
+## przestgosp        -1.619007   0.002814  -575.271   &lt;2e-16 ***
+## przestmien        -0.255783   0.001732  -147.654   &lt;2e-16 ***
+## przestrodz_opie   -2.955028   0.005144  -574.505   &lt;2e-16 ***
+## przestwol         -2.868180   0.004936  -581.064   &lt;2e-16 ***
+## przestzyc_zdr     -3.181471   0.005731  -555.108   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for poisson family taken to be 1)
+## 
+##     Null deviance: 2048950  on 111  degrees of freedom
+## Residual deviance:   46183  on  90  degrees of freedom
+## AIC: 47424
+## 
+## Number of Fisher Scoring iterations: 4</code></pre>
+<p>W celu poprawnego oszacowania istotności poszczególnych zmiennych (występuje
+problem nadmiernego rozproszenia) skorzystamy z takiego modelu który uwzględni
+to zjawisko.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># model rpois1 z odpornymi błędami standardowymi:</span>
+rpois1 &lt;-<span class="st"> </span><span class="kw">glm</span>(y<span class="op">~</span>woj<span class="op">+</span>przest, <span class="dt">family=</span>quasipoisson,<span class="dt">offset=</span><span class="kw">log</span>(L))
+lmtest<span class="op">::</span><span class="kw">coeftest</span>(rpois1)</code></pre>
+<pre><code>## 
+## z test of coefficients:
+## 
+##                    Estimate Std. Error  z value  Pr(&gt;|z|)    
+## (Intercept)       -3.716476   0.050476 -73.6289 &lt; 2.2e-16 ***
+## wojdolnośląskie    0.071659   0.072926   0.9826 0.3257866    
+## wojkuj_pom        -0.221953   0.089882  -2.4694 0.0135343 *  
+## wojlubelskie      -0.499027   0.098278  -5.0777 3.820e-07 ***
+## wojlubuskie       -0.042422   0.110979  -0.3823 0.7022759    
+## wojłódzkie        -0.273088   0.085005  -3.2126 0.0013153 ** 
+## wojmałopolskie    -0.285719   0.078142  -3.6564 0.0002558 ***
+## wojmazowieckie    -0.239313   0.067274  -3.5573 0.0003747 ***
+## wojopolskie       -0.283304   0.121767  -2.3266 0.0199862 *  
+## wojpodkarpackie   -0.719740   0.108474  -6.6351 3.243e-11 ***
+## wojpodlaskie      -0.549248   0.128403  -4.2775 1.890e-05 ***
+## wojpomorskie       0.114354   0.077920   1.4676 0.1422180    
+## wojświętokrzyskie -0.305011   0.112531  -2.7105 0.0067190 ** 
+## wojwar_mazur      -0.277664   0.106071  -2.6177 0.0088519 ** 
+## wojwielkopolskie  -0.267405   0.076862  -3.4790 0.0005032 ***
+## wojzach_pomorskie -0.059334   0.091151  -0.6509 0.5150809    
+## przestdrog        -1.513196   0.063869 -23.6920 &lt; 2.2e-16 ***
+## przestgosp        -1.619007   0.066726 -24.2634 &lt; 2.2e-16 ***
+## przestmien        -0.255783   0.041072  -6.2276 4.735e-10 ***
+## przestrodz_opie   -2.955028   0.121952 -24.2310 &lt; 2.2e-16 ***
+## przestwol         -2.868180   0.117032 -24.5077 &lt; 2.2e-16 ***
+## przestzyc_zdr     -3.181471   0.135885 -23.4129 &lt; 2.2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>Możemy także zastosować odporne błędy standardowe <a href="https://rdrr.io/cran/sandwich/man/sandwich.html"><code>sandwich</code></a> w modelu <code>pois1</code>
+które są dostępne w bibliotece <a href="https://rdrr.io/cran/sandwich/man/"><code>sandwich</code></a>.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># model pois1 z odpornymi błędami standardowymi sandwich:</span>
+lmtest<span class="op">::</span><span class="kw">coeftest</span>(pois1,<span class="dt">vcov=</span>sandwich<span class="op">::</span>sandwich)</code></pre>
+<pre><code>## 
+## z test of coefficients:
+## 
+##                    Estimate Std. Error  z value  Pr(&gt;|z|)    
+## (Intercept)       -3.716476   0.047110 -78.8886 &lt; 2.2e-16 ***
+## wojdolnośląskie    0.071659   0.057827   1.2392  0.215273    
+## wojkuj_pom        -0.221953   0.070951  -3.1282  0.001759 ** 
+## wojlubelskie      -0.499027   0.078081  -6.3911 1.647e-10 ***
+## wojlubuskie       -0.042422   0.078925  -0.5375  0.590926    
+## wojłódzkie        -0.273088   0.067556  -4.0424 5.291e-05 ***
+## wojmałopolskie    -0.285719   0.056460  -5.0606 4.180e-07 ***
+## wojmazowieckie    -0.239313   0.061044  -3.9203 8.843e-05 ***
+## wojopolskie       -0.283304   0.067212  -4.2151 2.497e-05 ***
+## wojpodkarpackie   -0.719740   0.074557  -9.6535 &lt; 2.2e-16 ***
+## wojpodlaskie      -0.549248   0.080313  -6.8389 7.983e-12 ***
+## wojpomorskie       0.114354   0.126435   0.9044  0.365758    
+## wojświętokrzyskie -0.305011   0.129681  -2.3520  0.018673 *  
+## wojwar_mazur      -0.277664   0.054721  -5.0742 3.892e-07 ***
+## wojwielkopolskie  -0.267405   0.060906  -4.3905 1.131e-05 ***
+## wojzach_pomorskie -0.059334   0.061038  -0.9721  0.331007    
+## przestdrog        -1.513196   0.079554 -19.0210 &lt; 2.2e-16 ***
+## przestgosp        -1.619007   0.116016 -13.9550 &lt; 2.2e-16 ***
+## przestmien        -0.255783   0.023665 -10.8087 &lt; 2.2e-16 ***
+## przestrodz_opie   -2.955028   0.070197 -42.0960 &lt; 2.2e-16 ***
+## przestwol         -2.868180   0.044015 -65.1635 &lt; 2.2e-16 ***
+## przestzyc_zdr     -3.181471   0.040157 -79.2255 &lt; 2.2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>Jak można zauważyć model pois1 nie oszacował poprawnie wszystkich błędów standardowych poszczególnych zmiennych. Natomiast model <code>rpois1</code> (który uwzględnił
+problem nadmiernego rozproszenia) wykazał kilka zmiennych które nie są statystycznie istotne.</p>
+<p>Kolejną grupą modeli które przedstawimy to modele logitowe.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># model logit1:</span>
+logit1 &lt;-<span class="st"> </span><span class="kw">glm</span>(<span class="kw">cbind</span>(y,L<span class="op">-</span>y)<span class="op">~</span>woj<span class="op">+</span>przest, <span class="dt">family=</span>binomial)
+<span class="kw">summary</span>(logit1)</code></pre>
+<pre><code>## 
+## Call:
+## glm(formula = cbind(y, L - y) ~ woj + przest, family = binomial)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -68.423   -8.783   -0.411    9.951  111.262  
+## 
+## Coefficients:
+##                    Estimate Std. Error   z value Pr(&gt;|z|)    
+## (Intercept)       -3.692865   0.002150 -1717.792   &lt;2e-16 ***
+## wojdolnośląskie    0.072989   0.003104    23.511   &lt;2e-16 ***
+## wojkuj_pom        -0.225510   0.003820   -59.038   &lt;2e-16 ***
+## wojlubelskie      -0.506041   0.004171  -121.334   &lt;2e-16 ***
+## wojlubuskie       -0.043165   0.004721    -9.143   &lt;2e-16 ***
+## wojłódzkie        -0.277357   0.003612   -76.792   &lt;2e-16 ***
+## wojmałopolskie    -0.290159   0.003320   -87.387   &lt;2e-16 ***
+## wojmazowieckie    -0.243116   0.002860   -85.011   &lt;2e-16 ***
+## wojopolskie       -0.287712   0.005172   -55.631   &lt;2e-16 ***
+## wojpodkarpackie   -0.728895   0.004599  -158.499   &lt;2e-16 ***
+## wojpodlaskie      -0.556792   0.005446  -102.237   &lt;2e-16 ***
+## wojpomorskie       0.116523   0.003318    35.118   &lt;2e-16 ***
+## wojświętokrzyskie -0.309707   0.004779   -64.803   &lt;2e-16 ***
+## wojwar_mazur      -0.281995   0.004506   -62.586   &lt;2e-16 ***
+## wojwielkopolskie  -0.271597   0.003266   -83.150   &lt;2e-16 ***
+## wojzach_pomorskie -0.060365   0.003877   -15.569   &lt;2e-16 ***
+## przestdrog        -1.529639   0.002704  -565.681   &lt;2e-16 ***
+## przestgosp        -1.635913   0.002824  -579.262   &lt;2e-16 ***
+## przestmien        -0.260568   0.001748  -149.044   &lt;2e-16 ***
+## przestrodz_opie   -2.974984   0.005149  -577.783   &lt;2e-16 ***
+## przestwol         -2.888038   0.004942  -584.426   &lt;2e-16 ***
+## przestzyc_zdr     -3.201647   0.005736  -558.160   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 2064429  on 111  degrees of freedom
+## Residual deviance:   46562  on  90  degrees of freedom
+## AIC: 47802
+## 
+## Number of Fisher Scoring iterations: 4</code></pre>
+<p>Podobnie jak w przypadku modelu pois1 model logit1 wskazuje, że wszystkie
+zmienne są istotne. Jednak gdy wykorzystamy odporne błędy standardowe (<code>logit2</code>)
+jak w przypadku modelu <code>rpois1</code> niektóre z nich okażą się nieistotne statystycznie.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># model logit2:</span>
+logit2 &lt;-<span class="st"> </span><span class="kw">glm</span>(W<span class="op">~</span>woj<span class="op">+</span>przest, <span class="dt">family=</span>quasibinomial)
+<span class="kw">summary</span>(logit2)</code></pre>
+<pre><code>## 
+## Call:
+## glm(formula = W ~ woj + przest, family = quasibinomial)
+## 
+## Deviance Residuals: 
+##       Min         1Q     Median         3Q        Max  
+## -0.038182  -0.006241  -0.000791   0.006851   0.069641  
+## 
+## Coefficients:
+##                   Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)       -3.71320    0.07066 -52.551  &lt; 2e-16 ***
+## wojdolnośląskie    0.07295    0.09326   0.782  0.43615    
+## wojkuj_pom        -0.22541    0.10052  -2.243  0.02738 *  
+## wojlubelskie      -0.50584    0.10894  -4.643 1.16e-05 ***
+## wojlubuskie       -0.04314    0.09589  -0.450  0.65386    
+## wojłódzkie        -0.27724    0.10195  -2.719  0.00785 ** 
+## wojmałopolskie    -0.29003    0.10231  -2.835  0.00566 ** 
+## wojmazowieckie    -0.24301    0.10100  -2.406  0.01817 *  
+## wojopolskie       -0.28759    0.10224  -2.813  0.00603 ** 
+## wojpodkarpackie   -0.72864    0.11691  -6.233 1.45e-08 ***
+## wojpodlaskie      -0.55658    0.11065  -5.030 2.49e-06 ***
+## wojpomorskie       0.11646    0.09234   1.261  0.21047    
+## wojświętokrzyskie -0.30957    0.10287  -3.009  0.00340 ** 
+## wojwar_mazur      -0.28187    0.10208  -2.761  0.00698 ** 
+## wojwielkopolskie  -0.27148    0.10179  -2.667  0.00907 ** 
+## wojzach_pomorskie -0.06034    0.09630  -0.627  0.53257    
+## przestdrog        -1.42112    0.06483 -21.922  &lt; 2e-16 ***
+## przestgosp        -1.55866    0.06851 -22.750  &lt; 2e-16 ***
+## przestmien        -0.25994    0.04375  -5.941 5.26e-08 ***
+## przestrodz_opie   -2.95441    0.12770 -23.135  &lt; 2e-16 ***
+## przestwol         -2.84778    0.12144 -23.451  &lt; 2e-16 ***
+## przestzyc_zdr     -3.14558    0.13986 -22.491  &lt; 2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for quasibinomial family taken to be 0.0002521464)
+## 
+##     Null deviance: 0.819052  on 111  degrees of freedom
+## Residual deviance: 0.021215  on  90  degrees of freedom
+## AIC: NA
+## 
+## Number of Fisher Scoring iterations: 10</code></pre>
+<p>Tak samo jak w przypadku modelu pois1 wykorzystamy odporne błędy standardowe
+sandwich w modelu <code>logit1</code>.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># model logit1 z odpornymi błędami standardowymi sandwich:</span>
+lmtest<span class="op">::</span><span class="kw">coeftest</span>(logit1, <span class="dt">vcov=</span>sandwich<span class="op">::</span>sandwich)</code></pre>
+<pre><code>## 
+## z test of coefficients:
+## 
+##                    Estimate Std. Error  z value  Pr(&gt;|z|)    
+## (Intercept)       -3.692865   0.048364 -76.3552 &lt; 2.2e-16 ***
+## wojdolnośląskie    0.072989   0.059493   1.2268  0.219882    
+## wojkuj_pom        -0.225510   0.072412  -3.1143  0.001844 ** 
+## wojlubelskie      -0.506041   0.079608  -6.3567 2.061e-10 ***
+## wojlubuskie       -0.043165   0.080315  -0.5374  0.590963    
+## wojłódzkie        -0.277357   0.068777  -4.0327 5.515e-05 ***
+## wojmałopolskie    -0.290159   0.057562  -5.0408 4.636e-07 ***
+## wojmazowieckie    -0.243116   0.062228  -3.9068 9.351e-05 ***
+## wojopolskie       -0.287712   0.068587  -4.1949 2.730e-05 ***
+## wojpodkarpackie   -0.728895   0.076269  -9.5569 &lt; 2.2e-16 ***
+## wojpodlaskie      -0.556792   0.081916  -6.7971 1.068e-11 ***
+## wojpomorskie       0.116523   0.128614   0.9060  0.364943    
+## wojświętokrzyskie -0.309707   0.131930  -2.3475  0.018900 *  
+## wojwar_mazur      -0.281995   0.056052  -5.0310 4.880e-07 ***
+## wojwielkopolskie  -0.271597   0.062104  -4.3733 1.224e-05 ***
+## wojzach_pomorskie -0.060365   0.062394  -0.9675  0.333310    
+## przestdrog        -1.529639   0.080318 -19.0448 &lt; 2.2e-16 ***
+## przestgosp        -1.635913   0.116301 -14.0663 &lt; 2.2e-16 ***
+## przestmien        -0.260568   0.024119 -10.8036 &lt; 2.2e-16 ***
+## przestrodz_opie   -2.974984   0.070596 -42.1412 &lt; 2.2e-16 ***
+## przestwol         -2.888038   0.044042 -65.5740 &lt; 2.2e-16 ***
+## przestzyc_zdr     -3.201647   0.040398 -79.2522 &lt; 2.2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>Wyznaczymy teraz ilorazy wiarygodności dla modeli <code>pois1</code>, <code>logit1</code> i <code>logit2</code>.</p>
+<pre class="sourceCode r"><code class="sourceCode r">ORpois1 &lt;-<span class="st"> </span><span class="kw">round</span>((<span class="kw">exp</span>(<span class="kw">coef</span>(pois1))<span class="op">-</span><span class="dv">1</span>)<span class="op">*</span><span class="dv">100</span>,<span class="dv">4</span>)
+ORlogit1 &lt;-<span class="st"> </span><span class="kw">round</span>((<span class="kw">exp</span>(<span class="kw">coef</span>(logit1))<span class="op">-</span><span class="dv">1</span>)<span class="op">*</span><span class="dv">100</span>,<span class="dv">4</span>)
+ORlogit2 &lt;-<span class="st"> </span><span class="kw">round</span>((<span class="kw">exp</span>(<span class="kw">coef</span>(logit2))<span class="op">-</span><span class="dv">1</span>)<span class="op">*</span><span class="dv">100</span>,<span class="dv">4</span>)
+<span class="kw">cbind</span>(ORpois1,ORlogit1,ORlogit2)</code></pre>
+<pre><code>##                    ORpois1 ORlogit1 ORlogit2
+## (Intercept)       -97.5680 -97.5099 -97.5601
+## wojdolnośląskie     7.4289   7.5719   7.5678
+## wojkuj_pom        -19.9047 -20.1891 -20.1811
+## wojlubelskie      -39.2879 -39.7122 -39.7002
+## wojlubuskie        -4.1535  -4.2246  -4.2226
+## wojłódzkie        -23.8974 -24.2216 -24.2125
+## wojmałopolskie    -24.8526 -25.1855 -25.1761
+## wojmazowieckie    -21.2832 -21.5820 -21.5735
+## wojopolskie       -24.6710 -25.0023 -24.9929
+## wojpodkarpackie   -51.3121 -51.7558 -51.7433
+## wojpodlaskie      -42.2616 -42.6956 -42.6833
+## wojpomorskie       12.1149  12.3583  12.3514
+## wojświętokrzyskie -26.2885 -26.6338 -26.6241
+## wojwar_mazur      -24.2449 -24.5723 -24.5630
+## wojwielkopolskie  -23.4637 -23.7839 -23.7748
+## wojzach_pomorskie  -5.7608  -5.8579  -5.8551
+## przestdrog        -77.9795 -78.3386 -75.8557
+## przestgosp        -80.1905 -80.5226 -78.9582
+## przestmien        -22.5690 -22.9386 -22.8899
+## przestrodz_opie   -94.7923 -94.8952 -94.7891
+## przestwol         -94.3198 -94.4315 -94.2027
+## przestzyc_zdr     -95.8475 -95.9305 -95.6958</code></pre>
+<p>Wnioski (na podstawie modelu <code>logit2</code>) dotyczące ilości przestępstw przypadających
+na jednego mieszkańca są następujące:</p>
+<ul>
+<li><p>Liczba przestępstw przypadająca na jednego mieszkańca województwa pomorskiego była większa o <span class="math inline">\(12,4\%\)</span> niż w województwie śląskim. Natomiast najmniejsza (<span class="math inline">\(-51,7\%\)</span>) w województwie podkarpackim.</p></li>
+<li><p>Liczba przestępstw przeciwko mieniu przypadająca na jednego mieszkańca była o <span class="math inline">\(22,9\%\)</span> mniejsza niż liczba przestępstw kryminalnych. Z kolei liczba przestępstw przeciwko życiu i zdrowiu była aż o <span class="math inline">\(95,7\%\)</span> mniejsza niż liczba przestępstw kryminalnych w przeliczeniu na jednego mieszkańca.</p></li>
+</ul>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="part-11.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="part-13.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": ["NaPrzelajR.pdf", "NaPrzelajR.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

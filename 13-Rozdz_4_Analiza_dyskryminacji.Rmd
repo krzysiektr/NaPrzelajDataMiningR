@@ -1,0 +1,18 @@
+# Analiza dyskryminacji {#part_4}
+
+W wielu dziedzinach potrzebne są metody, potrafiące automatycznie przypisać nowy obiekt do jednej z wyróżnionych klas. W medycynie interesować nas może czy
+pacjent jest chory, a jeżeli tak to na co (zbiorem klas do którego chcemy przypisać
+mogą być możliwe choroby, lub tylko informacja czy jest chory czy nie). W analizie
+kredytowej dla firm chcemy przewidzieć czy firma spłaci kredyt czy nie. W analizie
+obrazów z fotoradarów policyjnych będzie nas interesowało określenie numeru re-
+jestracji samochodu który przekroczył prędkość a również typu pojazdu (w końcu
+ograniczenia dla ciężarówek są inne niż dla samochodów).
+
+W rozdziale ?? używaliśmy regresji logistycznej do znalezienia parametrów, które można by wykorzystać w określeniu ryzyka pojawienia się wznowienia choroby
+u operowanych pacjentek. Okazuje się wiec, że regresja logistyczna jest klasyfikatorem, pozwalającym na przypisanie nowego obiektu do jednej z dwóch klas. Poniżej
+przedstawimy szereg funkcji implementujących inne popularne metody analizy dyskryminacji.
+
+Celem procesu dyskryminacji (nazywanego też klasyfikacją, uczeniem z nauczycielem lub uczeniem z nadzorem) jest zbudowanie reguły, potrafiącej przypisywać
+możliwie dokładnie nowe obiekty do znanych klas. W przypadku większości metod
+możliwe jest klasyfikowanie do więcej niż dwie klasy.
+

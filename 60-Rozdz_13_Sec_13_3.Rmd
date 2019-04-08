@@ -1,0 +1,111 @@
+## Estymacja modelu nieliniowego {#part_13.3}
+
+### Model kwadratowy {#part_13.3.1}
+
+Pierwszą funkcją nieliniową jaką spróbujemy dopasować do naszych danych będzie
+model kwadratowy:
+\begin{equation}
+y=\alpha_0+\alpha_1x^2
+(\#eq:wz1327)
+\end{equation}
+Estymację parametrów funkcji o wzorze \@ref(eq:wz1327) dokonamy za pomocą poniższej komendy:
+```{r}
+k <- lm(wyd~I(doch^2),data=t)
+summary(k)
+```
+```{r wy135, fig.cap='Regresja liniowa i kwadratowa.', fig.show='hold',fig.pos= 'h', fig.align='center', fig.width=8, fig.height=5,out.width='70%'}
+par(mar=c(4,4,1,1)+0.1, mgp=c(3,0.6,0),las=1)
+plot(t,cex=1.2,pch=20)
+curve(coef(k)[1]+coef(k)[2]*x^2,add=TRUE,col="red",lwd=2)
+abline(mnk0,col="orange",lty=1,lwd=2)
+legend("topleft",c("k","mnk0"),col=c("red","orange"),lty=1,lwd=2)
+```
+```{r}
+AIC(mnk0,k)
+```
+```{r}
+sapply(c(900,1000,1100,1200), function(x) 0.000685408*x)
+```
+Otrzymane wartości można zinterpretować w następujący sposób. Wydatki w przeliczeniu na jedną osobę rosły średnio o 0, $62$zł na jedną złotówkę przyrostu dochodów,
+przy poziomie dochodów równych 900zł. Natomiast prz poziomie dochodów równych
+$1200$zł wydatki rosły średnio o $0,82$zł na złotówkę przyrostu dochodów.
+
+### Model wykładniczy {#part_13.3.2}
+
+Analityczna postać funkcji wykładniczej jest podana poniżej:
+\begin{equation}
+y=\alpha_0\alpha_1x^x
+(\#eq:wz1328)
+\end{equation}
+gdzie: $\alpha_0>0$ oraz $\alpha_1>0$ i $\alpha_1\neq 1$
+
+Aby oszacować parametry modelu nieliniowego z wykorzystaniem funkcji [`nls`](https://rdrr.io/r/stats/nls.html)
+(nieliniowa metoda najmniejszych kwadratów) należy znaleźć parametry startowe.
+Można je wyznaczyć sprowadzając funkcję nieliniową do postaci liniowej.
+\begin{equation}
+\ln y = \beta_0 \beta_1 x
+(\#eq:wz1329)
+\end{equation}
+```{r}
+mw <- lm(log(wyd)~doch)
+summary(mw)
+```
+W kolejnym kroku obliczymy parametry funkcji wykładniczej według wzorów: $\alpha_0=\exp(\beta_0)$ oraz $\alpha_1=\exp(\beta_1)$.
+```{r}
+b0 <- exp(coef(mw)[1])
+b0
+b1 <- exp(coef(mw)[2])
+b1
+```
+Otrzymane wartości można wykorzystać jako parametry startowe w nieliniowej metodzie najmniejszych kwadratów.
+```{r}
+w <- nls(wyd~a0*a1^doch,start=list(a0=b0,a1=b1),data=t)
+summary(w)
+```
+```{r}
+AIC(k,w)
+```
+```{r}
+(coef(w)[2]-1)*100
+```
+Interpretacja otrzymanych parametrów jest następująca. Jeżeli dochód wzrośnie o
+$1$zł to wydatki również wzrosną o $0,08\%$.
+```{r wy136, fig.cap='Regresja kwadratowa i wykładnicza.', fig.show='hold',fig.pos= 'h', fig.align='center', fig.width=8, fig.height=5,out.width='70%'}
+par(mar=c(4,4,1,1)+0.1, mgp=c(3,0.6,0),las=1)
+plot(t,cex=1.2,pch=20)
+curve(coef(k)[1]+coef(k)[2]*x^2,add=TRUE,col="red",lwd=2)
+curve(coef(w)[1]*coef(w)[2]^x,add=TRUE,col="orange",lty=2,lwd=2)
+legend("topleft",c("k","w"),col=c("red","orange"),lty=c(1,2),lwd=2)
+```
+
+### Model hiperboliczny {#part_13.3.3}
+
+Kolejną funkcją jaką będziemy badać to model hiperboliczny o postaci:
+\begin{equation}
+y=\frac{\alpha_0x^2}{x+\alpha_1}
+(\#eq:wz1330)
+\end{equation}
+Parametry startowe wyznaczymy za pomocą następującego wzoru:
+\begin{equation}
+\frac{1}{y}=\beta_1\frac{1}{x}+\beta_2\frac{1}{x^2}
+(\#eq:wz1331)
+\end{equation}
+gdzie: $\alpha_0=\frac{1}{\beta_1}$ oraz $\alpha_1=\frac{\beta_2}{\beta_1}$.
+```{r}
+mh <- lm(I(1/wyd)~I(1/doch)+I(1/doch^2)+0)
+summary(mh)
+```
+```{r}
+b1 <- 1/coef(mh)[1]
+b1
+b2 <- coef(mh)[2]/coef(mh)[1]
+b2
+```
+```{r}
+h <- nls(wyd~(a0*doch^2)/(doch+a1),start=list(a0=b1,a1=b2))
+summary(h)
+```
+Ponieważ parametr $\alpha_1$ jest nieistotny statystycznie, a więc gdy go pominiemy to funkcja hiperboliczna sprowadzi się do modelu liniowego:
+$$
+y=\frac{\alpha_0x^2}{x+\alpha_1}=\frac{\alpha_0x^2}{x+0}=\frac{\alpha_0x^2}{x}=\frac{\alpha_0x}{1}=\alpha_0x
+$$

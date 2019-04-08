@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html  lang="pl">
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Rozdział 4 Analiza dyskryminacji | Na przełaj przez Data Mining z pakietem R</title>
+  <meta name="description" content="Zbiór przykładów użycia wybranych funkcji statystycznych i Data Mining dostępnych w programie R.">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
+
+  <meta property="og:title" content="Rozdział 4 Analiza dyskryminacji | Na przełaj przez Data Mining z pakietem R" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Zbiór przykładów użycia wybranych funkcji statystycznych i Data Mining dostępnych w programie R." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Rozdział 4 Analiza dyskryminacji | Na przełaj przez Data Mining z pakietem R" />
+  
+  <meta name="twitter:description" content="Zbiór przykładów użycia wybranych funkcji statystycznych i Data Mining dostępnych w programie R." />
+  
+
+<meta name="author" content="Przemysław Biecek, Krzysztof Trajkowski">
+
+
+<meta name="date" content="2019-04-08">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="part-3.html">
+<link rel="next" href="part-5.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; position: absolute; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; }
+pre.numberSource a.sourceLine:empty
+  { position: absolute; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Na przełaj przez Data Mining<br/> z pakietem R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Kilka słów zamiast wstępu</a></li>
+<li class="chapter" data-level="2" data-path="part-2.html"><a href="part-2.html"><i class="fa fa-check"></i><b>2</b> Redukcja wymiaru</a><ul>
+<li class="chapter" data-level="2.1" data-path="part-2.html"><a href="part-2.html#part_21"><i class="fa fa-check"></i><b>2.1</b> Analiza składowych głównych (PCA, ang. Principal Components Analysis)</a></li>
+<li class="chapter" data-level="2.2" data-path="part-2.html"><a href="part-2.html#part_22"><i class="fa fa-check"></i><b>2.2</b> Nieliniowe skalowanie wielowymiarowe (Sammon Mapping)</a></li>
+<li class="chapter" data-level="2.3" data-path="part-2.html"><a href="part-2.html#part_23"><i class="fa fa-check"></i><b>2.3</b> Skalowanie wielowymiarowe Kruskalla (MDS, ang. Multidimensional Scaling)</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="part-3.html"><a href="part-3.html"><i class="fa fa-check"></i><b>3</b> Analiza skupień</a><ul>
+<li class="chapter" data-level="3.1" data-path="part-3.html"><a href="part-3.html#part_31"><i class="fa fa-check"></i><b>3.1</b> Metoda k-średnich</a></li>
+<li class="chapter" data-level="3.2" data-path="part-3.html"><a href="part-3.html#part_32"><i class="fa fa-check"></i><b>3.2</b> Metoda grupowania wokół centroidów (PAM, ang. Partitioning Around Medoids)</a></li>
+<li class="chapter" data-level="3.3" data-path="part-3.html"><a href="part-3.html#part_33"><i class="fa fa-check"></i><b>3.3</b> Metoda aglomeracyjnego klastrowania hierarchicznego</a></li>
+<li class="chapter" data-level="3.4" data-path="part-3.html"><a href="part-3.html#part_34"><i class="fa fa-check"></i><b>3.4</b> Ile skupień wybrać?</a></li>
+<li class="chapter" data-level="3.5" data-path="part-3.html"><a href="part-3.html#part_35"><i class="fa fa-check"></i><b>3.5</b> Inne metody analizy skupień</a></li>
+<li class="chapter" data-level="3.6" data-path="part-3.html"><a href="part-3.html#part_36"><i class="fa fa-check"></i><b>3.6</b> Case study</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="part-4.html"><a href="part-4.html"><i class="fa fa-check"></i><b>4</b> Analiza dyskryminacji</a><ul>
+<li class="chapter" data-level="4.1" data-path="part-4.html"><a href="part-4.html#part_41"><i class="fa fa-check"></i><b>4.1</b> Dyskryminacja liniowa i kwadratowa</a></li>
+<li class="chapter" data-level="4.2" data-path="part-4.html"><a href="part-4.html#part_42"><i class="fa fa-check"></i><b>4.2</b> Metoda najbliższych sąsiadów</a></li>
+<li class="chapter" data-level="4.3" data-path="part-4.html"><a href="part-4.html#part_43"><i class="fa fa-check"></i><b>4.3</b> Naiwny klasyfikator Bayesowski</a></li>
+<li class="chapter" data-level="4.4" data-path="part-4.html"><a href="part-4.html#part_44"><i class="fa fa-check"></i><b>4.4</b> Drzewa decyzyjne</a></li>
+<li class="chapter" data-level="4.5" data-path="part-4.html"><a href="part-4.html#part_45"><i class="fa fa-check"></i><b>4.5</b> Lasy losowe</a></li>
+<li class="chapter" data-level="4.6" data-path="part-4.html"><a href="part-4.html#part_46"><i class="fa fa-check"></i><b>4.6</b> Inne klasyfikatory</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="part-5.html"><a href="part-5.html"><i class="fa fa-check"></i><b>5</b> Analiza kanoniczna</a><ul>
+<li class="chapter" data-level="5.1" data-path="part-5.html"><a href="part-5.html#part_51"><i class="fa fa-check"></i><b>5.1</b> Problem</a></li>
+<li class="chapter" data-level="5.2" data-path="part-5.html"><a href="part-5.html#part_52"><i class="fa fa-check"></i><b>5.2</b> Rozwiązanie</a></li>
+<li class="chapter" data-level="5.3" data-path="part-5.html"><a href="part-5.html#part_53"><i class="fa fa-check"></i><b>5.3</b> Założenia</a></li>
+<li class="chapter" data-level="5.4" data-path="part-5.html"><a href="part-5.html#part_54"><i class="fa fa-check"></i><b>5.4</b> Jak to zrobić w R</a></li>
+<li class="chapter" data-level="5.5" data-path="part-5.html"><a href="part-5.html#part_55"><i class="fa fa-check"></i><b>5.5</b> Przykładowe wyniki</a></li>
+<li class="chapter" data-level="5.6" data-path="part-5.html"><a href="part-5.html#part_56"><i class="fa fa-check"></i><b>5.6</b> Studium przypadku</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="part-6.html"><a href="part-6.html"><i class="fa fa-check"></i><b>6</b> Analiza korespondencji (odpowiedniości)</a><ul>
+<li class="chapter" data-level="6.1" data-path="part-6.html"><a href="part-6.html#part_61"><i class="fa fa-check"></i><b>6.1</b> Problem</a></li>
+<li class="chapter" data-level="6.2" data-path="part-6.html"><a href="part-6.html#part_62"><i class="fa fa-check"></i><b>6.2</b> Rozwiązanie</a></li>
+<li class="chapter" data-level="6.3" data-path="part-6.html"><a href="part-6.html#part_63"><i class="fa fa-check"></i><b>6.3</b> Jak to zrobić w R?</a></li>
+<li class="chapter" data-level="6.4" data-path="part-6.html"><a href="part-6.html#part_64"><i class="fa fa-check"></i><b>6.4</b> Studium przypadku</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="part-7.html"><a href="part-7.html"><i class="fa fa-check"></i><b>7</b> Przykład analizy szeregów czasowych</a><ul>
+<li class="chapter" data-level="7.1" data-path="part-7.html"><a href="part-7.html#part_71"><i class="fa fa-check"></i><b>7.1</b> Wprowadzenie</a></li>
+<li class="chapter" data-level="7.2" data-path="part-7.html"><a href="part-7.html#part_72"><i class="fa fa-check"></i><b>7.2</b> Identyfikacja trendu i sezonowości</a><ul>
+<li class="chapter" data-level="7.2.1" data-path="part-7.html"><a href="part-7.html#part_721"><i class="fa fa-check"></i><b>7.2.1</b> Analiza wariancji - ANOVA</a></li>
+<li class="chapter" data-level="7.2.2" data-path="part-7.html"><a href="part-7.html#part_722"><i class="fa fa-check"></i><b>7.2.2</b> Funkcja autokorelacji - ACF</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="part-7.html"><a href="part-7.html#part_73"><i class="fa fa-check"></i><b>7.3</b> Modele autoregresyjne ARIMA</a><ul>
+<li class="chapter" data-level="7.3.1" data-path="part-7.html"><a href="part-7.html#part_731"><i class="fa fa-check"></i><b>7.3.1</b> Estymacja</a></li>
+<li class="chapter" data-level="7.3.2" data-path="part-7.html"><a href="part-7.html#part_732"><i class="fa fa-check"></i><b>7.3.2</b> Weryfikacja</a></li>
+<li class="chapter" data-level="7.3.3" data-path="part-7.html"><a href="part-7.html#part_733"><i class="fa fa-check"></i><b>7.3.3</b> Prognozowanie</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="part-7.html"><a href="part-7.html#part_74"><i class="fa fa-check"></i><b>7.4</b> Modele adaptacyjne</a><ul>
+<li class="chapter" data-level="7.4.1" data-path="part-7.html"><a href="part-7.html#part_741"><i class="fa fa-check"></i><b>7.4.1</b> Estymacja</a></li>
+<li class="chapter" data-level="7.4.2" data-path="part-7.html"><a href="part-7.html#part_742"><i class="fa fa-check"></i><b>7.4.2</b> Prognozowanie</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="part-8.html"><a href="part-8.html"><i class="fa fa-check"></i><b>8</b> Przykład analizy tabel wielodzielczych</a><ul>
+<li class="chapter" data-level="8.1" data-path="part-8.html"><a href="part-8.html#part_81"><i class="fa fa-check"></i><b>8.1</b> Wprowadzenie</a></li>
+<li class="chapter" data-level="8.2" data-path="part-8.html"><a href="part-8.html#part_82"><i class="fa fa-check"></i><b>8.2</b> Test chi-kwadrat</a></li>
+<li class="chapter" data-level="8.3" data-path="part-8.html"><a href="part-8.html#part_83"><i class="fa fa-check"></i><b>8.3</b> Model logitowy</a></li>
+<li class="chapter" data-level="8.4" data-path="part-8.html"><a href="part-8.html#part_84"><i class="fa fa-check"></i><b>8.4</b> Model logitowy</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="part-9.html"><a href="part-9.html"><i class="fa fa-check"></i><b>9</b> Przykład badania rozkładu stopy zwrotu z akcji</a><ul>
+<li class="chapter" data-level="9.1" data-path="part-9.html"><a href="part-9.html#part_9.1"><i class="fa fa-check"></i><b>9.1</b> Wprowadzenie</a></li>
+<li class="chapter" data-level="9.2" data-path="part-9.html"><a href="part-9.html#part_9.2"><i class="fa fa-check"></i><b>9.2</b> Statystyki opisowe</a></li>
+<li class="chapter" data-level="9.3" data-path="part-9.html"><a href="part-9.html#part_9.3"><i class="fa fa-check"></i><b>9.3</b> Rozkład normalny</a></li>
+<li class="chapter" data-level="9.4" data-path="part-9.html"><a href="part-9.html#part_9.4"><i class="fa fa-check"></i><b>9.4</b> Rozkład Cauchy’ego</a></li>
+<li class="chapter" data-level="9.5" data-path="part-9.html"><a href="part-9.html#part_9.5"><i class="fa fa-check"></i><b>9.5</b> Rozkład Laplace’a</a></li>
+<li class="chapter" data-level="9.6" data-path="part-9.html"><a href="part-9.html#part_9.6"><i class="fa fa-check"></i><b>9.6</b> Rozkład Stabilny</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="part-10.html"><a href="part-10.html"><i class="fa fa-check"></i><b>10</b> Przykład budowy dynamicznego modelu liniowego</a><ul>
+<li class="chapter" data-level="10.1" data-path="part-10.html"><a href="part-10.html#part_10.1"><i class="fa fa-check"></i><b>10.1</b> Wprowadzenie</a></li>
+<li class="chapter" data-level="10.2" data-path="part-10.html"><a href="part-10.html#part_10.2"><i class="fa fa-check"></i><b>10.2</b> Badanie wewnętrznej struktury procesu</a><ul>
+<li class="chapter" data-level="10.2.1" data-path="part-10.html"><a href="part-10.html#part_10.2.1"><i class="fa fa-check"></i><b>10.2.1</b> Trend</a></li>
+<li class="chapter" data-level="10.2.2" data-path="part-10.html"><a href="part-10.html#part_10.2.2"><i class="fa fa-check"></i><b>10.2.2</b> Sezonowość</a></li>
+<li class="chapter" data-level="10.2.3" data-path="part-10.html"><a href="part-10.html#part_10.2.3"><i class="fa fa-check"></i><b>10.2.3</b> Stopień autoregresji – funkcja PACF</a></li>
+<li class="chapter" data-level="10.2.4" data-path="part-10.html"><a href="part-10.html#part_10.2.4"><i class="fa fa-check"></i><b>10.2.4</b> Stopień integracji – test ADF/PP</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="part-10.html"><a href="part-10.html#part_10.3"><i class="fa fa-check"></i><b>10.3</b> Weryfikacja modelu</a><ul>
+<li class="chapter" data-level="10.3.1" data-path="part-10.html"><a href="part-10.html#part_10.3.1"><i class="fa fa-check"></i><b>10.3.1</b> Estymacja dynamicznego modelu liniowego</a></li>
+<li class="chapter" data-level="10.3.2" data-path="part-10.html"><a href="part-10.html#part_10.3.2"><i class="fa fa-check"></i><b>10.3.2</b> Ocena jakości modelu</a></li>
+</ul></li>
+<li class="chapter" data-level="10.4" data-path="part-10.html"><a href="part-10.html#part_10.4"><i class="fa fa-check"></i><b>10.4</b> Diagnostyka modelu</a><ul>
+<li class="chapter" data-level="10.4.1" data-path="part-10.html"><a href="part-10.html#part_10.4.1"><i class="fa fa-check"></i><b>10.4.1</b> Normalność procesu resztowego</a></li>
+<li class="chapter" data-level="10.4.2" data-path="part-10.html"><a href="part-10.html#part_10.4.2"><i class="fa fa-check"></i><b>10.4.2</b> Autokorelacja procesu resztowego</a></li>
+<li class="chapter" data-level="10.4.3" data-path="part-10.html"><a href="part-10.html#part_10.4.3"><i class="fa fa-check"></i><b>10.4.3</b> Heteroskedastyczność procesu resztowego</a></li>
+<li class="chapter" data-level="10.4.4" data-path="part-10.html"><a href="part-10.html#part_10.4.4"><i class="fa fa-check"></i><b>10.4.4</b> Stabilność parametrów modelu</a></li>
+<li class="chapter" data-level="10.4.5" data-path="part-10.html"><a href="part-10.html#part_10.4.5"><i class="fa fa-check"></i><b>10.4.5</b> Postać analityczna modelu</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="part-11.html"><a href="part-11.html"><i class="fa fa-check"></i><b>11</b> Przegląd wybranych testów statystycznych</a><ul>
+<li class="chapter" data-level="11.1" data-path="part-11.html"><a href="part-11.html#part_11.1"><i class="fa fa-check"></i><b>11.1</b> Testy normalności</a></li>
+<li class="chapter" data-level="11.2" data-path="part-11.html"><a href="part-11.html#part_11.2"><i class="fa fa-check"></i><b>11.2</b> Testy asymptotyczne</a></li>
+<li class="chapter" data-level="11.3" data-path="part-11.html"><a href="part-11.html#part_11.3"><i class="fa fa-check"></i><b>11.3</b> Testy dla proporcji</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="part-12.html"><a href="part-12.html"><i class="fa fa-check"></i><b>12</b> Przykład analizy liczby przestępstw w Polsce w 2009 r.</a><ul>
+<li class="chapter" data-level="12.1" data-path="part-12.html"><a href="part-12.html#part_12.1"><i class="fa fa-check"></i><b>12.1</b> Wprowadzenie</a></li>
+<li class="chapter" data-level="12.2" data-path="part-12.html"><a href="part-12.html#part_12.2"><i class="fa fa-check"></i><b>12.2</b> Mapy</a></li>
+<li class="chapter" data-level="12.3" data-path="part-12.html"><a href="part-12.html#part_12.3"><i class="fa fa-check"></i><b>12.3</b> Analiza wariancji</a></li>
+<li class="chapter" data-level="12.4" data-path="part-12.html"><a href="part-12.html#part_12.4"><i class="fa fa-check"></i><b>12.4</b> Modele dla liczebności</a></li>
+<li class="chapter" data-level="12.5" data-path="part-12.html"><a href="part-12.html#part_12.5"><i class="fa fa-check"></i><b>12.5</b> Modele dla częstości</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="part-13.html"><a href="part-13.html"><i class="fa fa-check"></i><b>13</b> Modele regresji</a><ul>
+<li class="chapter" data-level="13.1" data-path="part-13.html"><a href="part-13.html#part_13.1"><i class="fa fa-check"></i><b>13.1</b> Wprowadzenie</a></li>
+<li class="chapter" data-level="13.2" data-path="part-13.html"><a href="part-13.html#part_13.2"><i class="fa fa-check"></i><b>13.2</b> Estymacja modelu liniowego</a><ul>
+<li class="chapter" data-level="13.2.1" data-path="part-13.html"><a href="part-13.html#part_13.2.1"><i class="fa fa-check"></i><b>13.2.1</b> Metoda najmniejszych kwadratów</a></li>
+<li class="chapter" data-level="13.2.2" data-path="part-13.html"><a href="part-13.html#part_13.2.2"><i class="fa fa-check"></i><b>13.2.2</b> Poprawność specyfikacji modelu</a></li>
+<li class="chapter" data-level="13.2.3" data-path="part-13.html"><a href="part-13.html#part_13.2.3"><i class="fa fa-check"></i><b>13.2.3</b> Normalność</a></li>
+<li class="chapter" data-level="13.2.4" data-path="part-13.html"><a href="part-13.html#part_13.2.4"><i class="fa fa-check"></i><b>13.2.4</b> Heteroskedastyczność</a></li>
+<li class="chapter" data-level="13.2.5" data-path="part-13.html"><a href="part-13.html#part_13.2.5"><i class="fa fa-check"></i><b>13.2.5</b> Obserwacje odstające</a></li>
+<li class="chapter" data-level="13.2.6" data-path="part-13.html"><a href="part-13.html#part_13.2.6"><i class="fa fa-check"></i><b>13.2.6</b> Metoda najmniejszych wartości bezwzględnych</a></li>
+</ul></li>
+<li class="chapter" data-level="13.3" data-path="part-13.html"><a href="part-13.html#part_13.3"><i class="fa fa-check"></i><b>13.3</b> Estymacja modelu nieliniowego</a><ul>
+<li class="chapter" data-level="13.3.1" data-path="part-13.html"><a href="part-13.html#part_13.3.1"><i class="fa fa-check"></i><b>13.3.1</b> Model kwadratowy</a></li>
+<li class="chapter" data-level="13.3.2" data-path="part-13.html"><a href="part-13.html#part_13.3.2"><i class="fa fa-check"></i><b>13.3.2</b> Model wykładniczy</a></li>
+<li class="chapter" data-level="13.3.3" data-path="part-13.html"><a href="part-13.html#part_13.3.3"><i class="fa fa-check"></i><b>13.3.3</b> Model hiperboliczny</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="part-14.html"><a href="part-14.html"><i class="fa fa-check"></i><b>14</b> Zbiory danych</a><ul>
+<li class="chapter" data-level="14.1" data-path="part-14.html"><a href="part-14.html#part_14.1"><i class="fa fa-check"></i><b>14.1</b> Zbiór danych GUSowskich</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="bibliografia.html"><a href="bibliografia.html"><i class="fa fa-check"></i>Bibliografia</a></li>
+<li class="divider"></li>
+<li><a href="http://www.biecek.pl/NaPrzelajPrzezDataMining/" target="blank">strona projektu</a></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Na przełaj przez Data Mining z pakietem R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="part_4" class="section level1">
+<h1><span class="header-section-number">Rozdział 4</span> Analiza dyskryminacji</h1>
+<p>W wielu dziedzinach potrzebne są metody, potrafiące automatycznie przypisać nowy obiekt do jednej z wyróżnionych klas. W medycynie interesować nas może czy
+pacjent jest chory, a jeżeli tak to na co (zbiorem klas do którego chcemy przypisać
+mogą być możliwe choroby, lub tylko informacja czy jest chory czy nie). W analizie
+kredytowej dla firm chcemy przewidzieć czy firma spłaci kredyt czy nie. W analizie
+obrazów z fotoradarów policyjnych będzie nas interesowało określenie numeru re-
+jestracji samochodu który przekroczył prędkość a również typu pojazdu (w końcu
+ograniczenia dla ciężarówek są inne niż dla samochodów).</p>
+<p>W rozdziale ?? używaliśmy regresji logistycznej do znalezienia parametrów, które można by wykorzystać w określeniu ryzyka pojawienia się wznowienia choroby
+u operowanych pacjentek. Okazuje się wiec, że regresja logistyczna jest klasyfikatorem, pozwalającym na przypisanie nowego obiektu do jednej z dwóch klas. Poniżej
+przedstawimy szereg funkcji implementujących inne popularne metody analizy dyskryminacji.</p>
+<p>Celem procesu dyskryminacji (nazywanego też klasyfikacją, uczeniem z nauczycielem lub uczeniem z nadzorem) jest zbudowanie reguły, potrafiącej przypisywać
+możliwie dokładnie nowe obiekty do znanych klas. W przypadku większości metod
+możliwe jest klasyfikowanie do więcej niż dwie klasy.</p>
+
+<div id="part_41" class="section level2">
+<h2><span class="header-section-number">4.1</span> Dyskryminacja liniowa i kwadratowa</h2>
+<p>Dyskryminacja liniowa, a więc metoda wyznaczania (hiper)płaszczyzn separujących
+obiekty różnych klas, jest dostępna w funkcji <code>lda(MASS)</code>. Rozszerzeniem tej metody jest dyskryminacja kwadratowa, umożliwiająca dyskryminacje powierzchniami,
+w opisie których mogą pojawić się człony stopnia drugiego. Metoda klasyfikacji kwadratowej jest dostępna w funkcji <code>qda(MASS)</code>. Wynikami obu funkcji jest klasyfikator,
+wyznaczony na zbiorze uczącym. Aby użyć go do predykcji klas dla nowych obiektów
+możemy wykorzystać przeciążoną funkcje <code>predict()</code>.</p>
+<p>Poniżej przedstawiamy przykład użycia funkcji <code>lda()</code>. Z funkcji <code>qda()</code> korzysta
+się w identyczny sposób. Na potrzeby przykładu wykorzystaliśmy zbiór danych do-
+tyczących występowania cukrzycy u Indian Pima, ten zbiór danych jest dostępny
+w zbiorze <code>PimaIndiansDiabetes2(mlbench)</code>. Interesować nas będą dwie zmienne
+z tego zbioru danych, opisujące poziom glukozy i insuliny, w zbiorze danych jest
+znacznie więcej zmiennych, ale na potrzeby wizualizacji wybraliśmy tę parę. Na bazie tych dwóch zmiennych będziemy badać skuteczność oceny czy dana osoba jest
+cukrzykiem z wykorzystaniem obu algorytmów klasyfikacji. Zbiór danych podzielimy na dwie części, uczącą i testową. Klasyfikator zostanie „nauczony” na zbiorze
+uczących, a później będziemy weryfikować jego właściwości na zbiorze testowym.
+Pierwszym argumentem funkcji <code>lda()</code> jest zbiór zmiennych na bazie których
+budowany będzie klasyfikator (ramka danych lub macierz). Drugim argumentem
+grouping jest wektor określający klasy kolejnych obiektów. Kolejnym wykorzystanym poniżej argumentem jest subset, określający indeksy obiektów, na bazie których budowany ma być klasyfikator. Jeżeli argument subset nie będzie podany, to
+do konstrukcji klasyfikatora wykorzystane będą wszystkie obiekty. Jako pierwszy
+argument funkcji <code>lda()</code> można również podać również formułę, określającą, które
+zmienne mają być użyte do konstrukcji klasyfikatora a która zmienna opisuje klasy.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;mlbench&quot;</span>)
+<span class="co"># wczytujemy zbiór danych z pakietu mlbench, usuwamy brakujące dane i</span>
+<span class="co"># logarytmujemy poziom insuliny</span>
+<span class="kw">data</span>(PimaIndiansDiabetes2)
+dane =<span class="st"> </span><span class="kw">na.omit</span>(PimaIndiansDiabetes2)[,<span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">5</span>,<span class="dv">9</span>)]
+dane[,<span class="dv">2</span>] =<span class="st"> </span><span class="kw">log</span>(dane[,<span class="dv">2</span>])
+<span class="co"># zbiór danych chcemy podzielić na dwie części, uczącą i testową,</span>
+<span class="co"># funkcją sample wylosujemy indeksy obiektów, które trafia do zbioru uczącego</span>
+zbior.uczacy =<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(dane), <span class="kw">nrow</span>(dane)<span class="op">/</span><span class="dv">2</span>, <span class="ot">FALSE</span>)
+<span class="co"># wywołujemy funkcję lda</span>
+klasyfikatorLDA =<span class="st"> </span><span class="kw">lda</span>(dane[,<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>], <span class="dt">grouping =</span> dane[,<span class="dv">3</span>], <span class="dt">subset=</span>zbior.uczacy)
+<span class="co"># jak wygląda wynik w środku?</span>
+<span class="kw">str</span>(klasyfikatorLDA)</code></pre>
+<pre><code>## List of 8
+##  $ prior  : Named num [1:2] 0.673 0.327
+##   ..- attr(*, &quot;names&quot;)= chr [1:2] &quot;neg&quot; &quot;pos&quot;
+##  $ counts : Named int [1:2] 132 64
+##   ..- attr(*, &quot;names&quot;)= chr [1:2] &quot;neg&quot; &quot;pos&quot;
+##  $ means  : num [1:2, 1:2] 111.52 145.97 4.64 5.14
+##   ..- attr(*, &quot;dimnames&quot;)=List of 2
+##   .. ..$ : chr [1:2] &quot;neg&quot; &quot;pos&quot;
+##   .. ..$ : chr [1:2] &quot;glucose&quot; &quot;insulin&quot;
+##  $ scaling: num [1:2, 1] 0.0346 0.1268
+##   ..- attr(*, &quot;dimnames&quot;)=List of 2
+##   .. ..$ : chr [1:2] &quot;glucose&quot; &quot;insulin&quot;
+##   .. ..$ : chr &quot;LD1&quot;
+##  $ lev    : chr [1:2] &quot;neg&quot; &quot;pos&quot;
+##  $ svd    : num 8.23
+##  $ N      : int 196
+##  $ call   : language lda(x = dane[, 1:2], grouping = dane[, 3], subset = zbior.uczacy)
+##  - attr(*, &quot;class&quot;)= chr &quot;lda&quot;</code></pre>
+<p>Zbudowanie klasyfikatora to dopiero pierwszy krok, kolejnym jest jego ocena.
+Na bazie obserwacji niewykorzystanych do budowania klasyfikatora zbadamy jaka
+była zgodność klasyfikatora z rzeczywistymi danymi (ponieważ zbiór uczący wybraliśmy losowo, to dla różnych powtórzeń otrzymalibyśmy inny błąd klasyfikacji).
+Do klasyfikacji nowych obiektów użyjemy funkcji <code>predict()</code>. Jest to funkcja przeciążona, działająca dla większości klasyfikatorów. Wynikiem tej funkcji mogą być
+prognozowane klasy dla nowych obserwacji, lub też prawdopodobieństwa a posteriori przynależności do danej klasy.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># używając metody predict wykonujemy klasyfikacje obiektów ze zbioru testowego</span>
+oceny =<span class="st"> </span><span class="kw">predict</span>(klasyfikatorLDA, <span class="dt">newdata=</span>dane[<span class="op">-</span>zbior.uczacy,<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>])
+<span class="co"># jak wyglądają wyniki? Pole $class wskazuje na przewidzianą klasę, pole</span>
+<span class="co"># $posterior określa wyznaczone prawdopodobieństwo przynależności do</span>
+<span class="co"># każdej z klas, na podstawie tej wartości obiekt był przypisywany do</span>
+<span class="co"># bardziej prawdopodobnej dla niego klasy</span>
+<span class="kw">str</span>(oceny)</code></pre>
+<pre><code>## List of 3
+##  $ class    : Factor w/ 2 levels &quot;neg&quot;,&quot;pos&quot;: 1 2 1 1 1 1 1 2 1 2 ...
+##  $ posterior: num [1:196, 1:2] 0.952 0.282 0.751 0.871 0.797 ...
+##   ..- attr(*, &quot;dimnames&quot;)=List of 2
+##   .. ..$ : chr [1:196] &quot;7&quot; &quot;15&quot; &quot;17&quot; &quot;19&quot; ...
+##   .. ..$ : chr [1:2] &quot;neg&quot; &quot;pos&quot;
+##  $ x        : num [1:196, 1] -1.5878 1.5405 -0.0836 -0.7312 -0.2981 ...
+##   ..- attr(*, &quot;dimnames&quot;)=List of 2
+##   .. ..$ : chr [1:196] &quot;7&quot; &quot;15&quot; &quot;17&quot; &quot;19&quot; ...
+##   .. ..$ : chr &quot;LD1&quot;</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># porównajmy macierzą kontyngencji oceny i rzeczywiste etykietki dla kolejnych obiektów</span>
+<span class="kw">table</span>(<span class="dt">predykcja =</span> oceny<span class="op">$</span>class, <span class="dt">prawdziwe =</span> dane[<span class="op">-</span>zbior.uczacy,<span class="dv">3</span>])</code></pre>
+<pre><code>##          prawdziwe
+## predykcja neg pos
+##       neg 118  32
+##       pos  12  34</code></pre>
+<p>W powyższym przykładzie w ostatnim poleceniu wyznaczyliśmy tablice kontyngencji dla wyników. Na bazie tak otrzymanej tablicy kontyngencji można wyznaczyć błąd predykcji. Jest wiele wskaźników opisujących błąd predykcji, począwszy
+od popularnych: czułość (ang. sensitivity <code>TP/(TP+FN)</code> opisuje jaki procent chorych
+zostanie poprawnie zdiagnozowanych jako chorzy), specyficzność (ang. (Specifity)
+<code>TN/(TN+FP)</code> określa jaki procent zdrowych zostanie poprawnie zdiagnozowanych jako zdrowi), przez mniej popularne aż po takie o których mało kto słyszał (np. mutual
+information, współczynnik <span class="math inline">\(\phi\)</span> itp.). Bogata lista takich współczynników wymieniona jest w opisie funkcji <code>performance(ROCR)</code> (definiując błąd klasyfikacji używa się
+oznaczeń <code>TP</code>, <code>TN</code>, <code>FP</code>, <code>FN</code> określających kolejno liczbę poprawnie wykrytych sygnałów
+pozytywnych, poprawnie wykrytych braków sygnału, fałszywie wykrytych sygnałów
+pozytywnych oraz fałszywie wykrytych braków sygnałów. W powyższym przypadku
+czułość wyniosła <span class="math inline">\(31/(31+29)\approx0,517\)</span> a specyficzność <span class="math inline">\(115/(115+21)\approx 0,846\)</span>.</p>
+<p>Jeżeli już jesteśmy przy pakiecie ROCR to na przykładzie przedstawimy w jaki sposób wyznaczać krzywe ROC dla klasyfikatorów. Proszę zauważyć, że funkcja
+<code>predict()</code> poza ocenionymi klasami jako wynik przekazuje również prawdopodobieństwo przynależności do jednej z klas (pole <code>posterior</code> wyniku funkcji <code>predict()</code>).
+Krzywa ROC to zbiór punktów wyznaczonych dla różnych poziomów odcięcia (ang.
+threshold) dla wspomnianego prawdopodobieństwa przynależności do jednej z klas.
+Współrzędne każdego punktu to czułość i specyficzność (dokładniej rzecz biorąc
+1-specyficzność) otrzymana dla zadanego punktu odcięcia.</p>
+<p>Poniżej przykład użycia funkcji z pakietu <code>ROCR</code>, służącej do rysowania krzywych
+ROC i innych o podobnych właściwościach. Wynik graficzny przedstawiony jest na
+rysunku <a href="part-4.html#fig:ad41">4.1</a>. Na osiach tego wykresu mogą być przedstawiane różne miary dokładności klasyfikacji, w zależności od argumentów funkcji <code>performance()</code>.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># wyznaczamy obiekt klasy prediction, zawierający informacje o prawdziwych</span>
+<span class="co"># klasach, i prawdopodobieństwu przynależności do wybranej klasy</span>
+pred &lt;-<span class="st"> </span>ROCR<span class="op">::</span><span class="kw">prediction</span>(oceny<span class="op">$</span>posterior[,<span class="dv">2</span>], dane[<span class="op">-</span>zbior.uczacy,<span class="dv">3</span>])
+<span class="co"># wyznaczamy i wyrysowujemy wybrane miary dobroci klasyfikacji</span>
+perf &lt;-<span class="st"> </span>ROCR<span class="op">::</span><span class="kw">performance</span>(pred, <span class="st">&quot;sens&quot;</span>, <span class="st">&quot;spec&quot;</span>)
+<span class="kw">par</span>(<span class="dt">mfcol=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))
+<span class="kw">plot</span>(perf<span class="op">@</span>x.values[[<span class="dv">1</span>]], perf<span class="op">@</span>y.values[[<span class="dv">1</span>]],<span class="dt">type=</span><span class="st">&quot;l&quot;</span>)
+perf &lt;-<span class="st"> </span>ROCR<span class="op">::</span><span class="kw">performance</span>(pred, <span class="st">&quot;prec&quot;</span>, <span class="st">&quot;rec&quot;</span>)
+<span class="kw">plot</span>(perf<span class="op">@</span>x.values[[<span class="dv">1</span>]], perf<span class="op">@</span>y.values[[<span class="dv">1</span>]],<span class="dt">type=</span><span class="st">&quot;l&quot;</span>)</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:ad41"></span>
+<img src="NaPrzelajR_files/figure-html/ad41-1.png" alt="Wykres zależności czułości od specyficzności oraz miary prediction od recall dla klasyfikacji z użyciem funkcji lda()." width="100%" />
+<p class="caption">
+Rysunek 4.1: Wykres zależności czułości od specyficzności oraz miary prediction od recall dla klasyfikacji z użyciem funkcji lda().
+</p>
+</div>
+<p>Na rysunku <a href="part-4.html#fig:ad42">4.2</a> przedstawiamy kształty obszarów decyzyjnych dla obu klasyfikatorów (do wyznaczania obszarów decyzyjnych można się posłużyć funkcją <code>partimat(klaR)</code>
+lub <code>drawparti(klaR)</code>). Obszary decyzyjne wyznaczane są dla wytrenowanego klasyfikatora, przedstawiają do której klasy zostałby przypisany punkt o określonych
+współrzędnych. Osoby chore na cukrzyce oznaczane są czarnymi krzyżykami, osoby
+zdrowe czerwonymi okręgami. Punkty w których przewidzianą klasą była by cukrzyca zaznaczone są ciemnoszarym kolorem a punkty dla których klasyfikowalibyśmy
+do grona osób zdrowych zaznaczono jaśniejszym szarym kolorem.</p>
+<pre class="sourceCode r"><code class="sourceCode r">PimaIndiansDiabetes2 =<span class="st"> </span><span class="kw">na.omit</span>(PimaIndiansDiabetes2)
+dat =<span class="st"> </span>PimaIndiansDiabetes2[,<span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">5</span>)]
+dat[,<span class="dv">2</span>] =<span class="st"> </span><span class="kw">log</span>(dat[,<span class="dv">2</span>])
+
+<span class="kw">colnames</span>(dat) =<span class="st">  </span><span class="kw">c</span>(<span class="st">&quot;glucose&quot;</span>, <span class="st">&quot;log(insulin)&quot;</span>)
+klasa =<span class="st"> </span><span class="kw">as.numeric</span>(PimaIndiansDiabetes2<span class="op">$</span>diabetes)
+
+seqx =<span class="st"> </span><span class="kw">seq</span>(<span class="dv">30</span>,<span class="dv">210</span>,<span class="dv">2</span>)
+seqy =<span class="st"> </span><span class="kw">seq</span>(<span class="fl">2.5</span>,<span class="dv">7</span>,<span class="fl">0.07</span>)
+siata =<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">expand.grid</span>(seqx, seqy))
+<span class="kw">colnames</span>(siata) =<span class="kw">c</span>(<span class="st">&quot;glucose&quot;</span>, <span class="st">&quot;log(insulin)&quot;</span>)
+
+kol  =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;grey90&quot;</span>, <span class="st">&quot;grey70&quot;</span>)
+kol2  =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;red&quot;</span>, <span class="st">&quot;black&quot;</span>)
+<span class="kw">par</span>(<span class="dt">mfcol=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))
+klasyfikatorLDA =<span class="st"> </span>MASS<span class="op">::</span><span class="kw">lda</span>(dat, klasa)
+wub =<span class="st"> </span><span class="kw">predict</span>(klasyfikatorLDA, <span class="dt">newdata=</span>siata)
+
+<span class="kw">plot</span>(siata, <span class="dt">col=</span>kol[<span class="kw">as.numeric</span>(wub<span class="op">$</span>class)],
+     <span class="dt">pch=</span><span class="dv">15</span>,<span class="dt">xlim=</span><span class="kw">range</span>(dat[,<span class="dv">1</span>]),<span class="dt">ylim=</span><span class="kw">range</span>(dat[,<span class="dv">2</span>]), <span class="dt">main=</span><span class="st">&quot;lda()&quot;</span>)
+<span class="kw">points</span>(dat,<span class="dt">pch=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">4</span>)[klasa], <span class="dt">cex=</span><span class="dv">1</span>, <span class="dt">col=</span>kol2[klasa], <span class="dt">lwd=</span><span class="dv">2</span>)
+
+klasyfikatorLDA =<span class="st"> </span>MASS<span class="op">::</span><span class="kw">qda</span>(dat, klasa)
+wub =<span class="st"> </span><span class="kw">predict</span>(klasyfikatorLDA, <span class="dt">newdata=</span>siata)
+
+<span class="kw">plot</span>(siata, <span class="dt">col=</span>kol[<span class="kw">as.numeric</span>(wub<span class="op">$</span>class)],
+     <span class="dt">pch=</span><span class="dv">15</span>,<span class="dt">xlim=</span><span class="kw">range</span>(dat[,<span class="dv">1</span>]),<span class="dt">ylim=</span><span class="kw">range</span>(dat[,<span class="dv">2</span>]), <span class="dt">main=</span><span class="st">&quot;qda()&quot;</span>)
+<span class="kw">points</span>(dat,<span class="dt">pch=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">4</span>)[klasa], <span class="dt">cex=</span><span class="dv">1</span>, <span class="dt">col=</span>kol2[klasa], <span class="dt">lwd=</span><span class="dv">2</span>)</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:ad42"></span>
+<img src="NaPrzelajR_files/figure-html/ad42-1.png" alt="Przykładowe obszary decyzyjne dla liniowej i kwadratowej dyskryminacji dostępne w funkcjach lda() o qda()." width="100%" />
+<p class="caption">
+Rysunek 4.2: Przykładowe obszary decyzyjne dla liniowej i kwadratowej dyskryminacji dostępne w funkcjach lda() o qda().
+</p>
+</div>
+
+</div>
+<div id="part_42" class="section level2">
+<h2><span class="header-section-number">4.2</span> Metoda najbliższych sąsiadów</h2>
+<p>Bardzo popularną metodą klasyfikacji jest metoda k-sąsiadów. Idea jej działania
+jest prosta i intuicyjna. Nowemu obiektowi przypisuje się klasę, która występuje
+najczęściej wśród jego k sąsiadów (k najbliższych obiektów znajdujących się w zbiorze uczącym, najbliższych w sensie określonej miary odległości). Ten klasyfikator
+dostępny jest w różnych funkcjach, począwszy od <code>knn(class)</code> (zwykły klasyfikator najbliższych sąsiadów), przez <code>kknn(kknn)</code> (ważony klasyfikator k-sąsiadów) oraz
+<code>knncat(knncat)</code> (klasyfikator k-sąsiadów, również dla zmiennych jakościowych).
+Poniżej przedstawimy implementację metody k-sąsiadów z funkcji <code>ipredknn(ipred)</code>.
+Na rysunku <a href="part-4.html#fig:ad43">4.3</a> prezentujemy obszary decyzyjne wyznaczone dla różnej liczby sąsiadów (odpowiednio k=3 i k=21) w omawianym zagadnieniu klasyfikacji na osoby
+zdrowe i chore na cukrzycę. Ponieważ metoda k-sąsiadów bazuje silnie na odległościach pomiędzy obiektami (jakoś trzeba mierzyć odległość od sąsiadów), przed rozpoczęciem obliczeń wykonamy skalowanie danych.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># zaczynamy od przeskalownia danych</span>
+dane[,<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>] =<span class="st"> </span><span class="kw">scale</span>(dane[,<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>])
+<span class="co"># budujemy klasyfikator k-sąsiadów, dla 3 sąsiadów</span>
+klasyfikatorKNN =<span class="st"> </span>ipred<span class="op">::</span><span class="kw">ipredknn</span>(diabetes<span class="op">~</span>glucose<span class="op">+</span>insulin, 
+                                  <span class="dt">data =</span> dane, <span class="dt">subset=</span>zbior.uczacy, <span class="dt">k=</span><span class="dv">3</span>)
+<span class="co"># wykonujemy predykcję klas i wyświetlamy macierz kontyngencji</span>
+oceny =<span class="st"> </span><span class="kw">predict</span>(klasyfikatorKNN, dane[<span class="op">-</span>zbior.uczacy, ], <span class="st">&quot;class&quot;</span>)
+<span class="kw">table</span>(<span class="dt">predykcja =</span> oceny, <span class="dt">prawdziwe =</span> dane[<span class="op">-</span>zbior.uczacy,<span class="dv">3</span>])</code></pre>
+<pre><code>##          prawdziwe
+## predykcja neg pos
+##       neg 102  32
+##       pos  28  34</code></pre>
+<p>Błąd klasyfikacji można liczyć na palcach (powyższą procedurę należało by uśrednić po kilku wstępnych podziałach na zbiór uczący i testowy). Można też błąd klasyfikacji wyznaczyć wykorzystać funkcję <code>errorest(ipred)</code>. Wylicza ona błąd klasyfikacji (okeślony jako procent źle zaklasyfikowanych obiektów) używając różnych
+estymatorów tego błędu, w tym opartego na walidacji skrośnej (ocenie krzyżowej,
+ang. cross validation, domyślnie z podziałem na 10 grup), metodzie bootstrap lub estymatorze 632+. Estymator błędu możemy wybrać określając argument <code>estimator</code>.
+W funkcji <code>errorest()</code> jako kolejne argumenty należy wskazać zbiór danych, metodę
+budowy klasyfikatora (argument <code>model</code>) oraz metodę wyznaczania ocen dla zbioru
+testowego (argument <code>predict</code>). Funkcja <code>errorest()</code> pozwala na jednolity sposób
+wyznaczenia błędu dla dowolnej metody klasyfikacji. Przedstawimy poniżej przykład
+dla metody najbliższych sąsiadów.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># wyznaczmy błąd klasyfikacji dla metody 3 sąsiadów</span>
+ipred<span class="op">::</span><span class="kw">errorest</span>(diabetes<span class="op">~</span>glucose<span class="op">+</span>insulin, <span class="dt">data =</span> dane, <span class="dt">model=</span>ipred<span class="op">::</span>ipredknn, <span class="dt">k=</span><span class="dv">3</span>,
+                <span class="dt">estimator =</span> <span class="st">&quot;632plus&quot;</span>,
+                <span class="dt">predict=</span> <span class="cf">function</span>(ob, newdata) <span class="kw">predict</span>(ob, newdata, <span class="st">&quot;class&quot;</span>))</code></pre>
+<pre><code>## 
+## Call:
+## errorest.data.frame(formula = diabetes ~ glucose + insulin, data = dane, 
+##     model = ipred::ipredknn, predict = function(ob, newdata) predict(ob, 
+##         newdata, &quot;class&quot;), estimator = &quot;632plus&quot;, k = 3)
+## 
+##   .632+ Bootstrap estimator of misclassification error 
+##   with 25 bootstrap replications
+## 
+## Misclassification error:  0.2896</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># wyznaczmy błąd klasyfikacji dla metody 21 sąsiadów, powinna być stabilniejsza</span>
+blad =<span class="st"> </span>ipred<span class="op">::</span><span class="kw">errorest</span>(diabetes<span class="op">~</span>glucose<span class="op">+</span>insulin, <span class="dt">data =</span> dane, <span class="dt">model=</span>ipred<span class="op">::</span>ipredknn, <span class="dt">k=</span><span class="dv">21</span>,
+                <span class="dt">estimator =</span> <span class="st">&quot;632plus&quot;</span>,
+                <span class="dt">predict=</span> <span class="cf">function</span>(ob, newdata) <span class="kw">predict</span>(ob, newdata, <span class="st">&quot;class&quot;</span>))
+blad<span class="op">$</span>error</code></pre>
+<pre><code>## [1] 0.254772</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">dane[,<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>]=<span class="kw">scale</span>(dane[,<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>])
+seqx =<span class="st"> </span><span class="kw">seq</span>(<span class="op">-</span><span class="fl">2.7</span>,<span class="fl">2.7</span>,<span class="fl">0.09</span>)
+seqy =<span class="st"> </span><span class="kw">seq</span>(<span class="op">-</span><span class="fl">3.2</span>,<span class="fl">3.2</span>,<span class="fl">0.09</span>)
+siata =<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">expand.grid</span>(seqx, seqy))
+<span class="kw">colnames</span>(siata) =<span class="st"> </span><span class="kw">colnames</span>(dane[,<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>])
+
+<span class="kw">par</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))
+
+klasyfikatorKNN =<span class="st"> </span>ipred<span class="op">::</span><span class="kw">ipredknn</span>(diabetes<span class="op">~</span>glucose<span class="op">+</span>insulin, 
+                                  <span class="dt">data =</span> dane, <span class="dt">subset=</span>zbior.uczacy, <span class="dt">k=</span><span class="dv">3</span>)
+<span class="co">#predict(klasyfikatorKNN, dane[-zbior.uczacy, ], &quot;class&quot;)</span>
+wub =<span class="st"> </span><span class="kw">predict</span>(klasyfikatorKNN, <span class="dt">newdata=</span>siata, <span class="st">&quot;class&quot;</span>)
+<span class="kw">plot</span>(siata, <span class="dt">col=</span>kol[<span class="kw">as.numeric</span>(wub)], <span class="dt">pch=</span><span class="dv">15</span>, <span class="dt">main=</span><span class="st">&quot;ipredknn(, k=3)&quot;</span>,
+     <span class="dt">ylim=</span><span class="kw">c</span>(<span class="op">-</span><span class="dv">3</span>,<span class="dv">3</span>),<span class="dt">xlim=</span><span class="kw">c</span>(<span class="op">-</span><span class="fl">2.5</span>,<span class="fl">2.5</span>))
+<span class="kw">points</span>(dane[,<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>],<span class="dt">pch=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">4</span>)[<span class="kw">as.numeric</span>(dane[,<span class="dv">3</span>])], <span class="dt">cex=</span><span class="dv">1</span>,
+       <span class="dt">col=</span>kol2[<span class="kw">as.numeric</span>(dane[,<span class="dv">3</span>])], <span class="dt">lwd=</span><span class="dv">2</span>)
+
+klasyfikatorKNN =<span class="st"> </span>ipred<span class="op">::</span><span class="kw">ipredknn</span>(diabetes<span class="op">~</span>glucose<span class="op">+</span>insulin, 
+                                  <span class="dt">data =</span> dane, <span class="dt">subset=</span>zbior.uczacy, <span class="dt">k=</span><span class="dv">21</span>)
+<span class="co">#predict(klasyfikatorKNN, dane[-zbior.uczacy, ], &quot;class&quot;)</span>
+wub =<span class="st"> </span><span class="kw">predict</span>(klasyfikatorKNN, <span class="dt">newdata=</span>siata, <span class="st">&quot;class&quot;</span>)
+<span class="kw">plot</span>(siata, <span class="dt">col=</span>kol[<span class="kw">as.numeric</span>(wub)], <span class="dt">pch=</span><span class="dv">15</span>, <span class="dt">main=</span><span class="st">&quot;ipredknn(, k=21)&quot;</span>,
+     <span class="dt">xlim=</span><span class="kw">c</span>(<span class="op">-</span><span class="fl">2.5</span>,<span class="fl">2.5</span>),<span class="dt">ylim=</span><span class="kw">c</span>(<span class="op">-</span><span class="dv">3</span>,<span class="dv">3</span>))
+<span class="kw">points</span>(dane[,<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>],<span class="dt">pch=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">4</span>)[<span class="kw">as.numeric</span>(dane[,<span class="dv">3</span>])], <span class="dt">cex=</span><span class="dv">1</span>, 
+       <span class="dt">col=</span>kol2[<span class="kw">as.numeric</span>(dane[,<span class="dv">3</span>])], <span class="dt">lwd=</span><span class="dv">2</span>)</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:ad43"></span>
+<img src="NaPrzelajR_files/figure-html/ad43-1.png" alt="Przykładowe obszary decyzyjne dla metody k-sąsiadów z parametrami k=3 i k=21." width="100%" />
+<p class="caption">
+Rysunek 4.3: Przykładowe obszary decyzyjne dla metody k-sąsiadów z parametrami k=3 i k=21.
+</p>
+</div>
+
+</div>
+<div id="part_43" class="section level2">
+<h2><span class="header-section-number">4.3</span> Naiwny klasyfikator Bayesowski</h2>
+<p>Do klasyfikacji wykorzystać można szeroką grupę metod bazujących na ocenie prawdopodobieństwa przynależności do określonej grupy. Dla każdej z klas ocenia się częstość (w przypadku ciągłym gęstość) występowania obiektów o określonych parametrach. Następnie dla nowego obiektu wyznacza się częstości występowania obiektów
+poszczególnych klas i wybiera się klasę występującą dla tych parametrów najczęściej.</p>
+<p>Do tej grupy metod należy naiwny klasyfikator Bayesowski. Bayesowski, ponieważ bazuje na regule Bayesa użytej do wyznaczenia prawdopodobieństwa a posteriori
+należenia do poszczególnych klas. Naiwność w tym kontekście oznacza przyjęte założenie, że łączna gęstość występowania obiektów jest iloczynem gęstości brzegowych.
+Naiwny klasyfikator Bayesowski jest dostępny w funkcjach <code>naiveBayes(e1071)</code> i <code>NaiveBayes(klaR)</code>.
+Poniżej przedstawimy tą drugą implementację.
+Sposób użycia tej funkcji jest podobny do użycia innych opisanych powyżej klasyfikatorów. Na rysunku <a href="part-4.html#fig:mN">4.4</a> przestawione są warunkowe brzegowe oceny gęstości dla
+obu zmiennych dla każdej z klas, na bazie tych gęstości wykonywana jest kalsyfikacja. Na rysunku <a href="part-4.html#fig:NB">4.5</a> przedstawiamy przykładowe obszary decyzyjne dla naiwnego klasyfikatora Bayesowskiego.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># konstruujemy naiwny klasyfikator Bayesowski</span>
+mN &lt;-<span class="st"> </span>klaR<span class="op">::</span><span class="kw">NaiveBayes</span>(diabetes<span class="op">~</span>glucose<span class="op">+</span>insulin, <span class="dt">data=</span>dane, <span class="dt">subset=</span>zbior.uczacy)
+<span class="co"># wyznaczamy oceny</span>
+oceny &lt;-<span class="st"> </span><span class="kw">predict</span>(mN, dane[<span class="op">-</span>zbior.uczacy,])<span class="op">$</span>class
+<span class="kw">table</span>(<span class="dt">predykcja =</span> oceny, <span class="dt">prawdziwe =</span> dane[<span class="op">-</span>zbior.uczacy,<span class="dv">3</span>])</code></pre>
+<pre><code>##          prawdziwe
+## predykcja neg pos
+##       neg 114  30
+##       pos  16  36</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mfcol=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))
+<span class="kw">plot</span>(mN)</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:mN"></span>
+<img src="NaPrzelajR_files/figure-html/mN-1.png" alt="Warunkowe brzegowe oceny gęstości, na ich bazie funkcjonuje naiwny klasyfikator Bayesowski." width="70%" />
+<p class="caption">
+Rysunek 4.4: Warunkowe brzegowe oceny gęstości, na ich bazie funkcjonuje naiwny klasyfikator Bayesowski.
+</p>
+</div>
+<pre class="sourceCode r"><code class="sourceCode r">PimaIndiansDiabetes2 =<span class="st"> </span><span class="kw">na.omit</span>(PimaIndiansDiabetes2)
+dane =<span class="st"> </span>PimaIndiansDiabetes2[,<span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">5</span>,<span class="dv">9</span>)]
+dane[,<span class="dv">2</span>] =<span class="st"> </span><span class="kw">log</span>(dane[,<span class="dv">2</span>])
+
+seqx =<span class="st"> </span><span class="kw">seq</span>(<span class="dv">30</span>,<span class="dv">210</span>,<span class="dv">2</span>)
+seqy =<span class="st"> </span><span class="kw">seq</span>(<span class="fl">2.5</span>,<span class="dv">7</span>,<span class="fl">0.07</span>)
+siata =<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">expand.grid</span>(seqx, seqy))
+
+kol  =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;grey90&quot;</span>, <span class="st">&quot;grey70&quot;</span>)
+klasyfikatorKNN =<span class="st"> </span>klaR<span class="op">::</span><span class="kw">NaiveBayes</span>(diabetes<span class="op">~</span>glucose<span class="op">+</span>insulin, <span class="dt">data =</span> dane)
+wub =<span class="st"> </span><span class="kw">predict</span>(klasyfikatorKNN, <span class="dt">newdata=</span>siata)<span class="op">$</span>class
+<span class="kw">plot</span>(siata, <span class="dt">col=</span>kol[<span class="kw">as.numeric</span>(wub)], <span class="dt">pch=</span><span class="dv">15</span>, <span class="dt">main=</span><span class="st">&quot;NaiveBayes()&quot;</span>, 
+     <span class="dt">xlab=</span><span class="st">&quot;insulin&quot;</span>,<span class="dt">ylab=</span><span class="st">&quot;glucose&quot;</span>, <span class="dt">xlim=</span><span class="kw">range</span>(dat[,<span class="dv">1</span>]),<span class="dt">ylim=</span><span class="kw">range</span>(dat[,<span class="dv">2</span>]))
+<span class="kw">points</span>(dane[,<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>],<span class="dt">pch=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">4</span>)[<span class="kw">as.numeric</span>(dane[,<span class="dv">3</span>])], <span class="dt">cex=</span><span class="dv">1</span>, 
+       <span class="dt">col=</span>kol2[<span class="kw">as.numeric</span>(dane[,<span class="dv">3</span>])], <span class="dt">lwd=</span><span class="dv">2</span>)</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:NB"></span>
+<img src="NaPrzelajR_files/figure-html/NB-1.png" alt="Przykładowe obszary decyzyjne dla naiwnego klasyfikatora Bayesowskiego." width="70%" />
+<p class="caption">
+Rysunek 4.5: Przykładowe obszary decyzyjne dla naiwnego klasyfikatora Bayesowskiego.
+</p>
+</div>
+
+</div>
+<div id="part_44" class="section level2">
+<h2><span class="header-section-number">4.4</span> Drzewa decyzyjne</h2>
+<p>Inną klasą klasyfikatorów są cieszące się dużą popularnością metody bazujące na
+drzewach decyzyjnych (klasyfikacyjnych). W tym przypadku klasyfikator jest reprezentowany przez drzewo binarne, w którego węzłach znajdują się pytania o wartości
+określonej cechy, a w liściach znajdują się oceny klas. Przykład drzewa klasyfikacyjnego przedstawiamy na rysunku <a href="part-4.html#fig:Ctree46">4.6</a>. Dodatkowo w liściach przedstawiono proporcję
+obiektów z obu klas, które znalazły się w danym węźle, a wiec spełniły warunki
+określone w poszczególnych węzłach drzewa. Jeżeli nowe obiekty będziemy przypisywać do klasy, która w danym liściu występowała najczęściej, to dla trzech liści
+(czwartego, szóstego i siódmego) klasyfikować będziemy do grupy osób chorych, a w
+pozostałych liściach będziemy klasyfikować do grupy osób zdrowych.</p>
+<p>W pakiecie R metoda wyznaczania drzew decyzyjnych dostępna jest w wielu różnych funkcjach. Popularnie wykorzystywane są funkcje <code>tree(tree)</code>, <code>rpart(rpart)</code>
+oraz <code>cpart(party)</code>. Poniżej przedstawimy tylko tą ostatnią, ponieważ są dla niej
+opracowane najbardziej atrakcyjne funkcje do prezentacji graficznej. Z wszystkich
+wymienionych funkcji do konstrukcji drzew korzysta się podobnie. Wymienione funkcje mogą służyć zarówno do wyznaczania drzew regresyjnych jak i klasyfikacyjnych, ale w tym miejscu przedstawimy tylko ich klasyfikacyjną naturę. Do wizualizacji drzew klasyfikacyjnych można wykorzystać (w zależności od tego jaką funkcją wyznaczyliśmy drzewo) funkcje <code>plot.BinaryTree(party)</code>, <code>plot.tree(tree)</code>,
+<code>text.tree(tree)</code>, <code>draw.tree(maptree)</code>, <code>plot.rpart(rpart)</code> oraz <code>text.rpart(rpart)</code>.</p>
+<p>Aby zbudować drzewo klasyfikacyjne należy określić kryterium podziału, a więc
+na jaka wartość ma być minimalizowana przy tworzeniu kolejnych gałęzi (najczęściej
+jest to błąd klasyfikacji) oraz kryterium stopu (a wiec jak długo drzewo ma być dzielone). Różne warianty drzew umożliwiają kontrolę różnych kryteriów, w przypadku
+metody <code>ctree()</code> zarówno kryterium stopu jak i podziału można określić argumentem <code>control</code> (patrz opis funkcji <code>ctree_control(party)</code>). Poniżej przedstawiamy
+przykładową sesję z budową drzewa klasyfikacyjnego.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># określamy kryteria budowy drzewa klasyfikayjnego</span>
+ustawienia &lt;-<span class="st"> </span>party<span class="op">::</span><span class="kw">ctree_control</span>(<span class="dt">mincriterion =</span> <span class="fl">0.5</span>, <span class="dt">testtype =</span> <span class="st">&quot;Teststatistic&quot;</span>)
+<span class="co"># uczymy drzewo</span>
+drzewo &lt;-<span class="st"> </span>party<span class="op">::</span><span class="kw">ctree</span>(diabetes<span class="op">~</span>glucose<span class="op">+</span>insulin,
+                       <span class="dt">data=</span>dane, <span class="dt">subset =</span> zbior.uczacy, <span class="dt">controls =</span> ustawienia)
+<span class="co"># narysujmy je</span>
+<span class="kw">plot</span>(drzewo)</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:Ctree46"></span>
+<img src="NaPrzelajR_files/figure-html/Ctree46-1.png" alt="Przykładowe drzewo klasyfikacyjne wyznaczone funkcją ctree()." width="80%" />
+<p class="caption">
+Rysunek 4.6: Przykładowe drzewo klasyfikacyjne wyznaczone funkcją ctree().
+</p>
+</div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># w standardowy sposób przeprowadzamy klasyfikacje</span>
+oceny =<span class="st"> </span><span class="kw">predict</span>(drzewo, dane[<span class="op">-</span>zbior.uczacy,])
+<span class="kw">table</span>(<span class="dt">predykcja =</span> oceny, <span class="dt">prawdziwe =</span> dane[<span class="op">-</span>zbior.uczacy,<span class="dv">3</span>])</code></pre>
+<pre><code>##          prawdziwe
+## predykcja neg pos
+##       neg 121  41
+##       pos   9  25</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">drzewo &lt;-<span class="st"> </span>party<span class="op">::</span><span class="kw">ctree</span>(dane<span class="op">$</span>diabetes<span class="op">~</span>dane<span class="op">$</span>glucose<span class="op">+</span>dane<span class="op">$</span>insulin, <span class="dt">data=</span>dane,
+                       <span class="dt">controls =</span> party<span class="op">::</span><span class="kw">ctree_control</span>(
+                         <span class="dt">mincriterion =</span> <span class="fl">0.5</span>, <span class="dt">teststat =</span> <span class="kw">c</span>(<span class="st">&quot;max&quot;</span>)))
+wub =<span class="st"> </span><span class="kw">predict</span>(drzewo, siata)
+<span class="kw">plot</span>(siata, <span class="dt">col=</span>kol[<span class="kw">as.numeric</span>(wub)], <span class="dt">pch=</span><span class="dv">15</span>, <span class="dt">main=</span><span class="st">&quot;ctree()&quot;</span>,
+     <span class="dt">xlab=</span><span class="st">&quot;insulin&quot;</span>,<span class="dt">ylab=</span><span class="st">&quot;glucose&quot;</span>, <span class="dt">xlim=</span><span class="kw">range</span>(dat[,<span class="dv">1</span>]),<span class="dt">ylim=</span><span class="kw">range</span>(dat[,<span class="dv">2</span>]))
+<span class="kw">points</span>(dane[,<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>],<span class="dt">pch=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">4</span>)[<span class="kw">as.numeric</span>(dane[,<span class="dv">3</span>])], <span class="dt">cex=</span><span class="dv">1</span>,
+       <span class="dt">col=</span>kol2[<span class="kw">as.numeric</span>(dane[,<span class="dv">3</span>])], <span class="dt">lwd=</span><span class="dv">2</span>)</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:Ktree47"></span>
+<img src="NaPrzelajR_files/figure-html/Ktree47-1.png" alt="Przykładowe obszary decyzyjne dla drzewa klasyfikacyjnego." width="70%" />
+<p class="caption">
+Rysunek 4.7: Przykładowe obszary decyzyjne dla drzewa klasyfikacyjnego.
+</p>
+</div>
+<p>Zaletą drzew jest ich łatwość w interpretacji. Narysowany klasyfikator może być
+oceniony i poprawiony, przez eksperta z dziedziny, której problem dotyczy.</p>
+<p>Dla drzew zapisanych jako obiekty klasy <code>tree</code> lub <code>rpart</code> dostępne są dwie przydatne funkcje umożliwiające modyfikację drzewa. Pierwsza to <code>prune.tree(tree)</code>
+(<code>prune.rpart(rpart)</code>). Pozwala ona na automatyczne przycinanie drzewa, poszczególnymi argumentami tej funkcji możemy ustalić jak drzewo ma być przycięte. Można określić pożądaną liczbę węzłów w drzewie, maksymalny współczynnik błędu
+w liściu drzewa oraz inne kryteria. Nie zawsze przycinanie automatyczne daje satysfakcjonujące rezultaty. W sytuacji gdy drzewo potrzebuje ludzkiej ingerencji można wykorzystać funkcję <code>snip.tree(tree)</code> (<code>snip.rpart(rpart)</code>) pozwalającą użytkownikowi na wskazanie myszką które węzły drzewa maja być usunięte. Inne ciekawe funkcje to <code>misclass.tree(tree)</code> (wyznacza błąd klasyfikacji dla każdego węzła z drzewa) oraz <code>partition.tree(tree)</code> (wyznacza obszary decyzyjne dla drzew).</p>
+
+</div>
+<div id="part_45" class="section level2">
+<h2><span class="header-section-number">4.5</span> Lasy losowe</h2>
+<p>Wadą drzew klasyfikacyjnych jest ich mała stabilność. Są jednak sposoby by temu
+zaradzić. Takim sposobem jest konstruowanie komitetu klasyfikatorów a wiec użycie
+metody bagging lub boosting. Nie wystarczyło tu miejsca by przedstawić te metody
+w ich ogólnej postaci, wspomnimy o nich na przykładzie lasów losowych.</p>
+<p>Idea, która przyświeca metodzie lasów losowych możne być streszczona w zdaniu
+“Niech lasy składają się z drzew”. Jak pamiętamy w metodzie bootstrap generowano
+replikacje danych, by ocenić zachowanie statystyki dla oryginalnego zbioru danych.
+Odmianą metody bootstrap w zagadnieniu klasyfikacji jest bagging. Na bazie replikacji zbioru danych konstruowane są klasyfikatory, które na drodze głosowania
+większością wyznaczają ostateczną klasą dla danej obserwacji. W przypadku lasów
+losowych komitet klasyfikatorów składa się z drzew klasyfikacyjnych, które są trenowane na replikacjach zbioru danych, dla ustalonego podzbioru zmiennych.</p>
+<p>Ponieważ drzew w lesie jest dużo, do komitet głosujący demokratycznie charakteryzuje się większą stabilnością. Dodatkową zaletą drzew jest naturalny nieobciążony
+estymator błędu klasyfikacji. Generując replikacje losując metodą z powtórzeniami,
+średnio do replikacji nie trafia około jednej trzeciej obserwacji (w ramach ćwiczeń
+warto to sprawdzić). Te obserwacje, które nie trafiły do replikacji, można wykorzystać do oceny klasyfikatora nauczonego na danej replikacji. Taka ocena błędu określana jest błędem OOB (ang. out-of-bag). Jeszcze inną zaletą drzew losowych jest
+możliwość oceny zdolności dyskryminujących dla poszczególnych zmiennych (dzięki
+czemu możemy wybrać najlepszy zbiór zmiennych).</p>
+<p>Lasy losowe dostępne są w funkcji <code>randomForest(randomForest)</code>. Poniżej przedstawiamy przykład jej użycia. Ponieważ przy konstrukcji lasów losowych generowane
+są losowe replikacje zbioru danych, to aby móc odtworzyć uzyskane wyniki warto
+skorzystać z funkcji <code>set.seed()</code>.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># ustawiamy ziarno generatora, by można było odtworzyć te wyniki</span>
+<span class="kw">set.seed</span>(<span class="dv">1</span>)
+
+<span class="co"># ćwiczymy las</span>
+klasyfikatorRF &lt;-<span class="st"> </span>randomForest<span class="op">::</span><span class="kw">randomForest</span>(diabetes<span class="op">~</span>glucose<span class="op">+</span>insulin,
+                                             <span class="dt">data=</span>dane,
+                                             <span class="dt">subset=</span>zbior.uczacy, <span class="dt">importance=</span><span class="ot">TRUE</span>, <span class="dt">proximity=</span><span class="ot">TRUE</span>)
+<span class="co"># podsumowanie lasu</span>
+<span class="kw">print</span>(klasyfikatorRF)</code></pre>
+<pre><code>## 
+## Call:
+##  randomForest(formula = diabetes ~ glucose + insulin, data = dane,      importance = TRUE, proximity = TRUE, subset = zbior.uczacy) 
+##                Type of random forest: classification
+##                      Number of trees: 500
+## No. of variables tried at each split: 1
+## 
+##         OOB estimate of  error rate: 28.06%
+## Confusion matrix:
+##     neg pos class.error
+## neg 109  23   0.1742424
+## pos  32  32   0.5000000</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># podobnie jak dla innych klasyfikatorów funkcją predict() możemy ocenić</span>
+<span class="co"># etykietki na zbiorze testowym i porównać błąd klasyfikacji z błędem z</span>
+<span class="co"># innych metod</span>
+oceny =<span class="st"> </span><span class="kw">predict</span>(klasyfikatorRF, dane[<span class="op">-</span>zbior.uczacy,])
+<span class="kw">table</span>(<span class="dt">predykcja =</span> oceny, <span class="dt">prawdziwe =</span> dane[<span class="op">-</span>zbior.uczacy,<span class="st">&quot;diabetes&quot;</span>])</code></pre>
+<pre><code>##          prawdziwe
+## predykcja neg pos
+##       neg 105  37
+##       pos  25  29</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">PimaIndiansDiabetes2 =<span class="st"> </span><span class="kw">na.omit</span>(PimaIndiansDiabetes2)
+dane =<span class="st"> </span>PimaIndiansDiabetes2
+dane[,<span class="dv">5</span>] =<span class="st"> </span><span class="kw">log</span>(dane[,<span class="dv">5</span>])
+
+seqx =<span class="st"> </span><span class="kw">seq</span>(<span class="dv">30</span>,<span class="dv">210</span>,<span class="dv">2</span>)
+seqy =<span class="st"> </span><span class="kw">seq</span>(<span class="dv">2</span>,<span class="dv">7</span>,<span class="fl">0.07</span>)
+siata =<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">expand.grid</span>(seqx, seqy))
+<span class="kw">colnames</span>(siata) =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;glucose&quot;</span>, <span class="st">&quot;insulin&quot;</span>)
+
+klasyfikatorRF &lt;-<span class="st"> </span>randomForest<span class="op">::</span><span class="kw">randomForest</span>(diabetes<span class="op">~</span>glucose<span class="op">+</span>insulin,
+                                             <span class="dt">data=</span>dane,<span class="dt">importance=</span><span class="ot">TRUE</span>, <span class="dt">proximity=</span><span class="ot">TRUE</span>)
+<span class="co">#klasyfikatorRF &lt;- randomForest(diabetes~., data=dane,importance=TRUE, proximity=TRUE)</span>
+wub =<span class="st"> </span><span class="kw">predict</span>(klasyfikatorRF, siata)
+<span class="kw">plot</span>(siata, <span class="dt">col=</span>kol[<span class="kw">as.numeric</span>(wub)], <span class="dt">pch=</span><span class="dv">15</span>, 
+     <span class="dt">main=</span><span class="st">&quot;randomForest()&quot;</span>,<span class="dt">xlim=</span><span class="kw">range</span>(dane[,<span class="st">&quot;glucose&quot;</span>]),<span class="dt">ylim=</span><span class="kw">range</span>(dane[,<span class="st">&quot;insulin&quot;</span>]),
+     <span class="dt">cex=</span><span class="dv">1</span>)
+<span class="kw">points</span>(dane[,<span class="kw">c</span>(<span class="st">&quot;glucose&quot;</span>,<span class="st">&quot;insulin&quot;</span>)],<span class="dt">pch=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">4</span>)[<span class="kw">as.numeric</span>(dane[,<span class="st">&quot;diabetes&quot;</span>])], 
+       <span class="dt">cex=</span><span class="dv">1</span>, <span class="dt">col=</span>kol2[<span class="kw">as.numeric</span>(dane[,<span class="st">&quot;diabetes&quot;</span>])], <span class="dt">lwd=</span><span class="dv">2</span>)</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:RF48"></span>
+<img src="NaPrzelajR_files/figure-html/RF48-1.png" alt="Przykładowe obszary decyzyjne dla lasów losowych." width="70%" />
+<p class="caption">
+Rysunek 4.8: Przykładowe obszary decyzyjne dla lasów losowych.
+</p>
+</div>
+<p>Lasy losowe są uznawane za jedną z najlepszych metod klasyfikacji. Ich dodatkową zaletą jest możliwość użycia nauczonego lasu losowego do innych zagadnień niż
+tylko do klasyfikacji. Przykładowo na podstawie drzew z lasu można wyznaczyć ranking zmiennych, a tym samym określić które zmienne mają lepsze właściwości predykcyjne a które gorsze. Taką informację przekazuje funkcja <code>importance(randomForest)</code>,
+można tę informacje również przedstawić graficznie z użyciem funkcji <code>varImpPlot(randomForest)</code>
+(przykład dla naszego zbioru danych jest przedstawiony na rysunku <a href="part-4.html#fig:kl49">4.9</a>).</p>
+<p>Używając lasów losowych (regresyjnych) można również wykonać imputacje,
+a wiec zastąpić brakujące obserwacje w zbiorze danych. Do tego celu można posłużyć się funkcją <code>rfImpute(randomForest)</code>. Można również zdefiniować na podstawie
+lasów losowych miarę odstępstwa i wykrywać nią obserwacje odstające (do tego celu służy funkcja <code>outlier(randomForest)</code>). Można rónież używając lasów losowych
+przeprowadzać skalowanie wielowymiarowe, osoby zainteresowane tym tematem powinny zaznajomić się z funkcją <code>MDSplot(randomForest)</code></p>
+<pre class="sourceCode r"><code class="sourceCode r">klasyfikatorRF &lt;-<span class="st"> </span>randomForest<span class="op">::</span><span class="kw">randomForest</span>(diabetes<span class="op">~</span><span class="st"> </span>.,
+                                             <span class="dt">data=</span>PimaIndiansDiabetes2,
+                                             <span class="dt">importance=</span><span class="ot">TRUE</span>,<span class="dt">proximity=</span><span class="ot">TRUE</span>)
+randomForest<span class="op">::</span><span class="kw">varImpPlot</span>(klasyfikatorRF)</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:kl49"></span>
+<img src="NaPrzelajR_files/figure-html/kl49-1.png" alt="Ranking zmiennych wykonany przez las losowy." width="70%" />
+<p class="caption">
+Rysunek 4.9: Ranking zmiennych wykonany przez las losowy.
+</p>
+</div>
+
+</div>
+<div id="part_46" class="section level2">
+<h2><span class="header-section-number">4.6</span> Inne klasyfikatory</h2>
+<p>Powyżej wymienione metody to zaledwie początek góry lodowej funkcji do klasyfikacji dostępnych w pakiecie R. Poniżej wymienimy jeszcze kilka nazw popularnych
+klasyfikatorów, oraz pokażemy w których funkcjach i pakietach dane metody są dostępne.</p>
+<ul>
+<li><p><strong>Sieci neuronowe</strong>.
+Sieci neuronowe gotowe do użycia w zagadnieniach klasyfikacji są dostępne
+w funkcjach <code>nnet(nnet)</code> (prosta w użyciu sieć z jedną warstwą neuronów
+ukrytych) i <code>train(AMORE)</code> (bardziej zaawansowana funkcja do uczenia sieci
+neuronowych).</p></li>
+<li><p><strong>Metoda wektorów podpierających (SVM, ang. Support Vector Machines)</strong>.
+Ideą wykorzystywaną w tej technice jest zwiększenie wymiaru przestrzeni obserwacji (przez dodanie nowych zmiennych np. transformacji zmiennych oryginalnych) tak by obiekty różnych klas można było rozdzielić hiperpłaszczyznami. Ta technika zyskała wielu zwolenników, funkcje pozwalające na jej wykorzystanie znajdują się w kilku pakietach np. <code>ksvm(kernlab)</code>, <code>svm(1071)</code>,
+<code>svmlight(klaR)</code>, <code>svmpath(svmpath)</code>.</p></li>
+<li><p><strong>Nearest mean classification i Nearest Shrunken Centroid Classifier</strong>.
+Zasady działania podobne jak dla metod analizy skupień k-średnich i PAM.
+Metoda Nearest mean classification dostępna w funkcji <code>nm(klaR)</code> wyznacza
+średnie dla obiektów z danej klasy i nowe obiekty klasyfikuje do poszczególnych klas na podstawie wartości odległości nowej obserwacji od wyznaczonych
+średnich. Metoda Nearest Shrunken Centroid Classifier dostępna w funkcji
+<code>pamr.train(pamr)</code> działa podobnie, tyle, że zamiast średnich wyznacza centroidy.</p></li>
+<li><p><strong>Metody bagging i boosting</strong>.
+Idea obu metod opiera się na tworzeniu replikacji zbioru danych, na których
+uczone są klasyfikatory. Wiele funkcji ze wsparciem dla tych metod znajduje się
+w pakiecie <code>boost</code> (boosting) i <code>ipred</code> (bagging), np. funkcje <code>adaboost(boost)</code>,
+<code>bagboost(boost)</code>, <code>l2boost(boost)</code>, <code>logitboost(boost)</code>, <code>ipredbagg(ipred)</code>.</p></li>
+</ul>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="part-3.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="part-5.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": ["NaPrzelajR.pdf", "NaPrzelajR.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

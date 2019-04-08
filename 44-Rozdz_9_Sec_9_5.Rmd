@@ -1,0 +1,50 @@
+## Rozkład Laplace'a {#part_9.5}
+
+Funkcja gęstości rozkładu Laplace'a $L(a, b)$ dla $a \in R$ oraz $b > 0$ czyli [`VGAM::dlaplace`](https://rdrr.io/cran/VGAM/man/laplaceUC.html) jest przedstawiona poniżej:
+\begin{equation}
+f(x)=\frac{1}{2b}\exp\left(\frac{-|x-a|}{b}\right)
+(\#eq:wz922)
+\end{equation}
+gdzie: $a$ to parametr położenia, natomiast $b$ to parametr skali.
+
+Parametry startowe oszacujemy w następujący sposób:
+```{r}
+a <- median(z); a     # parametr położenia: a
+b <- mean(abs(z-median(z))); b # parametr skali: b
+```
+Mając do dyspozycji funkcję gęstości [`VGAM::dlaplace`](https://rdrr.io/cran/VGAM/man/laplaceUC.html) oraz parametry startowe dokonamy estymacji parametrów `a` oraz `b` dla rozkładu Laplace'a.
+```{r warning=FALSE, message=FALSE}
+# logarytm funkcji wiarygodności:
+f3 <- function(theta, z) {
+  sum(-VGAM::dlaplace(z, location=theta[1], scale=theta[2], log=TRUE))
+  }
+# parametry startowe:
+p.start <- c(median(z), mean(abs(z-median(z))))
+# optymalizacja funkcji f3:
+e3 <- nlminb(p.start, f3, z=z, lower=c(-Inf,0), upper=c(Inf,Inf))
+e3
+```
+Stosowanie algorytmów optymalizacyjnych ogólnego przeznaczenia np. [`nlminb`](https://rdrr.io/r/stats/nlminb.html) do wyznaczania parametrów funkcji
+wymaga podawania parametrów startowych. Jeśli nie chcemy ich podawać
+warto skorzystać z funkcj [`VGAM::vglm`](https://rdrr.io/cran/VGAM/man/vglm.html).
+Za jej pomocą można oszacować szukane parametry dla wielu ciekawych rozkładów np. Laplace'a.
+```{r warning=FALSE, message=FALSE}
+fit <- VGAM::vglm(z ~ 1, VGAM::laplace, data.frame(z), trace=FALSE, crit="l")
+VGAM::Coef(fit)
+```
+```{r}
+ADGofTest::ad.test(z,VGAM::plaplace, 0.001766785, 0.016296640)
+```
+Ponieważ $p-value = 0.1896$, więc nie ma podstaw do odrzucenia hipotezy zerowej.
+Zatem można przyjąć, że rozkład stóp zwrotu spółki PKOBP ma rozkład Laplace'a.
+```{r wy96, fig.cap='Porównanie wykresu gęstości z rozkładem Laplace`a.',fig.pos= 'h', fig.show='hold', fig.align='center', fig.width=12, fig.height=4,out.width='100%'}
+par(mfcol=c(1,2),mar=c(4,4,1,1)+0.1, mgp=c(3,0.6,0),las=1)
+plot(density(z),col='SteelBlue',lwd=4,main='gęstość',ylim=c(0,30))
+curve(VGAM::dlaplace(x,0.001766785, 0.016296640),add=TRUE,col='violetred3',lwd=3)
+legend("topright",bg='white',bty="n",cex=1,lty=1,lwd=c(4,3),
+       c('empiryczna','teoretyczna'),col=c('SteelBlue','violetred3'))
+plot(ecdf(z),col='SteelBlue',lwd=4,main='dystrybuanta')
+curve(VGAM::plaplace(x,0.001766785, 0.016296640),add=TRUE,col='violetred3',lwd=3)
+legend("topleft",bg='white',bty="n",lty=1,lwd=c(4,3),
+       c('empiryczna','teoretyczna'),col=c('SteelBlue','violetred3'))
+```

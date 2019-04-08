@@ -1,0 +1,52 @@
+## Rozkład normalny {#part_9.3}
+
+Funkcja gęstości rozkładu normalnego $N(\mu,\sigma)$ dla $\mu\in R$ oraz $\sigma>0$ czyli [`dnorm`](https://rdrr.io/r/stats/Normal.html) jest przedstawiona poniżej:
+\begin{equation}
+f(x)=\frac{1}{\sigma\sqrt(2\pi)}\exp\left(\frac{-(x-\mu)^2}{2\sigma^2}\right)
+(\#eq:wz920)
+\end{equation}
+gdzie: $\mu$ to średnia, natomiast $\sigma$ to odchylenie standardowe.
+
+Do estymacji nieznanych parametrów rozkładu normalnego wykorzystamy następujące funkcję:
+```{r}
+a <- mean(z); a # średnia
+b <- sd(z); b   # odchylenie standardowe
+```
+W przypadku gdybyśmy chcieli estymować parametry $\mu$ oraz $\sigma$ za pomocą funkcji [`nlminb`](https://rdrr.io/r/stats/nlminb.html) kod wyglądałby następująco:
+```{r}
+# logarytm funkcji wiarygodności:
+f1 <- function(theta, z) {
+  sum(-dnorm(z, mean=theta[1], sd=theta[2], log=TRUE))
+  }
+# parametry startowe:
+p.start <- c(mean(z), sd(z))
+# optymalizacja funkcji f1:
+e1 <- nlminb(p.start, f1, z=z, lower=c(-Inf,0), upper=c(Inf,Inf))
+e1[c('par','objective')]
+```
+Jak można zauważyć otrzymane parametry są dokładnie takie same jak te, które
+oszacowaliśmy za pomocą funkcji [`mean`](https://rdrr.io/r/base/mean.html) i [`sd`](https://rdrr.io/r/stats/sd.html).
+
+W środowisku R można oszacować nieznane parametry również za pomocą funkcji [`MASS::fitdistr`](https://rdrr.io/cran/MASS/man/fitdistr.html) lub bardziej rozbudowanej wersji [`fitdistrplus::fitdist`](https://rdrr.io/cran/fitdistrplus/man/fitdist.html). Dla wbudowanych dystrybuant nie ma konieczności podawania parametrów startowych oraz ograniczeń przedziałowych. Takie opcje są bardzo użyteczne jeśli chcemy szukać parametrów dla dystrybuant zdefiniowanych przez nas.
+```{r}
+summary(fitdistrplus::fitdist(z,'norm'))
+```
+Znając już parametry $\mu$ oraz $\sigma$ możemy teraz przeprowadzić test zgodności
+Andersona-Darlinga i odpowiedzieć na pytanie: czy stopa zwrotu PKOBP pochodzi z rozkładu normalnego?
+```{r}
+ADGofTest::ad.test(z,pnorm,mean(z),sd(z))
+```
+Ponieważ $p-value = 0.0002546$ to hipotetę zerową należy odrzucić. Zatem na
+poziomie istotności $\alpha = 0,05$ należy stwierdzić, że stopa zwrotu PKOBP nie ma rozkładu normalnego. Naszą decyzję potwierdza także (rys. \@ref(fig:wy94)).
+```{r wy94, fig.cap='Porównanie wykresu gęstości z rozkładem normalnym.',fig.pos= 'h', fig.show='hold', fig.align='center', fig.width=12, fig.height=4,out.width='100%'}
+par(mfcol=c(1,2),mar=c(4,4,1,1)+0.1, mgp=c(3,0.6,0),las=1)
+plot(density(z),col='SteelBlue',lwd=4,main='gęstość')
+curve(dnorm(x,mean(z),sd(z)),add=TRUE,col='violetred3',lwd=3)
+legend("topright",bg='white',bty="n",cex=1,lty=1,lwd=c(4,3),
+       c('empiryczna','teoretyczna'),col=c('SteelBlue','violetred3'))
+plot(ecdf(z),col='SteelBlue',lwd=4,main='dystrybuanta')
+curve(pnorm(x,mean(z),sd(z)),add=TRUE,col='violetred3',lwd=3)
+legend("topleft",bg='white',bty="n",lty=1,lwd=c(4,3),
+       c('empiryczna','teoretyczna'),col=c('SteelBlue','violetred3'))
+```
+

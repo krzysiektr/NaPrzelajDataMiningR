@@ -1,0 +1,23 @@
+# Redukcja wymiaru {#part_2}
+
+Metody redukcji wymiaru umożliwiają przedstawienie obserwacji w przestrzeni o
+zadanym wymiarze, niższym niż w przypadku oryginalnych danych.
+
+Przedstawimy wybrane metody na przykładzie danych z różnych województw
+(zbiór danych `daneGUS`, patrz ostatni rozdział). Dla każdego z województw zebrano informację o liczbie studentów w tych województwach w rozbiciu na 16 grup
+kierunków. Każde województwo jest więc opisane wektorem 16 liczb.
+
+Przypuśćmy, że chcemy przedstawić graficznie te województwa. Jak uwzględnić
+wszystkie 16 parametrów? Jednym z rozwiązań jest użycie metod redukcji wymiaru i
+liczby zmiennych z 16 do 2. Opisanie każdego z województw dwoma liczbami ułatwi
+przedstawianie graficzne tych województw.
+
+Więc do dzieła!
+
+Redukcja wymiaru często jest pośrednim etapem w zagadnieniu klasyfikacji, analizy skupień czy regresji. W określonych sytuacjach pozwala na poprawę skuteczności
+tych metod, zwiększa stabilność a czasem pozwala na uwzględnienie w analizach dużej liczby zmiennych. Jest też popularnie wykorzystywaną metodą do wizualizacji
+wielowymiarowych zmiennych, dane są redukowane do przestrzeni dwuwymiarowej,
+w której już łatwo je przedstawić na wykresie. Metody z tej grupy są również nazywane metodami ekstrakcji cech, ponieważ w wyniku redukcji wymiaru tworzone są
+nowe cechy, które mogą być wykorzystane do innych zagadnień.
+
+

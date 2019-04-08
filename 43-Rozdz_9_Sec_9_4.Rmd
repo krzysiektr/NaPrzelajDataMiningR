@@ -1,0 +1,47 @@
+## Rozkład Cauchy'ego {#part_9.4}
+
+Funkcja gęstości rozkładu Cauchy’ego $C(a, b)$ dla $a \in R$ oraz $b > 0$ czyli [`dcauchy`](https://rdrr.io/r/stats/Cauchy.html) jest przedstawiona poniżej:
+\begin{equation}
+f(x)=\frac{1}{\pi b \left(1+\left(\frac{x-a}{b}\right)^2\right)}
+(\#eq:wz921)
+\end{equation}
+gdzie: $a$ to parametr położenia, natomiast $b$ to parametr skali.
+
+Tak samo jak w przypadku rozkładu normalnego, aby wykorzystać funkcję [`nlminb`](https://rdrr.io/r/stats/nlminb.html) należy oszacować parametry startowe. Dla rozkładu Cauchy’ego można to zrobić w
+następujący sposób:
+```{r}
+a <- median(z); a # parametr położenia: a
+b <- IQR(z)/2; b  # parametr skali: b
+```
+Teraz metodą największej wiarygodności oszacujemy parametry rozkładu Cauche'go.
+```{r warning=FALSE, message=FALSE}
+# logarytm funkcji wiarygodności:
+f2 <- function(theta, z) {
+  sum(-dcauchy(z, location=theta[1], scale=theta[2], log=TRUE))
+  }
+# parametry startowe:
+p.start <- c(median(z), IQR(z)/2)
+# optymalizacja funkcji f2:
+e2 <- nlminb(p.start, f2, z=z, lower=c(-Inf,0), upper=c(Inf,Inf))
+e2[c('par','objective')]
+```
+Prawie identyczne wyniki otrzymamy przy wykorzystaniu funkcji [`fitdistrplus::fitdist`](https://rdrr.io/cran/fitdistrplus/man/fitdist.html).
+```{r}
+summary(fitdistrplus::fitdist(z,'cauchy'))
+```
+Do sprawdzenia zgoności rozkładu empirycznego z rozkładem Cauchy'ego zastosujemy test Andersona-Darlinga.
+```{r}
+ADGofTest::ad.test(z,pcauchy, 0.002029574, 0.011230842)
+```
+Także i w tym razem na poziomie istotności $\alpha = 0,05$ odrzucamy hipotezę zerową, która zakłada, że stopa zwrotu ma rozkład Cauchy'ego.
+```{r wy95, fig.cap='Porównanie wykresu gęstości z rozkładem Cauchy`ego.',fig.pos= 'h', fig.show='hold', fig.align='center', fig.width=12, fig.height=4,out.width='100%'}
+par(mfcol=c(1,2),mar=c(4,4,1,1)+0.1, mgp=c(3,0.6,0),las=1)
+plot(density(z),col='SteelBlue',lwd=4,main='gęstość',ylim=c(0,30))
+curve(dcauchy(x,0.002029574, 0.011230842),add=TRUE,col='violetred3',lwd=3)
+legend("topright",bg='white',bty="n",cex=1,lty=1,lwd=c(4,3),
+       c('empiryczna','teoretyczna'),col=c('SteelBlue','violetred3'))
+plot(ecdf(z),col='SteelBlue',lwd=4,main='dystrybuanta')
+curve(pcauchy(x,0.002029574, 0.011230842),add=TRUE,col='violetred3',lwd=3)
+legend("topleft",bg='white',bty="n",lty=1,lwd=c(4,3),
+       c('empiryczna','teoretyczna'),col=c('SteelBlue','violetred3'))
+```

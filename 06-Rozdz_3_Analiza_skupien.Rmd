@@ -1,0 +1,20 @@
+# Analiza skupień {#part_3}
+
+Analiza skupień to zbiór metod pozwalających na wyróżnienie zbiorów obserwacji
+(nazywanych skupieniami lub klastrami) podobnych do siebie. Proces szukania podziału na grupy, nazywany jest czasem klastrowaniem. W pakiecie R dostępnych
+jest bardzo wiele metod do przeprowadzania analizy skupień. Poniżej omówimy jedynie kilka wybranych funkcji z pakietów `cluster` i `stats`. Osoby zainteresowane
+tym tematem powinny przyjrzeć się również funkcjom z pakietów `flexclust` oraz
+`mclust02`.
+
+Wyniki działania wybranych procedur analizy skupień przedstawimy ma przykładzie zbioru danych benchmarkowych. W pakiecie mlbench (skrót od Machine
+Learning Benchmark Problems) umieszczonych jest wiele ciekawych zbiorów danych
+wykorzystywanych do testowania właściwości algorytmów dyskryminacji lub analizy skupień. W tym pakiecie znajdują się zbiory rzeczywistych danych, jak również
+funkcje do generowania zbiorów danych o określonych kształtach lub właściwościach.
+Dwa zbiory wygenerowanych danych na których będziemy testować metody analizy skupień przedstawione są na rysunku 3.1. Zostały one wygenerowane funkcjami
+`mlbench.cassini(mlbench)` i `mlbench.2dnormals(mlbench)`.
+
+Do wyznaczania skupisk wystarczy macierz odległości pomiędzy obiektami. Domyślnie wyznaczane są odległości euklidesowe (może więc warto skalować dane?)
+ale można te odległości liczyć korzystając z innych funkcji `dist.BC(clusterSim)`,
+`dist.GDM(clusterSim)`, `dist.SM(clusterSim)`, `dist(stats)`, `dist.binary(ade4)`.
+
+

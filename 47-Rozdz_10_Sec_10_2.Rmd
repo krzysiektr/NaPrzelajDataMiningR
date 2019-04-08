@@ -1,0 +1,128 @@
+## Badanie wewnętrznej struktury procesu {#part_10.2}
+
+### Trend {#part_10.2.1}
+
+W pierwszym kroku należy ustalić, czy w szeregu czasowym (rys. \@ref(fig:wy101)) występuje tendencja rozwojowa czyli trend. Jeśli dojdziemy do wniosku, że występuje
+trend należy zbudować kilka wielomianowych modeli trendu a następnie dokonać wyboru najlepszego modelu. Wybór wielomianu możemy dokonać za pomocą analizy
+wariancji ANOVA lub kryterium informacyjnego AIC.
+```{r}
+t1 <- ts(1:length(bezrob),start=c(2004,5),freq=12)
+t2 <- ts(t1^2,start=c(2004,5),freq=12)
+t3 <- ts(t1^3,start=c(2004,5),freq=12)
+t4 <- ts(t1^4,start=c(2004,5),freq=12)
+```
+```{r}
+m1 <- lm(bezrob~t1)          # wielomian stopnia pierwszego
+m2 <- lm(bezrob~t1+t2)       # wielomian stopnia drugiego
+m3 <- lm(bezrob~t1+t2+t3)    # wielomian stopnia trzeciego
+m4 <- lm(bezrob~t1+t2+t3+t4) # wielomian stopnia czwartego
+```
+```{r}
+# porównanie modelu trendu m1 i m2:
+anova(m1,m2)
+```
+```{r}
+# porównanie modelu trendu m2 i m3:
+anova(m2,m3)
+```
+```{r}
+# porównanie modelu trendu m3 i m4:
+anova(m3,m4)
+```
+Tak więc najlepszym modelem trendu okazał się wielomian stopnia trzeciego. Do
+takiego samego wniosku dochodzimy porównując kryteria informacyjne AIC wszystkich modeli.
+```{r}
+AIC(m1,m2,m3,m4)
+```
+
+### Sezonowość {#part_10.2.2}
+
+Aby ocenić czy w badanym szeregu czasowym występują wahania sezonowe trzeba
+oszacować model trendu wraz ze zmiennymi sezonowymi. Jeśli przynajmniej jeden
+parametr przy zmiennej zero-jedynkowej okaże się istotny możemy sądzić, że w szeregu występuje sezonowość.
+```{r}
+# zmienne sezonowe: zero-jedynkowe:
+month <- ts(forecast::seasonaldummy(bezrob),start=c(2004,5),freq=12)
+```
+```{r}
+# model z trendem i sezonowością:
+s_dyn <- lm(bezrob~t1+t2+t3+month)
+# podsumowanie modelu z trendem i sezonowością:
+summary(s_dyn)
+```
+Ponieważ kilka zmiennych sezonowych jest istotnych statystycznie należy stwierdzić, że w badanym procesie występują wahania sezonowe.
+
+### Stopień autoregresji -- funkcja PACF {#part_10.2.3}
+
+Aby ocenić stopień autoregresji dynamicznego modelu liniowego należy sprawdzić
+czy w procesie reszt (modelu z trendem i sezonowością) występuje autokorelacja
+reszt. Można tego dokonać na podstawie funcji PACF (rys. \@ref(fig:wy102)) na poziomie istotności $\alpha = 0,05$ (przerywana linia pozioma).
+
+```{r}
+rs <- ts(resid(s_dyn),start=c(2004,5),freq=12)
+```
+```{r wy102, fig.cap='Funkcja autokorelacji cząstkowej.',fig.pos= 'h', warning=FALSE, message=FALSE, fig.show='hold', fig.align='center', fig.width=8, fig.height=3,out.width='70%'}
+par(mar=c(4,4,1,1)+0.1, mgp=c(3,0.6,0),bg="lightgoldenrodyellow",las=1)
+plot(1,axes=F,xlab="",ylab="",main="", col="white")
+u <- par("usr")
+rect(u[1], u[3], u[2], u[4], col="white")
+par(new=plot)
+pacf(rs,plot=T)
+```
+Jak widać na (rys. \@ref(fig:wy102)) występuje rząd autokorelacji $p = 1$.
+
+### Stopień integracji -- test ADF/PP {#part_10.2.4}
+
+Jeśli otrzymane reszty (rys. \@ref(fig:wy103)) na podstawie modelu z trendem i sezonowością są niestacjonarne (występuje pierwiastk jednostkowy) należy wówczas rząd
+autoregresji (w dynamicznym modelu liniowym) powiększyć o liczbę $d$ czyli liczbę
+pierwiastków jednostkowych. Do sprawdzenia hipotezy o występowaniu pierwiastka
+jednostkowego możemy posłużyć się rozszerzonym testem Dickey’a-Fullera.
+```{r wy103, fig.cap='Reszty modelu z trendem i sezonowością $rs_t$.',fig.pos= 'h', fig.show='hold', fig.align='center', fig.width=8, fig.height=4,out.width='70%'}
+par(mar=c(4,4,1,1)+0.1, mgp=c(3,0.6,0),bg="lightgoldenrodyellow",las=1)
+plot(1,axes=F,xlab="",ylab="",main="", col="white")
+u <- par("usr")
+rect(u[1], u[3], u[2], u[4], col="white")
+par(new=plot)
+plot(rs,type="l",col="SteelBlue")
+```
+```{r}
+tseries::adf.test(rs)
+```
+Ponieważ w teście ADF p-value jest równe $0,3268$ należy przyjąć, że w procesie
+$rs_t$ występuje pierwiastk jednostkowy $d = 1$. Skoro szereg $rs_t$ jest niestacjonarny należy sprawdzić czy w procesie $\Delta rs_t = rs_t - rs_{t-1}$ również występuje pierwiastek jednostkowy. A więc czy szereg 
+$rs_t$ jest zintegrowany w stopniu drugin tzn. $I(2)$.
+```{r wy104, fig.cap='Reszty modelu po jednokrotnym różnicowaniu $rs_t$ .',fig.pos= 'h', fig.show='hold', fig.align='center', fig.width=8, fig.height=4,out.width='70%'}
+par(mar=c(4,4,1,1)+0.1, mgp=c(3,0.6,0),bg="lightgoldenrodyellow",las=1)
+plot(1,axes=F,xlab="",ylab="",main="", col="white")
+u <- par("usr")
+rect(u[1], u[3], u[2], u[4], col="white")
+par(new=plot)
+plot(diff(rs),type="l",col="SteelBlue")
+```
+```{r}
+tseries::adf.test(diff(rs))
+```
+Tak więc szereg $rs_t$ jest zintegrowany w stopniu drugim (p-value = $0,6757$), badamy więc czy jest również zintegrowany w stopniu trzecim.
+
+```{r wy105, fig.cap='Reszty modelu po dwukrotnym różnicowaniu $rs_t$.',fig.pos= 'h', fig.show='hold', fig.align='center', fig.width=8, fig.height=4,out.width='70%'}
+par(mar=c(4,4,1,1)+0.1, mgp=c(3,0.6,0),bg="lightgoldenrodyellow",las=1)
+plot(1,axes=F,xlab="",ylab="",main="", col="white")
+u <- par("usr")
+rect(u[1], u[3], u[2], u[4], col="white")
+par(new=plot)
+plot(diff(diff(rs)),type="l",col="SteelBlue")
+```
+```{r}
+tseries::adf.test(diff(diff(rs)))
+```
+Zatem dla $H_0: I(3)$ p-value jest równe $0,01$. Czyli szereg $\Delta\Delta rs_t$ jest stacjonarny i
+na tym kończymy procedurę oceny zintegrowania szeregu $rs_t$. Rząd autoregresji w
+dynamicznym modelu liniowym będzie więc wynosił: $p + d = 1 + 2 = 3$. Innym
+testem do oceny istnienia pierwiastka jednostkowego jest test Phillipsa-Perrona.
+```{r}
+tseries::pp.test(rs)
+tseries::pp.test(diff(rs))
+tseries::pp.test(diff(diff(rs)))
+```
+W oprogramowaniu R możemy również skorzystać z szeregu innych testów dotyczących pierwiastka jednostkowego. Są one dostępne w następujących paczkach:
+[`uroot`](https://rdrr.io/cran/uroot/), [`urca`](https://rdrr.io/cran/urca/), [`fUnitRoots`](https://rdrr.io/cran/fUnitRoots/).

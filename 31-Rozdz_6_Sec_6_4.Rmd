@@ -1,0 +1,119 @@
+## Studium przypadku {#part_64}
+
+Przedstawmy przykład bazujący na danych o zatrudnieniu w poszczególnych województwach. Zmienne które chcemy porównać to Województwo (16 poziomów) i
+Sektor pracy (4 poziomy: rolnictwo, przemysł, usługi, bezrobotni). Podejrzewamy,
+że struktura zatrudnienia różni się pomiędzy województwami.
+
+```{r}
+library("MASS")
+library("ca")
+library("RColorBrewer")
+# przygotujmy wektor kolorow
+kolory = rev(brewer.pal(11,"Spectral"))
+
+# wybierzmy interesujące nas kolumny
+# konwertujemy tabele na macierz, takiego formatu spodziewa się funkcja heatmap()
+dane = as.matrix(daneGUS[,c(22:25)])
+colSums(dane)
+rowSums(dane)
+# jak wygląda macierz z danymi?
+head(dane)
+```
+
+Macierz 64 liczb jest trudno ogarnąć nieuzborojonym okiem. Możemy zauważyć,
+że biorąc pod uwagę, że najwięcej ludzi pracuje w sektorze usługowym ($8309$ tys.)
+również łatwo zauważyć, że najludniejsze jest województwo Mazowieckie ($2 373$ tys.) ale z tych surowych danych ciężko wyciągnąć głębszy wniosek.
+```{r wy62A, fig.cap='Mapa ciepła dla danych oryginalnych (kolory normalizowane po kolumnach).', fig.show='hold',fig.pos= 'h', fig.align='center', fig.width=8, fig.height=6,out.width='70%'}
+# tę macierz można przedstawić w postaci graficznej
+# czerwony odpowiada dużym liczbom, niebieski małym
+heatmap(dane,scale="col",Colv=NA, col= kolory)
+```
+```{r}
+# zobaczmy czy sa zaleznosci pomiedzy kolumnami i wierszami, wygląda na to że nie są to niezależne cechy
+chisq.test(dane)
+```
+Wykonaliśmy test $\chi^2$ i otrzymaliśmy bardzo małą p-wartość, która upewniła nas w przekonaniu, że województwa mają inną strukturę zatrudnienia.
+```{r}
+# zobaczmy które kombinacje występują częściej niż w przypadku niezależności
+# policzymy residua Pearsonowskie
+P = dane/sum(dane)
+# macierz czestosci oczekiwanych
+PP = outer(rowSums(P),colSums(P))
+# macierz residuow Pearsonowskich
+E = (P-PP)/sqrt(PP)
+head(E)
+```
+```{r wy63A, fig.cap='Mapa ciepła dla reszt Pearsonowskich.', fig.show='hold',fig.pos= 'h', fig.align='center', fig.width=8, fig.height=6,out.width='70%'}
+# tę macierz również można przedstawić za pomocą mapy ciepła
+heatmap(E,scale="none",Colv=NA,col= kolory)
+```
+Wyznaczyliśmy macierz reszt Pearsonowskich $E$ (którą też przedstawiliśmy graficznie z użyciem mapy ciepła) i z tej macierzy możemy już odczytać w których
+województwach poszczególne sektory są popularniejsze. Największe reszty obserwujemy dla sektora rolnictwa, zarówno duże dodatnie wartości (w województwie lubelskim, podlaskim, podkarpackim i świętokrzyskim) jak i duże (co do modułu) ujemne wartości (w województwie śląskim i dolnośląskim).
+Możemy teraz przedstawić graficznie macierz $E$ z użyciem biplotu (z wykorzystaniem dekompozycji SVD).
+```{r}
+# wykonujemy dekompozycje na wartosci osobliwe (singularne/szczegolne)
+A = svd(E)
+X = t(apply(A$u, 1, "*", sqrt(A$d)))
+Y = t(apply(A$v, 1, "*", sqrt(A$d)))
+# zwykle współrzędne liczone są ze wzorow, w ktorych A jest dekompozycja innej macierzy
+# [TODO: uzupełnić albo pominąć]
+# A = Dr^(-1/2) A$u A$d
+# B = Dc^(-1/2) A$v a$d
+```
+```{r wy64A, fig.cap='?', fig.show='hold',fig.pos= 'h', fig.align='center', fig.width=8, fig.height=6,out.width='70%'}
+plot(rbind(X[,1:2], Y[,1:2]), xlab="", ylab="", main="Bramka nr. 1", lwd
+=3)
+```
+```{r wy65A, fig.cap='?', fig.show='hold',fig.pos= 'h', fig.align='center', fig.width=8, fig.height=6,out.width='70%'}
+# analiza korespondencji z użyciem pakietu MASS
+biplot(MASS::corresp(dane, nf = 2))
+```
+```{r wy66A, fig.cap='Przykład analizy korespondencji.', fig.show='hold',fig.pos= 'h', fig.align='center', fig.width=8, fig.height=6,out.width='70%'}
+# analiza korespondencji z użyciem pakietu ca
+# argument mass powoduje że liczebności komórek odpowiadają wielkościom punktów na wykresie
+plot(ca::ca(dane), mass=c(T,T))
+```
+```{r}
+summary(ca::ca(dane))
+```
+Przy opisie analizy korespondencji często wymienianym czynnikiem jest inercja, nazywana czasem bezwładnością (przez podobieństwo do inercji w fizyce). Aby
+opisać formalnie czym jest ta miara musimy zacząć od kilku innych pojęć.
+
+Niech masa wiersza i masa kolumny będzie określona jako brzegowe częstości
+macierzy kontyngencji.
+```{r}
+(masa.kolumny = colSums(prop.table(dane)))
+(masa.wiersza = rowSums(prop.table(dane)))
+```
+Profilem wiersza (kolumny) będą wartości w wierszu (kolumnie) unormowane
+przez masę kolumny (wiersza).
+```{r}
+head(profil.kolumny <- dane/rowSums(dane))
+```
+
+Tak unormowane profile wierszy i kolumn mogą być ze sobą porównywane. Im
+większa odległość pomiędzy profilami kolumn tym mniejsza zależność pomiędzy
+czynnikami opisanymi w tych kolumnach (oczywiście dla wierszy jest tak samo).
+Średni profil kolumnowy to masa wiersza a średni profil wierszowy to masa kolumn.
+
+Inercja to odległość (w mierze $\chi^2$ ) pomiędzy daną kolumną (wierszem, punktem)
+a średnią wartością dla kolumn (wierszy). Całkowita inercja to suma odległości dla
+wszystkich kolumn (wierszy). **Im większa inercja tym punkty są oddalone
+dalej od średniego profilu wiersza/kolumny**.
+
+[TODO: uzupełnić. nawiązać do wyników funkcji summary.ca()]
+
+Wyniki powyższych instrukcji oglądać można na wykresie \@ref(fig:wy62A) i kolejnych.
+
+Analizując ten wykres można zauważyć ciekawe zróżnicowanie województw. Na
+osi X największą współrzędną ma zmienna `pr.rolnictwo`, a więc to ta zmienna odpowiada największemu zróżnicowaniu województw. Wysoki wartości na tej osi osiągają województwa gdzie zatrudnienie w rolnictwie było wyższe niż średnie. Druga
+oś rozróżnia województwa w których dominuje zatrudnienie w sektorze usług (dodatnie wartości) versus zatrudnieniu w przemyśle lub braku zatrudnienia (niestety
+profil zatrudnienia w przemyśle i braku zatrudnienia jest podobny).
+
+Osoby w województwach Mazowieckim i Zachodniopomorskim częściej pracują
+w sektorze usług, w województwach Lubelskim, Podlaskim, Świętokrzyskim i Podkarpackim dominuje zatrudnienie w sektorze rolniczym, w województwach Śląskim i
+Dolnośląskim dominuje zatrudnienie w przemyśle te województwa mają też większe
+problemy z bezrobociem.
+
+[TODO: opisać podobieństwa i różnice do PCA]
+

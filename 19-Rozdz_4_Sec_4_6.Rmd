@@ -1,0 +1,27 @@
+## Inne klasyfikatory {#part_46}
+
+Powyżej wymienione metody to zaledwie początek góry lodowej funkcji do klasyfikacji dostępnych w pakiecie R. Poniżej wymienimy jeszcze kilka nazw popularnych
+klasyfikatorów, oraz pokażemy w których funkcjach i pakietach dane metody są dostępne.
+
+* **Sieci neuronowe**.
+Sieci neuronowe gotowe do użycia w zagadnieniach klasyfikacji są dostępne
+w funkcjach `nnet(nnet)` (prosta w użyciu sieć z jedną warstwą neuronów
+ukrytych) i `train(AMORE)` (bardziej zaawansowana funkcja do uczenia sieci
+neuronowych).
+
+* **Metoda wektorów podpierających (SVM, ang. Support Vector Machines)**.
+Ideą wykorzystywaną w tej technice jest zwiększenie wymiaru przestrzeni obserwacji (przez dodanie nowych zmiennych np. transformacji zmiennych oryginalnych) tak by obiekty różnych klas można było rozdzielić hiperpłaszczyznami. Ta technika zyskała wielu zwolenników, funkcje pozwalające na jej wykorzystanie znajdują się w kilku pakietach np. `ksvm(kernlab)`, `svm(1071)`,
+`svmlight(klaR)`, `svmpath(svmpath)`.
+
+* **Nearest mean classification i Nearest Shrunken Centroid Classifier**.
+Zasady działania podobne jak dla metod analizy skupień k-średnich i PAM.
+Metoda Nearest mean classification dostępna w funkcji `nm(klaR)` wyznacza
+średnie dla obiektów z danej klasy i nowe obiekty klasyfikuje do poszczególnych klas na podstawie wartości odległości nowej obserwacji od wyznaczonych
+średnich. Metoda Nearest Shrunken Centroid Classifier dostępna w funkcji
+`pamr.train(pamr)` działa podobnie, tyle, że zamiast średnich wyznacza centroidy.
+
+* **Metody bagging i boosting**.
+Idea obu metod opiera się na tworzeniu replikacji zbioru danych, na których
+uczone są klasyfikatory. Wiele funkcji ze wsparciem dla tych metod znajduje się
+w pakiecie `boost` (boosting) i `ipred` (bagging), np. funkcje `adaboost(boost)`,
+`bagboost(boost)`, `l2boost(boost)`, `logitboost(boost)`, `ipredbagg(ipred)`.

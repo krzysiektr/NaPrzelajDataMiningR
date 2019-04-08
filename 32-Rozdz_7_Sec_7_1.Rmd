@@ -1,0 +1,75 @@
+# Przykład analizy szeregów czasowych {#part_7}
+
+---
+
+## Wprowadzenie {#part_71}
+
+W skład szeregu czasowego mogą wchodzić następujące elementy:
+
+* trend
+
+  - deterministyczny
+
+  - stochastyczny
+  
+* wahania sezonowe
+
+  - addytywne
+  
+  - multiplikatywne
+
+```{r wy71, fig.cap='Przykłady szeregów czasowych.', fig.show='hold',fig.pos= 'h', fig.align='center', fig.width=12, fig.height=4,out.width='100%'}
+par(mfcol=c(1,2),mar=c(4,4,1,1)+0.1, mgp=c(3,0.6,0),las=1)
+plot(log(AirPassengers),col="SteelBlue"); title("addytywny")
+plot(AirPassengers,col="SteelBlue"); title("multiplikatywwny")
+```
+
+Wśród szeregów czasowych rozróżniamy dwa rodzaje procesów stochastycznych:
+stacjonarne (w których nie występuje trend) oraz niestacjonarne (w których występuje trend). Aby wyeliminować tendencję rozwojową z danego procesu można
+wykorzystać do tego celu różnicowanie:
+
+* jednokrotne różnicowanie:
+
+\begin{equation}
+\Delta y_t=y_t-y_{t-1}
+(\#eq:wz01)
+\end{equation}
+
+```{r}
+dy <- diff(AirPassengers)
+```
+
+* dwukrotne różnicowanie:
+
+\begin{equation}
+\Delta\Delta y_t=y_t-y_{t-1}
+(\#eq:wz02)
+\end{equation}
+
+```{r}
+ddy <- diff(AirPassengers, lag= 1, differences= 2)
+```
+
+```{r wy72, fig.cap='Przykłady jednokrotnego różnicowania szeregów czasowych.',fig.pos= 'h', fig.show='hold', fig.align='center', fig.width=12, fig.height=4,out.width='100%'}
+par(mfcol=c(1,2),mar=c(4,4,1,1)+0.1, mgp=c(3,0.6,0),las=1)
+plot(diff(log(AirPassengers)),col="SteelBlue"); title("addytywny")
+plot(diff(AirPassengers),col="SteelBlue"); title("multiplikatywwny")
+```
+
+W środowisku R dostępne są także funkcje dotyczące filtrowania szeregów czasowych. Jest to takie przekształcenie danych które doprowadza do oczyszczenia szeregu
+czasowego z wahań periodycznych. W środowisku R dostępnych jest kilka takich
+filtrów. Jeden z bardzie popularnych to filtr Hodrick-Prescotta zaimplementowany w pakiecie [FRAPO::trdhp](https://rdrr.io/cran/FRAPO/man/trdhp.html). Stosując filtr HP należy pamiętać o odpowiednim doborze parametru $\lambda$. Hodrick oraz Prescott zalecają, aby wartość współczynnika $\lambda$ była równa 400, 1600 i 14400
+odpowiednio dla danych rocznych, kwartalnych i miesięcznych.
+```{r wy73, fig.cap='Filtr Hodrick-Prescott.',fig.pos= 'h', fig.show='hold', fig.align='center', fig.width=8, fig.height=6,out.width='70%'}
+f <- FRAPO::trdhp(AirPassengers, lambda=14400)
+
+par(mfcol=c(2,1),mar=c(4,4,1,1)+0.1, mgp=c(3,0.6,0),las=1)
+plot(AirPassengers,col="SteelBlue",
+     main="Hodrick-Prescott filter")
+lines(f,col="YellowGreen")
+plot(AirPassengers-f,col="SteelBlue",
+     main="Cyclical component (deviations from trend)")
+```
+
+Dodajmy, że lepszą alternatywę dla procedury Hodricka-Prescotta zaproponował James D. Hamilton. Ten filtr został zaimplementowany do funkcji [neverhpfilter::yth_filter](https://rdrr.io/cran/neverhpfilter/man/yth_filter.html).
+

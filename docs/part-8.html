@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html  lang="pl">
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Rozdział 8 Przykład analizy tabel wielodzielczych | Na przełaj przez Data Mining z pakietem R</title>
+  <meta name="description" content="Zbiór przykładów użycia wybranych funkcji statystycznych i Data Mining dostępnych w programie R.">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
+
+  <meta property="og:title" content="Rozdział 8 Przykład analizy tabel wielodzielczych | Na przełaj przez Data Mining z pakietem R" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Zbiór przykładów użycia wybranych funkcji statystycznych i Data Mining dostępnych w programie R." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Rozdział 8 Przykład analizy tabel wielodzielczych | Na przełaj przez Data Mining z pakietem R" />
+  
+  <meta name="twitter:description" content="Zbiór przykładów użycia wybranych funkcji statystycznych i Data Mining dostępnych w programie R." />
+  
+
+<meta name="author" content="Przemysław Biecek, Krzysztof Trajkowski">
+
+
+<meta name="date" content="2019-04-08">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="part-7.html">
+<link rel="next" href="part-9.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; position: absolute; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; }
+pre.numberSource a.sourceLine:empty
+  { position: absolute; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Na przełaj przez Data Mining<br/> z pakietem R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Kilka słów zamiast wstępu</a></li>
+<li class="chapter" data-level="2" data-path="part-2.html"><a href="part-2.html"><i class="fa fa-check"></i><b>2</b> Redukcja wymiaru</a><ul>
+<li class="chapter" data-level="2.1" data-path="part-2.html"><a href="part-2.html#part_21"><i class="fa fa-check"></i><b>2.1</b> Analiza składowych głównych (PCA, ang. Principal Components Analysis)</a></li>
+<li class="chapter" data-level="2.2" data-path="part-2.html"><a href="part-2.html#part_22"><i class="fa fa-check"></i><b>2.2</b> Nieliniowe skalowanie wielowymiarowe (Sammon Mapping)</a></li>
+<li class="chapter" data-level="2.3" data-path="part-2.html"><a href="part-2.html#part_23"><i class="fa fa-check"></i><b>2.3</b> Skalowanie wielowymiarowe Kruskalla (MDS, ang. Multidimensional Scaling)</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="part-3.html"><a href="part-3.html"><i class="fa fa-check"></i><b>3</b> Analiza skupień</a><ul>
+<li class="chapter" data-level="3.1" data-path="part-3.html"><a href="part-3.html#part_31"><i class="fa fa-check"></i><b>3.1</b> Metoda k-średnich</a></li>
+<li class="chapter" data-level="3.2" data-path="part-3.html"><a href="part-3.html#part_32"><i class="fa fa-check"></i><b>3.2</b> Metoda grupowania wokół centroidów (PAM, ang. Partitioning Around Medoids)</a></li>
+<li class="chapter" data-level="3.3" data-path="part-3.html"><a href="part-3.html#part_33"><i class="fa fa-check"></i><b>3.3</b> Metoda aglomeracyjnego klastrowania hierarchicznego</a></li>
+<li class="chapter" data-level="3.4" data-path="part-3.html"><a href="part-3.html#part_34"><i class="fa fa-check"></i><b>3.4</b> Ile skupień wybrać?</a></li>
+<li class="chapter" data-level="3.5" data-path="part-3.html"><a href="part-3.html#part_35"><i class="fa fa-check"></i><b>3.5</b> Inne metody analizy skupień</a></li>
+<li class="chapter" data-level="3.6" data-path="part-3.html"><a href="part-3.html#part_36"><i class="fa fa-check"></i><b>3.6</b> Case study</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="part-4.html"><a href="part-4.html"><i class="fa fa-check"></i><b>4</b> Analiza dyskryminacji</a><ul>
+<li class="chapter" data-level="4.1" data-path="part-4.html"><a href="part-4.html#part_41"><i class="fa fa-check"></i><b>4.1</b> Dyskryminacja liniowa i kwadratowa</a></li>
+<li class="chapter" data-level="4.2" data-path="part-4.html"><a href="part-4.html#part_42"><i class="fa fa-check"></i><b>4.2</b> Metoda najbliższych sąsiadów</a></li>
+<li class="chapter" data-level="4.3" data-path="part-4.html"><a href="part-4.html#part_43"><i class="fa fa-check"></i><b>4.3</b> Naiwny klasyfikator Bayesowski</a></li>
+<li class="chapter" data-level="4.4" data-path="part-4.html"><a href="part-4.html#part_44"><i class="fa fa-check"></i><b>4.4</b> Drzewa decyzyjne</a></li>
+<li class="chapter" data-level="4.5" data-path="part-4.html"><a href="part-4.html#part_45"><i class="fa fa-check"></i><b>4.5</b> Lasy losowe</a></li>
+<li class="chapter" data-level="4.6" data-path="part-4.html"><a href="part-4.html#part_46"><i class="fa fa-check"></i><b>4.6</b> Inne klasyfikatory</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="part-5.html"><a href="part-5.html"><i class="fa fa-check"></i><b>5</b> Analiza kanoniczna</a><ul>
+<li class="chapter" data-level="5.1" data-path="part-5.html"><a href="part-5.html#part_51"><i class="fa fa-check"></i><b>5.1</b> Problem</a></li>
+<li class="chapter" data-level="5.2" data-path="part-5.html"><a href="part-5.html#part_52"><i class="fa fa-check"></i><b>5.2</b> Rozwiązanie</a></li>
+<li class="chapter" data-level="5.3" data-path="part-5.html"><a href="part-5.html#part_53"><i class="fa fa-check"></i><b>5.3</b> Założenia</a></li>
+<li class="chapter" data-level="5.4" data-path="part-5.html"><a href="part-5.html#part_54"><i class="fa fa-check"></i><b>5.4</b> Jak to zrobić w R</a></li>
+<li class="chapter" data-level="5.5" data-path="part-5.html"><a href="part-5.html#part_55"><i class="fa fa-check"></i><b>5.5</b> Przykładowe wyniki</a></li>
+<li class="chapter" data-level="5.6" data-path="part-5.html"><a href="part-5.html#part_56"><i class="fa fa-check"></i><b>5.6</b> Studium przypadku</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="part-6.html"><a href="part-6.html"><i class="fa fa-check"></i><b>6</b> Analiza korespondencji (odpowiedniości)</a><ul>
+<li class="chapter" data-level="6.1" data-path="part-6.html"><a href="part-6.html#part_61"><i class="fa fa-check"></i><b>6.1</b> Problem</a></li>
+<li class="chapter" data-level="6.2" data-path="part-6.html"><a href="part-6.html#part_62"><i class="fa fa-check"></i><b>6.2</b> Rozwiązanie</a></li>
+<li class="chapter" data-level="6.3" data-path="part-6.html"><a href="part-6.html#part_63"><i class="fa fa-check"></i><b>6.3</b> Jak to zrobić w R?</a></li>
+<li class="chapter" data-level="6.4" data-path="part-6.html"><a href="part-6.html#part_64"><i class="fa fa-check"></i><b>6.4</b> Studium przypadku</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="part-7.html"><a href="part-7.html"><i class="fa fa-check"></i><b>7</b> Przykład analizy szeregów czasowych</a><ul>
+<li class="chapter" data-level="7.1" data-path="part-7.html"><a href="part-7.html#part_71"><i class="fa fa-check"></i><b>7.1</b> Wprowadzenie</a></li>
+<li class="chapter" data-level="7.2" data-path="part-7.html"><a href="part-7.html#part_72"><i class="fa fa-check"></i><b>7.2</b> Identyfikacja trendu i sezonowości</a><ul>
+<li class="chapter" data-level="7.2.1" data-path="part-7.html"><a href="part-7.html#part_721"><i class="fa fa-check"></i><b>7.2.1</b> Analiza wariancji - ANOVA</a></li>
+<li class="chapter" data-level="7.2.2" data-path="part-7.html"><a href="part-7.html#part_722"><i class="fa fa-check"></i><b>7.2.2</b> Funkcja autokorelacji - ACF</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="part-7.html"><a href="part-7.html#part_73"><i class="fa fa-check"></i><b>7.3</b> Modele autoregresyjne ARIMA</a><ul>
+<li class="chapter" data-level="7.3.1" data-path="part-7.html"><a href="part-7.html#part_731"><i class="fa fa-check"></i><b>7.3.1</b> Estymacja</a></li>
+<li class="chapter" data-level="7.3.2" data-path="part-7.html"><a href="part-7.html#part_732"><i class="fa fa-check"></i><b>7.3.2</b> Weryfikacja</a></li>
+<li class="chapter" data-level="7.3.3" data-path="part-7.html"><a href="part-7.html#part_733"><i class="fa fa-check"></i><b>7.3.3</b> Prognozowanie</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="part-7.html"><a href="part-7.html#part_74"><i class="fa fa-check"></i><b>7.4</b> Modele adaptacyjne</a><ul>
+<li class="chapter" data-level="7.4.1" data-path="part-7.html"><a href="part-7.html#part_741"><i class="fa fa-check"></i><b>7.4.1</b> Estymacja</a></li>
+<li class="chapter" data-level="7.4.2" data-path="part-7.html"><a href="part-7.html#part_742"><i class="fa fa-check"></i><b>7.4.2</b> Prognozowanie</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="part-8.html"><a href="part-8.html"><i class="fa fa-check"></i><b>8</b> Przykład analizy tabel wielodzielczych</a><ul>
+<li class="chapter" data-level="8.1" data-path="part-8.html"><a href="part-8.html#part_81"><i class="fa fa-check"></i><b>8.1</b> Wprowadzenie</a></li>
+<li class="chapter" data-level="8.2" data-path="part-8.html"><a href="part-8.html#part_82"><i class="fa fa-check"></i><b>8.2</b> Test chi-kwadrat</a></li>
+<li class="chapter" data-level="8.3" data-path="part-8.html"><a href="part-8.html#part_83"><i class="fa fa-check"></i><b>8.3</b> Model logitowy</a></li>
+<li class="chapter" data-level="8.4" data-path="part-8.html"><a href="part-8.html#part_84"><i class="fa fa-check"></i><b>8.4</b> Model logitowy</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="part-9.html"><a href="part-9.html"><i class="fa fa-check"></i><b>9</b> Przykład badania rozkładu stopy zwrotu z akcji</a><ul>
+<li class="chapter" data-level="9.1" data-path="part-9.html"><a href="part-9.html#part_9.1"><i class="fa fa-check"></i><b>9.1</b> Wprowadzenie</a></li>
+<li class="chapter" data-level="9.2" data-path="part-9.html"><a href="part-9.html#part_9.2"><i class="fa fa-check"></i><b>9.2</b> Statystyki opisowe</a></li>
+<li class="chapter" data-level="9.3" data-path="part-9.html"><a href="part-9.html#part_9.3"><i class="fa fa-check"></i><b>9.3</b> Rozkład normalny</a></li>
+<li class="chapter" data-level="9.4" data-path="part-9.html"><a href="part-9.html#part_9.4"><i class="fa fa-check"></i><b>9.4</b> Rozkład Cauchy’ego</a></li>
+<li class="chapter" data-level="9.5" data-path="part-9.html"><a href="part-9.html#part_9.5"><i class="fa fa-check"></i><b>9.5</b> Rozkład Laplace’a</a></li>
+<li class="chapter" data-level="9.6" data-path="part-9.html"><a href="part-9.html#part_9.6"><i class="fa fa-check"></i><b>9.6</b> Rozkład Stabilny</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="part-10.html"><a href="part-10.html"><i class="fa fa-check"></i><b>10</b> Przykład budowy dynamicznego modelu liniowego</a><ul>
+<li class="chapter" data-level="10.1" data-path="part-10.html"><a href="part-10.html#part_10.1"><i class="fa fa-check"></i><b>10.1</b> Wprowadzenie</a></li>
+<li class="chapter" data-level="10.2" data-path="part-10.html"><a href="part-10.html#part_10.2"><i class="fa fa-check"></i><b>10.2</b> Badanie wewnętrznej struktury procesu</a><ul>
+<li class="chapter" data-level="10.2.1" data-path="part-10.html"><a href="part-10.html#part_10.2.1"><i class="fa fa-check"></i><b>10.2.1</b> Trend</a></li>
+<li class="chapter" data-level="10.2.2" data-path="part-10.html"><a href="part-10.html#part_10.2.2"><i class="fa fa-check"></i><b>10.2.2</b> Sezonowość</a></li>
+<li class="chapter" data-level="10.2.3" data-path="part-10.html"><a href="part-10.html#part_10.2.3"><i class="fa fa-check"></i><b>10.2.3</b> Stopień autoregresji – funkcja PACF</a></li>
+<li class="chapter" data-level="10.2.4" data-path="part-10.html"><a href="part-10.html#part_10.2.4"><i class="fa fa-check"></i><b>10.2.4</b> Stopień integracji – test ADF/PP</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="part-10.html"><a href="part-10.html#part_10.3"><i class="fa fa-check"></i><b>10.3</b> Weryfikacja modelu</a><ul>
+<li class="chapter" data-level="10.3.1" data-path="part-10.html"><a href="part-10.html#part_10.3.1"><i class="fa fa-check"></i><b>10.3.1</b> Estymacja dynamicznego modelu liniowego</a></li>
+<li class="chapter" data-level="10.3.2" data-path="part-10.html"><a href="part-10.html#part_10.3.2"><i class="fa fa-check"></i><b>10.3.2</b> Ocena jakości modelu</a></li>
+</ul></li>
+<li class="chapter" data-level="10.4" data-path="part-10.html"><a href="part-10.html#part_10.4"><i class="fa fa-check"></i><b>10.4</b> Diagnostyka modelu</a><ul>
+<li class="chapter" data-level="10.4.1" data-path="part-10.html"><a href="part-10.html#part_10.4.1"><i class="fa fa-check"></i><b>10.4.1</b> Normalność procesu resztowego</a></li>
+<li class="chapter" data-level="10.4.2" data-path="part-10.html"><a href="part-10.html#part_10.4.2"><i class="fa fa-check"></i><b>10.4.2</b> Autokorelacja procesu resztowego</a></li>
+<li class="chapter" data-level="10.4.3" data-path="part-10.html"><a href="part-10.html#part_10.4.3"><i class="fa fa-check"></i><b>10.4.3</b> Heteroskedastyczność procesu resztowego</a></li>
+<li class="chapter" data-level="10.4.4" data-path="part-10.html"><a href="part-10.html#part_10.4.4"><i class="fa fa-check"></i><b>10.4.4</b> Stabilność parametrów modelu</a></li>
+<li class="chapter" data-level="10.4.5" data-path="part-10.html"><a href="part-10.html#part_10.4.5"><i class="fa fa-check"></i><b>10.4.5</b> Postać analityczna modelu</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="part-11.html"><a href="part-11.html"><i class="fa fa-check"></i><b>11</b> Przegląd wybranych testów statystycznych</a><ul>
+<li class="chapter" data-level="11.1" data-path="part-11.html"><a href="part-11.html#part_11.1"><i class="fa fa-check"></i><b>11.1</b> Testy normalności</a></li>
+<li class="chapter" data-level="11.2" data-path="part-11.html"><a href="part-11.html#part_11.2"><i class="fa fa-check"></i><b>11.2</b> Testy asymptotyczne</a></li>
+<li class="chapter" data-level="11.3" data-path="part-11.html"><a href="part-11.html#part_11.3"><i class="fa fa-check"></i><b>11.3</b> Testy dla proporcji</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="part-12.html"><a href="part-12.html"><i class="fa fa-check"></i><b>12</b> Przykład analizy liczby przestępstw w Polsce w 2009 r.</a><ul>
+<li class="chapter" data-level="12.1" data-path="part-12.html"><a href="part-12.html#part_12.1"><i class="fa fa-check"></i><b>12.1</b> Wprowadzenie</a></li>
+<li class="chapter" data-level="12.2" data-path="part-12.html"><a href="part-12.html#part_12.2"><i class="fa fa-check"></i><b>12.2</b> Mapy</a></li>
+<li class="chapter" data-level="12.3" data-path="part-12.html"><a href="part-12.html#part_12.3"><i class="fa fa-check"></i><b>12.3</b> Analiza wariancji</a></li>
+<li class="chapter" data-level="12.4" data-path="part-12.html"><a href="part-12.html#part_12.4"><i class="fa fa-check"></i><b>12.4</b> Modele dla liczebności</a></li>
+<li class="chapter" data-level="12.5" data-path="part-12.html"><a href="part-12.html#part_12.5"><i class="fa fa-check"></i><b>12.5</b> Modele dla częstości</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="part-13.html"><a href="part-13.html"><i class="fa fa-check"></i><b>13</b> Modele regresji</a><ul>
+<li class="chapter" data-level="13.1" data-path="part-13.html"><a href="part-13.html#part_13.1"><i class="fa fa-check"></i><b>13.1</b> Wprowadzenie</a></li>
+<li class="chapter" data-level="13.2" data-path="part-13.html"><a href="part-13.html#part_13.2"><i class="fa fa-check"></i><b>13.2</b> Estymacja modelu liniowego</a><ul>
+<li class="chapter" data-level="13.2.1" data-path="part-13.html"><a href="part-13.html#part_13.2.1"><i class="fa fa-check"></i><b>13.2.1</b> Metoda najmniejszych kwadratów</a></li>
+<li class="chapter" data-level="13.2.2" data-path="part-13.html"><a href="part-13.html#part_13.2.2"><i class="fa fa-check"></i><b>13.2.2</b> Poprawność specyfikacji modelu</a></li>
+<li class="chapter" data-level="13.2.3" data-path="part-13.html"><a href="part-13.html#part_13.2.3"><i class="fa fa-check"></i><b>13.2.3</b> Normalność</a></li>
+<li class="chapter" data-level="13.2.4" data-path="part-13.html"><a href="part-13.html#part_13.2.4"><i class="fa fa-check"></i><b>13.2.4</b> Heteroskedastyczność</a></li>
+<li class="chapter" data-level="13.2.5" data-path="part-13.html"><a href="part-13.html#part_13.2.5"><i class="fa fa-check"></i><b>13.2.5</b> Obserwacje odstające</a></li>
+<li class="chapter" data-level="13.2.6" data-path="part-13.html"><a href="part-13.html#part_13.2.6"><i class="fa fa-check"></i><b>13.2.6</b> Metoda najmniejszych wartości bezwzględnych</a></li>
+</ul></li>
+<li class="chapter" data-level="13.3" data-path="part-13.html"><a href="part-13.html#part_13.3"><i class="fa fa-check"></i><b>13.3</b> Estymacja modelu nieliniowego</a><ul>
+<li class="chapter" data-level="13.3.1" data-path="part-13.html"><a href="part-13.html#part_13.3.1"><i class="fa fa-check"></i><b>13.3.1</b> Model kwadratowy</a></li>
+<li class="chapter" data-level="13.3.2" data-path="part-13.html"><a href="part-13.html#part_13.3.2"><i class="fa fa-check"></i><b>13.3.2</b> Model wykładniczy</a></li>
+<li class="chapter" data-level="13.3.3" data-path="part-13.html"><a href="part-13.html#part_13.3.3"><i class="fa fa-check"></i><b>13.3.3</b> Model hiperboliczny</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="part-14.html"><a href="part-14.html"><i class="fa fa-check"></i><b>14</b> Zbiory danych</a><ul>
+<li class="chapter" data-level="14.1" data-path="part-14.html"><a href="part-14.html#part_14.1"><i class="fa fa-check"></i><b>14.1</b> Zbiór danych GUSowskich</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="bibliografia.html"><a href="bibliografia.html"><i class="fa fa-check"></i>Bibliografia</a></li>
+<li class="divider"></li>
+<li><a href="http://www.biecek.pl/NaPrzelajPrzezDataMining/" target="blank">strona projektu</a></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Na przełaj przez Data Mining z pakietem R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="part_8" class="section level1">
+<h1><span class="header-section-number">Rozdział 8</span> Przykład analizy tabel wielodzielczych</h1>
+<hr />
+<div id="part_81" class="section level2">
+<h2><span class="header-section-number">8.1</span> Wprowadzenie</h2>
+<p>Zbiór danych, który zostanie wykorzystany do przeprowadzenia analiz jest dostępny
+pod nazwą <a href="https://rdrr.io/r/datasets/Titanic.html"><code>Titanic</code></a>. Zawiera on informacje na temat losu 2201 pasażerów
+oceanicznego liniowca “Titanic”. Do dyspozycji mamy cztery zmienne nominalne:</p>
+<ul>
+<li><p><strong>Class</strong> – klasy podróżowania: 1st (pierwsza), 2nd (druga), 3rd (trzecia), Crew
+(załoga),</p></li>
+<li><p><strong>Sex</strong> – płeć: Male (mężczyzna), Female (kobieta),</p></li>
+<li><p><strong>Age</strong> – wiek: Adult (dorosły), Child (dziecko),</p></li>
+<li><p><strong>Survived</strong> – przeżycie: No (nie), Yes (tak).</p></li>
+</ul>
+<p>Oryginalny zestaw danych (wielowymiarowa tabela kontyngencji) został przekształcony o nazwie <code>t</code>. Fragment naszych
+danych jest widoczny poniżej:</p>
+<pre class="sourceCode r"><code class="sourceCode r">t &lt;-<span class="st"> </span>DescTools<span class="op">::</span><span class="kw">Untable</span>(Titanic)
+t[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>,]</code></pre>
+<pre><code>##   Class  Sex   Age Survived
+## 1   3rd Male Child       No
+## 2   3rd Male Child       No
+## 3   3rd Male Child       No</code></pre>
+<p>Celem naszych badań będzie próba opisu zależności między przeżyciem, a klasą
+podróżowania, płcią podróżnych oraz ich wiekiem.</p>
+
+</div>
+<div id="part_82" class="section level2">
+<h2><span class="header-section-number">8.2</span> Test chi-kwadrat</h2>
+<p>Do analizy zależności między dwiema zmiennymi zostanie wykorzystamy test <span class="math inline">\(\chi^2\)</span>. W
+pakiecie R jest dostępna funkcja <a href=""><code>assocstats::vcd</code></a> za pomocą której wykonywane
+są dwa testy badające niezależność: test <span class="math inline">\(\chi^2\)</span> oraz test <span class="math inline">\(G\)</span>:</p>
+
+<p>gdzie:</p>
+<ul>
+<li><p><span class="math inline">\(r\)</span> – liczba wierszy,</p></li>
+<li><p><span class="math inline">\(c\)</span> – liczba kolumn,</p></li>
+<li><p><span class="math inline">\(O_{ij}\)</span> – empiryczna liczebność <span class="math inline">\(i\)</span>-tego wiersza oraz <span class="math inline">\(j\)</span>-tej kolumny,</p></li>
+<li><p><span class="math inline">\(E_{ij}\)</span> – oczekiwana liczebność <span class="math inline">\(i\)</span>-tego wiersza oraz <span class="math inline">\(j\)</span>-tej kolumny.</p></li>
+</ul>
+<p>Dodatkowo podawane są również współczynniki korelacji: <span class="math inline">\(\phi\)</span>-Yula, <span class="math inline">\(V\)</span>-Pearsona i <span class="math inline">\(V\)</span>-Cramera. A zatem spróbujmy odpowiedzieć na następujące pytania:</p>
+<ol style="list-style-type: decimal">
+<li>Czy na przeżycie katastrofy miała wpływ płeć?</li>
+</ol>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># tablica kontygencji:</span>
+s &lt;-<span class="st"> </span><span class="kw">xtabs</span>(<span class="op">~</span>Survived<span class="op">+</span>Sex, <span class="dt">data=</span>t) 
+gplots<span class="op">::</span><span class="kw">balloonplot</span>(s,<span class="dt">dotcolor=</span><span class="st">&quot;gray80&quot;</span>)</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:wy81A"></span>
+<img src="NaPrzelajR_files/figure-html/wy81A-1.png" alt="Przeżycie i płeć." width="40%" />
+<p class="caption">
+Rysunek 8.1: Przeżycie i płeć.
+</p>
+</div>
+<pre class="sourceCode r"><code class="sourceCode r">vcd<span class="op">::</span><span class="kw">assocstats</span>(s)</code></pre>
+<pre><code>##                     X^2 df P(&gt; X^2)
+## Likelihood Ratio 434.47  1        0
+## Pearson          456.87  1        0
+## 
+## Phi-Coefficient   : 0.456 
+## Contingency Coeff.: 0.415 
+## Cramer&#39;s V        : 0.456</code></pre>
+<p>Na podstawie testu <span class="math inline">\(\chi^2\)</span> oraz wykresu (rys. <a href="part-8.html#fig:wy81A">8.1</a>) możemy wnioskować, że występuje istotne powiązanie między przeżyciem katastrofy, a płcią pasażerów (p-value= 0, <span class="math inline">\(V = 0,456\)</span>).</p>
+<pre class="sourceCode r"><code class="sourceCode r">ps &lt;-<span class="st"> </span><span class="kw">prop.table</span>(s,<span class="dv">2</span>);ps</code></pre>
+<pre><code>##         Sex
+## Survived      Male    Female
+##      No  0.7879838 0.2680851
+##      Yes 0.2120162 0.7319149</code></pre>
+<p>Obliczenia procentowe wskazują, że przeżyło <span class="math inline">\(73\%\)</span> kobiet oraz tylko <span class="math inline">\(21\%\)</span> mężczyzn.</p>
+<pre class="sourceCode r"><code class="sourceCode r">ns&lt;-ps<span class="op">/</span>(<span class="dv">1</span><span class="op">-</span>ps);ns <span class="co"># szanse przeżycia</span></code></pre>
+<pre><code>##         Sex
+## Survived      Male    Female
+##      No  3.7166213 0.3662791
+##      Yes 0.2690616 2.7301587</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">ns[,<span class="dv">1</span>]<span class="op">/</span>ns[,<span class="dv">2</span>]    <span class="co"># ilorazy szans przeżycia</span></code></pre>
+<pre><code>##          No         Yes 
+## 10.14696596  0.09855163</code></pre>
+<p>Obliczony iloraz szans <span class="math inline">\(OR = 10,15\)</span> wskazuje, że szansa przeżycia katastrofy na Titanicu wśród kobiet <span class="math inline">\((2,7301587)\)</span> była ponad dziesięć razy większa niż wśród mężczyzn <span class="math inline">\((0,2690616)\)</span>.</p>
+<ol start="2" style="list-style-type: decimal">
+<li>Czy na przeżycie katastrofy miała wpływ klasa w której podróżowano?</li>
+</ol>
+<pre class="sourceCode r"><code class="sourceCode r">c &lt;-<span class="st"> </span><span class="kw">xtabs</span>(<span class="op">~</span>Survived<span class="op">+</span>Class,<span class="dt">data=</span>t) <span class="co"># tablica kontygencji</span>
+gplots<span class="op">::</span><span class="kw">balloonplot</span>(c,<span class="dt">dotcolor=</span><span class="st">&quot;gray80&quot;</span>)</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:wy82A"></span>
+<img src="NaPrzelajR_files/figure-html/wy82A-1.png" alt="Przeżycie i klasa podróżowania." width="40%" />
+<p class="caption">
+Rysunek 8.2: Przeżycie i klasa podróżowania.
+</p>
+</div>
+<pre class="sourceCode r"><code class="sourceCode r">vcd<span class="op">::</span><span class="kw">assocstats</span>(c)</code></pre>
+<pre><code>##                    X^2 df P(&gt; X^2)
+## Likelihood Ratio 180.9  3        0
+## Pearson          190.4  3        0
+## 
+## Phi-Coefficient   : NA 
+## Contingency Coeff.: 0.282 
+## Cramer&#39;s V        : 0.294</code></pre>
+<p>Ponieważ p-value = 0 to należy sądzić, że istnieje zależność między przeżyciem a
+klasą w której podróżowali uczestnicy rejsu. O wysokim powiązaniu tych zmiennych
+świdczy także wysoki współczynnik korelacji <span class="math inline">\(V = 0,29\)</span>. Dodajmy, że współczynnik zależności <span class="math inline">\(\phi\)</span> jest obliczany tylko dla tabel kontyngencji <span class="math inline">\(2\times2\)</span>.</p>
+<pre class="sourceCode r"><code class="sourceCode r">pc &lt;-<span class="st"> </span><span class="kw">prop.table</span>(c,<span class="dv">2</span>);pc</code></pre>
+<pre><code>##         Class
+## Survived       1st       2nd       3rd      Crew
+##      No  0.3753846 0.5859649 0.7478754 0.7604520
+##      Yes 0.6246154 0.4140351 0.2521246 0.2395480</code></pre>
+<p>Po obliczeniu wartości procentowych dochodzimy do wniosku, że najwięcej przeżyło
+tych osób, które podróżowały w pierwszej klasie – <span class="math inline">\(62\%\)</span>. Natomiast wśród załogi
+przeżyło najmniej osób, tylko <span class="math inline">\(24\%\)</span>. Należy także podkreślić, że im wyższy standard podróży tym większa szansa przeżycia.</p>
+<pre class="sourceCode r"><code class="sourceCode r">nc &lt;-<span class="st"> </span>pc<span class="op">/</span>(<span class="dv">1</span><span class="op">-</span>pc);nc <span class="co"># szanse przeżycia</span></code></pre>
+<pre><code>##         Class
+## Survived       1st       2nd       3rd      Crew
+##      No  0.6009852 1.4152542 2.9662921 3.1745283
+##      Yes 1.6639344 0.7065868 0.3371212 0.3150074</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">nc[,<span class="dv">1</span>]<span class="op">/</span>nc[,<span class="dv">2</span>]      <span class="co"># porównanie szans 1 z 2 klasą</span></code></pre>
+<pre><code>##        No       Yes 
+## 0.4246482 2.3548902</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">nc[,<span class="dv">2</span>]<span class="op">/</span>nc[,<span class="dv">3</span>]      <span class="co"># porównanie szans 2 z 3 klasą</span></code></pre>
+<pre><code>##        No       Yes 
+## 0.4771122 2.0959429</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">nc[,<span class="dv">3</span>]<span class="op">/</span>nc[,<span class="dv">4</span>]      <span class="co"># porównanie szans 3 z załogą</span></code></pre>
+<pre><code>##        No       Yes 
+## 0.9344041 1.0702008</code></pre>
+<ol start="3" style="list-style-type: decimal">
+<li>Czy na przeżycie katastrofy miał wpływ wiek?</li>
+</ol>
+<pre class="sourceCode r"><code class="sourceCode r">a &lt;-<span class="st"> </span><span class="kw">xtabs</span>(<span class="op">~</span>Survived<span class="op">+</span>Age,<span class="dt">data=</span>t) <span class="co"># tablica kontygencji</span>
+gplots<span class="op">::</span><span class="kw">balloonplot</span>(a,<span class="dt">dotcolor=</span><span class="st">&quot;gray80&quot;</span>)</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:wy83"></span>
+<img src="NaPrzelajR_files/figure-html/wy83-1.png" alt="Przeżycie i wiek." width="40%" />
+<p class="caption">
+Rysunek 8.3: Przeżycie i wiek.
+</p>
+</div>
+<pre class="sourceCode r"><code class="sourceCode r">vcd<span class="op">::</span><span class="kw">assocstats</span>(a)</code></pre>
+<pre><code>##                     X^2 df   P(&gt; X^2)
+## Likelihood Ratio 19.561  1 9.7458e-06
+## Pearson          20.956  1 4.7008e-06
+## 
+## Phi-Coefficient   : 0.098 
+## Contingency Coeff.: 0.097 
+## Cramer&#39;s V        : 0.098</code></pre>
+<p>Także i w tym przypadku istnieje zależność między zmiennymi przeżycie oraz wiek,
+choć współczynnik korelacji nie jest zbyt wysoki i wynosi <span class="math inline">\(V = 0,098\)</span>.</p>
+<pre class="sourceCode r"><code class="sourceCode r">pa &lt;-<span class="st"> </span><span class="kw">prop.table</span>(a,<span class="dv">2</span>);pa</code></pre>
+<pre><code>##         Age
+## Survived     Child     Adult
+##      No  0.4770642 0.6873805
+##      Yes 0.5229358 0.3126195</code></pre>
+<p>Po obliczeniu wartości procentowych należy stwierdzić, że katastrofę przeżyła ponad połowa dzieci <span class="math inline">\((52\%)\)</span> oraz <span class="math inline">\(13\)</span> osób dorosłych <span class="math inline">\((31\%)\)</span>.</p>
+
+</div>
+<div id="part_83" class="section level2">
+<h2><span class="header-section-number">8.3</span> Model logitowy</h2>
+<p>Model logitowy daje dużo większe możliwości analizy tabel wielodzielczych niż test
+<span class="math inline">\(\chi^2\)</span>. Omawiane w poprzenim rozdziale testy niezależności są przeznaczone do badania
+zależności dwóch zmiennych jakościowych. Natomiast za pomocą modelu logitowego
+mamy możliwość analizy wielowymiarowych tabel kontyngencji. Jdnak warunek jaki
+musi zostać spełniony jest taki, aby zmienna zależna była zmienną binarną. W programie R dostępna jest funkcja <a href="https://rdrr.io/r/stats/glm.html"><code>glm</code></a> za pomocą której możemy estymować
+parametry modelu logitowego.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># ustawienie punktów odniesienia: Male oraz Adult:</span>
+tt &lt;-<span class="st"> </span><span class="kw">transform</span>(t,<span class="dt">Sex=</span><span class="kw">relevel</span>(Sex,<span class="dt">ref=</span><span class="st">&quot;Male&quot;</span>),<span class="dt">Age=</span><span class="kw">relevel</span>(Age,<span class="dt">ref=</span><span class="st">&quot;Adult&quot;</span>))
+logit1 &lt;-<span class="st"> </span><span class="kw">glm</span>(Survived<span class="op">~</span>.,tt,<span class="dt">family=</span>binomial)
+<span class="kw">summary</span>(logit1)</code></pre>
+<pre><code>## 
+## Call:
+## glm(formula = Survived ~ ., family = binomial, data = tt)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -2.0812  -0.7149  -0.6656   0.6858   2.1278  
+## 
+## Coefficients:
+##             Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept)  -0.3762     0.1362  -2.763  0.00573 ** 
+## Class2nd     -1.0181     0.1960  -5.194 2.05e-07 ***
+## Class3rd     -1.7778     0.1716 -10.362  &lt; 2e-16 ***
+## ClassCrew    -0.8577     0.1573  -5.451 5.00e-08 ***
+## SexFemale     2.4201     0.1404  17.236  &lt; 2e-16 ***
+## AgeChild      1.0615     0.2440   4.350 1.36e-05 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 2769.5  on 2200  degrees of freedom
+## Residual deviance: 2210.1  on 2195  degrees of freedom
+## AIC: 2222.1
+## 
+## Number of Fisher Scoring iterations: 4</code></pre>
+<p>Ten model jest dobrze dopasowany do danych. Potwierdzają to poniższe testy:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># test logarytmu wiarygodności:</span>
+lmtest<span class="op">::</span><span class="kw">lrtest</span>(logit1)</code></pre>
+<pre><code>## Likelihood ratio test
+## 
+## Model 1: Survived ~ Class + Sex + Age
+## Model 2: Survived ~ 1
+##   #Df  LogLik Df Chisq Pr(&gt;Chisq)    
+## 1   6 -1105.0                        
+## 2   1 -1384.7 -5 559.4  &lt; 2.2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># test reszt deviance:</span>
+<span class="kw">anova</span>(logit1,<span class="dt">test=</span><span class="st">&quot;Chisq&quot;</span>)</code></pre>
+<pre><code>## Analysis of Deviance Table
+## 
+## Model: binomial, link: logit
+## 
+## Response: Survived
+## 
+## Terms added sequentially (first to last)
+## 
+## 
+##       Df Deviance Resid. Df Resid. Dev  Pr(&gt;Chi)    
+## NULL                   2200     2769.5              
+## Class  3   180.90      2197     2588.6 &lt; 2.2e-16 ***
+## Sex    1   359.64      2196     2228.9 &lt; 2.2e-16 ***
+## Age    1    18.85      2195     2210.1 1.413e-05 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># adekwatność modelu:</span>
+<span class="dv">1</span><span class="op">-</span><span class="kw">pchisq</span>(<span class="kw">deviance</span>(logit1),logit1<span class="op">$</span>df.residual)</code></pre>
+<pre><code>## [1] 0.4063859</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># dyspersja:</span>
+<span class="kw">sum</span>(<span class="kw">resid</span>(logit1,<span class="dt">type=</span><span class="st">&quot;pearson&quot;</span>)<span class="op">^</span><span class="dv">2</span>)<span class="op">/</span><span class="kw">df.residual</span>(logit1)</code></pre>
+<pre><code>## [1] 1.023531</code></pre>
+<p>W kolejnym kroku obliczymy ilorazy wiarygodności na podstawie oszacowanych
+parametrów modelu.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">cbind</span>(<span class="dt">OR=</span><span class="kw">exp</span>(<span class="kw">coef</span>(logit1)))</code></pre>
+<pre><code>##                     OR
+## (Intercept)  0.6864493
+## Class2nd     0.3612825
+## Class3rd     0.1690159
+## ClassCrew    0.4241466
+## SexFemale   11.2465380
+## AgeChild     2.8908263</code></pre>
+<p>Interpretacja jest następująca:</p>
+<ul>
+<li><p>podróżowanie w drugiej klasie dało o <span class="math inline">\(64\%\)</span> mniej szans na przeżycie niż w
+pierwszej klasie,</p></li>
+<li><p>podróżowanie w trzeciej klasie dało o <span class="math inline">\(83\%\)</span> mniej szans na przeżycie niż w
+pierwszej klasie,</p></li>
+<li><p>załoga statku miała o <span class="math inline">\(58\%\)</span> mniej szans na przeżycie niż w pierwszej klasie,</p></li>
+<li><p>kobiety miały ponad <span class="math inline">\(11\)</span> razy większe szanse na przeżycie od mężczyzn,</p></li>
+<li><p>dzieci miały prawie <span class="math inline">\(2,9\)</span> razy większe szanse na przeżycie od dorosłych.</p></li>
+</ul>
+<p>Uogólnione modele liniowe dają także możliwość badania bardziej złożonych zależności między zmiennymi tzn. interakcji.</p>
+<pre class="sourceCode r"><code class="sourceCode r">logit2=<span class="kw">glm</span>(Survived<span class="op">~</span>.<span class="op">^</span><span class="dv">2</span>,tt,<span class="dt">family=</span>binomial) <span class="co"># interakcje rzędu 2.</span>
+logit3=<span class="kw">glm</span>(Survived<span class="op">~</span>.<span class="op">^</span><span class="dv">3</span>,tt,<span class="dt">family=</span>binomial) <span class="co"># interakcje rzędu 2 i 3.</span></code></pre>
+<p>Po estymacji kilku modeli, zawsze jesteśmy zainteresowani, który z nich wybrać.
+Takiego wyboru możemy dokonać np. na podstawie kryterium informacyjnego AIC.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">AIC</span>(logit1,logit2,logit3)</code></pre>
+<pre><code>##        df      AIC
+## logit1  6 2222.061
+## logit2 12 2121.495
+## logit3 14 2125.495</code></pre>
+<p>Zatem do dalszych analiz powinniśmy wybrać model <code>logit2</code> (z podwójnymi interakcjami) ponieważ charakteryzuje się najmiejszą wartością AIC. Naszą decyzję
+potwierdzają także inne statystyki np. badające adekwatność modelu:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="dv">1</span><span class="op">-</span><span class="kw">pchisq</span>(<span class="kw">deviance</span>(logit1),logit1<span class="op">$</span>df.residual)</code></pre>
+<pre><code>## [1] 0.4063859</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="dv">1</span><span class="op">-</span><span class="kw">pchisq</span>(<span class="kw">deviance</span>(logit2),logit2<span class="op">$</span>df.residual)</code></pre>
+<pre><code>## [1] 0.9181299</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="dv">1</span><span class="op">-</span><span class="kw">pchisq</span>(<span class="kw">deviance</span>(logit3),logit3<span class="op">$</span>df.residual)</code></pre>
+<pre><code>## [1] 0.9134249</code></pre>
+<p>oraz oceniające istotność poszczególnych interakcji:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">anova</span>(logit3,<span class="dt">test=</span><span class="st">&quot;Chisq&quot;</span>)</code></pre>
+<pre><code>## Analysis of Deviance Table
+## 
+## Model: binomial, link: logit
+## 
+## Response: Survived
+## 
+## Terms added sequentially (first to last)
+## 
+## 
+##               Df Deviance Resid. Df Resid. Dev  Pr(&gt;Chi)    
+## NULL                           2200     2769.5              
+## Class          3   180.90      2197     2588.6 &lt; 2.2e-16 ***
+## Sex            1   359.64      2196     2228.9 &lt; 2.2e-16 ***
+## Age            1    18.85      2195     2210.1 1.413e-05 ***
+## Class:Sex      3    66.67      2192     2143.4 2.206e-14 ***
+## Class:Age      2    44.21      2190     2099.2 2.507e-10 ***
+## Sex:Age        1     1.69      2189     2097.5    0.1942    
+## Class:Sex:Age  2     0.00      2187     2097.5    1.0000    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>Tak więc najlepszym modelem okazał się <code>logit2</code>.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(logit2)</code></pre>
+<pre><code>## 
+## Call:
+## glm(formula = Survived ~ .^2, family = binomial, data = tt)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -2.6771  -0.7099  -0.5952   0.2374   2.2293  
+## 
+## Coefficients: (1 not defined because of singularities)
+##                       Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept)           -0.72763    0.16130  -4.511 6.45e-06 ***
+## Class2nd              -1.67026    0.32240  -5.181 2.21e-07 ***
+## Class3rd              -0.91330    0.20478  -4.460 8.20e-06 ***
+## ClassCrew             -0.52215    0.18088  -2.887  0.00389 ** 
+## SexFemale              4.28298    0.53213   8.049 8.36e-16 ***
+## AgeChild              16.99213  920.38639   0.018  0.98527    
+## Class2nd:SexFemale    -0.06801    0.67120  -0.101  0.91929    
+## Class3rd:SexFemale    -2.79995    0.56875  -4.923 8.52e-07 ***
+## ClassCrew:SexFemale   -1.13608    0.82048  -1.385  0.16616    
+## Class2nd:AgeChild      0.84881 1005.81951   0.001  0.99933    
+## Class3rd:AgeChild    -16.34159  920.38646  -0.018  0.98583    
+## ClassCrew:AgeChild          NA         NA      NA       NA    
+## SexFemale:AgeChild    -0.68679    0.52541  -1.307  0.19116    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 2769.5  on 2200  degrees of freedom
+## Residual deviance: 2097.5  on 2189  degrees of freedom
+## AIC: 2121.5
+## 
+## Number of Fisher Scoring iterations: 15</code></pre>
+<p>Teraz obliczymy ilorazy wiarygodności aby je zinterpretować. Wyniki zostały zaokrąglone do dwóch miejsc po przecinku za pomocą funkcji <a href="https://rdrr.io/r/base/Round.html"><code>round</code></a>.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">cbind</span>(<span class="dt">OR=</span><span class="kw">round</span>(<span class="kw">exp</span>(<span class="kw">coef</span>(logit2)),<span class="dv">2</span>))</code></pre>
+<pre><code>##                              OR
+## (Intercept)                0.48
+## Class2nd                   0.19
+## Class3rd                   0.40
+## ClassCrew                  0.59
+## SexFemale                 72.46
+## AgeChild            23965569.64
+## Class2nd:SexFemale         0.93
+## Class3rd:SexFemale         0.06
+## ClassCrew:SexFemale        0.32
+## Class2nd:AgeChild          2.34
+## Class3rd:AgeChild          0.00
+## ClassCrew:AgeChild           NA
+## SexFemale:AgeChild         0.50</code></pre>
+<ul>
+<li><p>szansa przeżycia osób, które podróżowały w drugiej klasie była o <span class="math inline">\(81\%\)</span> mniejsza
+niż w pierwszej klasie,</p></li>
+<li><p>szansa przeżycia osób, które podróżowały w trzeciej klasie była o <span class="math inline">\(60\%\)</span> mniejsza niż w pierwszej klasie,</p></li>
+<li><p>szansa przeżycia załogi statku była o <span class="math inline">\(41\%\)</span> mniejsza niż w pierwszej klasie,</p></li>
+<li><p>kobiety miały ponad <span class="math inline">\(72\)</span> razy większe szanse na przeżycie od mężczyzn,</p></li>
+<li><p>dzieci miały również dużo większe szanse na przeżycie od dorosłych,</p></li>
+<li><p>szansa przeżycia kobiet, które podróżowały w trzeciej klasie była mniejsza o
+<span class="math inline">\(94\%\)</span> niż w pierwszej klasie,</p></li>
+<li><p>szansa przeżycia dzieci, które podróżowały w drugiej klasie była ponad <span class="math inline">\(2\)</span> razy
+większa niż w pierwszej klasie.</p></li>
+</ul>
+<p>Funkcja <a href="https://rdrr.io/r/stats/glm.html"><code>glm</code></a> umożliwia także wybór odpowiednich zmiennych do modelu. Jeśli
+np. chcielibyśmy oszacować model <code>logit2</code> ale tylko z istotnymi statystycznie parametrami to kod wyglądałby następująco:</p>
+<pre class="sourceCode r"><code class="sourceCode r">myl &lt;-<span class="st"> </span><span class="kw">glm</span>(Survived<span class="op">~</span>Class<span class="op">+</span>Sex<span class="op">+</span>Age<span class="op">+</span><span class="kw">I</span>(Class<span class="op">==</span><span class="st">&quot;3rd&quot;</span> <span class="op">&amp;</span><span class="st"> </span>Sex<span class="op">==</span><span class="st">&quot;Female&quot;</span>),tt,
+           <span class="dt">family=</span>binomial)
+<span class="kw">summary</span>(myl)</code></pre>
+<pre><code>## 
+## Call:
+## glm(formula = Survived ~ Class + Sex + Age + I(Class == &quot;3rd&quot; &amp; 
+##     Sex == &quot;Female&quot;), family = binomial, data = tt)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -2.5435  -0.7070  -0.5798   0.3842   2.0293  
+## 
+## Coefficients:
+##                                         Estimate Std. Error z value
+## (Intercept)                              -0.6337     0.1506  -4.208
+## Class2nd                                 -1.2888     0.2385  -5.404
+## Class3rd                                 -1.0642     0.1935  -5.500
+## ClassCrew                                -0.6252     0.1708  -3.661
+## SexFemale                                 3.8283     0.2715  14.098
+## AgeChild                                  1.0522     0.2306   4.563
+## I(Class == &quot;3rd&quot; &amp; Sex == &quot;Female&quot;)TRUE  -2.4578     0.3302  -7.443
+##                                         Pr(&gt;|z|)    
+## (Intercept)                             2.57e-05 ***
+## Class2nd                                6.52e-08 ***
+## Class3rd                                3.80e-08 ***
+## ClassCrew                               0.000252 ***
+## SexFemale                                &lt; 2e-16 ***
+## AgeChild                                5.05e-06 ***
+## I(Class == &quot;3rd&quot; &amp; Sex == &quot;Female&quot;)TRUE 9.81e-14 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 2769.5  on 2200  degrees of freedom
+## Residual deviance: 2145.1  on 2194  degrees of freedom
+## AIC: 2159.1
+## 
+## Number of Fisher Scoring iterations: 5</code></pre>
+
+</div>
+<div id="part_84" class="section level2">
+<h2><span class="header-section-number">8.4</span> Model logitowy</h2>
+<p>Innym sposobem analizy wielowymiarowych tabel kontyngencji jest zastosowanie
+modelu Poissona. Procedura estymacji i diagnostyki przebiega w taki sam sposób
+jak w przypadku modelu logitowego. Należy jednak pamiętać o tym, że w tego typu
+modelach zmienna zależna ma rozkład Poissona. A zatem nasz zbiór danych należy
+przekształcić.</p>
+<pre class="sourceCode r"><code class="sourceCode r">f &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">xtabs</span>(<span class="op">~</span>Survived<span class="op">+</span>Class<span class="op">+</span>Sex<span class="op">+</span>Age,tt))
+f[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>,]</code></pre>
+<pre><code>##   Survived Class  Sex   Age Freq
+## 1       No   1st Male Adult  118
+## 2      Yes   1st Male Adult   57
+## 3       No   2nd Male Adult  154</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">p1 &lt;-<span class="st"> </span><span class="kw">glm</span>(Freq<span class="op">~</span>.,f,<span class="dt">family=</span>poisson)
+p2 &lt;-<span class="st"> </span><span class="kw">glm</span>(Freq<span class="op">~</span>.<span class="op">^</span><span class="dv">2</span>,f,<span class="dt">family=</span>poisson)
+p3 &lt;-<span class="st"> </span><span class="kw">glm</span>(Freq<span class="op">~</span>.<span class="op">^</span><span class="dv">3</span>,f,<span class="dt">family=</span>poisson)
+p4 &lt;-<span class="st"> </span><span class="kw">glm</span>(Freq<span class="op">~</span>.<span class="op">^</span><span class="dv">4</span>,f,<span class="dt">family=</span>poisson)
+<span class="co"># kryteria informacyjne:</span>
+<span class="kw">AIC</span>(p1,p2,p3,p4)</code></pre>
+<pre><code>##    df       AIC
+## p1  7 1385.0654
+## p2 19  281.9902
+## p3 29  185.4021
+## p4 32  191.4021</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># adekwatność modelu:</span>
+<span class="dv">1</span><span class="op">-</span><span class="kw">pchisq</span>(<span class="kw">deviance</span>(p1),p1<span class="op">$</span>df.residual)</code></pre>
+<pre><code>## [1] 0</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="dv">1</span><span class="op">-</span><span class="kw">pchisq</span>(<span class="kw">deviance</span>(p2),p2<span class="op">$</span>df.residual)</code></pre>
+<pre><code>## [1] 0</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="dv">1</span><span class="op">-</span><span class="kw">pchisq</span>(<span class="kw">deviance</span>(p3),p3<span class="op">$</span>df.residual)</code></pre>
+<pre><code>## [1] 1</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="dv">1</span><span class="op">-</span><span class="kw">pchisq</span>(<span class="kw">deviance</span>(p4),p4<span class="op">$</span>df.residual)</code></pre>
+<pre><code>## [1] 0</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># istotność poszczególnych interakcji:</span>
+<span class="kw">anova</span>(p4,<span class="dt">test=</span><span class="st">&quot;Chisq&quot;</span>)</code></pre>
+<pre><code>## Analysis of Deviance Table
+## 
+## Model: poisson, link: log
+## 
+## Response: Freq
+## 
+## Terms added sequentially (first to last)
+## 
+## 
+##                        Df Deviance Resid. Df Resid. Dev  Pr(&gt;Chi)    
+## NULL                                      31     4953.1              
+## Survived                1   281.78        30     4671.4 &lt; 2.2e-16 ***
+## Class                   3   475.81        27     4195.5 &lt; 2.2e-16 ***
+## Sex                     1   768.32        26     3427.2 &lt; 2.2e-16 ***
+## Age                     1  2183.56        25     1243.7 &lt; 2.2e-16 ***
+## Survived:Class          3   180.90        22     1062.8 &lt; 2.2e-16 ***
+## Survived:Sex            1   434.47        21      628.3 &lt; 2.2e-16 ***
+## Survived:Age            1    19.56        20      608.7 9.746e-06 ***
+## Class:Sex               3   337.77        17      271.0 &lt; 2.2e-16 ***
+## Class:Age               3   154.35        14      116.6 &lt; 2.2e-16 ***
+## Sex:Age                 1     0.02        13      116.6 0.8882240    
+## Survived:Class:Sex      3    65.30        10       51.3 4.336e-14 ***
+## Survived:Class:Age      3    29.34         7       22.0 1.900e-06 ***
+## Survived:Sex:Age        1    12.17         6        9.8 0.0004857 ***
+## Class:Sex:Age           3     9.78         3        0.0 0.0205004 *  
+## Survived:Class:Sex:Age  3     0.00         0        0.0 1.0000000    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># ilorazy wiarygodności:</span>
+<span class="kw">cbind</span>(<span class="dt">OR=</span><span class="kw">round</span>(<span class="kw">exp</span>(<span class="kw">coef</span>(p3)),<span class="dv">1</span>))</code></pre>
+<pre><code>##                                           OR
+## (Intercept)                     1.180000e+02
+## SurvivedYes                     5.000000e-01
+## Class2nd                        1.300000e+00
+## Class3rd                        3.300000e+00
+## ClassCrew                       5.700000e+00
+## SexFemale                       0.000000e+00
+## AgeChild                        0.000000e+00
+## SurvivedYes:Class2nd            2.000000e-01
+## SurvivedYes:Class3rd            4.000000e-01
+## SurvivedYes:ClassCrew           6.000000e-01
+## SurvivedYes:SexFemale           7.250000e+01
+## SurvivedYes:AgeChild            9.354350e+10
+## Class2nd:SexFemale              2.500000e+00
+## Class3rd:SexFemale              6.800000e+00
+## ClassCrew:SexFemale             1.000000e-01
+## Class2nd:AgeChild               4.000000e-01
+## Class3rd:AgeChild               9.644408e+10
+## ClassCrew:AgeChild              0.000000e+00
+## SexFemale:AgeChild              2.000000e-01
+## SurvivedYes:Class2nd:SexFemale  9.000000e-01
+## SurvivedYes:Class3rd:SexFemale  1.000000e-01
+## SurvivedYes:ClassCrew:SexFemale 3.000000e-01
+## SurvivedYes:Class2nd:AgeChild   2.550000e+01
+## SurvivedYes:Class3rd:AgeChild   0.000000e+00
+## SurvivedYes:ClassCrew:AgeChild  0.000000e+00
+## SurvivedYes:SexFemale:AgeChild  5.000000e-01
+## Class2nd:SexFemale:AgeChild     2.500000e+00
+## Class3rd:SexFemale:AgeChild     1.310000e+01
+## ClassCrew:SexFemale:AgeChild    4.034000e+02</code></pre>
+<p>Na podstawie otrzymanych ilorazów wiarygodności możemy również sformułować
+kilka wniosków:</p>
+<ul>
+<li><p>szanse zgonu w poszczególnych klasach były większe niż w pierwszej klasie
+o: <span class="math inline">\(30\%\)</span> w klasie drugiej, ponad 3 razy większe w klasie trzeciej oraz prawie
+sześciokrotnie większe wśród załogi.</p></li>
+<li><p>szanse przeżycia w poszczególnych klasach były mniejsze niż w pierwszej klasie
+o: <span class="math inline">\(80\%\)</span> w klasie drugiej, <span class="math inline">\(60\%\)</span> w klasie trzeciej i <span class="math inline">\(40\%\)</span> wśród załogi. Z kolei szansa
+przeżycia kobiet była ponad <span class="math inline">\(72\)</span> razy większa niż mężczyzn, także dzieci miały
+wielokrotnie większe szanse na przeżycie niż dorośli.</p></li>
+<li><p>szanse przeżycia w poszczególnych klasach wśród kobiet były mniejsze niż dla
+kobiet podróżujących w pierwszej klasie o: <span class="math inline">\(10\%\)</span> w klasie drugiej, <span class="math inline">\(90\%\)</span> w klasie
+trzeciej i <span class="math inline">\(70\%\)</span> wśród żeńskiej załogi statku.</p></li>
+</ul>
+<p>W środowisku R dostępne są także inne funkcje za pomocą których możemy ana-
+lizować wielowymiarowe tabele wielodzielcze np. <a href="https://rdrr.io/cran/MASS/man/loglm.html"><code>MASS::loglm</code></a> lub <a href="https://rdrr.io/r/stats/loglin.html"><code>loglin</code></a>.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="part-7.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="part-9.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": ["NaPrzelajR.pdf", "NaPrzelajR.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html  lang="pl">
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Rozdział 2 Redukcja wymiaru | Na przełaj przez Data Mining z pakietem R</title>
+  <meta name="description" content="Zbiór przykładów użycia wybranych funkcji statystycznych i Data Mining dostępnych w programie R.">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
+
+  <meta property="og:title" content="Rozdział 2 Redukcja wymiaru | Na przełaj przez Data Mining z pakietem R" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Zbiór przykładów użycia wybranych funkcji statystycznych i Data Mining dostępnych w programie R." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Rozdział 2 Redukcja wymiaru | Na przełaj przez Data Mining z pakietem R" />
+  
+  <meta name="twitter:description" content="Zbiór przykładów użycia wybranych funkcji statystycznych i Data Mining dostępnych w programie R." />
+  
+
+<meta name="author" content="Przemysław Biecek, Krzysztof Trajkowski">
+
+
+<meta name="date" content="2019-04-08">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="index.html">
+<link rel="next" href="part-3.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; position: absolute; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; }
+pre.numberSource a.sourceLine:empty
+  { position: absolute; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Na przełaj przez Data Mining<br/> z pakietem R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Kilka słów zamiast wstępu</a></li>
+<li class="chapter" data-level="2" data-path="part-2.html"><a href="part-2.html"><i class="fa fa-check"></i><b>2</b> Redukcja wymiaru</a><ul>
+<li class="chapter" data-level="2.1" data-path="part-2.html"><a href="part-2.html#part_21"><i class="fa fa-check"></i><b>2.1</b> Analiza składowych głównych (PCA, ang. Principal Components Analysis)</a></li>
+<li class="chapter" data-level="2.2" data-path="part-2.html"><a href="part-2.html#part_22"><i class="fa fa-check"></i><b>2.2</b> Nieliniowe skalowanie wielowymiarowe (Sammon Mapping)</a></li>
+<li class="chapter" data-level="2.3" data-path="part-2.html"><a href="part-2.html#part_23"><i class="fa fa-check"></i><b>2.3</b> Skalowanie wielowymiarowe Kruskalla (MDS, ang. Multidimensional Scaling)</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="part-3.html"><a href="part-3.html"><i class="fa fa-check"></i><b>3</b> Analiza skupień</a><ul>
+<li class="chapter" data-level="3.1" data-path="part-3.html"><a href="part-3.html#part_31"><i class="fa fa-check"></i><b>3.1</b> Metoda k-średnich</a></li>
+<li class="chapter" data-level="3.2" data-path="part-3.html"><a href="part-3.html#part_32"><i class="fa fa-check"></i><b>3.2</b> Metoda grupowania wokół centroidów (PAM, ang. Partitioning Around Medoids)</a></li>
+<li class="chapter" data-level="3.3" data-path="part-3.html"><a href="part-3.html#part_33"><i class="fa fa-check"></i><b>3.3</b> Metoda aglomeracyjnego klastrowania hierarchicznego</a></li>
+<li class="chapter" data-level="3.4" data-path="part-3.html"><a href="part-3.html#part_34"><i class="fa fa-check"></i><b>3.4</b> Ile skupień wybrać?</a></li>
+<li class="chapter" data-level="3.5" data-path="part-3.html"><a href="part-3.html#part_35"><i class="fa fa-check"></i><b>3.5</b> Inne metody analizy skupień</a></li>
+<li class="chapter" data-level="3.6" data-path="part-3.html"><a href="part-3.html#part_36"><i class="fa fa-check"></i><b>3.6</b> Case study</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="part-4.html"><a href="part-4.html"><i class="fa fa-check"></i><b>4</b> Analiza dyskryminacji</a><ul>
+<li class="chapter" data-level="4.1" data-path="part-4.html"><a href="part-4.html#part_41"><i class="fa fa-check"></i><b>4.1</b> Dyskryminacja liniowa i kwadratowa</a></li>
+<li class="chapter" data-level="4.2" data-path="part-4.html"><a href="part-4.html#part_42"><i class="fa fa-check"></i><b>4.2</b> Metoda najbliższych sąsiadów</a></li>
+<li class="chapter" data-level="4.3" data-path="part-4.html"><a href="part-4.html#part_43"><i class="fa fa-check"></i><b>4.3</b> Naiwny klasyfikator Bayesowski</a></li>
+<li class="chapter" data-level="4.4" data-path="part-4.html"><a href="part-4.html#part_44"><i class="fa fa-check"></i><b>4.4</b> Drzewa decyzyjne</a></li>
+<li class="chapter" data-level="4.5" data-path="part-4.html"><a href="part-4.html#part_45"><i class="fa fa-check"></i><b>4.5</b> Lasy losowe</a></li>
+<li class="chapter" data-level="4.6" data-path="part-4.html"><a href="part-4.html#part_46"><i class="fa fa-check"></i><b>4.6</b> Inne klasyfikatory</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="part-5.html"><a href="part-5.html"><i class="fa fa-check"></i><b>5</b> Analiza kanoniczna</a><ul>
+<li class="chapter" data-level="5.1" data-path="part-5.html"><a href="part-5.html#part_51"><i class="fa fa-check"></i><b>5.1</b> Problem</a></li>
+<li class="chapter" data-level="5.2" data-path="part-5.html"><a href="part-5.html#part_52"><i class="fa fa-check"></i><b>5.2</b> Rozwiązanie</a></li>
+<li class="chapter" data-level="5.3" data-path="part-5.html"><a href="part-5.html#part_53"><i class="fa fa-check"></i><b>5.3</b> Założenia</a></li>
+<li class="chapter" data-level="5.4" data-path="part-5.html"><a href="part-5.html#part_54"><i class="fa fa-check"></i><b>5.4</b> Jak to zrobić w R</a></li>
+<li class="chapter" data-level="5.5" data-path="part-5.html"><a href="part-5.html#part_55"><i class="fa fa-check"></i><b>5.5</b> Przykładowe wyniki</a></li>
+<li class="chapter" data-level="5.6" data-path="part-5.html"><a href="part-5.html#part_56"><i class="fa fa-check"></i><b>5.6</b> Studium przypadku</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="part-6.html"><a href="part-6.html"><i class="fa fa-check"></i><b>6</b> Analiza korespondencji (odpowiedniości)</a><ul>
+<li class="chapter" data-level="6.1" data-path="part-6.html"><a href="part-6.html#part_61"><i class="fa fa-check"></i><b>6.1</b> Problem</a></li>
+<li class="chapter" data-level="6.2" data-path="part-6.html"><a href="part-6.html#part_62"><i class="fa fa-check"></i><b>6.2</b> Rozwiązanie</a></li>
+<li class="chapter" data-level="6.3" data-path="part-6.html"><a href="part-6.html#part_63"><i class="fa fa-check"></i><b>6.3</b> Jak to zrobić w R?</a></li>
+<li class="chapter" data-level="6.4" data-path="part-6.html"><a href="part-6.html#part_64"><i class="fa fa-check"></i><b>6.4</b> Studium przypadku</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="part-7.html"><a href="part-7.html"><i class="fa fa-check"></i><b>7</b> Przykład analizy szeregów czasowych</a><ul>
+<li class="chapter" data-level="7.1" data-path="part-7.html"><a href="part-7.html#part_71"><i class="fa fa-check"></i><b>7.1</b> Wprowadzenie</a></li>
+<li class="chapter" data-level="7.2" data-path="part-7.html"><a href="part-7.html#part_72"><i class="fa fa-check"></i><b>7.2</b> Identyfikacja trendu i sezonowości</a><ul>
+<li class="chapter" data-level="7.2.1" data-path="part-7.html"><a href="part-7.html#part_721"><i class="fa fa-check"></i><b>7.2.1</b> Analiza wariancji - ANOVA</a></li>
+<li class="chapter" data-level="7.2.2" data-path="part-7.html"><a href="part-7.html#part_722"><i class="fa fa-check"></i><b>7.2.2</b> Funkcja autokorelacji - ACF</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="part-7.html"><a href="part-7.html#part_73"><i class="fa fa-check"></i><b>7.3</b> Modele autoregresyjne ARIMA</a><ul>
+<li class="chapter" data-level="7.3.1" data-path="part-7.html"><a href="part-7.html#part_731"><i class="fa fa-check"></i><b>7.3.1</b> Estymacja</a></li>
+<li class="chapter" data-level="7.3.2" data-path="part-7.html"><a href="part-7.html#part_732"><i class="fa fa-check"></i><b>7.3.2</b> Weryfikacja</a></li>
+<li class="chapter" data-level="7.3.3" data-path="part-7.html"><a href="part-7.html#part_733"><i class="fa fa-check"></i><b>7.3.3</b> Prognozowanie</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="part-7.html"><a href="part-7.html#part_74"><i class="fa fa-check"></i><b>7.4</b> Modele adaptacyjne</a><ul>
+<li class="chapter" data-level="7.4.1" data-path="part-7.html"><a href="part-7.html#part_741"><i class="fa fa-check"></i><b>7.4.1</b> Estymacja</a></li>
+<li class="chapter" data-level="7.4.2" data-path="part-7.html"><a href="part-7.html#part_742"><i class="fa fa-check"></i><b>7.4.2</b> Prognozowanie</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="part-8.html"><a href="part-8.html"><i class="fa fa-check"></i><b>8</b> Przykład analizy tabel wielodzielczych</a><ul>
+<li class="chapter" data-level="8.1" data-path="part-8.html"><a href="part-8.html#part_81"><i class="fa fa-check"></i><b>8.1</b> Wprowadzenie</a></li>
+<li class="chapter" data-level="8.2" data-path="part-8.html"><a href="part-8.html#part_82"><i class="fa fa-check"></i><b>8.2</b> Test chi-kwadrat</a></li>
+<li class="chapter" data-level="8.3" data-path="part-8.html"><a href="part-8.html#part_83"><i class="fa fa-check"></i><b>8.3</b> Model logitowy</a></li>
+<li class="chapter" data-level="8.4" data-path="part-8.html"><a href="part-8.html#part_84"><i class="fa fa-check"></i><b>8.4</b> Model logitowy</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="part-9.html"><a href="part-9.html"><i class="fa fa-check"></i><b>9</b> Przykład badania rozkładu stopy zwrotu z akcji</a><ul>
+<li class="chapter" data-level="9.1" data-path="part-9.html"><a href="part-9.html#part_9.1"><i class="fa fa-check"></i><b>9.1</b> Wprowadzenie</a></li>
+<li class="chapter" data-level="9.2" data-path="part-9.html"><a href="part-9.html#part_9.2"><i class="fa fa-check"></i><b>9.2</b> Statystyki opisowe</a></li>
+<li class="chapter" data-level="9.3" data-path="part-9.html"><a href="part-9.html#part_9.3"><i class="fa fa-check"></i><b>9.3</b> Rozkład normalny</a></li>
+<li class="chapter" data-level="9.4" data-path="part-9.html"><a href="part-9.html#part_9.4"><i class="fa fa-check"></i><b>9.4</b> Rozkład Cauchy’ego</a></li>
+<li class="chapter" data-level="9.5" data-path="part-9.html"><a href="part-9.html#part_9.5"><i class="fa fa-check"></i><b>9.5</b> Rozkład Laplace’a</a></li>
+<li class="chapter" data-level="9.6" data-path="part-9.html"><a href="part-9.html#part_9.6"><i class="fa fa-check"></i><b>9.6</b> Rozkład Stabilny</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="part-10.html"><a href="part-10.html"><i class="fa fa-check"></i><b>10</b> Przykład budowy dynamicznego modelu liniowego</a><ul>
+<li class="chapter" data-level="10.1" data-path="part-10.html"><a href="part-10.html#part_10.1"><i class="fa fa-check"></i><b>10.1</b> Wprowadzenie</a></li>
+<li class="chapter" data-level="10.2" data-path="part-10.html"><a href="part-10.html#part_10.2"><i class="fa fa-check"></i><b>10.2</b> Badanie wewnętrznej struktury procesu</a><ul>
+<li class="chapter" data-level="10.2.1" data-path="part-10.html"><a href="part-10.html#part_10.2.1"><i class="fa fa-check"></i><b>10.2.1</b> Trend</a></li>
+<li class="chapter" data-level="10.2.2" data-path="part-10.html"><a href="part-10.html#part_10.2.2"><i class="fa fa-check"></i><b>10.2.2</b> Sezonowość</a></li>
+<li class="chapter" data-level="10.2.3" data-path="part-10.html"><a href="part-10.html#part_10.2.3"><i class="fa fa-check"></i><b>10.2.3</b> Stopień autoregresji – funkcja PACF</a></li>
+<li class="chapter" data-level="10.2.4" data-path="part-10.html"><a href="part-10.html#part_10.2.4"><i class="fa fa-check"></i><b>10.2.4</b> Stopień integracji – test ADF/PP</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="part-10.html"><a href="part-10.html#part_10.3"><i class="fa fa-check"></i><b>10.3</b> Weryfikacja modelu</a><ul>
+<li class="chapter" data-level="10.3.1" data-path="part-10.html"><a href="part-10.html#part_10.3.1"><i class="fa fa-check"></i><b>10.3.1</b> Estymacja dynamicznego modelu liniowego</a></li>
+<li class="chapter" data-level="10.3.2" data-path="part-10.html"><a href="part-10.html#part_10.3.2"><i class="fa fa-check"></i><b>10.3.2</b> Ocena jakości modelu</a></li>
+</ul></li>
+<li class="chapter" data-level="10.4" data-path="part-10.html"><a href="part-10.html#part_10.4"><i class="fa fa-check"></i><b>10.4</b> Diagnostyka modelu</a><ul>
+<li class="chapter" data-level="10.4.1" data-path="part-10.html"><a href="part-10.html#part_10.4.1"><i class="fa fa-check"></i><b>10.4.1</b> Normalność procesu resztowego</a></li>
+<li class="chapter" data-level="10.4.2" data-path="part-10.html"><a href="part-10.html#part_10.4.2"><i class="fa fa-check"></i><b>10.4.2</b> Autokorelacja procesu resztowego</a></li>
+<li class="chapter" data-level="10.4.3" data-path="part-10.html"><a href="part-10.html#part_10.4.3"><i class="fa fa-check"></i><b>10.4.3</b> Heteroskedastyczność procesu resztowego</a></li>
+<li class="chapter" data-level="10.4.4" data-path="part-10.html"><a href="part-10.html#part_10.4.4"><i class="fa fa-check"></i><b>10.4.4</b> Stabilność parametrów modelu</a></li>
+<li class="chapter" data-level="10.4.5" data-path="part-10.html"><a href="part-10.html#part_10.4.5"><i class="fa fa-check"></i><b>10.4.5</b> Postać analityczna modelu</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="part-11.html"><a href="part-11.html"><i class="fa fa-check"></i><b>11</b> Przegląd wybranych testów statystycznych</a><ul>
+<li class="chapter" data-level="11.1" data-path="part-11.html"><a href="part-11.html#part_11.1"><i class="fa fa-check"></i><b>11.1</b> Testy normalności</a></li>
+<li class="chapter" data-level="11.2" data-path="part-11.html"><a href="part-11.html#part_11.2"><i class="fa fa-check"></i><b>11.2</b> Testy asymptotyczne</a></li>
+<li class="chapter" data-level="11.3" data-path="part-11.html"><a href="part-11.html#part_11.3"><i class="fa fa-check"></i><b>11.3</b> Testy dla proporcji</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="part-12.html"><a href="part-12.html"><i class="fa fa-check"></i><b>12</b> Przykład analizy liczby przestępstw w Polsce w 2009 r.</a><ul>
+<li class="chapter" data-level="12.1" data-path="part-12.html"><a href="part-12.html#part_12.1"><i class="fa fa-check"></i><b>12.1</b> Wprowadzenie</a></li>
+<li class="chapter" data-level="12.2" data-path="part-12.html"><a href="part-12.html#part_12.2"><i class="fa fa-check"></i><b>12.2</b> Mapy</a></li>
+<li class="chapter" data-level="12.3" data-path="part-12.html"><a href="part-12.html#part_12.3"><i class="fa fa-check"></i><b>12.3</b> Analiza wariancji</a></li>
+<li class="chapter" data-level="12.4" data-path="part-12.html"><a href="part-12.html#part_12.4"><i class="fa fa-check"></i><b>12.4</b> Modele dla liczebności</a></li>
+<li class="chapter" data-level="12.5" data-path="part-12.html"><a href="part-12.html#part_12.5"><i class="fa fa-check"></i><b>12.5</b> Modele dla częstości</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="part-13.html"><a href="part-13.html"><i class="fa fa-check"></i><b>13</b> Modele regresji</a><ul>
+<li class="chapter" data-level="13.1" data-path="part-13.html"><a href="part-13.html#part_13.1"><i class="fa fa-check"></i><b>13.1</b> Wprowadzenie</a></li>
+<li class="chapter" data-level="13.2" data-path="part-13.html"><a href="part-13.html#part_13.2"><i class="fa fa-check"></i><b>13.2</b> Estymacja modelu liniowego</a><ul>
+<li class="chapter" data-level="13.2.1" data-path="part-13.html"><a href="part-13.html#part_13.2.1"><i class="fa fa-check"></i><b>13.2.1</b> Metoda najmniejszych kwadratów</a></li>
+<li class="chapter" data-level="13.2.2" data-path="part-13.html"><a href="part-13.html#part_13.2.2"><i class="fa fa-check"></i><b>13.2.2</b> Poprawność specyfikacji modelu</a></li>
+<li class="chapter" data-level="13.2.3" data-path="part-13.html"><a href="part-13.html#part_13.2.3"><i class="fa fa-check"></i><b>13.2.3</b> Normalność</a></li>
+<li class="chapter" data-level="13.2.4" data-path="part-13.html"><a href="part-13.html#part_13.2.4"><i class="fa fa-check"></i><b>13.2.4</b> Heteroskedastyczność</a></li>
+<li class="chapter" data-level="13.2.5" data-path="part-13.html"><a href="part-13.html#part_13.2.5"><i class="fa fa-check"></i><b>13.2.5</b> Obserwacje odstające</a></li>
+<li class="chapter" data-level="13.2.6" data-path="part-13.html"><a href="part-13.html#part_13.2.6"><i class="fa fa-check"></i><b>13.2.6</b> Metoda najmniejszych wartości bezwzględnych</a></li>
+</ul></li>
+<li class="chapter" data-level="13.3" data-path="part-13.html"><a href="part-13.html#part_13.3"><i class="fa fa-check"></i><b>13.3</b> Estymacja modelu nieliniowego</a><ul>
+<li class="chapter" data-level="13.3.1" data-path="part-13.html"><a href="part-13.html#part_13.3.1"><i class="fa fa-check"></i><b>13.3.1</b> Model kwadratowy</a></li>
+<li class="chapter" data-level="13.3.2" data-path="part-13.html"><a href="part-13.html#part_13.3.2"><i class="fa fa-check"></i><b>13.3.2</b> Model wykładniczy</a></li>
+<li class="chapter" data-level="13.3.3" data-path="part-13.html"><a href="part-13.html#part_13.3.3"><i class="fa fa-check"></i><b>13.3.3</b> Model hiperboliczny</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="part-14.html"><a href="part-14.html"><i class="fa fa-check"></i><b>14</b> Zbiory danych</a><ul>
+<li class="chapter" data-level="14.1" data-path="part-14.html"><a href="part-14.html#part_14.1"><i class="fa fa-check"></i><b>14.1</b> Zbiór danych GUSowskich</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="bibliografia.html"><a href="bibliografia.html"><i class="fa fa-check"></i>Bibliografia</a></li>
+<li class="divider"></li>
+<li><a href="http://www.biecek.pl/NaPrzelajPrzezDataMining/" target="blank">strona projektu</a></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Na przełaj przez Data Mining z pakietem R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="part_2" class="section level1">
+<h1><span class="header-section-number">Rozdział 2</span> Redukcja wymiaru</h1>
+<p>Metody redukcji wymiaru umożliwiają przedstawienie obserwacji w przestrzeni o
+zadanym wymiarze, niższym niż w przypadku oryginalnych danych.</p>
+<p>Przedstawimy wybrane metody na przykładzie danych z różnych województw
+(zbiór danych <code>daneGUS</code>, patrz ostatni rozdział). Dla każdego z województw zebrano informację o liczbie studentów w tych województwach w rozbiciu na 16 grup
+kierunków. Każde województwo jest więc opisane wektorem 16 liczb.</p>
+<p>Przypuśćmy, że chcemy przedstawić graficznie te województwa. Jak uwzględnić
+wszystkie 16 parametrów? Jednym z rozwiązań jest użycie metod redukcji wymiaru i
+liczby zmiennych z 16 do 2. Opisanie każdego z województw dwoma liczbami ułatwi
+przedstawianie graficzne tych województw.</p>
+<p>Więc do dzieła!</p>
+<p>Redukcja wymiaru często jest pośrednim etapem w zagadnieniu klasyfikacji, analizy skupień czy regresji. W określonych sytuacjach pozwala na poprawę skuteczności
+tych metod, zwiększa stabilność a czasem pozwala na uwzględnienie w analizach dużej liczby zmiennych. Jest też popularnie wykorzystywaną metodą do wizualizacji
+wielowymiarowych zmiennych, dane są redukowane do przestrzeni dwuwymiarowej,
+w której już łatwo je przedstawić na wykresie. Metody z tej grupy są również nazywane metodami ekstrakcji cech, ponieważ w wyniku redukcji wymiaru tworzone są
+nowe cechy, które mogą być wykorzystane do innych zagadnień.</p>
+
+<div id="part_21" class="section level2">
+<h2><span class="header-section-number">2.1</span> Analiza składowych głównych (PCA, ang. Principal Components Analysis)</h2>
+<p>Analiza składowych głównych służy do wyznaczania nowych zmiennych, których
+możliwie mały podzbiór będzie mówił możliwie dużo o całej zmienności w zbiorze
+danych. Nowy zbiór zmiennych będzie tworzył bazę ortogonalną w przestrzeni cech.
+Zmienne będą wybierane w ten sposób by pierwsza zmienna odwzorowywała możliwie dużo zmienności w danych (po zrzutowaniu obserwacji na ten wektor, chcemy by
+wariancja rzutów była najwyższa). Po wyznaczeniu pierwszej zmiennej wyznaczamy
+drugą, tak by była ortogonalna do pierwszej, i wyjaśniała możliwie dużo pozostałej
+zmienności, kolejną zmienną wybieramy tak by była ortogonalna do dwóch pierwszych itd.</p>
+<p>Tak uzyskany zbiór wektorów tworzy bazę ortogonalną w przestrzeni cech, a co
+więcej pierwsze współrzędne wyjaśniają większość zmienności w obserwacjach. Celem metody składowych głównych jest więc znalezienie transformacji układu współrzędnych, która lepiej opisze zmienność pomiędzy obserwacjami. Przykład takiej
+transformacji pokazujemy na rysunku <a href="part-2.html#fig:PCA">2.1</a>. Przedstawiamy obserwacje w oryginalnym układzie współrzędnych (lewy rysunek) i w nowym układzie współrzędnych
+(prawy rysunek).</p>
+<div class="figure" style="text-align: center"><span id="fig:PCA"></span>
+<img src="PCAprzykald.png" alt="Przykład transformacji zmiennych z użyciem metody PCA." width="100%" />
+<p class="caption">
+Rysunek 2.1: Przykład transformacji zmiennych z użyciem metody PCA.
+</p>
+</div>
+<p>W pakiecie R dostępnych jest kilka implementacji metody składowych głównych.
+Przedstawione poniżej najpopularniejsze wersje znajdują się w funkcjach <a href="https://rdrr.io/r/stats/prcomp.html"><code>prcomp(stats)</code></a>
+i <a href="https://rdrr.io/r/stats/princomp.html"><code>princomp(stats)</code></a> z pakietu <a href="https://rdrr.io/r/#stats"><code>stats</code></a>. Inne popularne wersje znaleźć można w funkcjach <a href="https://rdrr.io/cran/FactoMineR/man/PCA.html"><code>PCA(FactoMineR)</code></a>, <a href="https://rdrr.io/r/stats/cmdscale.html"><code>cmdscale(stats)</code></a> lub <code>pca(pcurve)</code>.</p>
+<p>Poszczególne implementacje różnią się metodami wykorzystanymi do znalezienia
+nowego układu zmiennych. W przypadku funkcji <a href="https://rdrr.io/r/stats/princomp.html">prcomp()</a> nowe zmienne wyznaczane są z z użyciem dekompozycji na wartości osobliwe SVD. Ten sposób wyznaczania
+składowych głównych jest zalecany z uwagi na dużą dokładność numeryczną. W
+funkcji <a href="https://rdrr.io/r/stats/princomp.html">princomp()</a> składowe główne są wyznaczane poprzez wektory własne macierzy kowariancji pomiędzy zmiennymi, używana jest więc dekompozycja spektralna.
+Teoretyczne właściwości wyznaczonych składowych głównych będą identyczne, jednak w określonych sytuacjach otrzymane wyniki dla poszczególnych funkcji mogą
+się różnić.</p>
+<p>Poniższy kod pokazuje w jaki sposób działa funkcja <a href="https://rdrr.io/r/stats/princomp.html">princomp()</a>. Wyznaczane
+są wektory własne macierzy kowariancji, tworzą one macierz przekształcenia dla
+danych.</p>
+<pre><code>kowariancja = cov(dane)
+eig = eigen(kowariancja)
+noweDane = dane %*% eig$vectors</code></pre>
+<p>Poniższy kod pokazuje w jaki sposób działa funkcja <code>prcomp()</code>. Wykorzystywana
+jest dekompozycja SVD.</p>
+<pre><code>svdr = svd(dane)
+noweDane = dane %*% svdr$v</code></pre>
+<p>Obu funkcji do wyznaczania składowych głównych używa się w podobny sposób,
+kolejne argumenty określają zbiór danych (można wskazać macierz, ramkę danych,
+lub formułę określającą które zmienne mają być transformowane) oraz informacje
+czy zmienne powinny być uprzednio wycentrowane i przeskalowane. To czy dane
+przed wykonaniem analizy składowych głównych mają być przeskalowane zależy od
+rozwiązywanego problemu, w większości sytuacji skalowanie pozwala usunąć wpływ
+takich artefaktów jak różne jednostki dla poszczególnych zmiennych. W obiektach
+przekazywanych jako wynik przez obie funkcje przechowywane są podobne informa-
+cje, choć w polach o różnej nazwie. Wynikiem funkcji <a href="https://rdrr.io/r/stats/princomp.html"><code>prcomp()</code></a> jest obiekt klasy
+<code>prcomp</code>, którego pola są wymienione w tabeli <a href="part-2.html#tab:tab01">2.1</a>.</p>
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:tab01">Tabela 2.1: </span>Pola obiektu klasy <span class="math inline">\(\texttt{prcomp}\)</span>.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+.
+</th>
+<th style="text-align:left;">
+opis
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;border-right:1px solid;">
+<span class="math inline">\(\texttt{\$sdev}\)</span>
+</td>
+<td style="text-align:left;width: 35em; ">
+Wektor odchyleń standardowych dla obserwacji. Kolejne zmienne odpowiadają odchyleniom standardowym liczonym dla kolejnych składowych głównych.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;border-right:1px solid;">
+<span class="math inline">\(\texttt{\$rotation}\)</span>
+</td>
+<td style="text-align:left;width: 35em; ">
+Macierz obrotu przekształcająca oryginalny układ współrzędnych w nowy układ współrzędnych.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;border-right:1px solid;">
+<span class="math inline">\(\texttt{\$center}\)</span>
+</td>
+<td style="text-align:left;width: 35em; ">
+Wektor wartości wykorzystanych przy centrowaniu obserwacji.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;border-right:1px solid;">
+<span class="math inline">\(\texttt{\$scale}\)</span>
+</td>
+<td style="text-align:left;width: 35em; ">
+Wektor wartości wykorzystanych przy skalowaniu obserwacji.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;border-right:1px solid;">
+<span class="math inline">\(\texttt{\$x}\)</span>
+</td>
+<td style="text-align:left;width: 35em; ">
+Macierz współrzędznych kolejnych obserwacji w nowym
+układzie współrzędnych, macierz ta ma identyczne wymiary co oryginalny zbiór zmiennych.
+</td>
+</tr>
+</tbody>
+</table>
+<p>Dla obiektów klasy prcomp dostępne są przeciążone wersje funkcji <code>plot()</code>, <code>summary()</code>,
+<code>biplot()</code>. Poniżej przedstawiamy przykładowe wywołanie tych funkcji. Graficzny
+wynik ich działania jest przedstawiony na rysunku <a href="part-2.html#fig:wy212">2.2</a>. Lewy rysunek przedstawia
+wynik dla funkcji <code>plot()</code> a prawy przedstawia wynik funkcji <code>biplot()</code> wykonanych
+dla argumentu klasy <code>prcomp</code>. Na lewym rysunku przedstawione są wariancje wyjaśnione przez kolejne wektory nowego układu współrzędnych. Ta informacja jest
+podawana również przez funkcje <code>summary()</code>. Prawy rysunek przedstawia biplot, na
+którym umieszczone są dwa wykresy. Jeden przedstawia indeksy obserwacji przedstawione na układzie współrzędnych określonych przez dwie pierwsze składowe główne
+(w tym przypadku dwie współrzędne wyjaśniają około <span class="math inline">\(50\%\)</span> całej zmienności). Drugi
+rysunek przedstawia kierunki w których działają oryginalne zmienne, innymi słowy
+przedstawiają jak wartość danej zmiennej wpływa na wartości dwóch pierwszych
+składowych głównych.</p>
+<p>Jeżeli wektory mają przeciwne zwroty to dane zmienne są ujemnie skorelowane
+(nie można jednak ocenić wartości korelacji), jeżeli zwroty są prostopadłe to zmienne są nieskorelowane, a jeżeli zwroty są bliskie to zmienne są dodatnio skorelowane.</p>
+<pre class="sourceCode r"><code class="sourceCode r">daneO &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;http://www.biecek.pl/R/dane/daneO.csv&quot;</span>,<span class="dt">sep=</span><span class="st">&quot;;&quot;</span>,<span class="dt">header =</span> <span class="ot">TRUE</span>)
+<span class="co"># przygotowujemy dane, usuwamy zmienne jakościowe i brakujące przypadki</span>
+dane =<span class="st"> </span><span class="kw">na.omit</span>(daneO[,<span class="op">-</span><span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>)])
+<span class="co"># wykonujemy analizę składowych głównych, normalizując wcześniej zmienne</span>
+wynik =<span class="st"> </span><span class="kw">prcomp</span>(dane, <span class="dt">scale=</span>T)
+<span class="co"># jak wygląda obiekt z wynikami od środka</span>
+<span class="kw">str</span>(wynik)</code></pre>
+<pre><code>## List of 5
+##  $ sdev    : num [1:5] 1.153 1.068 0.963 0.916 0.873
+##  $ rotation: num [1:5, 1:5] 0.5016 0.0935 -0.4244 0.4878 -0.5671 ...
+##   ..- attr(*, &quot;dimnames&quot;)=List of 2
+##   .. ..$ : chr [1:5] &quot;Wiek&quot; &quot;Rozmiar.guza&quot; &quot;Wezly.chlonne&quot; &quot;Okres.bez.wznowy&quot; ...
+##   .. ..$ : chr [1:5] &quot;PC1&quot; &quot;PC2&quot; &quot;PC3&quot; &quot;PC4&quot; ...
+##  $ center  : Named num [1:5] 45.417 1.271 0.417 37.406 2640.896
+##   ..- attr(*, &quot;names&quot;)= chr [1:5] &quot;Wiek&quot; &quot;Rozmiar.guza&quot; &quot;Wezly.chlonne&quot; &quot;Okres.bez.wznowy&quot; ...
+##  $ scale   : Named num [1:5] 6.206 0.447 0.496 9.527 3616.045
+##   ..- attr(*, &quot;names&quot;)= chr [1:5] &quot;Wiek&quot; &quot;Rozmiar.guza&quot; &quot;Wezly.chlonne&quot; &quot;Okres.bez.wznowy&quot; ...
+##  $ x       : num [1:96, 1:5] -1.5446 0.0105 -1.4565 -1.2352 -1.2541 ...
+##   ..- attr(*, &quot;dimnames&quot;)=List of 2
+##   .. ..$ : chr [1:96] &quot;1&quot; &quot;2&quot; &quot;3&quot; &quot;4&quot; ...
+##   .. ..$ : chr [1:5] &quot;PC1&quot; &quot;PC2&quot; &quot;PC3&quot; &quot;PC4&quot; ...
+##  - attr(*, &quot;class&quot;)= chr &quot;prcomp&quot;</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># zamiast obrazka możemy tę informację mieć przedstawioną jako ramkę danych</span>
+<span class="kw">summary</span>(wynik)</code></pre>
+<pre><code>## Importance of components:
+##                           PC1    PC2    PC3    PC4    PC5
+## Standard deviation     1.1534 1.0684 0.9629 0.9157 0.8733
+## Proportion of Variance 0.2661 0.2283 0.1854 0.1677 0.1525
+## Cumulative Proportion  0.2661 0.4943 0.6798 0.8475 1.0000</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mfcol=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))
+<span class="co"># ten wykres przedstawia ile wariancji jest wyjaśnione przez kolejne zmienne</span>
+<span class="kw">plot</span>(wynik)
+<span class="co"># narysujmy biplot dla tych wyników</span>
+<span class="kw">biplot</span>(wynik)</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:wy212"></span>
+<img src="NaPrzelajR_files/figure-html/wy212-1.png" alt="Graficzna reprezenacja wyników funkcji prcomp()." width="70%" />
+<p class="caption">
+Rysunek 2.2: Graficzna reprezenacja wyników funkcji prcomp().
+</p>
+</div>
+<p>I jeszcze przykład dla danych GUSowskich</p>
+<pre class="sourceCode r"><code class="sourceCode r">daneGUS &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;http://www.biecek.pl/R/dane/Dane2007GUS.csv&quot;</span>, <span class="dt">sep=</span><span class="st">&quot;;&quot;</span>, <span class="dt">h=</span>T, <span class="dt">dec=</span><span class="st">&quot;,&quot;</span>)
+<span class="co"># przygotowujemy dane, wybieramy tylko kolumny dotyczące studentów</span>
+dane =<span class="st"> </span>daneGUS[,<span class="dv">5</span><span class="op">:</span><span class="dv">19</span>]
+<span class="co"># wykonujemy analizę składowych głównych</span>
+wynik =<span class="st"> </span><span class="kw">prcomp</span>(dane, <span class="dt">scale=</span>T)
+<span class="co"># zamiast obrazka możemy tę informację mieć przedstawioną jako ramkę danych</span>
+<span class="kw">summary</span>(wynik)</code></pre>
+<pre><code>## Importance of components:
+##                           PC1     PC2     PC3     PC4    PC5     PC6
+## Standard deviation     3.3274 1.19941 0.84435 0.74182 0.5666 0.50895
+## Proportion of Variance 0.7381 0.09591 0.04753 0.03669 0.0214 0.01727
+## Cumulative Proportion  0.7381 0.83400 0.88153 0.91821 0.9396 0.95688
+##                            PC7     PC8     PC9    PC10    PC11    PC12
+## Standard deviation     0.45921 0.42930 0.36576 0.25868 0.16275 0.11174
+## Proportion of Variance 0.01406 0.01229 0.00892 0.00446 0.00177 0.00083
+## Cumulative Proportion  0.97094 0.98323 0.99215 0.99661 0.99837 0.99920
+##                           PC13    PC14     PC15
+## Standard deviation     0.09009 0.06113 0.008919
+## Proportion of Variance 0.00054 0.00025 0.000010
+## Cumulative Proportion  0.99975 0.99999 1.000000</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mfcol=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))
+<span class="co"># ten wykres przedstawia ile wariancji jest wyjaśnione przez kolejne zmienne</span>
+<span class="kw">plot</span>(wynik)
+<span class="co"># narysujmy biplot dla tych wyników</span>
+<span class="kw">biplot</span>(wynik)</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:wy213"></span>
+<img src="NaPrzelajR_files/figure-html/wy213-1.png" alt="Graficzna reprezenacja wyników PCA dla danych GUSowych." width="70%" />
+<p class="caption">
+Rysunek 2.3: Graficzna reprezenacja wyników PCA dla danych GUSowych.
+</p>
+</div>
+<p>Zobaczmy jak wygląda macierz przekształcenia. Można z niej odczytać w jaki
+sposób poszczególne współrzędne wpływają na kolejne składowe.</p>
+<p>W przypadku pierwszej składowej współczynniki przy praktycznie każdej zmiennej wynoszą około <span class="math inline">\(-0,25\)</span>. W przybliżeniu oznacza to, że pierwsza składowa będzie
+odpowiadała -łącznej liczbie studentów w danym województwie. A więc im więcej
+studentów tym mniejsza wartość pierwszej składowej.</p>
+<p>Druga składowa jest już ciekawsza, ponieważ różnym województwom odpowiadają różne współczynniki. Województwa o dużych wartościach na drugiej składowej
+to województwa z “nadreprezentacją” studentów z kierunków społecznych, dziennikarstwa, matematyki i ochrony a “niedomiarze” studentów z nauk biologicznych, fizycznych, informatycznych i produkcji.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># macierz przekształcenia</span>
+wynik<span class="op">$</span>rotation[,<span class="dv">1</span><span class="op">:</span><span class="dv">4</span>]</code></pre>
+<pre><code>##                                             PC1         PC2         PC3
+## studenci.artystyczne                 -0.2668431 -0.01935350 -0.39012931
+## studenci.spoleczne                   -0.2769475  0.21209089 -0.06445972
+## studenci.ekonomia                    -0.2908474  0.03508728 -0.12031553
+## studenci.prawne                      -0.2724967  0.04551798 -0.11257234
+## studenci.dziennikarstwo              -0.2258601  0.34018454  0.43605864
+## studenci.biologiczne                 -0.2496580 -0.16285221  0.32214165
+## studenci.fizyczne                    -0.2604590 -0.22242474 -0.24023057
+## studenci.matematyczno.statystyczne   -0.2599768  0.29657185  0.03841079
+## studenci.informatyczne               -0.2621867 -0.24703158 -0.01225057
+## studenci.medyczne                    -0.2654754 -0.10490797 -0.44763987
+## studenci.inzynieryjno.techniczne     -0.2913698 -0.05414636  0.02117248
+## studenci.produkcja.i.przetworstwo    -0.2521053 -0.20996741  0.24515891
+## studenci.architektura.i.budownictwo  -0.2621286 -0.08025265  0.42188743
+## studenci.na.ochrona.srodowiska       -0.2744594 -0.11530401  0.07394037
+## studenci.na.ochrona.i.bezpieczenstwo -0.1129936  0.72998765 -0.13728919
+##                                              PC4
+## studenci.artystyczne                  0.06339131
+## studenci.spoleczne                   -0.18107667
+## studenci.ekonomia                     0.01692755
+## studenci.prawne                       0.27527826
+## studenci.dziennikarstwo               0.37212854
+## studenci.biologiczne                  0.40296643
+## studenci.fizyczne                     0.28846603
+## studenci.matematyczno.statystyczne    0.13851583
+## studenci.informatyczne               -0.33688023
+## studenci.medyczne                     0.09636022
+## studenci.inzynieryjno.techniczne     -0.08996322
+## studenci.produkcja.i.przetworstwo    -0.39126146
+## studenci.architektura.i.budownictwo  -0.15234913
+## studenci.na.ochrona.srodowiska       -0.29601767
+## studenci.na.ochrona.i.bezpieczenstwo -0.29845944</code></pre>
+
+</div>
+<div id="part_22" class="section level2">
+<h2><span class="header-section-number">2.2</span> Nieliniowe skalowanie wielowymiarowe (Sammon Mapping)</h2>
+<p>W przypadku metody PCA nowe współrzędne konstruowano tak, by były one kombinacjami liniowymi oryginalnych danych. To oczywiście nie jest jedyna możliwość konstrukcji nowych zmiennych. Postawmy zagadnienie skalowania następująco.</p>
+<p>Dane: mamy <span class="math inline">\(n\)</span> obiektów oraz macierz odległości pomiędzy każdą parą obiektów.
+Oznaczmy przez <span class="math inline">\(d_ij\)</span> odległość pomiędzy obiektem <span class="math inline">\(i\)</span>-tym i <span class="math inline">\(j\)</span>-tym.
+Szukane: reprezentacja obiektów w przestrzeni <span class="math inline">\(k\)</span> wymiarowej, tak by zminimalizować
+<span class="math display">\[
+stress=\frac{\sum_{ij}(d_{ij}-\bar{d}_{ij})^2/d_{ij}}{\sum_{ij}d_{ij}}
+\]</span>
+gdzie <span class="math inline">\(\tilde{d}_{ij}\)</span> to odległość pomiędzy obiektami <span class="math inline">\(i\)</span> i <span class="math inline">\(j\)</span> w nowej <span class="math inline">\(k\)</span>-wymiarowej przestrzeni.</p>
+<p>Innymi słowy, szukamy (niekoniecznie liniowego) przekształcenia, które możliwie
+najwierniej (w sensie ważonego błędu kwadratowego) zachowa odległości pomiędzy
+obiektami. Takie przekształcenie poszukiwane jest iteracyjnie.</p>
+<p>Jak to zrobić w R? Można np. używając funkcji <code>sammon(MASS)</code>. Pierwszym argumentem tej funkcji powinna być macierz odległości pomiędzy obiektami (np. wynik
+funkcji <code>dist()</code>) a argument <code>k</code> określa na iluwymiarową przestrzeń chcemy skalować dane (domyślnie <span class="math inline">\(k = 2\)</span>).</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># wyznaczamy macierz odległości</span>
+odleglosci =<span class="st"> </span><span class="kw">dist</span>(dane)
+<span class="co"># wyznaczamy nowe współrzędne w przestrzeni dwuwymiarowej</span>
+noweSammon =<span class="st"> </span>MASS<span class="op">::</span><span class="kw">sammon</span>(odleglosci, <span class="dt">k=</span><span class="dv">2</span>, <span class="dt">trace=</span><span class="ot">FALSE</span>)
+<span class="co"># jak wyglądają nowe współrzędne</span>
+<span class="kw">head</span>(noweSammon<span class="op">$</span>points)</code></pre>
+<pre><code>##                          [,1]      [,2]
+## DOLNOSLASKIE        15211.180 3403.2348
+## KUJAWSKO-POMORSKIE  -7063.770 3448.9048
+## LODZKIE              1251.418 -916.5612
+## LUBELSKIE           -4912.805 1058.6175
+## LUBUSKIE           -12775.224 3090.0001
+## MALOPOLSKIE         21526.869 1963.5498</code></pre>
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:tab22">Tabela 2.2: </span>Pola obiektu będącego wynikiem funkcji sammon().
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+.
+</th>
+<th style="text-align:left;">
+opis
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;border-right:1px solid;">
+<span class="math inline">\(\texttt{\$points}\)</span>
+</td>
+<td style="text-align:left;width: 35em; ">
+Macierz współrzędnych obiektów w nowej <span class="math inline">\(k\)</span>-wymiarowej przestrzeni.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;border-right:1px solid;">
+<span class="math inline">\(\texttt{\$stress}\)</span>
+</td>
+<td style="text-align:left;width: 35em; ">
+Uzyskana wartość optymalizowanego parametru stresu.
+</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+<div id="part_23" class="section level2">
+<h2><span class="header-section-number">2.3</span> Skalowanie wielowymiarowe Kruskalla (MDS, ang. Multidimensional Scaling)</h2>
+<p>Jak już wspominaliśmy, metody redukcji wymiaru są często wykorzystywane do wizualizacji danych. W przypadku analizy składowych głównych po znalezieniu współrzędnych obiektów w nowej bazie wystarczy wziąć dwie pierwsze współrzędne by móc przedstawiać zbiór obserwacji na wykresie dwuwymiarowym, trzy pierwsze by móc
+przedstawić zbiór obserwacji na wykresie trójwymiarowym itp. Wadą analizy składowych głównych jest uwzględnianie wyłącznie zmiennych ilościowych. Kolejnym
+minusem jest konieczność posiadania wartości pomiarów dla kolejnych zmiennych,
+nie można tej metody użyć w sytuacji gdy mamy wyłącznie informacje o podobieństwie lub odległości pomiędzy obiektami.</p>
+<p>Metody skalowania Sammona i Kruskala nie mają tych wad. Są to metody ekstrakcji cech, na podstawie macierzy odległości lub macierzy niepodobieństwa pomiędzy obiektami. Celem tych metod jest wyznaczenie współrzędnych w nowym
+układzie współrzędnych, w taki sposób by odległości pomiędzy obiektami w nowym
+układzie współrzędnych były podobne do oryginalnych odległości pomiędzy obiektami. Przykład skalowania wielowymiarowego przedstawiliśmy na rysunku 2.4.</p>
+W przypadku skalowania Kruskala minimalizowana jest wartość
+<span class="math display">\[
+stress=\frac{\sum_{ij}(f(d_{ij})-\tilde{d}_{ij})^2}{\sum_{ij}f(d_{ij})^2},
+\]</span>
+gdzie <span class="math inline">\(\tilde{d}_{ij}\)</span> to odległość pomiędzy obiektami <span class="math inline">\(i\)</span> i <span class="math inline">\(j\)</span> w nowej <span class="math inline">\(k\)</span>-wymiarowej przestrzeni a d ij to oryginalne odległości pomiędzy obiektami przekształcone przez pewną monotoniczną funkcję <span class="math inline">\(f()\)</span> (więc <span class="math inline">\(d_{ij}\)</span> i <span class="math inline">\(\tilde{d}_{ij}\)</span> mogą być w różnych skalach!).
+<div class="figure" style="text-align: center"><span id="fig:MDS"></span>
+<img src="isoMDSprzykald.png" alt="Przykład skalowania wielowymiarowego." width="100%" />
+<p class="caption">
+Rysunek 2.4: Przykład skalowania wielowymiarowego.
+</p>
+</div>
+<p>Skalowanie wielowymiarowe jest w R dostępne w kilku funkcjach:</p>
+<ul>
+<li><p>funkcja <code>isoMDS(MASS)</code> wyznacza niemetryczne skalowanie Kruskala,</p></li>
+<li><p>funkcja <code>sammon(MASS)</code> wyznacza niemetryczne skalowanie Sammona (patrz
+poprzedni podrozdział [TODO: uspójnić!!]),</p></li>
+<li><p>funkcja <code>cmdscale(stats)</code> wyznacza skalowanie metryczne inaczej PCA (patrz
+poprzedni podrozdział [TODO: uspójnić!!]).</p></li>
+</ul>
+<p>Poniżej przedstawimy przykłady użycia dla funkcji isoMDS(), z pozostałych korzysta
+się podobnie. Najważniejszym argumentem wejściowym do algorytmu skalowania wielowymiarowego jest macierz odległości pomiędzy obserwacjami. Wyznaczyć ją można np. funkcją <code>dist(stats)</code>. W funkcji <code>dist()</code> zaimplementowane są wszystkie
+popularne metody liczenia odległości pomiędzy obserwacjami, w tym odległość euklidesowa (najpopularniejsza, odpowiadająca sumie kwadratów różnic poszczególnych współrzędnych, tej odległości odpowiada argument <code>method=&quot;euclidean&quot;</code>), odległość Manhattan, nazywana też odległością taksówkową lub miejską (suma modułów różnic pomiędzy współrzędnymi, argument <code>method=&quot;manhattan&quot;</code>), odległość Mińkowskiego (argument <code>method=&quot;minkowski&quot;</code>)
+oraz kilka innych mniej popularnych odległości. Jeżeli w zbiorze danych znajdują się
+zmienne jakościowe to funkcja <code>dist()</code> sobie z nimi nie poradzi. W takiej sytuacji
+lepiej wykorzystać funkcję daisy(cluster) wyznaczającą macierz niepodobieństwa
+pomiędzy obiektami. Funkcja <code>daisy()</code> uwzględnia również zmienne jakościowe (poniżej przedstawiamy przykład użycia). Macierz odległości jest obiektem klasy <code>dist()</code>
+i nie jest pamiętana jako macierz, a jedynie jako połowa macierzy (ponieważ odległość jest symetryczna szkoda pamięci na przechowywanie nadmiarowych danych).
+Jeżeli potrzebujemy przekształcić obiekt <code>dist()</code> na macierz to możemy wykorzystać
+funkcję <code>as.matrix()</code></p>
+<p>Wynikiem algorytmu skalowania wielowymiarowego są współrzędne obserwacji
+w pewnym nowym układzie współrzędnych. Możemy wybrać wymiar przestrzeni na
+jaką mają być przeskalowane dane (argument <code>k</code> funkcji <code>isoMDS</code>). Z pewnością po wykonaniu skalowania interesować nas będzie na ile skalowanie zachowało odległości pomiędzy obiektami, czy dużo jest znacznych zniekształceń. Do oceny wyników skalowania wykorzystać można wykres Sheparda przedstawiający na jednej osi oryginalne
+odległości pomiędzy obiektami a na drugiej osi odległości w nowym układzie współ
+rzędnych. Do wyznaczenia obu wektorów odległości służy funkcja <code>Shepard(MASS)</code>,
+można też skorzystać z wrappera na tę funkcję, czyli z funkcji <code>stressplot(vegan)</code>.</p>
+<p>Poniżej przedstawiamy przykład skalowania wielowymiarowego. Wykorzystamy
+tę metodę do przedstawienia za pomocą dwuwymiarowego wykresu podobieństw
+pomiędzy pacjentkami ze zbioru danych <code>daneO</code>. Graficzny wynik tych analiz jest
+przedstawiony na rysunku <a href="part-2.html#fig:wy214">2.5</a>. Lewy rysunek przedstawia pacjentki w nowym dwuwymiarowym układzie współrzędnych, w tym przypadku pacjentki przedstawiane są
+jako punkty. Wypełniony punkt oznacza dla niepowodzenie leczenia a więc wznowę,
+a pusty w środku w oznacza wyleczenie pozytywne (widzimy, że pacjentki z niepo-
+wodzeniami grupują się blisko siebie). Ciekawym było by naniesienie na ten wykres
+nazwisk pacjentek i porównanie, które pacjentki pod względem zmierzonych wartości
+były do siebie podobne. Prawy rysunek przedstawia dokładność skalowania, a więc
+jak oryginalne odległości mają się do odległości w nowym układzie współrzędnych.</p>
+<pre class="sourceCode r"><code class="sourceCode r">dane0 &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;http://www.biecek.pl/R/dane/dane0.csv&quot;</span>,<span class="dt">sep=</span><span class="st">&quot;;&quot;</span>,<span class="dt">header =</span> <span class="ot">TRUE</span>)
+<span class="co"># konstruujemy macierz niepodobieństwa pomiędzy pacjentkami, również zmienne jakościowe są uwzględnione</span>
+niepodobienstwa =<span class="st"> </span>cluster<span class="op">::</span><span class="kw">daisy</span>(daneO)</code></pre>
+<pre><code>## Warning in cluster::daisy(daneO): binary variable(s) 2, 3 treated as
+## interval scaled</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># przeprowadzamy skalowanie niemetryczne, skalujemy do przestrzeni o</span>
+<span class="co"># dwóch wymiarach</span>
+skalowanie =<span class="st"> </span>MASS<span class="op">::</span><span class="kw">isoMDS</span>(niepodobienstwa, <span class="dt">k=</span><span class="dv">2</span>)</code></pre>
+<pre><code>## initial  value 30.138174 
+## iter   5 value 25.846808
+## final  value 25.531983 
+## converged</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># obiekt wynikowy zawiera współrzędne obserwacji w~nowym układzie współrzędnych</span>
+<span class="kw">str</span>(skalowanie)</code></pre>
+<pre><code>## List of 2
+##  $ points: num [1:97, 1:2] 0.1011 0.3147 -0.1055 0.2811 -0.0604 ...
+##   ..- attr(*, &quot;dimnames&quot;)=List of 2
+##   .. ..$ : chr [1:97] &quot;1&quot; &quot;2&quot; &quot;3&quot; &quot;4&quot; ...
+##   .. ..$ : NULL
+##  $ stress: num 25.5</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># konstruujemy wektor pomocniczy do rysowania</span>
+ksztalty =<span class="st"> </span><span class="kw">ifelse</span>(daneO<span class="op">$</span>Niepowodzenia<span class="op">==</span><span class="st">&quot;brak&quot;</span>, <span class="dv">21</span>, <span class="dv">19</span>)</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mfcol=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))
+<span class="co"># rysujemy pacjentki w~nowym układzie współrzędnych</span>
+<span class="kw">plot</span>(skalowanie<span class="op">$</span>points, <span class="dt">type =</span> <span class="st">&quot;p&quot;</span>, <span class="dt">pch=</span>ksztalty, <span class="dt">cex=</span><span class="fl">1.5</span>)
+<span class="co"># rysujemy również diagram Sheparda</span>
+shepard &lt;-<span class="st"> </span>MASS<span class="op">::</span><span class="kw">Shepard</span>(niepodobienstwa, skalowanie<span class="op">$</span>points)
+<span class="kw">plot</span>(shepard, <span class="dt">pch =</span> <span class="st">&quot;.&quot;</span>)
+<span class="kw">abline</span>(<span class="dv">0</span>,<span class="dv">1</span>)</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:wy214"></span>
+<img src="NaPrzelajR_files/figure-html/wy214-1.png" alt="Graficzna reprezentacja wyników funkcji isoMDS() i Shepard()." width="70%" />
+<p class="caption">
+Rysunek 2.5: Graficzna reprezentacja wyników funkcji isoMDS() i Shepard().
+</p>
+</div>
+Zobaczmy jak wyglądają dane o województwach po przeskalowaniu różnymi metodami. Na wykresie <a href="part-2.html#fig:skal3">2.6</a> po lewej stronie przedstawiamy przeskalowane dane a po
+prawej wykresy Sheparda.
+<div class="figure" style="text-align: center"><span id="fig:skal3"></span>
+<img src="skalowanie3.png" alt="Graficzna reprezentacja wyników różnych funkcji skalowania, na przykładach danych GUS." width="85%" />
+<p class="caption">
+Rysunek 2.6: Graficzna reprezentacja wyników różnych funkcji skalowania, na przykładach danych GUS.
+</p>
+</div>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="part-3.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": ["NaPrzelajR.pdf", "NaPrzelajR.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html  lang="pl">
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Rozdział 10 Przykład budowy dynamicznego modelu liniowego | Na przełaj przez Data Mining z pakietem R</title>
+  <meta name="description" content="Zbiór przykładów użycia wybranych funkcji statystycznych i Data Mining dostępnych w programie R.">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
+
+  <meta property="og:title" content="Rozdział 10 Przykład budowy dynamicznego modelu liniowego | Na przełaj przez Data Mining z pakietem R" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Zbiór przykładów użycia wybranych funkcji statystycznych i Data Mining dostępnych w programie R." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Rozdział 10 Przykład budowy dynamicznego modelu liniowego | Na przełaj przez Data Mining z pakietem R" />
+  
+  <meta name="twitter:description" content="Zbiór przykładów użycia wybranych funkcji statystycznych i Data Mining dostępnych w programie R." />
+  
+
+<meta name="author" content="Przemysław Biecek, Krzysztof Trajkowski">
+
+
+<meta name="date" content="2019-04-08">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="part-9.html">
+<link rel="next" href="part-11.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; position: absolute; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; }
+pre.numberSource a.sourceLine:empty
+  { position: absolute; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Na przełaj przez Data Mining<br/> z pakietem R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Kilka słów zamiast wstępu</a></li>
+<li class="chapter" data-level="2" data-path="part-2.html"><a href="part-2.html"><i class="fa fa-check"></i><b>2</b> Redukcja wymiaru</a><ul>
+<li class="chapter" data-level="2.1" data-path="part-2.html"><a href="part-2.html#part_21"><i class="fa fa-check"></i><b>2.1</b> Analiza składowych głównych (PCA, ang. Principal Components Analysis)</a></li>
+<li class="chapter" data-level="2.2" data-path="part-2.html"><a href="part-2.html#part_22"><i class="fa fa-check"></i><b>2.2</b> Nieliniowe skalowanie wielowymiarowe (Sammon Mapping)</a></li>
+<li class="chapter" data-level="2.3" data-path="part-2.html"><a href="part-2.html#part_23"><i class="fa fa-check"></i><b>2.3</b> Skalowanie wielowymiarowe Kruskalla (MDS, ang. Multidimensional Scaling)</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="part-3.html"><a href="part-3.html"><i class="fa fa-check"></i><b>3</b> Analiza skupień</a><ul>
+<li class="chapter" data-level="3.1" data-path="part-3.html"><a href="part-3.html#part_31"><i class="fa fa-check"></i><b>3.1</b> Metoda k-średnich</a></li>
+<li class="chapter" data-level="3.2" data-path="part-3.html"><a href="part-3.html#part_32"><i class="fa fa-check"></i><b>3.2</b> Metoda grupowania wokół centroidów (PAM, ang. Partitioning Around Medoids)</a></li>
+<li class="chapter" data-level="3.3" data-path="part-3.html"><a href="part-3.html#part_33"><i class="fa fa-check"></i><b>3.3</b> Metoda aglomeracyjnego klastrowania hierarchicznego</a></li>
+<li class="chapter" data-level="3.4" data-path="part-3.html"><a href="part-3.html#part_34"><i class="fa fa-check"></i><b>3.4</b> Ile skupień wybrać?</a></li>
+<li class="chapter" data-level="3.5" data-path="part-3.html"><a href="part-3.html#part_35"><i class="fa fa-check"></i><b>3.5</b> Inne metody analizy skupień</a></li>
+<li class="chapter" data-level="3.6" data-path="part-3.html"><a href="part-3.html#part_36"><i class="fa fa-check"></i><b>3.6</b> Case study</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="part-4.html"><a href="part-4.html"><i class="fa fa-check"></i><b>4</b> Analiza dyskryminacji</a><ul>
+<li class="chapter" data-level="4.1" data-path="part-4.html"><a href="part-4.html#part_41"><i class="fa fa-check"></i><b>4.1</b> Dyskryminacja liniowa i kwadratowa</a></li>
+<li class="chapter" data-level="4.2" data-path="part-4.html"><a href="part-4.html#part_42"><i class="fa fa-check"></i><b>4.2</b> Metoda najbliższych sąsiadów</a></li>
+<li class="chapter" data-level="4.3" data-path="part-4.html"><a href="part-4.html#part_43"><i class="fa fa-check"></i><b>4.3</b> Naiwny klasyfikator Bayesowski</a></li>
+<li class="chapter" data-level="4.4" data-path="part-4.html"><a href="part-4.html#part_44"><i class="fa fa-check"></i><b>4.4</b> Drzewa decyzyjne</a></li>
+<li class="chapter" data-level="4.5" data-path="part-4.html"><a href="part-4.html#part_45"><i class="fa fa-check"></i><b>4.5</b> Lasy losowe</a></li>
+<li class="chapter" data-level="4.6" data-path="part-4.html"><a href="part-4.html#part_46"><i class="fa fa-check"></i><b>4.6</b> Inne klasyfikatory</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="part-5.html"><a href="part-5.html"><i class="fa fa-check"></i><b>5</b> Analiza kanoniczna</a><ul>
+<li class="chapter" data-level="5.1" data-path="part-5.html"><a href="part-5.html#part_51"><i class="fa fa-check"></i><b>5.1</b> Problem</a></li>
+<li class="chapter" data-level="5.2" data-path="part-5.html"><a href="part-5.html#part_52"><i class="fa fa-check"></i><b>5.2</b> Rozwiązanie</a></li>
+<li class="chapter" data-level="5.3" data-path="part-5.html"><a href="part-5.html#part_53"><i class="fa fa-check"></i><b>5.3</b> Założenia</a></li>
+<li class="chapter" data-level="5.4" data-path="part-5.html"><a href="part-5.html#part_54"><i class="fa fa-check"></i><b>5.4</b> Jak to zrobić w R</a></li>
+<li class="chapter" data-level="5.5" data-path="part-5.html"><a href="part-5.html#part_55"><i class="fa fa-check"></i><b>5.5</b> Przykładowe wyniki</a></li>
+<li class="chapter" data-level="5.6" data-path="part-5.html"><a href="part-5.html#part_56"><i class="fa fa-check"></i><b>5.6</b> Studium przypadku</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="part-6.html"><a href="part-6.html"><i class="fa fa-check"></i><b>6</b> Analiza korespondencji (odpowiedniości)</a><ul>
+<li class="chapter" data-level="6.1" data-path="part-6.html"><a href="part-6.html#part_61"><i class="fa fa-check"></i><b>6.1</b> Problem</a></li>
+<li class="chapter" data-level="6.2" data-path="part-6.html"><a href="part-6.html#part_62"><i class="fa fa-check"></i><b>6.2</b> Rozwiązanie</a></li>
+<li class="chapter" data-level="6.3" data-path="part-6.html"><a href="part-6.html#part_63"><i class="fa fa-check"></i><b>6.3</b> Jak to zrobić w R?</a></li>
+<li class="chapter" data-level="6.4" data-path="part-6.html"><a href="part-6.html#part_64"><i class="fa fa-check"></i><b>6.4</b> Studium przypadku</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="part-7.html"><a href="part-7.html"><i class="fa fa-check"></i><b>7</b> Przykład analizy szeregów czasowych</a><ul>
+<li class="chapter" data-level="7.1" data-path="part-7.html"><a href="part-7.html#part_71"><i class="fa fa-check"></i><b>7.1</b> Wprowadzenie</a></li>
+<li class="chapter" data-level="7.2" data-path="part-7.html"><a href="part-7.html#part_72"><i class="fa fa-check"></i><b>7.2</b> Identyfikacja trendu i sezonowości</a><ul>
+<li class="chapter" data-level="7.2.1" data-path="part-7.html"><a href="part-7.html#part_721"><i class="fa fa-check"></i><b>7.2.1</b> Analiza wariancji - ANOVA</a></li>
+<li class="chapter" data-level="7.2.2" data-path="part-7.html"><a href="part-7.html#part_722"><i class="fa fa-check"></i><b>7.2.2</b> Funkcja autokorelacji - ACF</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="part-7.html"><a href="part-7.html#part_73"><i class="fa fa-check"></i><b>7.3</b> Modele autoregresyjne ARIMA</a><ul>
+<li class="chapter" data-level="7.3.1" data-path="part-7.html"><a href="part-7.html#part_731"><i class="fa fa-check"></i><b>7.3.1</b> Estymacja</a></li>
+<li class="chapter" data-level="7.3.2" data-path="part-7.html"><a href="part-7.html#part_732"><i class="fa fa-check"></i><b>7.3.2</b> Weryfikacja</a></li>
+<li class="chapter" data-level="7.3.3" data-path="part-7.html"><a href="part-7.html#part_733"><i class="fa fa-check"></i><b>7.3.3</b> Prognozowanie</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="part-7.html"><a href="part-7.html#part_74"><i class="fa fa-check"></i><b>7.4</b> Modele adaptacyjne</a><ul>
+<li class="chapter" data-level="7.4.1" data-path="part-7.html"><a href="part-7.html#part_741"><i class="fa fa-check"></i><b>7.4.1</b> Estymacja</a></li>
+<li class="chapter" data-level="7.4.2" data-path="part-7.html"><a href="part-7.html#part_742"><i class="fa fa-check"></i><b>7.4.2</b> Prognozowanie</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="part-8.html"><a href="part-8.html"><i class="fa fa-check"></i><b>8</b> Przykład analizy tabel wielodzielczych</a><ul>
+<li class="chapter" data-level="8.1" data-path="part-8.html"><a href="part-8.html#part_81"><i class="fa fa-check"></i><b>8.1</b> Wprowadzenie</a></li>
+<li class="chapter" data-level="8.2" data-path="part-8.html"><a href="part-8.html#part_82"><i class="fa fa-check"></i><b>8.2</b> Test chi-kwadrat</a></li>
+<li class="chapter" data-level="8.3" data-path="part-8.html"><a href="part-8.html#part_83"><i class="fa fa-check"></i><b>8.3</b> Model logitowy</a></li>
+<li class="chapter" data-level="8.4" data-path="part-8.html"><a href="part-8.html#part_84"><i class="fa fa-check"></i><b>8.4</b> Model logitowy</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="part-9.html"><a href="part-9.html"><i class="fa fa-check"></i><b>9</b> Przykład badania rozkładu stopy zwrotu z akcji</a><ul>
+<li class="chapter" data-level="9.1" data-path="part-9.html"><a href="part-9.html#part_9.1"><i class="fa fa-check"></i><b>9.1</b> Wprowadzenie</a></li>
+<li class="chapter" data-level="9.2" data-path="part-9.html"><a href="part-9.html#part_9.2"><i class="fa fa-check"></i><b>9.2</b> Statystyki opisowe</a></li>
+<li class="chapter" data-level="9.3" data-path="part-9.html"><a href="part-9.html#part_9.3"><i class="fa fa-check"></i><b>9.3</b> Rozkład normalny</a></li>
+<li class="chapter" data-level="9.4" data-path="part-9.html"><a href="part-9.html#part_9.4"><i class="fa fa-check"></i><b>9.4</b> Rozkład Cauchy’ego</a></li>
+<li class="chapter" data-level="9.5" data-path="part-9.html"><a href="part-9.html#part_9.5"><i class="fa fa-check"></i><b>9.5</b> Rozkład Laplace’a</a></li>
+<li class="chapter" data-level="9.6" data-path="part-9.html"><a href="part-9.html#part_9.6"><i class="fa fa-check"></i><b>9.6</b> Rozkład Stabilny</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="part-10.html"><a href="part-10.html"><i class="fa fa-check"></i><b>10</b> Przykład budowy dynamicznego modelu liniowego</a><ul>
+<li class="chapter" data-level="10.1" data-path="part-10.html"><a href="part-10.html#part_10.1"><i class="fa fa-check"></i><b>10.1</b> Wprowadzenie</a></li>
+<li class="chapter" data-level="10.2" data-path="part-10.html"><a href="part-10.html#part_10.2"><i class="fa fa-check"></i><b>10.2</b> Badanie wewnętrznej struktury procesu</a><ul>
+<li class="chapter" data-level="10.2.1" data-path="part-10.html"><a href="part-10.html#part_10.2.1"><i class="fa fa-check"></i><b>10.2.1</b> Trend</a></li>
+<li class="chapter" data-level="10.2.2" data-path="part-10.html"><a href="part-10.html#part_10.2.2"><i class="fa fa-check"></i><b>10.2.2</b> Sezonowość</a></li>
+<li class="chapter" data-level="10.2.3" data-path="part-10.html"><a href="part-10.html#part_10.2.3"><i class="fa fa-check"></i><b>10.2.3</b> Stopień autoregresji – funkcja PACF</a></li>
+<li class="chapter" data-level="10.2.4" data-path="part-10.html"><a href="part-10.html#part_10.2.4"><i class="fa fa-check"></i><b>10.2.4</b> Stopień integracji – test ADF/PP</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="part-10.html"><a href="part-10.html#part_10.3"><i class="fa fa-check"></i><b>10.3</b> Weryfikacja modelu</a><ul>
+<li class="chapter" data-level="10.3.1" data-path="part-10.html"><a href="part-10.html#part_10.3.1"><i class="fa fa-check"></i><b>10.3.1</b> Estymacja dynamicznego modelu liniowego</a></li>
+<li class="chapter" data-level="10.3.2" data-path="part-10.html"><a href="part-10.html#part_10.3.2"><i class="fa fa-check"></i><b>10.3.2</b> Ocena jakości modelu</a></li>
+</ul></li>
+<li class="chapter" data-level="10.4" data-path="part-10.html"><a href="part-10.html#part_10.4"><i class="fa fa-check"></i><b>10.4</b> Diagnostyka modelu</a><ul>
+<li class="chapter" data-level="10.4.1" data-path="part-10.html"><a href="part-10.html#part_10.4.1"><i class="fa fa-check"></i><b>10.4.1</b> Normalność procesu resztowego</a></li>
+<li class="chapter" data-level="10.4.2" data-path="part-10.html"><a href="part-10.html#part_10.4.2"><i class="fa fa-check"></i><b>10.4.2</b> Autokorelacja procesu resztowego</a></li>
+<li class="chapter" data-level="10.4.3" data-path="part-10.html"><a href="part-10.html#part_10.4.3"><i class="fa fa-check"></i><b>10.4.3</b> Heteroskedastyczność procesu resztowego</a></li>
+<li class="chapter" data-level="10.4.4" data-path="part-10.html"><a href="part-10.html#part_10.4.4"><i class="fa fa-check"></i><b>10.4.4</b> Stabilność parametrów modelu</a></li>
+<li class="chapter" data-level="10.4.5" data-path="part-10.html"><a href="part-10.html#part_10.4.5"><i class="fa fa-check"></i><b>10.4.5</b> Postać analityczna modelu</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="part-11.html"><a href="part-11.html"><i class="fa fa-check"></i><b>11</b> Przegląd wybranych testów statystycznych</a><ul>
+<li class="chapter" data-level="11.1" data-path="part-11.html"><a href="part-11.html#part_11.1"><i class="fa fa-check"></i><b>11.1</b> Testy normalności</a></li>
+<li class="chapter" data-level="11.2" data-path="part-11.html"><a href="part-11.html#part_11.2"><i class="fa fa-check"></i><b>11.2</b> Testy asymptotyczne</a></li>
+<li class="chapter" data-level="11.3" data-path="part-11.html"><a href="part-11.html#part_11.3"><i class="fa fa-check"></i><b>11.3</b> Testy dla proporcji</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="part-12.html"><a href="part-12.html"><i class="fa fa-check"></i><b>12</b> Przykład analizy liczby przestępstw w Polsce w 2009 r.</a><ul>
+<li class="chapter" data-level="12.1" data-path="part-12.html"><a href="part-12.html#part_12.1"><i class="fa fa-check"></i><b>12.1</b> Wprowadzenie</a></li>
+<li class="chapter" data-level="12.2" data-path="part-12.html"><a href="part-12.html#part_12.2"><i class="fa fa-check"></i><b>12.2</b> Mapy</a></li>
+<li class="chapter" data-level="12.3" data-path="part-12.html"><a href="part-12.html#part_12.3"><i class="fa fa-check"></i><b>12.3</b> Analiza wariancji</a></li>
+<li class="chapter" data-level="12.4" data-path="part-12.html"><a href="part-12.html#part_12.4"><i class="fa fa-check"></i><b>12.4</b> Modele dla liczebności</a></li>
+<li class="chapter" data-level="12.5" data-path="part-12.html"><a href="part-12.html#part_12.5"><i class="fa fa-check"></i><b>12.5</b> Modele dla częstości</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="part-13.html"><a href="part-13.html"><i class="fa fa-check"></i><b>13</b> Modele regresji</a><ul>
+<li class="chapter" data-level="13.1" data-path="part-13.html"><a href="part-13.html#part_13.1"><i class="fa fa-check"></i><b>13.1</b> Wprowadzenie</a></li>
+<li class="chapter" data-level="13.2" data-path="part-13.html"><a href="part-13.html#part_13.2"><i class="fa fa-check"></i><b>13.2</b> Estymacja modelu liniowego</a><ul>
+<li class="chapter" data-level="13.2.1" data-path="part-13.html"><a href="part-13.html#part_13.2.1"><i class="fa fa-check"></i><b>13.2.1</b> Metoda najmniejszych kwadratów</a></li>
+<li class="chapter" data-level="13.2.2" data-path="part-13.html"><a href="part-13.html#part_13.2.2"><i class="fa fa-check"></i><b>13.2.2</b> Poprawność specyfikacji modelu</a></li>
+<li class="chapter" data-level="13.2.3" data-path="part-13.html"><a href="part-13.html#part_13.2.3"><i class="fa fa-check"></i><b>13.2.3</b> Normalność</a></li>
+<li class="chapter" data-level="13.2.4" data-path="part-13.html"><a href="part-13.html#part_13.2.4"><i class="fa fa-check"></i><b>13.2.4</b> Heteroskedastyczność</a></li>
+<li class="chapter" data-level="13.2.5" data-path="part-13.html"><a href="part-13.html#part_13.2.5"><i class="fa fa-check"></i><b>13.2.5</b> Obserwacje odstające</a></li>
+<li class="chapter" data-level="13.2.6" data-path="part-13.html"><a href="part-13.html#part_13.2.6"><i class="fa fa-check"></i><b>13.2.6</b> Metoda najmniejszych wartości bezwzględnych</a></li>
+</ul></li>
+<li class="chapter" data-level="13.3" data-path="part-13.html"><a href="part-13.html#part_13.3"><i class="fa fa-check"></i><b>13.3</b> Estymacja modelu nieliniowego</a><ul>
+<li class="chapter" data-level="13.3.1" data-path="part-13.html"><a href="part-13.html#part_13.3.1"><i class="fa fa-check"></i><b>13.3.1</b> Model kwadratowy</a></li>
+<li class="chapter" data-level="13.3.2" data-path="part-13.html"><a href="part-13.html#part_13.3.2"><i class="fa fa-check"></i><b>13.3.2</b> Model wykładniczy</a></li>
+<li class="chapter" data-level="13.3.3" data-path="part-13.html"><a href="part-13.html#part_13.3.3"><i class="fa fa-check"></i><b>13.3.3</b> Model hiperboliczny</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="part-14.html"><a href="part-14.html"><i class="fa fa-check"></i><b>14</b> Zbiory danych</a><ul>
+<li class="chapter" data-level="14.1" data-path="part-14.html"><a href="part-14.html#part_14.1"><i class="fa fa-check"></i><b>14.1</b> Zbiór danych GUSowskich</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="bibliografia.html"><a href="bibliografia.html"><i class="fa fa-check"></i>Bibliografia</a></li>
+<li class="divider"></li>
+<li><a href="http://www.biecek.pl/NaPrzelajPrzezDataMining/" target="blank">strona projektu</a></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Na przełaj przez Data Mining z pakietem R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="part_10" class="section level1">
+<h1><span class="header-section-number">Rozdział 10</span> Przykład budowy dynamicznego modelu liniowego</h1>
+<hr />
+<div id="part_10.1" class="section level2">
+<h2><span class="header-section-number">10.1</span> Wprowadzenie</h2>
+<p>W skład dynamicznego modelu liniowego wchodzą następujące elementy:</p>
+<ul>
+<li><p>trend</p></li>
+<li><p>składnik sezonowości</p></li>
+<li><p>składnik autoregresji</p></li>
+</ul>
+<p>Do estymacji takiego modelu zostaną wykorzystane dodatkowe pakiety czyli takie
+które nie są instalowane wraz z oprogramowaniem R. Pod <a href="https://rdrr.io/r/"><code>linkiem</code></a> można zapoznać się dokumentacją bibliotek bazowych.</p>
+<p>Instalację pakietu wykonujemy tylko raz niezależnie od tego ile razy uruchomimy
+środowisko R.</p>
+<pre><code>install.packages(&quot;tseries&quot;)</code></pre>
+<p>Wykonując powyższe polecenie zostanie zainstalowana biblioteka wraz z wymaganymi zależnościami (dodatkowe pakiety) jeśli takie są wymagane. Następnie
+należy taką bibliotekę załadować:</p>
+<pre><code>library(&quot;tseries&quot;)</code></pre>
+<p>Inne podejście to odwoływanie się za każdym razem do wybranego pakietu który wcześniej został zainstalowany. Inaczej mówiąc, wskazujemy z jakiego pakietu chcemy wykorzystać funkcję. To rozwiązanie jest przydatne jeśli w dwóch różnych pakietach z których korzystamy występują takie same nazwy funkcji:</p>
+<pre><code>tseries::funkcja_z_pakietu_tseries( argumenty_funkcji )</code></pre>
+<p>Aby wprowadzić dane dotyczące miesięcznej stopy bezrobocia w
+Polsce można wykonać poniższe polecenie:</p>
+<pre class="sourceCode r"><code class="sourceCode r">b=<span class="kw">c</span>(
+<span class="fl">19.5</span>, <span class="fl">19.4</span>, <span class="fl">19.3</span>, <span class="fl">19.1</span>, <span class="fl">18.9</span>, <span class="fl">18.7</span>, <span class="fl">18.7</span>, <span class="fl">19.0</span>, <span class="fl">19.4</span>, <span class="fl">19.4</span>, <span class="fl">19.2</span>, <span class="fl">18.7</span>,
+<span class="fl">18.2</span>, <span class="fl">18.0</span>, <span class="fl">17.9</span>, <span class="fl">17.7</span>, <span class="fl">17.6</span>, <span class="fl">17.3</span>, <span class="fl">17.3</span>, <span class="fl">17.6</span>, <span class="fl">18.0</span>, <span class="fl">18.0</span>, <span class="fl">17.8</span>, <span class="fl">17.2</span>,
+<span class="fl">16.5</span>, <span class="fl">16.0</span>, <span class="fl">15.7</span>, <span class="fl">15.5</span>, <span class="fl">15.2</span>, <span class="fl">14.9</span>, <span class="fl">14.8</span>, <span class="fl">14.9</span>, <span class="fl">15.1</span>, <span class="fl">14.9</span>, <span class="fl">14.4</span>, <span class="fl">13.7</span>,
+<span class="fl">13.0</span>, <span class="fl">12.4</span>, <span class="fl">12.2</span>, <span class="fl">11.9</span>, <span class="fl">11.6</span>, <span class="fl">11.3</span>, <span class="fl">11.3</span>, <span class="fl">11.4</span>, <span class="fl">11.7</span>, <span class="fl">11.5</span>, <span class="fl">11.1</span>, <span class="fl">10.5</span>,
+<span class="fl">10.0</span>, <span class="fl">9.6</span>,  <span class="fl">9.4</span>,  <span class="fl">9.1</span>,  <span class="fl">8.9</span>,  <span class="fl">8.8</span>,  <span class="fl">9.1</span>,  <span class="fl">9.5</span>,  <span class="fl">10.5</span>, <span class="fl">10.9</span>, <span class="fl">11.2</span>, <span class="fl">11.0</span>,
+<span class="fl">10.8</span>, <span class="fl">10.7</span>, <span class="fl">10.8</span>, <span class="fl">10.8</span>, <span class="fl">10.9</span>, <span class="fl">11.1</span>, <span class="fl">11.4</span>, <span class="fl">11.9</span>, <span class="fl">12.7</span>, <span class="fl">13.0</span>, <span class="fl">12.9</span>, <span class="fl">12.3</span>,
+<span class="fl">11.9</span>
+)</code></pre>
+<p>Ponieważ powyższe dane (procenty) dotyczą okresu od 05.2004 do 05.2010 więc przekształcimy zmienną <code>b</code>
+(zapisną w postaci wektora zmiennych) w szereg czasowy. Do budowy szeregu czasowego zostanie wykorzystana funkcja <a href="https://rdrr.io/r/stats/ts.html"><code>ts</code></a>.</p>
+<pre class="sourceCode r"><code class="sourceCode r">bezrob &lt;-<span class="st"> </span><span class="kw">ts</span>(b,<span class="dt">start=</span><span class="kw">c</span>(<span class="dv">2004</span>,<span class="dv">5</span>),<span class="dt">freq=</span><span class="dv">12</span>)</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">1</span>,<span class="dv">1</span>)<span class="op">+</span><span class="fl">0.1</span>, <span class="dt">mgp=</span><span class="kw">c</span>(<span class="dv">3</span>,<span class="fl">0.6</span>,<span class="dv">0</span>),<span class="dt">bg=</span><span class="st">&quot;lightgoldenrodyellow&quot;</span>,<span class="dt">las=</span><span class="dv">1</span>)
+<span class="kw">plot</span>(bezrob,<span class="dt">axes=</span>F,<span class="dt">xlab=</span><span class="st">&quot;&quot;</span>,<span class="dt">ylab=</span><span class="st">&quot;&quot;</span>,<span class="dt">main=</span><span class="st">&quot;&quot;</span>, <span class="dt">col=</span><span class="st">&quot;white&quot;</span>)
+u &lt;-<span class="st"> </span><span class="kw">par</span>(<span class="st">&quot;usr&quot;</span>)
+<span class="kw">rect</span>(u[<span class="dv">1</span>], u[<span class="dv">3</span>], u[<span class="dv">2</span>], u[<span class="dv">4</span>], <span class="dt">col=</span><span class="st">&quot;white&quot;</span>)
+<span class="kw">par</span>(<span class="dt">new=</span>plot)
+<span class="kw">plot</span>(bezrob,<span class="dt">xlab=</span><span class="st">&quot;czas&quot;</span>,<span class="dt">ylab=</span><span class="st">&quot;stopa bezrobocia&quot;</span>,<span class="dt">col=</span><span class="st">&quot;SteelBlue&quot;</span>,<span class="dt">lwd=</span><span class="dv">2</span>,<span class="dt">las=</span><span class="dv">1</span>)</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:wy101"></span>
+<img src="NaPrzelajR_files/figure-html/wy101-1.png" alt="Stopa bezrobocia w Polsce od 0.5.2004 do 0.5.2010." width="70%" />
+<p class="caption">
+Rysunek 10.1: Stopa bezrobocia w Polsce od 0.5.2004 do 0.5.2010.
+</p>
+</div>
+
+</div>
+<div id="part_10.2" class="section level2">
+<h2><span class="header-section-number">10.2</span> Badanie wewnętrznej struktury procesu</h2>
+<div id="part_10.2.1" class="section level3">
+<h3><span class="header-section-number">10.2.1</span> Trend</h3>
+<p>W pierwszym kroku należy ustalić, czy w szeregu czasowym (rys. <a href="part-10.html#fig:wy101">10.1</a>) występuje tendencja rozwojowa czyli trend. Jeśli dojdziemy do wniosku, że występuje
+trend należy zbudować kilka wielomianowych modeli trendu a następnie dokonać wyboru najlepszego modelu. Wybór wielomianu możemy dokonać za pomocą analizy
+wariancji ANOVA lub kryterium informacyjnego AIC.</p>
+<pre class="sourceCode r"><code class="sourceCode r">t1 &lt;-<span class="st"> </span><span class="kw">ts</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(bezrob),<span class="dt">start=</span><span class="kw">c</span>(<span class="dv">2004</span>,<span class="dv">5</span>),<span class="dt">freq=</span><span class="dv">12</span>)
+t2 &lt;-<span class="st"> </span><span class="kw">ts</span>(t1<span class="op">^</span><span class="dv">2</span>,<span class="dt">start=</span><span class="kw">c</span>(<span class="dv">2004</span>,<span class="dv">5</span>),<span class="dt">freq=</span><span class="dv">12</span>)
+t3 &lt;-<span class="st"> </span><span class="kw">ts</span>(t1<span class="op">^</span><span class="dv">3</span>,<span class="dt">start=</span><span class="kw">c</span>(<span class="dv">2004</span>,<span class="dv">5</span>),<span class="dt">freq=</span><span class="dv">12</span>)
+t4 &lt;-<span class="st"> </span><span class="kw">ts</span>(t1<span class="op">^</span><span class="dv">4</span>,<span class="dt">start=</span><span class="kw">c</span>(<span class="dv">2004</span>,<span class="dv">5</span>),<span class="dt">freq=</span><span class="dv">12</span>)</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">m1 &lt;-<span class="st"> </span><span class="kw">lm</span>(bezrob<span class="op">~</span>t1)          <span class="co"># wielomian stopnia pierwszego</span>
+m2 &lt;-<span class="st"> </span><span class="kw">lm</span>(bezrob<span class="op">~</span>t1<span class="op">+</span>t2)       <span class="co"># wielomian stopnia drugiego</span>
+m3 &lt;-<span class="st"> </span><span class="kw">lm</span>(bezrob<span class="op">~</span>t1<span class="op">+</span>t2<span class="op">+</span>t3)    <span class="co"># wielomian stopnia trzeciego</span>
+m4 &lt;-<span class="st"> </span><span class="kw">lm</span>(bezrob<span class="op">~</span>t1<span class="op">+</span>t2<span class="op">+</span>t3<span class="op">+</span>t4) <span class="co"># wielomian stopnia czwartego</span></code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># porównanie modelu trendu m1 i m2:</span>
+<span class="kw">anova</span>(m1,m2)</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Model 1: bezrob ~ t1
+## Model 2: bezrob ~ t1 + t2
+##   Res.Df    RSS Df Sum of Sq     F    Pr(&gt;F)    
+## 1     71 176.96                                 
+## 2     70 109.76  1    67.202 42.86 8.284e-09 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># porównanie modelu trendu m2 i m3:</span>
+<span class="kw">anova</span>(m2,m3)</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Model 1: bezrob ~ t1 + t2
+## Model 2: bezrob ~ t1 + t2 + t3
+##   Res.Df     RSS Df Sum of Sq   F    Pr(&gt;F)    
+## 1     70 109.756                               
+## 2     69  26.572  1    83.183 216 &lt; 2.2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># porównanie modelu trendu m3 i m4:</span>
+<span class="kw">anova</span>(m3,m4)</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Model 1: bezrob ~ t1 + t2 + t3
+## Model 2: bezrob ~ t1 + t2 + t3 + t4
+##   Res.Df    RSS Df Sum of Sq      F Pr(&gt;F)
+## 1     69 26.572                           
+## 2     68 26.569  1 0.0034355 0.0088 0.9256</code></pre>
+<p>Tak więc najlepszym modelem trendu okazał się wielomian stopnia trzeciego. Do
+takiego samego wniosku dochodzimy porównując kryteria informacyjne AIC wszystkich modeli.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">AIC</span>(m1,m2,m3,m4)</code></pre>
+<pre><code>##    df      AIC
+## m1  3 277.8030
+## m2  4 244.9342
+## m3  5 143.3919
+## m4  6 145.3825</code></pre>
+</div>
+<div id="part_10.2.2" class="section level3">
+<h3><span class="header-section-number">10.2.2</span> Sezonowość</h3>
+<p>Aby ocenić czy w badanym szeregu czasowym występują wahania sezonowe trzeba
+oszacować model trendu wraz ze zmiennymi sezonowymi. Jeśli przynajmniej jeden
+parametr przy zmiennej zero-jedynkowej okaże się istotny możemy sądzić, że w szeregu występuje sezonowość.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># zmienne sezonowe: zero-jedynkowe:</span>
+month &lt;-<span class="st"> </span><span class="kw">ts</span>(forecast<span class="op">::</span><span class="kw">seasonaldummy</span>(bezrob),<span class="dt">start=</span><span class="kw">c</span>(<span class="dv">2004</span>,<span class="dv">5</span>),<span class="dt">freq=</span><span class="dv">12</span>)</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># model z trendem i sezonowością:</span>
+s_dyn &lt;-<span class="st"> </span><span class="kw">lm</span>(bezrob<span class="op">~</span>t1<span class="op">+</span>t2<span class="op">+</span>t3<span class="op">+</span>month)
+<span class="co"># podsumowanie modelu z trendem i sezonowością:</span>
+<span class="kw">summary</span>(s_dyn)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = bezrob ~ t1 + t2 + t3 + month)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -1.23729 -0.31580 -0.01533  0.36128  0.82255 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  1.903e+01  3.153e-01  60.363  &lt; 2e-16 ***
+## t1           1.258e-01  2.853e-02   4.410 4.54e-05 ***
+## t2          -1.280e-02  8.917e-04 -14.357  &lt; 2e-16 ***
+## t3           1.372e-04  7.927e-06  17.311  &lt; 2e-16 ***
+## monthJan     5.935e-01  2.815e-01   2.109   0.0393 *  
+## monthFeb     7.138e-01  2.816e-01   2.535   0.0140 *  
+## monthMar     5.934e-01  2.818e-01   2.106   0.0396 *  
+## monthApr     1.149e-01  2.821e-01   0.407   0.6854    
+## monthMay    -2.402e-01  2.721e-01  -0.883   0.3811    
+## monthJun    -2.513e-01  2.829e-01  -0.888   0.3780    
+## monthJul    -2.861e-01  2.824e-01  -1.013   0.3152    
+## monthAug    -3.891e-01  2.820e-01  -1.380   0.1730    
+## monthSep    -4.612e-01  2.818e-01  -1.637   0.1071    
+## monthOct    -5.365e-01  2.816e-01  -1.905   0.0617 .  
+## monthNov    -3.658e-01  2.815e-01  -1.300   0.1988    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.4874 on 58 degrees of freedom
+## Multiple R-squared:  0.9842, Adjusted R-squared:  0.9803 
+## F-statistic: 257.4 on 14 and 58 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>Ponieważ kilka zmiennych sezonowych jest istotnych statystycznie należy stwierdzić, że w badanym procesie występują wahania sezonowe.</p>
+</div>
+<div id="part_10.2.3" class="section level3">
+<h3><span class="header-section-number">10.2.3</span> Stopień autoregresji – funkcja PACF</h3>
+<p>Aby ocenić stopień autoregresji dynamicznego modelu liniowego należy sprawdzić
+czy w procesie reszt (modelu z trendem i sezonowością) występuje autokorelacja
+reszt. Można tego dokonać na podstawie funcji PACF (rys. <a href="part-10.html#fig:wy102">10.2</a>) na poziomie istotności <span class="math inline">\(\alpha = 0,05\)</span> (przerywana linia pozioma).</p>
+<pre class="sourceCode r"><code class="sourceCode r">rs &lt;-<span class="st"> </span><span class="kw">ts</span>(<span class="kw">resid</span>(s_dyn),<span class="dt">start=</span><span class="kw">c</span>(<span class="dv">2004</span>,<span class="dv">5</span>),<span class="dt">freq=</span><span class="dv">12</span>)</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">1</span>,<span class="dv">1</span>)<span class="op">+</span><span class="fl">0.1</span>, <span class="dt">mgp=</span><span class="kw">c</span>(<span class="dv">3</span>,<span class="fl">0.6</span>,<span class="dv">0</span>),<span class="dt">bg=</span><span class="st">&quot;lightgoldenrodyellow&quot;</span>,<span class="dt">las=</span><span class="dv">1</span>)
+<span class="kw">plot</span>(<span class="dv">1</span>,<span class="dt">axes=</span>F,<span class="dt">xlab=</span><span class="st">&quot;&quot;</span>,<span class="dt">ylab=</span><span class="st">&quot;&quot;</span>,<span class="dt">main=</span><span class="st">&quot;&quot;</span>, <span class="dt">col=</span><span class="st">&quot;white&quot;</span>)
+u &lt;-<span class="st"> </span><span class="kw">par</span>(<span class="st">&quot;usr&quot;</span>)
+<span class="kw">rect</span>(u[<span class="dv">1</span>], u[<span class="dv">3</span>], u[<span class="dv">2</span>], u[<span class="dv">4</span>], <span class="dt">col=</span><span class="st">&quot;white&quot;</span>)
+<span class="kw">par</span>(<span class="dt">new=</span>plot)
+<span class="kw">pacf</span>(rs,<span class="dt">plot=</span>T)</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:wy102"></span>
+<img src="NaPrzelajR_files/figure-html/wy102-1.png" alt="Funkcja autokorelacji cząstkowej." width="70%" />
+<p class="caption">
+Rysunek 10.2: Funkcja autokorelacji cząstkowej.
+</p>
+</div>
+<p>Jak widać na (rys. <a href="part-10.html#fig:wy102">10.2</a>) występuje rząd autokorelacji <span class="math inline">\(p = 1\)</span>.</p>
+</div>
+<div id="part_10.2.4" class="section level3">
+<h3><span class="header-section-number">10.2.4</span> Stopień integracji – test ADF/PP</h3>
+<p>Jeśli otrzymane reszty (rys. <a href="part-10.html#fig:wy103">10.3</a>) na podstawie modelu z trendem i sezonowością są niestacjonarne (występuje pierwiastk jednostkowy) należy wówczas rząd
+autoregresji (w dynamicznym modelu liniowym) powiększyć o liczbę <span class="math inline">\(d\)</span> czyli liczbę
+pierwiastków jednostkowych. Do sprawdzenia hipotezy o występowaniu pierwiastka
+jednostkowego możemy posłużyć się rozszerzonym testem Dickey’a-Fullera.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">1</span>,<span class="dv">1</span>)<span class="op">+</span><span class="fl">0.1</span>, <span class="dt">mgp=</span><span class="kw">c</span>(<span class="dv">3</span>,<span class="fl">0.6</span>,<span class="dv">0</span>),<span class="dt">bg=</span><span class="st">&quot;lightgoldenrodyellow&quot;</span>,<span class="dt">las=</span><span class="dv">1</span>)
+<span class="kw">plot</span>(<span class="dv">1</span>,<span class="dt">axes=</span>F,<span class="dt">xlab=</span><span class="st">&quot;&quot;</span>,<span class="dt">ylab=</span><span class="st">&quot;&quot;</span>,<span class="dt">main=</span><span class="st">&quot;&quot;</span>, <span class="dt">col=</span><span class="st">&quot;white&quot;</span>)
+u &lt;-<span class="st"> </span><span class="kw">par</span>(<span class="st">&quot;usr&quot;</span>)
+<span class="kw">rect</span>(u[<span class="dv">1</span>], u[<span class="dv">3</span>], u[<span class="dv">2</span>], u[<span class="dv">4</span>], <span class="dt">col=</span><span class="st">&quot;white&quot;</span>)
+<span class="kw">par</span>(<span class="dt">new=</span>plot)
+<span class="kw">plot</span>(rs,<span class="dt">type=</span><span class="st">&quot;l&quot;</span>,<span class="dt">col=</span><span class="st">&quot;SteelBlue&quot;</span>)</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:wy103"></span>
+<img src="NaPrzelajR_files/figure-html/wy103-1.png" alt="Reszty modelu z trendem i sezonowością $rs_t$." width="70%" />
+<p class="caption">
+Rysunek 10.3: Reszty modelu z trendem i sezonowością <span class="math inline">\(rs_t\)</span>.
+</p>
+</div>
+<pre class="sourceCode r"><code class="sourceCode r">tseries<span class="op">::</span><span class="kw">adf.test</span>(rs)</code></pre>
+<pre><code>## 
+##  Augmented Dickey-Fuller Test
+## 
+## data:  rs
+## Dickey-Fuller = -2.6101, Lag order = 4, p-value = 0.3268
+## alternative hypothesis: stationary</code></pre>
+<p>Ponieważ w teście ADF p-value jest równe <span class="math inline">\(0,3268\)</span> należy przyjąć, że w procesie
+<span class="math inline">\(rs_t\)</span> występuje pierwiastk jednostkowy <span class="math inline">\(d = 1\)</span>. Skoro szereg <span class="math inline">\(rs_t\)</span> jest niestacjonarny należy sprawdzić czy w procesie <span class="math inline">\(\Delta rs_t = rs_t - rs_{t-1}\)</span> również występuje pierwiastek jednostkowy. A więc czy szereg
+<span class="math inline">\(rs_t\)</span> jest zintegrowany w stopniu drugin tzn. <span class="math inline">\(I(2)\)</span>.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">1</span>,<span class="dv">1</span>)<span class="op">+</span><span class="fl">0.1</span>, <span class="dt">mgp=</span><span class="kw">c</span>(<span class="dv">3</span>,<span class="fl">0.6</span>,<span class="dv">0</span>),<span class="dt">bg=</span><span class="st">&quot;lightgoldenrodyellow&quot;</span>,<span class="dt">las=</span><span class="dv">1</span>)
+<span class="kw">plot</span>(<span class="dv">1</span>,<span class="dt">axes=</span>F,<span class="dt">xlab=</span><span class="st">&quot;&quot;</span>,<span class="dt">ylab=</span><span class="st">&quot;&quot;</span>,<span class="dt">main=</span><span class="st">&quot;&quot;</span>, <span class="dt">col=</span><span class="st">&quot;white&quot;</span>)
+u &lt;-<span class="st"> </span><span class="kw">par</span>(<span class="st">&quot;usr&quot;</span>)
+<span class="kw">rect</span>(u[<span class="dv">1</span>], u[<span class="dv">3</span>], u[<span class="dv">2</span>], u[<span class="dv">4</span>], <span class="dt">col=</span><span class="st">&quot;white&quot;</span>)
+<span class="kw">par</span>(<span class="dt">new=</span>plot)
+<span class="kw">plot</span>(<span class="kw">diff</span>(rs),<span class="dt">type=</span><span class="st">&quot;l&quot;</span>,<span class="dt">col=</span><span class="st">&quot;SteelBlue&quot;</span>)</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:wy104"></span>
+<img src="NaPrzelajR_files/figure-html/wy104-1.png" alt="Reszty modelu po jednokrotnym różnicowaniu $rs_t$ ." width="70%" />
+<p class="caption">
+Rysunek 10.4: Reszty modelu po jednokrotnym różnicowaniu <span class="math inline">\(rs_t\)</span> .
+</p>
+</div>
+<pre class="sourceCode r"><code class="sourceCode r">tseries<span class="op">::</span><span class="kw">adf.test</span>(<span class="kw">diff</span>(rs))</code></pre>
+<pre><code>## 
+##  Augmented Dickey-Fuller Test
+## 
+## data:  diff(rs)
+## Dickey-Fuller = -1.7534, Lag order = 4, p-value = 0.6757
+## alternative hypothesis: stationary</code></pre>
+<p>Tak więc szereg <span class="math inline">\(rs_t\)</span> jest zintegrowany w stopniu drugim (p-value = <span class="math inline">\(0,6757\)</span>), badamy więc czy jest również zintegrowany w stopniu trzecim.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">1</span>,<span class="dv">1</span>)<span class="op">+</span><span class="fl">0.1</span>, <span class="dt">mgp=</span><span class="kw">c</span>(<span class="dv">3</span>,<span class="fl">0.6</span>,<span class="dv">0</span>),<span class="dt">bg=</span><span class="st">&quot;lightgoldenrodyellow&quot;</span>,<span class="dt">las=</span><span class="dv">1</span>)
+<span class="kw">plot</span>(<span class="dv">1</span>,<span class="dt">axes=</span>F,<span class="dt">xlab=</span><span class="st">&quot;&quot;</span>,<span class="dt">ylab=</span><span class="st">&quot;&quot;</span>,<span class="dt">main=</span><span class="st">&quot;&quot;</span>, <span class="dt">col=</span><span class="st">&quot;white&quot;</span>)
+u &lt;-<span class="st"> </span><span class="kw">par</span>(<span class="st">&quot;usr&quot;</span>)
+<span class="kw">rect</span>(u[<span class="dv">1</span>], u[<span class="dv">3</span>], u[<span class="dv">2</span>], u[<span class="dv">4</span>], <span class="dt">col=</span><span class="st">&quot;white&quot;</span>)
+<span class="kw">par</span>(<span class="dt">new=</span>plot)
+<span class="kw">plot</span>(<span class="kw">diff</span>(<span class="kw">diff</span>(rs)),<span class="dt">type=</span><span class="st">&quot;l&quot;</span>,<span class="dt">col=</span><span class="st">&quot;SteelBlue&quot;</span>)</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:wy105"></span>
+<img src="NaPrzelajR_files/figure-html/wy105-1.png" alt="Reszty modelu po dwukrotnym różnicowaniu $rs_t$." width="70%" />
+<p class="caption">
+Rysunek 10.5: Reszty modelu po dwukrotnym różnicowaniu <span class="math inline">\(rs_t\)</span>.
+</p>
+</div>
+<pre class="sourceCode r"><code class="sourceCode r">tseries<span class="op">::</span><span class="kw">adf.test</span>(<span class="kw">diff</span>(<span class="kw">diff</span>(rs)))</code></pre>
+<pre><code>## Warning in tseries::adf.test(diff(diff(rs))): p-value smaller than printed
+## p-value</code></pre>
+<pre><code>## 
+##  Augmented Dickey-Fuller Test
+## 
+## data:  diff(diff(rs))
+## Dickey-Fuller = -4.4611, Lag order = 4, p-value = 0.01
+## alternative hypothesis: stationary</code></pre>
+<p>Zatem dla <span class="math inline">\(H_0: I(3)\)</span> p-value jest równe <span class="math inline">\(0,01\)</span>. Czyli szereg <span class="math inline">\(\Delta\Delta rs_t\)</span> jest stacjonarny i
+na tym kończymy procedurę oceny zintegrowania szeregu <span class="math inline">\(rs_t\)</span>. Rząd autoregresji w
+dynamicznym modelu liniowym będzie więc wynosił: <span class="math inline">\(p + d = 1 + 2 = 3\)</span>. Innym
+testem do oceny istnienia pierwiastka jednostkowego jest test Phillipsa-Perrona.</p>
+<pre class="sourceCode r"><code class="sourceCode r">tseries<span class="op">::</span><span class="kw">pp.test</span>(rs)</code></pre>
+<pre><code>## 
+##  Phillips-Perron Unit Root Test
+## 
+## data:  rs
+## Dickey-Fuller Z(alpha) = -8.8842, Truncation lag parameter = 3,
+## p-value = 0.5915
+## alternative hypothesis: stationary</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">tseries<span class="op">::</span><span class="kw">pp.test</span>(<span class="kw">diff</span>(rs))</code></pre>
+<pre><code>## 
+##  Phillips-Perron Unit Root Test
+## 
+## data:  diff(rs)
+## Dickey-Fuller Z(alpha) = -22.395, Truncation lag parameter = 3,
+## p-value = 0.02967
+## alternative hypothesis: stationary</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">tseries<span class="op">::</span><span class="kw">pp.test</span>(<span class="kw">diff</span>(<span class="kw">diff</span>(rs)))</code></pre>
+<pre><code>## Warning in tseries::pp.test(diff(diff(rs))): p-value smaller than printed
+## p-value</code></pre>
+<pre><code>## 
+##  Phillips-Perron Unit Root Test
+## 
+## data:  diff(diff(rs))
+## Dickey-Fuller Z(alpha) = -80.495, Truncation lag parameter = 3,
+## p-value = 0.01
+## alternative hypothesis: stationary</code></pre>
+<p>W oprogramowaniu R możemy również skorzystać z szeregu innych testów dotyczących pierwiastka jednostkowego. Są one dostępne w następujących paczkach:
+<a href="https://rdrr.io/cran/uroot/"><code>uroot</code></a>, <a href="https://rdrr.io/cran/urca/"><code>urca</code></a>, <a href="https://rdrr.io/cran/fUnitRoots/"><code>fUnitRoots</code></a>.</p>
+
+</div>
+</div>
+<div id="part_10.3" class="section level2">
+<h2><span class="header-section-number">10.3</span> Weryfikacja modelu</h2>
+<div id="part_10.3.1" class="section level3">
+<h3><span class="header-section-number">10.3.1</span> Estymacja dynamicznego modelu liniowego</h3>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;dyn&quot;</span>)
+<span class="co"># estymacja modelu:</span>
+m_dyn &lt;-<span class="st"> </span>dyn<span class="op">$</span><span class="kw">lm</span>(bezrob<span class="op">~</span>t1<span class="op">+</span>t2<span class="op">+</span>t3<span class="op">+</span>month<span class="op">+</span>
+<span class="st">      </span>stats<span class="op">::</span><span class="kw">lag</span>(bezrob,<span class="op">-</span><span class="dv">1</span>)<span class="op">+</span>stats<span class="op">::</span><span class="kw">lag</span>(bezrob,<span class="op">-</span><span class="dv">2</span>)<span class="op">+</span>stats<span class="op">::</span><span class="kw">lag</span>(bezrob,<span class="op">-</span><span class="dv">3</span>))
+<span class="co"># podsumowanie modelu</span>
+<span class="kw">summary</span>(m_dyn)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = dyn(bezrob ~ t1 + t2 + t3 + month + stats::lag(bezrob, 
+##     -1) + stats::lag(bezrob, -2) + stats::lag(bezrob, -3)))
+## 
+## Residuals:
+##       Min        1Q    Median        3Q       Max 
+## -0.218117 -0.055641  0.000827  0.051768  0.272502 
+## 
+## Coefficients:
+##                          Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)             1.716e+00  6.131e-01   2.799 0.007172 ** 
+## t1                      8.245e-03  1.169e-02   0.705 0.483721    
+## t2                     -8.612e-04  5.818e-04  -1.480 0.144833    
+## t3                      9.069e-06  5.615e-06   1.615 0.112309    
+## month1                  6.025e-02  6.328e-02   0.952 0.345409    
+## month2                 -5.624e-01  7.525e-02  -7.474 8.69e-10 ***
+## month3                 -6.115e-01  1.129e-01  -5.417 1.58e-06 ***
+## month4                 -6.728e-01  8.569e-02  -7.852 2.18e-10 ***
+## month5                 -3.977e-01  9.862e-02  -4.033 0.000181 ***
+## month6                 -1.633e-01  8.482e-02  -1.925 0.059724 .  
+## month7                 -4.991e-02  7.443e-02  -0.671 0.505471    
+## month8                 -3.025e-01  6.263e-02  -4.829 1.25e-05 ***
+## month9                 -3.062e-01  7.022e-02  -4.361 6.14e-05 ***
+## month10                -3.064e-01  6.484e-02  -4.725 1.79e-05 ***
+## month11                -7.425e-02  6.629e-02  -1.120 0.267842    
+## stats::lag(bezrob, -1)  1.478e+00  1.297e-01  11.400 9.31e-16 ***
+## stats::lag(bezrob, -2) -1.947e-01  2.453e-01  -0.794 0.430944    
+## stats::lag(bezrob, -3) -3.605e-01  1.444e-01  -2.497 0.015719 *  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.1006 on 52 degrees of freedom
+##   (6 observations deleted due to missingness)
+## Multiple R-squared:  0.9993, Adjusted R-squared:  0.9991 
+## F-statistic:  4551 on 17 and 52 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">p_dyn &lt;-<span class="st"> </span><span class="kw">predict</span>(m_dyn)</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">1</span>,<span class="dv">1</span>)<span class="op">+</span><span class="fl">0.1</span>, <span class="dt">mgp=</span><span class="kw">c</span>(<span class="dv">3</span>,<span class="fl">0.6</span>,<span class="dv">0</span>),<span class="dt">bg=</span><span class="st">&quot;lightgoldenrodyellow&quot;</span>,<span class="dt">las=</span><span class="dv">1</span>)
+<span class="kw">plot</span>(<span class="dv">1</span>,<span class="dt">axes=</span>F,<span class="dt">xlab=</span><span class="st">&quot;&quot;</span>,<span class="dt">ylab=</span><span class="st">&quot;&quot;</span>,<span class="dt">main=</span><span class="st">&quot;&quot;</span>, <span class="dt">col=</span><span class="st">&quot;white&quot;</span>)
+u &lt;-<span class="st"> </span><span class="kw">par</span>(<span class="st">&quot;usr&quot;</span>)
+<span class="kw">rect</span>(u[<span class="dv">1</span>], u[<span class="dv">3</span>], u[<span class="dv">2</span>], u[<span class="dv">4</span>], <span class="dt">col=</span><span class="st">&quot;white&quot;</span>)
+<span class="kw">par</span>(<span class="dt">new=</span>plot)
+<span class="kw">plot</span>(bezrob,<span class="dt">type=</span><span class="st">&#39;l&#39;</span>,<span class="dt">lwd=</span><span class="dv">4</span>,<span class="dt">col=</span><span class="st">&#39;SteelBlue&#39;</span>)
+<span class="kw">lines</span>(p_dyn,<span class="dt">lwd=</span><span class="dv">2</span>,<span class="dt">col=</span><span class="st">&#39;violetred3&#39;</span>)
+<span class="kw">legend</span>(<span class="st">&quot;topright&quot;</span>,<span class="dt">bg=</span><span class="st">&#39;white&#39;</span>,<span class="dt">bty=</span><span class="st">&quot;n&quot;</span>,<span class="dt">lty=</span><span class="dv">1</span>,<span class="dt">lwd=</span><span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">2</span>),
+<span class="kw">c</span>(<span class="st">&#39;empiryczna&#39;</span>,<span class="st">&#39;teoretyczna&#39;</span>),<span class="dt">col=</span><span class="kw">c</span>(<span class="st">&#39;SteelBlue&#39;</span>,<span class="st">&#39;violetred3&#39;</span>))</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:wy106"></span>
+<img src="NaPrzelajR_files/figure-html/wy106-1.png" alt="Wykres wartości empirycznych i teoretycznych." width="70%" />
+<p class="caption">
+Rysunek 10.6: Wykres wartości empirycznych i teoretycznych.
+</p>
+</div>
+</div>
+<div id="part_10.3.2" class="section level3">
+<h3><span class="header-section-number">10.3.2</span> Ocena jakości modelu</h3>
+<p>Dokonując oceny jakości modelu należy zwrócić uwagę na wysoką wartość <span class="math inline">\(R^2\)</span> który wynosi <span class="math inline">\(0,9993\)</span>. Oznacza to, że w <span class="math inline">\(99,93\%\)</span> została wyjaśniona zmienność zmiennej
+zależnej (stopa bezrobocia) przez model. Na podstawie oszacowanego błędu standardowego reszt <span class="math inline">\(Se\)</span>, który jest równy <span class="math inline">\(0,1006\)</span> możemy stwierdzić, że średnio o <span class="math inline">\(10,06\%\)</span>
+odchylają się wartości rzeczywiste stopy bezrobocia od wartości teoretycznych – oszacowanych na podstawie modelu. Także test <span class="math inline">\(F\)</span> wskazuje na dobre dopasowanie
+modelu (p-value = <span class="math inline">\(2,2e-16\)</span>).</p>
+
+</div>
+</div>
+<div id="part_10.4" class="section level2">
+<h2><span class="header-section-number">10.4</span> Diagnostyka modelu</h2>
+<div id="part_10.4.1" class="section level3">
+<h3><span class="header-section-number">10.4.1</span> Normalność procesu resztowego</h3>
+<p>Ocena normalności składnika resztowego została dokonana za pomocą testu Shapiro-
+Wilka oraz testu <span class="math inline">\(\chi^2\)</span> w oparciu o procedurę zaproponowaną przez Doornika oraz
+Hansena.</p>
+<pre class="sourceCode r"><code class="sourceCode r">r_dyn &lt;-<span class="st"> </span><span class="kw">resid</span>(m_dyn)
+<span class="kw">shapiro.test</span>(r_dyn)</code></pre>
+<pre><code>## 
+##  Shapiro-Wilk normality test
+## 
+## data:  r_dyn
+## W = 0.98619, p-value = 0.6382</code></pre>
+<p>Wysoka wartość p-value, która wynosi <span class="math inline">\(0,6382\)</span> pozwala nam wnioskować, że na podstawie testu Shapiro-Wilka reszty mają rozkład normalny.</p>
+<pre class="sourceCode r"><code class="sourceCode r">normwhn.test<span class="op">::</span><span class="kw">normality.test1</span>(<span class="kw">as.matrix</span>(r_dyn))</code></pre>
+<pre><code>## [1] &quot;sk&quot;
+## [1] 0.3667684
+## [1] &quot;k&quot;
+## [1] 3.48438
+## [1] &quot;rtb1&quot;
+## [1] 0.3667684
+## [1] &quot;b2&quot;
+## [1] 3.48438
+## [1] &quot;z1&quot;
+## [1] 1.330065
+## [1] &quot;z2&quot;
+## [1] 0.9789823
+## [1] &quot;H0: data do not have skewness&quot;
+## [1] &quot;pvalsk&quot;
+## [1] 0.1834968
+## [1] &quot;H0: data do not have negative skewness&quot;
+## [1] &quot;pskneg&quot;
+## [1] 0.9082516
+## [1] &quot;H0: data do not have positive skewness&quot;
+## [1] &quot;pskpos&quot;
+## [1] 0.09174841
+## [1] &quot;H0: data do not have kurtosis&quot;
+## [1] &quot;pvalk&quot;
+## [1] 0.3275887
+## [1] &quot;H0: data do not have negative kurtosis&quot;
+## [1] &quot;pkneg&quot;
+## [1] 0.8362056
+## [1] &quot;H0: data do not have positive kurtosis&quot;
+## [1] &quot;pkpos&quot;
+## [1] 0.1637944
+## [1] &quot;H0: data are normally distributed&quot;
+## [1] &quot;Ep&quot;
+##          [,1]
+## [1,] 2.727479
+## [1] &quot;dof&quot;
+## [1] 2
+## [1] &quot;sig.Ep&quot;
+##           [,1]
+## [1,] 0.2557027</code></pre>
+<p>Również wynik testu <span class="math inline">\(\chi^2\)</span> wskazuje, że nie ma podstaw do odrzucenia hipotezy zerowej
+przy poziomie istotności <span class="math inline">\(\alpha = 0,05\)</span>. Należy więc stwierdzić, że proces resztowy ma
+rozkład normalny. Wyniki obu testów potwierdzają też wykresy (rys. <a href="part-10.html#fig:wy107">10.7</a>).
+Do badania normalności zmiennych można wykorzystać także inne testy, które
+są dostępne w środowisku R. Oto niektóre z nich: test
+normalności Jarque-Bera – <a href="https://rdrr.io/cran/moments/man/jarque.test.html"><code>moments::jarque.test</code></a>, test skośności D’Agostino – <a href="https://rdrr.io/cran/moments/man/agostino.test.html"><code>moments::agostino.test</code></a>, test kurtozy Anscombe-Glynn – <a href="https://rdrr.io/cran/moments/man/anscombe.test.html"><code>moments::anscombe.test</code></a>.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mfcol=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>),<span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">1</span>,<span class="dv">1</span>)<span class="op">+</span><span class="fl">0.1</span>, <span class="dt">mgp=</span><span class="kw">c</span>(<span class="dv">3</span>,<span class="fl">0.6</span>,<span class="dv">0</span>),<span class="dt">bg=</span><span class="st">&quot;lightgoldenrodyellow&quot;</span>,<span class="dt">las=</span><span class="dv">1</span>)
+<span class="kw">plot</span>(<span class="dv">1</span>,<span class="dt">axes=</span>F,<span class="dt">xlab=</span><span class="st">&quot;&quot;</span>,<span class="dt">ylab=</span><span class="st">&quot;&quot;</span>,<span class="dt">main=</span><span class="st">&quot;&quot;</span>, <span class="dt">col=</span><span class="st">&quot;white&quot;</span>)
+u &lt;-<span class="st"> </span><span class="kw">par</span>(<span class="st">&quot;usr&quot;</span>)
+<span class="kw">rect</span>(u[<span class="dv">1</span>], u[<span class="dv">3</span>], u[<span class="dv">2</span>], u[<span class="dv">4</span>], <span class="dt">col=</span><span class="st">&quot;white&quot;</span>)
+<span class="kw">par</span>(<span class="dt">new=</span>plot)
+<span class="kw">plot</span>(<span class="kw">density</span>(r_dyn),<span class="dt">lwd=</span><span class="dv">4</span>,<span class="dt">col=</span><span class="st">&#39;SteelBlue&#39;</span>)
+<span class="kw">curve</span>(<span class="kw">dnorm</span>(x,<span class="kw">mean</span>(r_dyn),<span class="kw">sd</span>(r_dyn)),<span class="dt">add=</span><span class="ot">TRUE</span>,<span class="dt">lwd=</span><span class="dv">2</span>,<span class="dt">col=</span><span class="st">&#39;violetred3&#39;</span>)
+<span class="kw">legend</span>(<span class="st">&quot;topright&quot;</span>,<span class="dt">bg=</span><span class="st">&#39;white&#39;</span>,<span class="dt">bty=</span><span class="st">&quot;n&quot;</span>,<span class="dt">lty=</span><span class="dv">1</span>,<span class="dt">lwd=</span><span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">2</span>),
+<span class="kw">c</span>(<span class="st">&#39;empiryczna&#39;</span>,<span class="st">&#39;teoretyczna&#39;</span>),<span class="dt">col=</span><span class="kw">c</span>(<span class="st">&#39;SteelBlue&#39;</span>,<span class="st">&#39;violetred3&#39;</span>))
+<span class="kw">plot</span>(<span class="dv">1</span>,<span class="dt">axes=</span>F,<span class="dt">xlab=</span><span class="st">&quot;&quot;</span>,<span class="dt">ylab=</span><span class="st">&quot;&quot;</span>,<span class="dt">main=</span><span class="st">&quot;&quot;</span>, <span class="dt">col=</span><span class="st">&quot;white&quot;</span>)
+u &lt;-<span class="st"> </span><span class="kw">par</span>(<span class="st">&quot;usr&quot;</span>)
+<span class="kw">rect</span>(u[<span class="dv">1</span>], u[<span class="dv">3</span>], u[<span class="dv">2</span>], u[<span class="dv">4</span>], <span class="dt">col=</span><span class="st">&quot;white&quot;</span>)
+<span class="kw">par</span>(<span class="dt">new=</span>plot)
+<span class="kw">qqnorm</span>(r_dyn,<span class="dt">col=</span><span class="st">&#39;SteelBlue&#39;</span>); <span class="kw">qqline</span>(r_dyn,<span class="dt">col=</span><span class="st">&#39;violetred3&#39;</span>)</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:wy107"></span>
+<img src="NaPrzelajR_files/figure-html/wy107-1.png" alt="Graficzna diagnostyka normalności rozkładu reszt." width="100%" />
+<p class="caption">
+Rysunek 10.7: Graficzna diagnostyka normalności rozkładu reszt.
+</p>
+</div>
+</div>
+<div id="part_10.4.2" class="section level3">
+<h3><span class="header-section-number">10.4.2</span> Autokorelacja procesu resztowego</h3>
+<p>Do oceny autokorelacji reszt można wykorzystać test autokorelacji Ljunga-Boxa,
+który jest dostępny w paczce <a href="https://rdrr.io/cran/tseries/"><code>tseries</code></a>. W tym teście dzięki opcji lag możemy badać
+stopień autokorelacji dowolnego rzędu.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">Box.test</span> (r_dyn, <span class="dt">lag=</span> <span class="dv">1</span>, <span class="dt">type=</span> <span class="st">&quot;Ljung-Box&quot;</span>)</code></pre>
+<pre><code>## 
+##  Box-Ljung test
+## 
+## data:  r_dyn
+## X-squared = 0.059179, df = 1, p-value = 0.8078</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">1</span>,<span class="dv">1</span>)<span class="op">+</span><span class="fl">0.1</span>, <span class="dt">mgp=</span><span class="kw">c</span>(<span class="dv">3</span>,<span class="fl">0.6</span>,<span class="dv">0</span>),<span class="dt">bg=</span><span class="st">&quot;lightgoldenrodyellow&quot;</span>,<span class="dt">las=</span><span class="dv">1</span>)
+<span class="kw">plot</span>(<span class="dv">1</span>,<span class="dt">axes=</span>F,<span class="dt">xlab=</span><span class="st">&quot;&quot;</span>,<span class="dt">ylab=</span><span class="st">&quot;&quot;</span>,<span class="dt">main=</span><span class="st">&quot;&quot;</span>, <span class="dt">col=</span><span class="st">&quot;white&quot;</span>)
+u &lt;-<span class="st"> </span><span class="kw">par</span>(<span class="st">&quot;usr&quot;</span>)
+<span class="kw">rect</span>(u[<span class="dv">1</span>], u[<span class="dv">3</span>], u[<span class="dv">2</span>], u[<span class="dv">4</span>], <span class="dt">col=</span><span class="st">&quot;white&quot;</span>)
+<span class="kw">par</span>(<span class="dt">new=</span>plot)
+<span class="kw">pacf</span>(r_dyn,<span class="dt">plot=</span>T)</code></pre>
+<pre><code>## Warning in if (plot) {: warunek posiada długość &gt; 1 i tylko pierwszy
+## element będzie użyty</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:wy108"></span>
+<img src="NaPrzelajR_files/figure-html/wy108-1.png" alt="Funkcja autokorelacji cząstkowej reszt modelu." width="70%" />
+<p class="caption">
+Rysunek 10.8: Funkcja autokorelacji cząstkowej reszt modelu.
+</p>
+</div>
+<p>Także test Quenouille’a na poziomoe istotności <span class="math inline">\(\alpha = 0,05\)</span> (przerywane poziome
+linie – rys. (<a href="part-10.html#fig:wy108">10.8</a>)) potwierdza brak zjawiska autokorelacji reszt. W oprogramowaniu R dostępne są też inne testy do badania tego zjawiska np. test Breuscha-Godfreya – <a href="https://rdrr.io/cran/lmtest/man/bgtest.html"><code>lmtest::bgtest</code></a>
+oraz test Durbina-Watsona – <a href="https://rdrr.io/cran/lmtest/man/dwtest.html"><code>lmtest::dwtest</code></a>. Jednak
+ten ostatni umożliwia badanie tylko autokorelacji rzędu pierwszego.</p>
+</div>
+<div id="part_10.4.3" class="section level3">
+<h3><span class="header-section-number">10.4.3</span> Heteroskedastyczność procesu resztowego</h3>
+<p>Ponieważ niejednorodność wariancji jest zjawiskiem nieporządanym należy więc zbadać czy występuje heteroskedastyczność w procesie reszt. Do tego celu można wykorzystać test Breusha-Pagana.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># test Koenkera:</span>
+lmtest<span class="op">::</span><span class="kw">bptest</span>(m_dyn)</code></pre>
+<pre><code>## 
+##  studentized Breusch-Pagan test
+## 
+## data:  m_dyn
+## BP = 22.774, df = 17, p-value = 0.1567</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># test Breusha-Pagana:</span>
+lmtest<span class="op">::</span><span class="kw">bptest</span>(m_dyn,<span class="dt">studentize=</span>F)</code></pre>
+<pre><code>## 
+##  Breusch-Pagan test
+## 
+## data:  m_dyn
+## BP = 28.29, df = 17, p-value = 0.04166</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Cook i Weisberg [1983]:</span>
+lmtest<span class="op">::</span><span class="kw">bptest</span>(m_dyn,<span class="dt">studentize=</span>F,<span class="dt">varformula =</span><span class="op">~</span><span class="kw">fitted</span>(m_dyn))</code></pre>
+<pre><code>## 
+##  Breusch-Pagan test
+## 
+## data:  m_dyn
+## BP = 1.7564, df = 1, p-value = 0.1851</code></pre>
+<p>Na podstawie przeprowadzonych testów Breusha-Pagana możemy wnioskować, że
+występuje homoskedastyczność reszt. Dzięki środowisku R mamy możliwość przeprowadzenia także innych testów np. test Harrisona-McCabea – <a href="https://rdrr.io/cran/lmtest/man/hmctest.html"><code>lmtest::hmctest</code></a>
+lub test Goldfelda-Quandta – <a href="https://rdrr.io/cran/lmtest/man/gqtest.html"><code>lmtest::gqtest</code></a>.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">1</span>,<span class="dv">1</span>)<span class="op">+</span><span class="fl">0.1</span>, <span class="dt">mgp=</span><span class="kw">c</span>(<span class="dv">3</span>,<span class="fl">0.6</span>,<span class="dv">0</span>),<span class="dt">bg=</span><span class="st">&quot;lightgoldenrodyellow&quot;</span>,<span class="dt">las=</span><span class="dv">1</span>)
+<span class="kw">plot</span>(<span class="dv">1</span>,<span class="dt">axes=</span>F,<span class="dt">xlab=</span><span class="st">&quot;&quot;</span>,<span class="dt">ylab=</span><span class="st">&quot;&quot;</span>,<span class="dt">main=</span><span class="st">&quot;&quot;</span>, <span class="dt">col=</span><span class="st">&quot;white&quot;</span>)
+u &lt;-<span class="st"> </span><span class="kw">par</span>(<span class="st">&quot;usr&quot;</span>)
+<span class="kw">rect</span>(u[<span class="dv">1</span>], u[<span class="dv">3</span>], u[<span class="dv">2</span>], u[<span class="dv">4</span>], <span class="dt">col=</span><span class="st">&quot;white&quot;</span>)
+<span class="kw">par</span>(<span class="dt">new=</span>plot)
+<span class="kw">plot</span>(r_dyn,<span class="dt">col=</span><span class="st">&#39;SteelBlue&#39;</span>)</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:wy109"></span>
+<img src="NaPrzelajR_files/figure-html/wy109-1.png" alt="Reszty modelu." width="70%" />
+<p class="caption">
+Rysunek 10.9: Reszty modelu.
+</p>
+</div>
+</div>
+<div id="part_10.4.4" class="section level3">
+<h3><span class="header-section-number">10.4.4</span> Stabilność parametrów modelu</h3>
+<p>Do zbadania stabilności parametrów modelu można wykorzystać test Chowa. Jednak aby móc zastosować ten test należy określić punkt zwrotny, który podzieli cały
+analizowany proces na dwie podpróby. Jeśli w tych dwóch podokresach parametry modeli nie będą się różniły, można wtedy przyjąć, że są one stabilne. W teście
+<a href="https://rdrr.io/cran/strucchange/man/sctest.html"><code>strucchange::sctest</code></a> jako punkt zwrotny należy podać ostatnią datę z pierwszej
+podpróby. Tzn. jeśli za punkt zwrotny przyjmiemy 10.2008 (pierwsza data drugiej
+podpróby) to dla opcji point trzeba podać 09.2008 (ostatnia data pierwszej podpróby).</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># przygotowanie danych:</span>
+d &lt;-<span class="st"> </span><span class="kw">cbind</span>(bezrob,t1,t2,t3,month,
+  stats<span class="op">::</span><span class="kw">lag</span>(bezrob,<span class="dt">k=</span><span class="op">-</span><span class="dv">1</span>),stats<span class="op">::</span><span class="kw">lag</span>(bezrob,<span class="dt">k=</span><span class="op">-</span><span class="dv">2</span>),stats<span class="op">::</span><span class="kw">lag</span>(bezrob,<span class="dt">k=</span><span class="op">-</span><span class="dv">3</span>))
+d &lt;-<span class="st"> </span><span class="kw">na.omit</span>(d)
+<span class="co"># test Chowa:</span>
+strucchange<span class="op">::</span><span class="kw">sctest</span>(bezrob<span class="op">~</span>., <span class="dt">data=</span>d, <span class="dt">type=</span><span class="st">&quot;Chow&quot;</span>, <span class="dt">point=</span><span class="kw">c</span>(<span class="dv">2008</span>,<span class="dv">9</span>))</code></pre>
+<pre><code>## 
+##  Chow test
+## 
+## data:  bezrob ~ .
+## F = 5.5201, p-value = 9.785e-06</code></pre>
+<p>Innym testem, który bada stabilność parametrów modelu jest test CUSUM (cumulated sum of residuals) zwany także testem Harvey’a-Colliera. Jest on dostępny
+w programie R po uprzednim wczytaniu biblioteki <a href="https://rdrr.io/cran/lmtest/"><code>lmtest</code></a>.</p>
+<pre class="sourceCode r"><code class="sourceCode r">lmtest<span class="op">::</span><span class="kw">harvtest</span>(m_dyn)</code></pre>
+<pre><code>## 
+##  Harvey-Collier test
+## 
+## data:  m_dyn
+## HC = 0.36995, df = 51, p-value = 0.713</code></pre>
+<p>Na podstawie przeprowadzonego testu Chowa należy odrzucić hipotezę zerową o stabilności parametrów modelu. Z kolei na podstawie testu CUSUM należy stwierdzić, że parametry modelu są stabilne.</p>
+</div>
+<div id="part_10.4.5" class="section level3">
+<h3><span class="header-section-number">10.4.5</span> Postać analityczna modelu</h3>
+<p>Aby zweryfikować hipotezę o poprawnym doborze postaci analitycznej modelu moż-
+na skorzystać z testu RESET – <a href="https://rdrr.io/cran/lmtest/man/resettest.html"><code>lmtest::resettest</code></a>. Możemy go przeprowadzić w kilku wersjach:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># wartości wyrównane podniesione do potęgi drugiej i trzeciej:</span>
+lmtest<span class="op">::</span><span class="kw">resettest</span>(m_dyn,<span class="dt">power=</span><span class="dv">2</span><span class="op">:</span><span class="dv">3</span>)</code></pre>
+<pre><code>## 
+##  RESET test
+## 
+## data:  m_dyn
+## RESET = 0.060498, df1 = 2, df2 = 50, p-value = 0.9414</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># wartości wyrównane podniesione do potęgi drugiej:</span>
+lmtest<span class="op">::</span><span class="kw">resettest</span>(m_dyn,<span class="dt">power=</span><span class="dv">2</span>)</code></pre>
+<pre><code>## 
+##  RESET test
+## 
+## data:  m_dyn
+## RESET = 0.059816, df1 = 1, df2 = 51, p-value = 0.8078</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># wartości wyrównane podniesione do potęgi trzeciej:</span>
+lmtest<span class="op">::</span><span class="kw">resettest</span>(m_dyn,<span class="dt">power=</span><span class="dv">3</span>)</code></pre>
+<pre><code>## 
+##  RESET test
+## 
+## data:  m_dyn
+## RESET = 0.096832, df1 = 1, df2 = 51, p-value = 0.7569</code></pre>
+<p>Otrzymane wartości p-value wskazują, że brak jest podstaw do odrzucenia hipotezy
+zerowej zakładającej poprawną specyfikację modelu.</p>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="part-9.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="part-11.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": ["NaPrzelajR.pdf", "NaPrzelajR.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

@@ -1,0 +1,90 @@
+## Mapy {#part_12.2}
+
+Gdy tabela kontyngencji jest dość sporych rozmiarów, warto liczebności w niej występujące przedstawić za pomocą różnych funkcji graficznych. Jedną z możliwości
+jest wykorzystanie komendy [`heatmap`](https://rdrr.io/r/stats/heatmap.html) króra rysuje tzw. "mapa ciepła".
+
+```{r wy121, fig.cap='Mapa ciepła.', fig.show='hold',fig.pos= 'h', fig.align='center', fig.width=7, fig.height=4,out.width='50%',message=FALSE,warning=FALSE}
+library("RColorBrewer")
+par(mfcol=c(1,1),mar=c(4,4,1,1)+0.1,
+    mgp=c(3,0.6,0),las=1)
+heatmap(as.matrix(g), Colv=NA, scale="column",
+        col= rev(brewer.pal(11,"Spectral")))
+```
+Na podstawie otrzymanej tzw. "mapy ciepła"" (rys. \@ref(fig:wy121)) możemy wyodrębnić
+kilka grup województw. W skład pierwszej z nich wchodzą dwa województwa: śląskie
+i mazowieckie. Charakteryzują się one dużymi liczebnościami przestępstw. Kolejna
+grupa to: wielkopolskie, małopolskie, pomorskie (duża liczeność przestępstw gospodarczych), dolnośląskie o średniej przestępczości. Ostatnią grupę stanowią głównie województwa ze wschodniej części kraju: podkarpackie, warmińsko-mazurskie,
+lubelskie, podlaskie, świętokrzyskie oraz lubuskie, zachodnio-pomorskie, łódzkie,
+kujawsko-pomorskie i opolskie. W tych województwach liczba przestępstw była najmniejsza.
+```{r wy122, fig.cap='Mapa ciepła.', fig.show='hold',fig.pos= 'h', fig.align='center', fig.width=7, fig.height=4,out.width='50%',message=FALSE,warning=FALSE}
+heatmap(as.matrix(t(g)), Colv=NA, scale="column",
+col= rev(brewer.pal(11,"Spectral")))
+```
+Po transformacji tabeli `g` i utworzeniu rys. \@ref(fig:wy122) nasuwają się kolejne wnioski. We
+wszystkich województwach przestępstwa o charakterze kryminalnym oraz przeciwko mieniu są popełniane najczęściej. Natomiast najrzadziej przestępstwa przeciwko
+wolności, wolności sumienia i wyznania, wolności seksualnej i obyczjności, rodzinie i opiece a także życiu i zdrowiu.
+
+Inną graficzną formą przedstawienia naszych danych jest mapa Polski z podziałem na województwa. Do takiej prezentacji danych (rys. \@ref(fig:wy123) i \@ref(fig:wy124)) wykorzystamy pakiet [`mapoland`](https://rdrr.io/rforge/mapoland/). Dane można wizualizować na mapach także wczytując formaty plików shapefile które są dostępne pod adresem: [GUGiK](http://www.gugik.gov.pl/pzgik/dane-bez-oplat/dane-z-panstwowego-rejestru-granic-i-powierzchni-jednostek-podzialow-terytorialnych-kraju-prg). Aby importować tego typu dane warto skorzystać z pakietu [`rgdal`](https://rdrr.io/cran/rgdal/).
+
+```{r wy123, fig.cap='Liczba przestępstw w 2009 r.', fig.show='hold',fig.pos= 'h', fig.align='center', fig.width=8, fig.height=6,out.width='70%',message=FALSE,warning=FALSE}
+library("mapoland")
+library("classInt")
+library("RColorBrewer")
+# dane:
+przest <- as.numeric(apply(G, 1, sum))
+NAM <- sapply(1:16,
+              function(i) paste(format(przest[i],big.mark=" "),"\n",rownames(G)[i],sep=" "))
+names(NAM) <- c(2,4,10, 6,8,12,14,16,18,20,22,24,26,28,30,32) # TERYT
+a <- structure(przest, names=rownames(NAM))
+s <- getShape("voiv")
+# kolory:
+przedzialy <- 3
+kolory <- brewer.pal(przedzialy,"Greens")
+klasy <- classIntervals(przest, przedzialy,style="fixed",
+                        fixedBreaks=c(0,100000,200000,300000))
+tabela.kolorow <- findColours(klasy,kolory)
+# rysunek:
+par(mfcol=c(1,1),mar=c(0,0,0,0)+0.1,mgp=c(3,0.6,0),
+    bg="lightgoldenrodyellow",las=1)
+plot(1,axes=F,xlab="",ylab="",main="", col="white")
+u <- par("usr")
+rect(u[1], u[3], u[2], u[4], col="white")
+par(new=plot)
+plot(s, col=tabela.kolorow)
+text( coordinates(s), labels=NAM, col="black",cex=1)
+legend("bottomleft",
+       c("mniej niż 100 000","[100 000 - 200 000)","200 000 i więcej"),
+       fill=attr(tabela.kolorow,"palette"),cex=1,bty="n")
+```
+
+```{r wy124, fig.cap='Częstość przestępstw w 2009 r.', fig.show='hold',fig.pos= 'h', fig.align='center', fig.width=8, fig.height=6,out.width='70%',message=FALSE,warning=FALSE}
+# dane:
+lud <- c(2876627, 2069083, 2541832, 2157202, 1010047, 3298270, 5222167, 1031097,
+         2101732, 1189731, 2230099, 4640725, 1270120, 1427118, 3408281, 1693198)
+pw <- przest/lud # częstość przestępstw w województwach
+pwL <- pw*100000
+NAM <- sapply(1:16, function(i) paste(format(pw[i],digits=3),
+                                      "\n",rownames(G)[i],sep=" "))
+names(NAM) <- c(2,4,10, 6,8,12,14,16,18,20,22,24,26,28,30,32) # TERYT
+a <- structure(przest, names=rownames(NAM))
+s <- getShape("voiv")
+# kolory:
+przedzialy <- 4
+kolory <- brewer.pal(przedzialy,"Reds")
+klasy <- classIntervals(pw, przedzialy,style="fixed",
+                        fixedBreaks=c(0,0.03,0.04,0.05,0.06,1))
+tabela.kolorow <- findColours(klasy,kolory)
+# rysunek:
+par(mfcol=c(1,1),mar=c(0,0,0,0)+0.1,mgp=c(3,0.6,0),
+    bg="lightgoldenrodyellow",las=1)
+plot(1,axes=F,xlab="",ylab="",main="", col="white")
+u <- par("usr")
+rect(u[1], u[3], u[2], u[4], col="white")
+par(new=plot)
+plot(s, col=tabela.kolorow)
+text( coordinates(s), labels=NAM, col="black",cex=1)
+legend("bottomleft",
+       c("mniej niż 0.03","[0.03 - 0.04)","[0.04 - 0.05)", "[0.05 - 0.06)", "0.06 i więcej"),
+       fill=attr(tabela.kolorow,"palette"),cex=.8,bty="n")
+```
+Przestępstwa w przeliczeniu na jednego mieszkańca (rys. \@ref(fig:wy124)) najczęściej odnotowywano w dwóch województwach: dolnośląskim i pomorskim. Najmniej zachowań zabronionych prawem zanotowano w województwie podkarpackim.

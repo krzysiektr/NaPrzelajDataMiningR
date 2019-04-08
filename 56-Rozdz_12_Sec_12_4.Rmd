@@ -1,0 +1,83 @@
+## Modele dla liczebności {#part_12.4}
+
+Do modelowania liczebności wystąpień określonego zjawiska (np. liczba przestępstw)
+możemy wykorzystać model Piossona lub ujemny dwumianowy. W pierwszej kolejności zaprezentujemy model Poissona.
+```{r}
+pois <- glm(y~woj+przest,family=poisson)
+summary(pois)
+```
+```{r}
+# Badanie istotności statystycznej całego modelu:
+lmtest::lrtest(pois)
+```
+Oszacowany model Poissona okazał się istotny statystycznie. Jednak założenie dotyczące równości wariancji i średniej nie zostało spełnione:
+$$
+H_0:\;\phi=1\quad\mbox{vs.}\quad H_1:\;\phi\neq 1
+$$
+```{r}
+AER::dispersiontest(pois, alt="two.sided")
+```
+Tak więc na poziomie istotności $\alpha = 0,05$ odrzucamy hipotezę zerową, która zakłada, że dyspersja (czyli iloraz wariancji i średniej) jest równa 1. A zatem sprawdźmy czy występuje problem nadmiernego rozproszenia (wariancja jest większa od średniej):
+$$
+H_0:\;\phi\leq1\quad\mbox{vs.}\quad H_1:\;\phi> 1
+$$
+```{r}
+AER::dispersiontest(pois)
+```
+Na poziomie istotności $\alpha = 0,05$ przymujemy hipotezę alternatywną, która zakłada, że występuje nadmierne rozproszenie (overdispersion). W takiej syuacji możemy zastosować model ujemny dwumianowy.
+```{r}
+nb <- MASS::glm.nb(y~woj+przest); summary(nb)
+```
+Znając wartość parametru rozproszenia $\theta = 21,7464$ oraz jego błąd standardowy $\sigma_\theta = 2,90$ możemy ocenić jego istotność statystyczną badając następujące hipotezy:
+$$
+H_0:\;\theta=0\quad\mbox{vs.}\quad H_1:\;\theta\neq 0
+$$
+```{r}
+pnorm(2*(1-abs(21.7464/2.9)))
+```
+```{r}
+# Badanie istotności statystycznej całego modelu:
+lmtest::lrtest(nb)
+```
+Model ujemny dwumianowy możemy estymować także z wykorzystaniem funkcji
+[`glm`](https://rdrr.io/r/stats/glm.html) oraz opcji [`MASS::negative.binomial`](https://rdrr.io/cran/MASS/man/negative.binomial.html):
+```{r}
+th <- MASS::theta.ml(nb,fitted(nb))
+th
+```
+```{r}
+# Estymacja modelu ujemnego dwumianowego:
+n <- glm(y~woj+przest, family=MASS::negative.binomial(th))
+# Porównanie modelu Poissona oraz ujemnego dwumianowego:
+lmtest::lrtest(pois,nb)
+```
+Przeprowadzony test ilorazu wiarygodności - [`lmtest::lrtest`](https://rdrr.io/cran/lmtest/man/lrtest.html) wykazał, że model
+ujemny dwumianowy - `nb` ma znacznie wyższy logarytm funkcji wiarygodności. Zatem na podstawie modelu ujemnego dwumianowego należy stwierdzić, że we wszystkich województwach odnotowano mniejszą liczbę przestępstw (ujemne parametry)
+niż w województwie śląskim. Taka sama sytuacja występuje gdy porównamy wszystkie rodzaje czynów zabronionych z przestępstwami o charakterze kryminalnym. Aby
+dowiedzieć się jak duże są to różnice należy obliczyć ilorazy wiarygodności.
+```{r}
+ORpois1 <- round((exp(coef(pois))-1)*100,4)
+ORnb <- round((exp(coef(nb))-1)*100,4)
+cbind(ORpois1,ORnb)
+```
+Interpretacja otrzymanych ilorazów wiarygodności na podstawie modelu ujemnego
+dwumianowego jest następująca:
+
+* Aż o $83,6\%$ mniej popełniono przestępstw w województwie podlaskim niż w
+województwie śląskim.
+
+* W województwie mazowieckim popełniono tylko o $18,5\%$ mniej przestępstw
+niż w województwie ślaskim.
+
+* Najmniejsze różnice w liczebności przestępstw w porównaniu z województwem
+śląskim zanotowano w następujących województwach: dolnośląskim ($-36,4\%$),
+małopolskim ($-46,8\%$), mazowieckim ($-18,5\%$), pomorskim ($-43,7\%$) i wielkopolskim ($-43,4\%$).
+
+* Z kolei największe różnice zanotowano w województwach: kujawsko-pomorskim
+($-65,2\%$), lubelskim ($-66,9\%$), lubuskim ($-77\%$), łódzkim ($-56,9\%$), opolskim ($-81,4\%$), podkarpackim ($-75,3\%$), podlaskim ($-83,6\%$), świętokrzyskim ($-77,6\%$), warmińsko-mazurskim ($-74\%$) oraz zachodnio-pomorskim ($-68\%$).
+
+* Przestępstw przeciwko mieniu popełniono tylko o $22,9\%$ mniej niż kryminalnych.
+
+* Przestępstw o charakterze gospodarczym popełniono o $79,3\%$ mniej niż kryminalnych, natomiast w przypadku pozostałych było ich mniej o ponad $90\%$.
+
+

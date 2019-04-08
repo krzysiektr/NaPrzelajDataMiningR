@@ -1,0 +1,84 @@
+## Skalowanie wielowymiarowe Kruskalla (MDS, ang. Multidimensional Scaling) {#part_23}
+
+Jak już wspominaliśmy, metody redukcji wymiaru są często wykorzystywane do wizualizacji danych. W przypadku analizy składowych głównych po znalezieniu współrzędnych obiektów w nowej bazie wystarczy wziąć dwie pierwsze współrzędne by móc przedstawiać zbiór obserwacji na wykresie dwuwymiarowym, trzy pierwsze by móc
+przedstawić zbiór obserwacji na wykresie trójwymiarowym itp. Wadą analizy składowych głównych jest uwzględnianie wyłącznie zmiennych ilościowych. Kolejnym
+minusem jest konieczność posiadania wartości pomiarów dla kolejnych zmiennych,
+nie można tej metody użyć w sytuacji gdy mamy wyłącznie informacje o podobieństwie lub odległości pomiędzy obiektami.
+
+Metody skalowania Sammona i Kruskala nie mają tych wad. Są to metody ekstrakcji cech, na podstawie macierzy odległości lub macierzy niepodobieństwa pomiędzy obiektami. Celem tych metod jest wyznaczenie współrzędnych w nowym
+układzie współrzędnych, w taki sposób by odległości pomiędzy obiektami w nowym
+układzie współrzędnych były podobne do oryginalnych odległości pomiędzy obiektami. Przykład skalowania wielowymiarowego przedstawiliśmy na rysunku 2.4.
+
+W przypadku skalowania Kruskala minimalizowana jest wartość
+$$
+stress=\frac{\sum_{ij}(f(d_{ij})-\tilde{d}_{ij})^2}{\sum_{ij}f(d_{ij})^2},
+$$
+gdzie $\tilde{d}_{ij}$ to odległość pomiędzy obiektami $i$ i $j$ w nowej $k$-wymiarowej przestrzeni a d ij to oryginalne odległości pomiędzy obiektami przekształcone przez pewną monotoniczną funkcję $f()$ (więc $d_{ij}$ i $\tilde{d}_{ij}$ mogą być w różnych skalach!).
+```{r MDS, echo=FALSE, fig.align='center', fig.cap="Przykład skalowania wielowymiarowego.", out.width = '100%'}
+knitr::include_graphics("isoMDSprzykald.png")
+```
+Skalowanie wielowymiarowe jest w R dostępne w kilku funkcjach:
+
+* funkcja `isoMDS(MASS)` wyznacza niemetryczne skalowanie Kruskala,
+
+* funkcja `sammon(MASS)` wyznacza niemetryczne skalowanie Sammona (patrz
+poprzedni podrozdział [TODO: uspójnić!!]),
+
+* funkcja `cmdscale(stats)` wyznacza skalowanie metryczne inaczej PCA (patrz
+poprzedni podrozdział [TODO: uspójnić!!]).
+
+Poniżej przedstawimy przykłady użycia dla funkcji isoMDS(), z pozostałych korzysta
+się podobnie. Najważniejszym argumentem wejściowym do algorytmu skalowania wielowymiarowego jest macierz odległości pomiędzy obserwacjami. Wyznaczyć ją można np. funkcją `dist(stats)`. W funkcji `dist()` zaimplementowane są wszystkie 
+popularne metody liczenia odległości pomiędzy obserwacjami, w tym odległość euklidesowa (najpopularniejsza, odpowiadająca sumie kwadratów różnic poszczególnych współrzędnych, tej odległości odpowiada argument `method="euclidean"`), odległość Manhattan, nazywana też odległością taksówkową lub miejską (suma modułów różnic pomiędzy współrzędnymi, argument `method="manhattan"`), odległość Mińkowskiego (argument `method="minkowski"`) 
+oraz kilka innych mniej popularnych odległości. Jeżeli w zbiorze danych znajdują się
+zmienne jakościowe to funkcja `dist()` sobie z nimi nie poradzi. W takiej sytuacji
+lepiej wykorzystać funkcję daisy(cluster) wyznaczającą macierz niepodobieństwa
+pomiędzy obiektami. Funkcja `daisy()` uwzględnia również zmienne jakościowe (poniżej przedstawiamy przykład użycia). Macierz odległości jest obiektem klasy `dist()`
+i nie jest pamiętana jako macierz, a jedynie jako połowa macierzy (ponieważ odległość jest symetryczna szkoda pamięci na przechowywanie nadmiarowych danych).
+Jeżeli potrzebujemy przekształcić obiekt `dist()` na macierz to możemy wykorzystać
+funkcję `as.matrix()`
+
+Wynikiem algorytmu skalowania wielowymiarowego są współrzędne obserwacji
+w pewnym nowym układzie współrzędnych. Możemy wybrać wymiar przestrzeni na
+jaką mają być przeskalowane dane (argument `k` funkcji `isoMDS`). Z pewnością po wykonaniu skalowania interesować nas będzie na ile skalowanie zachowało odległości pomiędzy obiektami, czy dużo jest znacznych zniekształceń. Do oceny wyników skalowania wykorzystać można wykres Sheparda przedstawiający na jednej osi oryginalne
+odległości pomiędzy obiektami a na drugiej osi odległości w nowym układzie współ
+rzędnych. Do wyznaczenia obu wektorów odległości służy funkcja `Shepard(MASS)`,
+można też skorzystać z wrappera na tę funkcję, czyli z funkcji `stressplot(vegan)`.
+
+Poniżej przedstawiamy przykład skalowania wielowymiarowego. Wykorzystamy
+tę metodę do przedstawienia za pomocą dwuwymiarowego wykresu podobieństw
+pomiędzy pacjentkami ze zbioru danych `daneO`. Graficzny wynik tych analiz jest
+przedstawiony na rysunku \@ref(fig:wy214). Lewy rysunek przedstawia pacjentki w nowym dwuwymiarowym układzie współrzędnych, w tym przypadku pacjentki przedstawiane są
+jako punkty. Wypełniony punkt oznacza dla niepowodzenie leczenia a więc wznowę,
+a pusty w środku w oznacza wyleczenie pozytywne (widzimy, że pacjentki z niepo-
+wodzeniami grupują się blisko siebie). Ciekawym było by naniesienie na ten wykres
+nazwisk pacjentek i porównanie, które pacjentki pod względem zmierzonych wartości
+były do siebie podobne. Prawy rysunek przedstawia dokładność skalowania, a więc
+jak oryginalne odległości mają się do odległości w nowym układzie współrzędnych.
+```{r}
+dane0 <- read.table("http://www.biecek.pl/R/dane/dane0.csv",sep=";",header = TRUE)
+# konstruujemy macierz niepodobieństwa pomiędzy pacjentkami, również zmienne jakościowe są uwzględnione
+niepodobienstwa = cluster::daisy(daneO)
+# przeprowadzamy skalowanie niemetryczne, skalujemy do przestrzeni o
+# dwóch wymiarach
+skalowanie = MASS::isoMDS(niepodobienstwa, k=2)
+# obiekt wynikowy zawiera współrzędne obserwacji w~nowym układzie współrzędnych
+str(skalowanie)
+# konstruujemy wektor pomocniczy do rysowania
+ksztalty = ifelse(daneO$Niepowodzenia=="brak", 21, 19)
+```
+```{r wy214, fig.cap='Graficzna reprezentacja wyników funkcji isoMDS() i Shepard().', fig.show='hold',fig.pos= 'h', fig.align='center', fig.width=12, fig.height=6,out.width='70%'}
+par(mfcol=c(1,2))
+# rysujemy pacjentki w~nowym układzie współrzędnych
+plot(skalowanie$points, type = "p", pch=ksztalty, cex=1.5)
+# rysujemy również diagram Sheparda
+shepard <- MASS::Shepard(niepodobienstwa, skalowanie$points)
+plot(shepard, pch = ".")
+abline(0,1)
+```
+Zobaczmy jak wyglądają dane o województwach po przeskalowaniu różnymi metodami. Na wykresie \@ref(fig:skal3) po lewej stronie przedstawiamy przeskalowane dane a po
+prawej wykresy Sheparda.
+```{r skal3, echo=FALSE, fig.align='center', fig.cap="Graficzna reprezentacja wyników różnych funkcji skalowania, na przykładach danych GUS.", out.width = '85%'}
+knitr::include_graphics("skalowanie3.png")
+```
+

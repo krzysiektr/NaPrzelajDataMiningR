@@ -1,0 +1,90 @@
+## Metoda aglomeracyjnego klastrowania hierarchicznego {#part_33}
+
+Klastrowanie hierarchiczne różni się od przedstawionych powyżej metod tym, że
+zamiast dzielić obserwacje na określoną liczbę klastrów, określa się stopień podobieństwa poszczególnych obiektów i wyznacza się drzewo odpowiadające tym podobieństwom. Do budowy takich drzew wykorzystywane są różne algorytmy.
+
+Algorytm AGglomerative NESting (AGNES) jest metodą aglomeracyjną, co oznacza, że w pierwszym kroku każda obserwacja traktowana jest jak osobny klaster.
+W kolejnych krokach klastry najbardziej podobne do siebie są łączone w coraz większe klastry, tak długo aż nie powstanie tylko jeden klaster. Algorytm aglomeracyjnego klastrowania hierarchicznego jest dostępny w funkcji `agnes(cluster)`. Pierwszym argumentem może być macierz danych (podobnie jak w przypadku innych algorytmów klastrowania) określająca współrzędne poszczególnych obserwacji lub też
+macierz odległości pomiędzy obserwacjami, a więc obiekt klasy `dist` (jak tworzyć
+takie obiekty pisaliśmy w poprzednim podrozdziale). Duże znaczenie ma metoda
+liczenia odległości pomiędzy obserwacjami. Z reguły zmiana metody liczenia odległości (np. z euklidesowej na taksówkową) prowadzi do otrzymania zupełnie innego wyniku.
+
+Algorytm grupowania hierarchicznego można opisać następująco:
+
+1. Każdą obserwacje traktujemy jako osobne skupienie.
+
+2. Znajdujemy dwa skupiska najbliższe sobie. Odległość pomiędzy skupiskami
+można wyznaczać na różne sposoby. Trzy najpopularniejsze opisane są poniżej.
+
+3. Łączymy dwa najbliższe skupiska w jedno.
+
+4. Jeżeli pozostało więcej niż jedno skupisko to wracamy do kroku 2.
+
+Kolejnym istotnym argumentem jest argument `method`. Określa on kolejność łączenia małych klastrów w coraz większe klastry. W każdym kroku łączone są najbliższe klastry, ale odległość pomiędzy dwoma klasterami można liczyć na trzy sposoby:
+
+* `method="single"`, liczona jest odległość pomiędzy najbliższymi punktami każdego z klastrów, do jednego klastra dołączany jest klaster którego dowolny element jest najbliżej. Ta metoda odpowiada zachłannemu dodawania do skupiska
+obiektów bliskich brzegowi skupiska, możliwe jest tworzenie się tzw. łańcuchów
+kolejno dołączanych obiektów, być może już nie tak podobnych do całego skupiska, coś w stylu „przyjaciele naszych przyjaciół są naszymi przyjaciółmi”,
+
+* `method="average"`, liczona jest średnia odległość pomiędzy punktami każdego
+z klastrów, łączone są więc klastry średnio podobnych obserwacji, to jedna z
+popularniejszych metod ([unweighted pair-]group average method, UPGMA),
+
+* `method="complete"`, liczona jest odległość pomiędzy najdalszymi punktami
+każdego z klastrów, jeżeli dwa skupiska są w odległości $d$ oznacza to, że że
+każda para punktów w tych skupiskach jest nie bardziej odległa niż $d$.
+
+* `method="ward"` skupiska o minimalnej wariancji, w wyniku otrzymuje się zwarte skupiska.
+
+* `method="flexible"`, elastyczność tej metody polega na możliwości określenia
+jak liczona ma być odległość pomiędzy łączonymi klastrami. Tą odległość sparametryzowano czterema współczynnikami (więcej informacji znaleźć można w @KR1990, p.237 lub w opisie funkcji `agnes()`). Korzystanie z tej opcji polecane jest
+bardziej doświadczonym użytkownikom, działa zasada: nie wiesz jak to działa
+nie używaj.
+
+* `method="weighted"` odpowiada metodzie elastyczne z parametrem `par.method = 0.5`.
+
+> *Dla funkcji `agnes()` domyślnie stosowana jest metoda `average`, a dla
+funkcji `hclust()` domyślnie stosowana jest `complete`. Funkcja `agnes()`
+w porównaniu do innych implementacji ma dwie dodatkowe cechy: wyznacza "agglomerative coefficient" i umożliwia rysowanie "banner.plot"."*
+
+Użycie każdej z tych metod prowadzi do wygenerowania innego drzewa. Wyniki
+dla każdej z tych trzech wymienionych metod łączenia klastrów oraz dla obu zbiorów danych przedstawiamy na rysunku \@ref(fig:agnes). Na tym rysunku przedstawione są wyniki
+analizy skupień dla 1000 obiektów, jeżeli analizujemy mniejszą liczbę obiektów, to
+na osi poziomej można odczytać nazwy poszczególnych obiektów a tym samym wizualizować, które obiekty są do siebie bardziej, a które mniej podobne (przykład
+takiego drzewa przedstawiliśmy na rysunku \@ref(fig:hc35)).
+
+Wracając do rysunku \@ref(fig:agnes) w przypadku zbioru Gwiazda sensowniejsze wyniki
+otrzymuje się dla metod łączenia `average` i `complete` (na drzewie można wydzielić
+5 podgałęzi odpowiadającym spodziewanym skupiskom). Dla zbioru Perła najlepiej
+radzi sobie metoda łączenia `single` wyodrębniająca dosyć szybko trzy rozłączne
+skupiska. Najczęściej wykorzystywaną metodą łączenia jest `average`, nie oznacza to że zawsze daje najlepsze wyniki.
+
+Aby na podstawie hierarchicznego klastrowania przypisać obserwacje do określonej liczby klastrów należy drzewo przyciąć na pewnej wysokości. Do przycinania
+drzewa służy funkcja `cutree(stats)`, jej pierwszym argumentem jest obiekt będący
+wynikiem metody hierarchicznej. Kolejnym argumentem, który należy wskazać jest
+`k` (określa do ilu klastrów chcemy przyciąć drzewo) lub `h` (określa na jakiej wysokości
+chcemy przyciąć drzewo). Wysokość drzewa na której chcemy odciąć klastry można
+odczytać z rysunków wygenerowanych dla tego drzewa.
+
+Poniżej przedstawiamy przykład wywołania funkcji `agnes()` i `cuttree()`.
+```
+# wywołanie funkcji AGNES
+> klaster = agnes(zbiorPerla, method="average")
+# wynik możemy narysować przeciążoną funkcją plot
+> plot(klaster)
+# otrzymane drzewo możęmy przyciąć do określonej liczby klastrów
+> etykietkiKlastrow = cutree(klaster, k=2)
+```
+```{r agnes, echo=FALSE, fig.align='center', fig.cap='Graficzny przykład wyników funkcji agnes().', out.width = '100%'}
+knitr::include_graphics("agnes.png")
+```
+```{r hc35, fig.cap='Drzewo dla wybranych modeli samochodów na bazie zbioru danych (Cars93(MASS)).', fig.show='hold',fig.pos= 'h', fig.align='center', fig.width=12, fig.height=6,out.width='70%'}
+library("MASS")
+data(Cars93)
+Cars93$y = sapply(1:93,function(i) paste(Cars93[i,1],Cars93[i,2],sep=" "))
+h = Cars93[,c(4,5,6,7,8,11,12,13,14,15,17,18,19,20,21,22,23,24,25)]
+rownames(h) = Cars93$y
+c = hclust(dist(h[1:37,]))
+plot(c)
+```
+

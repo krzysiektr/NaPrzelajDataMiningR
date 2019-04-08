@@ -1,0 +1,224 @@
+## Statystyki opisowe  {#part_9.2}
+
+Do naszych analiz zostanie wykorzystana stopa zwrotu spółki PKOBP, która ma
+największy udział w strukturze portfela WIG20 (rys. \@ref(fig:wy91)). Dane dotyczące notowań na warszawskiej giełdzie papierów wartościowych są dostępne w internecie. Przykładowo, po kliknięciu w odnośnik [PKOBP](https://www.money.pl/gielda/spolki-gpw/PLPKO0000016.html)
+zostaniemy przekierowani do serwisu internetowego z którego można pobrać interesujące nas dane. W kolejnym kroku można samodzielnie obliczyć logarytmiczne stopy zwrotu według wzoru:
+\begin{equation}
+z=\ln(Close)-\ln(Open)=\ln\left(\frac{Close}{Open}\right)
+(\#eq:wz91)
+\end{equation}
+gdzie: $Close$ to cena zamknięcia oraz $Open$ to cena otwarcia.
+
+Innym rozwiązaniem jest pobranie już przetworzonego zestawu danych:
+```{r}
+t <- read.csv("https://raw.githubusercontent.com/krzysiektr/datacsv/master/pkobp.csv")
+head(t, 3)
+```
+
+```{r wy92, fig.cap='Stopy zwrotu i ceny zamknięcia od 10.11.2004 r. do 29.01.2010 r.',fig.pos= 'h', fig.show='hold', fig.align='center', fig.width=8, fig.height=5,out.width='70%'}
+par(mfcol=c(2,1),mar=c(4,4,1,1)+0.1, mgp=c(3,0.6,0),las=1)
+plot(as.Date(t$Data),t$Zamkniecie,type="l",main="cena zamknięcia")
+plot(as.Date(t$Data),t$z,type="l",main="stopa zwrotu")
+```
+Poniżej obliczymy m.in. miary położenia tzn. średnią, medianę oraz kwartyle.
+```{r}
+z <- t$z
+summary(z)
+```
+a także odchylenie standardowe według wzoru:
+\begin{equation}
+s=\sqrt{\frac{1}{n-1}\sum_{i=1}^{n}(x_i-\bar{x})^2}
+(\#eq:wz92)
+\end{equation}
+```{r}
+sd(z)
+```
+Z powyższych obliczeń wynika, że średnia stopa zwrotu w badanym okresie wyniosła
+$0,22\%$, wartość maksymalna $8,66\%$ a minimalna $-11,82\%$. Natomiast w wypadku $25\%$ sesji
+stopy zwrotu były mniejsze niż $-0,01\%$, podczas $50\%$ sesji wartości były mniejsze
+niż $0,18\%$. Z kolei w przypadku $75\%$ sesji zysk z akcji był mniejszy niż $1,44\%$, a w
+przypadku pozostałych 25% sesji zysk był większy niż $1,44\%$ (rys. \@ref(fig:wy93)).
+
+Przy omawianiu różnych statystyk opisowych wato także wspomnieć o funkcji
+[`quantile`](https://rdrr.io/r/stats/quantile.html). Za jej pomocą mamy możliwość obliczenia wartość dowolnego kwantyla wykorzystując jedną z dziewięciu dostępnych metod. W
+tym opracowaniu zaprezentujemy sposób obliczania kwantyli za pomocą metody
+siódmej. W pierwszym kroku uporządkujemy nasz wektor danych w sposób rosnący:
+```{r}
+sz <- sort(z) # wektor danych uporządkowany rosnąco
+```
+Następnie wyznaczymy numer kwantyla $Q = 80\%$ według wzoru:
+\begin{equation}
+h=(n-1)\cdot Q+1
+(\#eq:wz93)
+\end{equation}
+```{r}
+h <- (length(z)-1)*0.8+1; h # numer kwantyla
+```
+Kolejnym krokiem będzie obliczenie wartości kwantyla na podstawie wzoru:
+\begin{equation}
+x_{\lfloor h \rfloor}+(h-{\lfloor h \rfloor})(x_{\lceil h\rceil}-x_{\lfloor h \rfloor})
+(\#eq:wz94)
+\end{equation}
+gdzie: $\lfloor h \rfloor$ to największa liczba całkowita nie większa od `h` oraz $\lceil h \rceil$ to najmniejsza liczba całkowita nie mniejsza od `h`.
+```{r}
+xL <- sz[floor(h)]; xP <- sz[ceiling(h)]
+xL+(h-floor(h))*(xP-xL) # wartość kwantyla
+```
+Teraz wykorzystamy gotową funkcję z pakietu [`stats`](https://rdrr.io/r/#stats):
+```{r}
+quantile(z,0.80,type=7)
+```
+Otrzymane wartości kwantyli możemy również zaznaczyć na wykresie (rys. \@ref(fig:wy93)).
+```{r wy93, fig.cap='Dystrybuanta – prezentacja graficzna kwantyli.',fig.pos= 'h', fig.show='hold', fig.align='center', fig.width=8, fig.height=6,out.width='70%'}
+q <- as.numeric(quantile(z,c(0.25,0.5,0.75,0.80)))
+par(mar=c(4,4,1,1)+0.1, mgp=c(3,0.6,0),las=1)
+plot(ecdf(z))
+arrows(q,c(0.25,0.5,0.75,0.80),q,c(0,0,0,0),length=0.1,angle=15,
+       col=c("violetred3","YellowGreen","SteelBlue","wheat4"))
+arrows(q,c(0.25,0.5,0.75,0.80),c(-5,-5,-5,-5),c(0.25,0.5,0.75,0.8),angle=0,
+       col=c("violetred3","YellowGreen","SteelBlue","wheat4"))
+points(q,c(0.25,0.5,0.75,0.8),bg="white",pch=21,
+       col=c("violetred3","YellowGreen","SteelBlue","wheat4"))
+legend("right", paste(c("Q25=", "Q50=", "Q75=", "Q80="),round(q,4)),bty="n",#lty=1,
+       text.col=c("violetred3","YellowGreen","SteelBlue","wheat4"))
+```
+
+Wyznaczmy jeszcze wzory dla pozostałych metod szcowania kwantyli. Dla me-
+tod od 4 do 9 algorytmy różnią się tylko sposobem wyznaczenia numeru kwantyla.
+Wartość kwantyla jest obliczana tak jak to zostało przedstawione w powyższym
+przykładzie czyli według wzoru \@ref(eq:wz94)
+
+* typ 4:
+
+\begin{equation}
+h=n\cdot Q
+(\#eq:wz95)
+\end{equation}
+
+* typ 5:
+
+\begin{equation}
+h=n\cdot Q + 1/2
+(\#eq:wz96)
+\end{equation}
+
+* typ 6:
+
+\begin{equation}
+h=(n+1)\cdot Q
+(\#eq:wz97)
+\end{equation}
+
+* typ 7:
+
+\begin{equation}
+h=(n-1)\cdot Q + 1
+(\#eq:wz98)
+\end{equation}
+
+* typ 8:
+
+\begin{equation}
+h=(n+1/3)\cdot Q + 1/3
+(\#eq:wz99)
+\end{equation}
+
+* typ 9:
+
+\begin{equation}
+h=(n+1/4)\cdot Q + 3/8
+(\#eq:wz910)
+\end{equation}
+
+W przypadku metod od 1 do 3 do wyznaczenia numeru kwantyla oraz jego wartości
+korzystamy z nastęujących wzorów:
+
+* typ 1:
+
+\begin{equation}
+h=n\cdot Q +1/2 \quad\wedge\quad x_{\lceil h-1/2\rceil}
+(\#eq:wz911)
+\end{equation}
+
+* typ 2:
+
+\begin{equation}
+h=n\cdot Q +1/2 \quad\wedge\quad (x_{\lceil h-1/2\rceil}+x_{\lfloor h+1/2\rfloor})/2
+(\#eq:wz912)
+\end{equation}
+
+
+* typ 3:
+
+\begin{equation}
+h=n\cdot Q \quad\wedge\quad x_{[h]}
+(\#eq:wz913)
+\end{equation}
+
+Za pomocą komendy `quantile` można także wyznaczyć jednocześnie kilka wartości
+dowolnych kwantyli:
+```{r}
+quantile(z,c(0.17,0.60,0.83),type=7)
+```
+
+W różnych opracowaniach często spotykamy się z następującymi wzorami dotyczącymi skośności:
+\begin{equation}
+S_{1}=\frac{\frac{1}{n}\sum_{i=1}^{n}(x_i-\bar{x})^3}{\sqrt{\left(\frac{1}{n}\sum_{i=1}^{n}(x_i-\bar{x})^2\right)^3}}
+(\#eq:wz914)
+\end{equation}
+```{r}
+(S1 <- e1071::skewness(z,type=1))
+```
+\begin{equation}
+S_{2}=\frac{\frac{1}{n}\sum_{i=1}^{n}(x_i-\bar{x})^3\frac{\sqrt{n(n-1)}}{n-2}}{\sqrt{\left(\frac{1}{n}\sum_{i=1}^{n}(x_i-\bar{x})^2\right)^3}}
+(\#eq:wz915)
+\end{equation}
+```{r}
+(S2 <- e1071::skewness(z,type=2))
+```
+\begin{equation}
+S_{3}=\frac{\frac{1}{n}\sum_{i=1}^{n}(x_i-\bar{x})^3}{s^3}
+(\#eq:wz916)
+\end{equation}
+gdzie $\frac{1}{n}\sum_{i=1}^{n}(x_i-\bar{x})^3$ oraz $\frac{1}{n}\sum_{i=1}^{n}(x_i-\bar{x})^2$ to odpowiednio trzeci i drugi moment
+centralny oraz s to odchylenie standardowe z próby.
+```{r}
+(S3 <- e1071::skewness(z,type=3))
+```
+Ponieważ obliczony wskaźnik skośności jest równy $-0,22$ możemy sądzić, że rozkład stopy zwrotu charakteryzuje się niewielką lewostronną skośnością.
+```{r}
+moments::agostino.test(z)
+```
+Również w przypadku miar koncentracji możemy spotkać się kilkoma wzorami
+na kurtozę:
+\begin{equation}
+K_{1}=\frac{\frac{1}{n}\sum_{i=1}^{n}(x_i-\bar{x})^4}{\left(\frac{1}{n}\sum_{i=1}^{n}(x_i-\bar{x})^2\right)}-3
+(\#eq:wz917)
+\end{equation}
+```{r}
+(K1 <- e1071::kurtosis(z,type=1))
+```
+\begin{equation}
+K_{2}=\frac{n(n+1)}{(n-1)(n-2)(n-3)}\sum_{i=1}^{n}\left(\frac{x_i-\bar{x}}{s}\right)^4-\frac{3(n-1)^2}{(n-2)(n-3)}
+(\#eq:wz918)
+\end{equation}
+```{r}
+(K2 <- e1071::kurtosis(z,type=2))
+```
+\begin{equation}
+K_{3}=\frac{\frac{1}{n}\sum_{i=1}^{n}(x_i-\bar{x})^4}{s^4}-3
+(\#eq:wz919)
+\end{equation}
+gdzie $\frac{1}{n}\sum_{i=1}^{n}(x_i-\bar{x})^4$ oraz $\frac{1}{n}\sum_{i=1}^{n}(x_i-\bar{x})^2$ to odpowiednio czwarty i drugi moment
+centralny oraz $s$ to odchylenie standardowe z próby.
+```{r}
+(K3 <- e1071::kurtosis(z,type=3))
+```
+Wysoka wartość kurtozy świadczy o tym, że rozkład stóp zwrotu charakteryzuje się
+spiczastością (rozkład leptokurtyczny) w stosunku do rozkładu normalnego (rozkład
+mezokurtyczny).
+```{r}
+moments::anscombe.test(z)
+```
+
+

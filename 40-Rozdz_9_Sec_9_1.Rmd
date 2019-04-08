@@ -1,0 +1,24 @@
+# Przykład badania rozkładu stopy zwrotu z akcji {#part_9}
+
+---
+
+## Wprowadzenie {#part_9.1}
+
+W tym opracowaniu będziemy analizować dzienne stopy zwrotu z akcji spółki PKOBP,
+która wchodzi w skład indeksu giełdowego WIG20. Indeks WIG20 to portfel akcji
+dwudziestu największych i najbardziej płynnych spółek notowanych na GPW w
+Warszawie. Jego skład jest ustalany po ostatniej sesji w styczniu (korekta roczna),
+kwietniu, lipcu i październiku (korekty kwartalne). Akutalny stan portfela WIG20
+przedstawia poniższy wykres (rys. \@ref(fig:wy91)).
+```{r wy91, fig.cap='Struktura indeksu WIG20 -- stan na 17 grudnia 2010 r.',fig.pos= 'h', fig.show='hold', fig.align='center', fig.width=8, fig.height=4,out.width='70%'}
+spolki1 <- c(15.00,13.06,11.44,8.95,8.24,8.17,7.17,3.98,3.94,3.00,2.40,
+             2.21,2.20,1.90,1.87,1.76,1.43,1.26,1.21,0.82)
+val <- c('15.00%','13.06%','11.44%','8.95%','8.24%','8.17%','7.17%','3.98%','3.94%','3.00%',
+         '2.40%','2.21%','2.20%','1.90%','1.87%','1.76%','1.43%','1.26%','1.21%','0.82%')
+nam <- c('PKOBP','PEKAO','KGHM','PZU','PGE','PKNORLEN','TPSA','TAURONPE','PGNIG',
+         'BZWBK','BRE','ASSECOPOL','GETIN','GTC','CEZ','TVN','PBG','POLIMEXMS',
+         'LOTOS','CYFRPLSAT')
+par(mar=c(4,6,1,1)+0.1, mgp=c(3,0.6,0),las=1)
+b <- barplot(spolki1, names.arg=nam, horiz=TRUE,xlim=c(0,18))
+text(spolki1, b, labels=val, pos=4)
+```

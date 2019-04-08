@@ -1,0 +1,39 @@
+## Jak to zrobić w R {#part_54}
+
+Analiza kanoniczna jest zaimplementowana między innymi w pakiecie `CCA` w funkcji `cc()`.
+
+Prześledźmy poniższy kod
+
+```
+> library(CCA)
+> dane = read.table("dane.csv",header=T,sep=";")
+> X = dane[,c(9:10)]
+# kolumny z waga
+> Y = dane[,c(11:17)]
+# kolumny z MDRD
+> wynik = cc(X,Y)
+> wynik$cor
+[1] 0.3754946 0.1907164
+```
+
+```
+> wynik$xcoef
+[,1]
+[,2]
+wagastart 0.1047822 -0.09276486
+wagaend
+-0.1154909 0.01404359
+> wynik$ycoef
+[,1]
+[,2]
+MDRD7
+0.056059823 0.05799373
+MDRD30 -0.059196976 -0.03981322
+MDRD6m -0.006987328 0.02870234
+MDRD12m -0.094082377 0.07732582
+MDRD24m 0.119735985 -0.09688825
+MDRD36m -0.024980200 -0.01744831
+MDRD60m -0.007345604 0.04083270
+> plot(wynik$cor,type="b")
+> plt.cc(wynik,var.label=T)
+```

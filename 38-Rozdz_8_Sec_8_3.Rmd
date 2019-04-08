@@ -1,0 +1,98 @@
+## Model logitowy {#part_83}
+
+Model logitowy daje dużo większe możliwości analizy tabel wielodzielczych niż test
+$\chi^2$. Omawiane w poprzenim rozdziale testy niezależności są przeznaczone do badania
+zależności dwóch zmiennych jakościowych. Natomiast za pomocą modelu logitowego
+mamy możliwość analizy wielowymiarowych tabel kontyngencji. Jdnak warunek jaki
+musi zostać spełniony jest taki, aby zmienna zależna była zmienną binarną. W programie R dostępna jest funkcja [`glm`](https://rdrr.io/r/stats/glm.html) za pomocą której możemy estymować
+parametry modelu logitowego.
+```{r}
+# ustawienie punktów odniesienia: Male oraz Adult:
+tt <- transform(t,Sex=relevel(Sex,ref="Male"),Age=relevel(Age,ref="Adult"))
+logit1 <- glm(Survived~.,tt,family=binomial)
+summary(logit1)
+```
+Ten model jest dobrze dopasowany do danych. Potwierdzają to poniższe testy:
+```{r}
+# test logarytmu wiarygodności:
+lmtest::lrtest(logit1)
+# test reszt deviance:
+anova(logit1,test="Chisq")
+# adekwatność modelu:
+1-pchisq(deviance(logit1),logit1$df.residual)
+# dyspersja:
+sum(resid(logit1,type="pearson")^2)/df.residual(logit1)
+```
+W kolejnym kroku obliczymy ilorazy wiarygodności na podstawie oszacowanych
+parametrów modelu.
+```{r}
+cbind(OR=exp(coef(logit1)))
+```
+Interpretacja jest następująca:
+
+* podróżowanie w drugiej klasie dało o $64\%$ mniej szans na przeżycie niż w
+pierwszej klasie,
+
+* podróżowanie w trzeciej klasie dało o $83\%$ mniej szans na przeżycie niż w
+pierwszej klasie,
+
+* załoga statku miała o $58\%$ mniej szans na przeżycie niż w pierwszej klasie,
+
+* kobiety miały ponad $11$ razy większe szanse na przeżycie od mężczyzn,
+
+* dzieci miały prawie $2,9$ razy większe szanse na przeżycie od dorosłych.
+
+Uogólnione modele liniowe dają także możliwość badania bardziej złożonych zależności między zmiennymi tzn. interakcji.
+```{r}
+logit2=glm(Survived~.^2,tt,family=binomial) # interakcje rzędu 2.
+logit3=glm(Survived~.^3,tt,family=binomial) # interakcje rzędu 2 i 3.
+```
+Po estymacji kilku modeli, zawsze jesteśmy zainteresowani, który z nich wybrać.
+Takiego wyboru możemy dokonać np. na podstawie kryterium informacyjnego AIC.
+```{r}
+AIC(logit1,logit2,logit3)
+```
+Zatem do dalszych analiz powinniśmy wybrać model `logit2` (z podwójnymi interakcjami) ponieważ charakteryzuje się najmiejszą wartością AIC. Naszą decyzję
+potwierdzają także inne statystyki np. badające adekwatność modelu:
+```{r}
+1-pchisq(deviance(logit1),logit1$df.residual)
+1-pchisq(deviance(logit2),logit2$df.residual)
+1-pchisq(deviance(logit3),logit3$df.residual)
+```
+oraz oceniające istotność poszczególnych interakcji:
+```{r}
+anova(logit3,test="Chisq")
+```
+Tak więc najlepszym modelem okazał się `logit2`.
+```{r}
+summary(logit2)
+```
+Teraz obliczymy ilorazy wiarygodności aby je zinterpretować. Wyniki zostały zaokrąglone do dwóch miejsc po przecinku za pomocą funkcji [`round`](https://rdrr.io/r/base/Round.html).
+```{r}
+cbind(OR=round(exp(coef(logit2)),2))
+```
+
+* szansa przeżycia osób, które podróżowały w drugiej klasie była o $81\%$ mniejsza
+niż w pierwszej klasie,
+
+* szansa przeżycia osób, które podróżowały w trzeciej klasie była o $60\%$ mniejsza niż w pierwszej klasie,
+
+* szansa przeżycia załogi statku była o $41\%$ mniejsza niż w pierwszej klasie,
+
+* kobiety miały ponad $72$ razy większe szanse na przeżycie od mężczyzn,
+
+* dzieci miały również dużo większe szanse na przeżycie od dorosłych,
+
+* szansa przeżycia kobiet, które podróżowały w trzeciej klasie była mniejsza o
+$94\%$ niż w pierwszej klasie,
+
+* szansa przeżycia dzieci, które podróżowały w drugiej klasie była ponad $2$ razy
+większa niż w pierwszej klasie.
+
+Funkcja [`glm`](https://rdrr.io/r/stats/glm.html) umożliwia także wybór odpowiednich zmiennych do modelu. Jeśli
+np. chcielibyśmy oszacować model `logit2` ale tylko z istotnymi statystycznie parametrami to kod wyglądałby następująco:
+```{r}
+myl <- glm(Survived~Class+Sex+Age+I(Class=="3rd" & Sex=="Female"),tt,
+           family=binomial)
+summary(myl)
+```

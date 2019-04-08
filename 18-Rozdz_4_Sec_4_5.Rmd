@@ -1,0 +1,78 @@
+## Lasy losowe {#part_45}
+
+Wadą drzew klasyfikacyjnych jest ich mała stabilność. Są jednak sposoby by temu
+zaradzić. Takim sposobem jest konstruowanie komitetu klasyfikatorów a wiec użycie
+metody bagging lub boosting. Nie wystarczyło tu miejsca by przedstawić te metody
+w ich ogólnej postaci, wspomnimy o nich na przykładzie lasów losowych.
+
+Idea, która przyświeca metodzie lasów losowych możne być streszczona w zdaniu
+"Niech lasy składają się z drzew". Jak pamiętamy w metodzie bootstrap generowano
+replikacje danych, by ocenić zachowanie statystyki dla oryginalnego zbioru danych.
+Odmianą metody bootstrap w zagadnieniu klasyfikacji jest bagging. Na bazie replikacji zbioru danych konstruowane są klasyfikatory, które na drodze głosowania
+większością wyznaczają ostateczną klasą dla danej obserwacji. W przypadku lasów
+losowych komitet klasyfikatorów składa się z drzew klasyfikacyjnych, które są trenowane na replikacjach zbioru danych, dla ustalonego podzbioru zmiennych.
+
+Ponieważ drzew w lesie jest dużo, do komitet głosujący demokratycznie charakteryzuje się większą stabilnością. Dodatkową zaletą drzew jest naturalny nieobciążony
+estymator błędu klasyfikacji. Generując replikacje losując metodą z powtórzeniami,
+średnio do replikacji nie trafia około jednej trzeciej obserwacji (w ramach ćwiczeń
+warto to sprawdzić). Te obserwacje, które nie trafiły do replikacji, można wykorzystać do oceny klasyfikatora nauczonego na danej replikacji. Taka ocena błędu określana jest błędem OOB (ang. out-of-bag). Jeszcze inną zaletą drzew losowych jest
+możliwość oceny zdolności dyskryminujących dla poszczególnych zmiennych (dzięki
+czemu możemy wybrać najlepszy zbiór zmiennych).
+
+Lasy losowe dostępne są w funkcji `randomForest(randomForest)`. Poniżej przedstawiamy przykład jej użycia. Ponieważ przy konstrukcji lasów losowych generowane
+są losowe replikacje zbioru danych, to aby móc odtworzyć uzyskane wyniki warto
+skorzystać z funkcji `set.seed()`.
+
+```{r}
+# ustawiamy ziarno generatora, by można było odtworzyć te wyniki
+set.seed(1)
+
+# ćwiczymy las
+klasyfikatorRF <- randomForest::randomForest(diabetes~glucose+insulin,
+                                             data=dane,
+                                             subset=zbior.uczacy, importance=TRUE, proximity=TRUE)
+# podsumowanie lasu
+print(klasyfikatorRF)
+```
+```{r}
+# podobnie jak dla innych klasyfikatorów funkcją predict() możemy ocenić
+# etykietki na zbiorze testowym i porównać błąd klasyfikacji z błędem z
+# innych metod
+oceny = predict(klasyfikatorRF, dane[-zbior.uczacy,])
+table(predykcja = oceny, prawdziwe = dane[-zbior.uczacy,"diabetes"])
+```
+```{r RF48, fig.cap='Przykładowe obszary decyzyjne dla lasów losowych.',fig.pos= 'h', fig.show='hold', fig.align='center', fig.width=8, fig.height=6,out.width='70%'}
+PimaIndiansDiabetes2 = na.omit(PimaIndiansDiabetes2)
+dane = PimaIndiansDiabetes2
+dane[,5] = log(dane[,5])
+
+seqx = seq(30,210,2)
+seqy = seq(2,7,0.07)
+siata = as.data.frame(expand.grid(seqx, seqy))
+colnames(siata) = c("glucose", "insulin")
+
+klasyfikatorRF <- randomForest::randomForest(diabetes~glucose+insulin,
+                                             data=dane,importance=TRUE, proximity=TRUE)
+#klasyfikatorRF <- randomForest(diabetes~., data=dane,importance=TRUE, proximity=TRUE)
+wub = predict(klasyfikatorRF, siata)
+plot(siata, col=kol[as.numeric(wub)], pch=15, 
+     main="randomForest()",xlim=range(dane[,"glucose"]),ylim=range(dane[,"insulin"]),
+     cex=1)
+points(dane[,c("glucose","insulin")],pch=c(1,4)[as.numeric(dane[,"diabetes"])], 
+       cex=1, col=kol2[as.numeric(dane[,"diabetes"])], lwd=2)
+```
+Lasy losowe są uznawane za jedną z najlepszych metod klasyfikacji. Ich dodatkową zaletą jest możliwość użycia nauczonego lasu losowego do innych zagadnień niż
+tylko do klasyfikacji. Przykładowo na podstawie drzew z lasu można wyznaczyć ranking zmiennych, a tym samym określić które zmienne mają lepsze właściwości predykcyjne a które gorsze. Taką informację przekazuje funkcja `importance(randomForest)`,
+można tę informacje również przedstawić graficznie z użyciem funkcji `varImpPlot(randomForest)`
+(przykład dla naszego zbioru danych jest przedstawiony na rysunku \@ref(fig:kl49)).
+
+Używając lasów losowych (regresyjnych) można również wykonać imputacje,
+a wiec zastąpić brakujące obserwacje w zbiorze danych. Do tego celu można posłużyć się funkcją `rfImpute(randomForest)`. Można również zdefiniować na podstawie
+lasów losowych miarę odstępstwa i wykrywać nią obserwacje odstające (do tego celu służy funkcja `outlier(randomForest)`). Można rónież używając lasów losowych
+przeprowadzać skalowanie wielowymiarowe, osoby zainteresowane tym tematem powinny zaznajomić się z funkcją `MDSplot(randomForest)`
+```{r kl49, fig.cap='Ranking zmiennych wykonany przez las losowy.', fig.show='hold',fig.pos= 'h', fig.align='center', fig.width=12, fig.height=6,out.width='70%'}
+klasyfikatorRF <- randomForest::randomForest(diabetes~ .,
+                                             data=PimaIndiansDiabetes2,
+                                             importance=TRUE,proximity=TRUE)
+randomForest::varImpPlot(klasyfikatorRF)
+```

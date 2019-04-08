@@ -1,0 +1,39 @@
+## Naiwny klasyfikator Bayesowski {#part_43}
+
+Do klasyfikacji wykorzystać można szeroką grupę metod bazujących na ocenie prawdopodobieństwa przynależności do określonej grupy. Dla każdej z klas ocenia się częstość (w przypadku ciągłym gęstość) występowania obiektów o określonych parametrach. Następnie dla nowego obiektu wyznacza się częstości występowania obiektów
+poszczególnych klas i wybiera się klasę występującą dla tych parametrów najczęściej.
+
+Do tej grupy metod należy naiwny klasyfikator Bayesowski. Bayesowski, ponieważ bazuje na regule Bayesa użytej do wyznaczenia prawdopodobieństwa a posteriori
+należenia do poszczególnych klas. Naiwność w tym kontekście oznacza przyjęte założenie, że łączna gęstość występowania obiektów jest iloczynem gęstości brzegowych.
+Naiwny klasyfikator Bayesowski jest dostępny w funkcjach `naiveBayes(e1071)` i `NaiveBayes(klaR)`.
+Poniżej przedstawimy tą drugą implementację.
+Sposób użycia tej funkcji jest podobny do użycia innych opisanych powyżej klasyfikatorów. Na rysunku \@ref(fig:mN) przestawione są warunkowe brzegowe oceny gęstości dla
+obu zmiennych dla każdej z klas, na bazie tych gęstości wykonywana jest kalsyfikacja. Na rysunku \@ref(fig:NB) przedstawiamy przykładowe obszary decyzyjne dla naiwnego klasyfikatora Bayesowskiego.
+```{r}
+# konstruujemy naiwny klasyfikator Bayesowski
+mN <- klaR::NaiveBayes(diabetes~glucose+insulin, data=dane, subset=zbior.uczacy)
+# wyznaczamy oceny
+oceny <- predict(mN, dane[-zbior.uczacy,])$class
+table(predykcja = oceny, prawdziwe = dane[-zbior.uczacy,3])
+```
+```{r mN, fig.cap='Warunkowe brzegowe oceny gęstości, na ich bazie funkcjonuje naiwny klasyfikator Bayesowski.', fig.show='hold',fig.pos= 'h', fig.align='center', fig.width=12, fig.height=6,out.width='70%'}
+par(mfcol=c(1,2))
+plot(mN)
+```
+```{r NB, fig.cap='Przykładowe obszary decyzyjne dla naiwnego klasyfikatora Bayesowskiego.',fig.pos= 'h', fig.show='hold', fig.align='center', fig.width=8, fig.height=6,out.width='70%'}
+PimaIndiansDiabetes2 = na.omit(PimaIndiansDiabetes2)
+dane = PimaIndiansDiabetes2[,c(2,5,9)]
+dane[,2] = log(dane[,2])
+
+seqx = seq(30,210,2)
+seqy = seq(2.5,7,0.07)
+siata = as.data.frame(expand.grid(seqx, seqy))
+
+kol  = c("grey90", "grey70")
+klasyfikatorKNN = klaR::NaiveBayes(diabetes~glucose+insulin, data = dane)
+wub = predict(klasyfikatorKNN, newdata=siata)$class
+plot(siata, col=kol[as.numeric(wub)], pch=15, main="NaiveBayes()", 
+     xlab="insulin",ylab="glucose", xlim=range(dat[,1]),ylim=range(dat[,2]))
+points(dane[,1:2],pch=c(1,4)[as.numeric(dane[,3])], cex=1, 
+       col=kol2[as.numeric(dane[,3])], lwd=2)
+```

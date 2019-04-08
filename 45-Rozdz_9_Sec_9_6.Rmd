@@ -1,0 +1,160 @@
+## Rozkład Stabilny {#part_9.6}
+
+Rozkład stabilny $S(\alpha, \beta, \gamma, \delta)$, gdzie $\alpha \in(0; 2)$ to parametr kształtu, $\beta \in(-1; 1)$
+to indeks skośności, $\gamma > 0$ to parametr skali, oraz $\delta \in R$ to parametr położenia,
+nie ma ściśle określonej funkcji gęstości -- [`stabledist::dstable`](https://rdrr.io/cran/stabledist/man/dist-stable.html). W zależności od wartości parametrów $\alpha$
+oraz $\beta$ możemy otrzymać rozkłady, takie jak: rozkład normalny: $\alpha = 2$, rozkład
+Cauchy'ego: $\alpha = 1$ i $\beta = 0$ oraz rozkład Levy’ego: $\alpha = 12$ i $\beta = -1$.
+
+Do oszacowania parametrów rozkładu stabilnego można wykorzystać funkcję [`libstableR::stable_fit_mle`](https://rdrr.io/cran/libstableR/man/stable_fit.html) która stosuje metodę największej wiarygodności.
+```{r}
+p <- libstableR::stable_fit_mle(z)
+p
+```
+```{r}
+ADGofTest::ad.test(z,stabledist::pstable,p[1],p[2],p[3],p[4])
+```
+Test Andersona-Darlinga wykazał, że badana zmienna ma rozkład stabilny o parametrach: $\alpha = 1,73$, $\beta = -0,000796$, $\gamma = 0,01$ oraz $\delta = 0,002$. Warto zwrócić
+uwagę na wysokość p-value dla rozkładu stabilnego, które wynosi $0,5369$ i jest większa
+niż dla rozkładu Laplace'a $(0,1896)$. A zatem należy sądzić, że właśnie ten rozkład
+lepiej opisuje badaną zmienną (rys. \@ref(fig:wy97)).
+```{r wy97, fig.cap='Porównanie wykresu gęstości z rozkładem Stabilnym.',fig.pos= 'h', fig.show='hold', fig.align='center', fig.width=12, fig.height=4,out.width='100%'}
+par(mfcol=c(1,2),mar=c(4,4,1,1)+0.1, mgp=c(3,0.6,0),las=1)
+plot(density(z),col='SteelBlue',lwd=4,main='gęstość')
+curve(stabledist::dstable(x, 1.7281736156, -0.0007958884, 0.0132426670,  0.0023446287),
+      add=TRUE,col='violetred3',lwd=3)
+legend("topright",bg='white',bty="n",cex=1,lty=1,lwd=c(4,3),
+c('empiryczna','teoretyczna'),col=c('SteelBlue','violetred3'))
+plot(ecdf(z),col='SteelBlue',lwd=4,main='dystrybuanta')
+curve(stabledist::pstable(x, 1.7281736156, -0.0007958884, 0.0132426670,  0.0023446287),
+      add=TRUE,col='violetred3',lwd=3)
+legend("topleft",bg='white',bty="n",lty=1,lwd=c(4,3),
+c('empiryczna','teoretyczna'),col=c('SteelBlue','violetred3'))
+```
+
+Znając rozkład badanej zmiennej można także obliczyć prawdopodobieństwo wystąpienia określonej stopy zwrotu. W tym celu wykorzystamy funkcję [`stabledist::pstable`](https://rdrr.io/cran/stabledist/man/dist-stable.html)
+czyli dystrybuantę rozkładu stabilnego.
+
+1. Jakie jest prawdopodobieństwo, że stopa zwrotu będzie mniejsza niż $2\%$?
+$$P(z<0,02)$$
+
+```{r}
+a <- p[1]
+b <- p[2]
+g <- p[3]
+d <- p[4]
+stabledist::pstable(0.02, a,b,g,d)
+```
+```{r wy98, fig.cap='Obszar prawdopodobieństwa $P(z<0,02)=0,821845$',fig.pos= 'h', fig.show='hold', fig.align='center', fig.width=8, fig.height=4,out.width='70%'}
+par(mar=c(4,4,1,1)+0.1, mgp=c(3,0.6,0),las=1)
+curve(stabledist::dstable(x,a,b,g,d),-0.1,0.1,
+      col='white', main='prawdopodobieństwo')
+x <- seq(0.02,-0.1,length=300)
+y <- stabledist::dstable(x,a,b,g,d)
+polygon(c(0.02,x,-0.1),c(0,y,0),
+        col='Violet',border = "Dark Magenta")
+curve(stabledist::dstable(x,a,b,g,d),-0.1,0.1,
+      lwd=4,col='Dark Magenta',add=TRUE)
+```
+
+2. Jakie jest prawdopodobieństwo, że stopa zwrotu będzie większa niż $3,2\%$?
+$$P(z > 0,032)$$
+```{r}
+1-stabledist::pstable(0.032, a,b,g,d)
+```
+```{r wy99, fig.cap='Obszar prawdopodobieństwa $P(z>0,032)=0,07146513$',fig.pos= 'h', fig.show='hold', fig.align='center', fig.width=8, fig.height=4,out.width='70%'}
+par(mar=c(4,4,1,1)+0.1, mgp=c(3,0.6,0),las=1)
+curve(stabledist::dstable(x,a,b,g,d),-0.1,0.1,
+      col='white',main='prawdopodobieństwo')
+x <- seq(0.032,0.1,length=300)
+y <- stabledist::dstable(x,a,b,g,d)
+polygon(c(0.032,x,0.1),c(0,y,0),
+        col='Violet',border = "Dark Magenta")
+curve(stabledist::dstable(x,a,b,g,d),-0.1,0.1,
+      lwd=4,col='Dark Magenta',add=TRUE)
+```
+
+3. Jakie jest prawdopodobieństwo, że stopa zwrotu będzie się zawierać w przedziale
+$(0\%; 3,78\%)$?
+$$P(0<z<0,0378)$$
+```{r}
+stabledist::pstable(0.0378, a,b,g,d)-stabledist::pstable(0, a,b,g,d)
+```
+```{r wy910, fig.cap='Obszar prawdopodobieństwa $P(0<z<0,0378)=0,5038598$',fig.pos= 'h', fig.show='hold', fig.align='center', fig.width=8, fig.height=4,out.width='70%'}
+par(mar=c(4,4,1,1)+0.1, mgp=c(3,0.6,0),las=1)
+curve(stabledist::dstable(x,a,b,g,d),-0.1,0.1,
+      col='white',main='prawdopodobieństwo')
+x <- seq(0,0.0378,length=300)
+y <- stabledist::dstable(x,a,b,g,d)
+polygon(c(0,x,0.0378),c(0,y,0),
+        col='Violet',border = "Dark Magenta")
+curve(stabledist::dstable(x,a,b,g,d),-0.1,0.1,
+      lwd=4,col='Dark Magenta',add=TRUE)
+```
+
+4. Jakie jest prawdopodobieństwo, że stopa zwrotu będzie mniejsza niż $1,75\%$ lub
+większa niż $3,78\%$?
+$$P (0,0175 > z > 0,0378)$$
+```{r}
+stabledist::pstable(0.0175, a,b,g,d)+(1-stabledist::pstable(0.0378, a,b,g,d))
+```
+```{r wy911, fig.cap='Obszar prawdopodobieństwa $P(0,0175>z>0,0378)=0,8336819$',fig.pos= 'h', fig.show='hold', fig.align='center', fig.width=8, fig.height=4,out.width='70%'}
+par(mar=c(4,4,1,1)+0.1, mgp=c(3,0.6,0),las=1)
+curve(stabledist::dstable(x,a,b,g,d),-0.1,0.1,
+      col='white',main='prawdopodobieństwo')
+x <- seq(-0.1,0.0175,length=300)
+y <- stabledist::dstable(x,a,b,g,d)
+polygon(c(-0.1,x,0.0175),c(0,y,0),
+        col='Violet',border = "Dark Magenta")
+x <- seq(0.0378,0.1,length=300)
+y <- stabledist::dstable(x,a,b,g,d)
+polygon(c(0.0378,x,0.1),c(0,y,0),
+        col='Violet',border = "Dark Magenta")
+curve(stabledist::dstable(x,a,b,g,d),-0.1,0.1,
+      lwd=4,col='Dark Magenta',add=TRUE)
+```
+
+Na zakończenie warto jeszcze wspomnieć, że środowisko R oferuje także wiele innych rozkładów prawdopodobieństwa wraz z funkcjami do szacowania
+ich parametrów. W paczce [`fBasics`](https://rdrr.io/cran/fBasics/) oprócz funkcji do estymacji parametrów rozkładu stabilnego [`fBasic::stableFit`](https://rdrr.io/cran/fBasics/man/dist-DistributionFits.html) mamy do dyspozycji takie rozkłady jak:
+
+* odwrotny rozkład normalny (*Normal Inverse Gaussian Distribution*)
+gdzie:
+`dnig` -- funkcja gęstości, `pnig` -- dystrybuanta, `qnig` -- kwantyle, `rnig` -- zmienne
+losowe, `nigFit` -- estymacja parametrów.
+
+* rozkład hiperboliczny (*Hyperbolic Distribution*)
+gdzie:
+`dhyp` -- funkcja gęstości, `phyp` – dystrybuanta, `qhyp` -- kwantyle, `rhyp` -- zmienne
+losowe, `hypFit` -- estymacja parametrów.
+
+* uogolniony rozkład hiperboliczy (*Generalized Hyperbolic Distribution*)
+gdzie:
+`dgh` -- funkcja gęstości, `pgh` -- dystrybuanta, `qgh` -- kwantyle, `rgh` -- zmienne
+losowe, `ghFit` -- estymacja parametrów.
+
+* uogolniony rozkład hiperboliczy t-Studenta (*Generalized Hyperbolic Student-t*)
+gdzie:
+`dght` -- funkcja gęstości, `pght` -- dystrybuanta, `qght` -- kwantyle, `rght` -- zmienne
+losowe, `ghtFit` -- estymacja parametrów.
+
+* uogolniony rozkład lambda (*Generalized Lambda Distribution*)
+gdzie:
+`dgld` -- funkcja gęstości, `pgld` -- dystrybuanta, `qgld` -- kwantyle, `rgld` -- zmienne
+losowe, `gldFit` -- estymacja parametrów.
+
+Z kolei w bibliotece [`fGarch`](https://rdrr.io/cran/fGarch/) są zaimplementowane następujące rozkłady:
+
+* uogólniony rozkład błędów (*Generalized Error Distribution – GED*)
+gdzie:
+`dged` -- symetryczna funkcja gęstości, `gedFit` -- estymacja parametrów,
+`dsged` -- skośna funkcja gęstości, `sgedFit` -- estymacja parametrów.
+
+* rozkład t-Studenta (*Student-t Distribution*)
+gdzie:
+`dstd` -- symetryczna funkcja gęstości, `stdFit` -- estymacja parametrów,
+`dsstd` -- skośna funkcja gęstości, `sstdFit` -- estymacja parametrów.
+
+* rozkład normalny (*Normal Distribution*)
+gdzie:
+`dnorm` -- symetryczna funkcja gęstości, `normFit` -- estymacja parametrów,
+`dsnorm` -- skośna funkcja gęstości, `snormFit` -- estymacja parametrów.

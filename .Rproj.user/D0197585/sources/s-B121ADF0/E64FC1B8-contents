@@ -1,0 +1,689 @@
+# Przegląd wybranych testów statystycznych {#part_11}
+
+---
+
+## Testy normalności {#part_11.1}
+
+W celu przedstawienia procedury obliczeniowej testu normalności Doornika-Hansena
+wykorzystamy dane dotyczące długości płatka kosaćca z gatunku setosa.
+```{r}
+attach(iris)
+f <-  Petal.Length[Species=="setosa"]
+```
+Przed przystąpieniem do obliczeń statystyki jednowymiarowego testu normalności Doornika-Hansena, należy przekształcić nasz wektor danych f w następujący
+sposób:
+```{r}
+ff <- f-mean(f) # przekształcenie
+n <- length(ff) # liczebność wektora danych
+```
+Teraz dokonamy transformacji skośności (D'Agostino) czyli obliczymy statystykę `z1`:
+
+\begin{equation}
+\beta=\frac{3(n^2+27n-70)(n+1)(n+3)}{(n-2)(n+5)(n+7)(n+9)}
+(\#eq:wz111)
+\end{equation}
+
+\begin{equation}
+\omega^2=-1+\left[2(\beta-1)\right]^{1/2}
+(\#eq:wz112)
+\end{equation}
+
+\begin{equation}
+\delta=\left[\ln\left(\sqrt{\omega^2}\right)\right]^{-1/2}
+(\#eq:wz113)
+\end{equation}
+
+\begin{equation}
+S_1=\frac{\frac{1}{n}\sum_{i=1}^{n}(x_i-\bar{x})^3}{\sqrt{\left(\frac{1}{n}\sum_{i=1}^{n}(x_i-\bar{x})^2\right)^3}}
+(\#eq:wz114)
+\end{equation}
+
+\begin{equation}
+y=S_1\left[\frac{\omega^2-1}{2}\frac{(n+1)(n+3)}{6(n-2)}\right]^{1/2}
+(\#eq:wz115)
+\end{equation}
+
+\begin{equation}
+z_1=\delta\ln\left[y+(y^2+1)^{1/2}\right]
+(\#eq:wz116)
+\end{equation}
+
+```{r}
+# obliczenia dla z1:
+f1 <- function(x){
+  DNAME= deparse(substitute(x))
+  x= sort(x[complete.cases(x)])
+  n= length(x)
+  beta= (3*(n^2+27*n-70)*(n+1)*(n+3)) / ((n-2)*(n+5)*(n+7)*(n+9))
+  w2= -1+(2*(beta-1))^(1/2)
+  del= 1/sqrt(log(sqrt(w2)))
+  S1= e1071::skewness(x,type=1) # parametr skośności
+  y= S1*sqrt(((w2-1) / (2))*(((n+1)*(n+3))/(6*(n-2))))
+  z1= del*log(y+sqrt(y^2+1))
+  }
+z1 <- f1(ff); z1
+```
+
+Należy zaznaczyć, że statystyka z1 ma rozkład zbliżony do rozkładu normalnego.
+```{r}
+# rozkład statystyki z1 dla 10000 replikacji
+statsS <- sapply(1:10000, function(i) f1(sample(ff,length(ff),TRUE)))
+```
+```{r wy111, fig.cap='Rozkład statystyki z1 dla 10000 replikacji.',fig.pos= 'h', fig.show='hold', fig.align='center', fig.width=9, fig.height=6,out.width='70%'}
+par(mar=c(4,4,1,1)+0.1, mgp=c(3,0.6,0),bg="lightgoldenrodyellow",las=1)
+plot(1,axes=F,xlab="",ylab="",main="", col="white")
+u <- par("usr")
+rect(u[1], u[3], u[2], u[4], col="white")
+par(new=plot)
+hist(statsS,prob=TRUE,col='SteelBlue',border='white')
+curve(dnorm(x,mean(statsS),sd(statsS)),add=TRUE,lwd=3,col='violetred3')
+legend("topright",bg='white',bty="n",lty=1,lwd=c(4,3),
+       c('empiryczna','teoretyczna'),col=c('SteelBlue','violetred3'))
+```
+Otrzymaną wartość `z1` możemy wykorzystać do zweryfikowania następujących hipotez dotyczących skośności (wzór \@ref(eq:wz114)):
+$$
+\begin{array}{ll}
+H_0: & S_1 = 0\\
+H_1: & S_1 \neq 0
+\end{array}
+\qquad\text{lub}\qquad
+\begin{array}{ll}
+H_0: & S_1 \geq 0\\
+H_1: & S_1 < 0
+\end{array}
+\qquad\text{lub}\qquad
+\begin{array}{ll}
+H_0: & S_1 \leq 0\\
+H_1: & S_1 > 0
+\end{array}
+$$
+```{r}
+2*(1-pnorm(abs(z1))) # p-value dla H1: S1!=0
+pnorm(z1)            # p-value dla H1: S1<0
+1-pnorm(z1)          # p-value dla H1: S1>0
+```
+
+Do weryfikacji tego typu hipotez możemy skorzystać z testu skośności D'Agostino
+wpisując następującą komendę:
+```{r}
+moments::agostino.test(f)
+```
+Jak można zauważyć wartość statystyki `z` jest taka sama jak `z1`. Warto dodać, że we wzorach \@ref(eq:wz113) oraz \@ref(eq:wz116) może być stosowany
+logarytm dziesiętny -- $\log$ zamiast logarytu naturalnego -- $\ln$. Wtedy wyniki
+testów D'Agostino mogą się różnić.
+
+W kolejnym kroku obliczymy statystykę `z2` czyli przeprowadzimy transformację
+kurtozy (Wilson-Hilferty) według poniższych wzorów:
+\begin{equation}
+\delta= (n-3)(n+1)(n^2+15n-4)
+(\#eq:wz117)
+\end{equation}
+
+\begin{equation}
+a=\frac{(n-2)(n+5)(n+7)(n^2+27n-70)}{6\;\delta}
+(\#eq:wz118)
+\end{equation}
+
+\begin{equation}
+c=\frac{(n-7)(n+5)(n+7)(n^2+2n-5)}{6\;\delta}
+(\#eq:wz119)
+\end{equation}
+
+\begin{equation}
+k=\frac{(n+5)(n+7)(n^3+37n^2+11n-313)}{12\;\delta}
+(\#eq:wz1110)
+\end{equation}
+
+\begin{equation}
+S_1=\frac{\frac{1}{n}\sum_{i=1}^{n}(x_i-\bar{x})^3}{\sqrt{\left(\frac{1}{n}\sum_{i=1}^{n}(x_i-\bar{x})^2\right)^3}}
+(\#eq:wz1111)
+\end{equation}
+
+\begin{equation}
+\alpha=a+{S_1}^2c
+(\#eq:wz1112)
+\end{equation}
+
+\begin{equation}
+K_1=\frac{\frac{1}{n}\sum_{i=1}^{n}(x_i-\bar{x})^4}{\left(\frac{1}{n}\sum_{i=1}^{n}(x_i-\bar{x})^2\right)^2}
+(\#eq:wz1113)
+\end{equation}
+
+\begin{equation}
+\chi=(K_1-1-{S_1}^2)2k
+(\#eq:wz1114)
+\end{equation}
+
+\begin{equation}
+z_2=\left[\left(\frac{\chi}{2\alpha}\right)^{1/3}-1+\frac{1}{9\alpha}\right](9\alpha)^{1/2}
+(\#eq:wz1115)
+\end{equation}
+
+```{r}
+# obliczenia dla z2:
+f2 <- function(x){
+  DNAME= deparse(substitute(x))
+  x= sort(x[complete.cases(x)])
+  n= length(x)
+  delta= (n-3)*(n+1)*(n^2+15*n-4)
+  a= ((n-2)*(n+5)*(n+7)*(n^2+27*n-70)) / (6*delta)
+  c= ((n-7)*(n+5)*(n+7)*(n^2+2*n-5)) / (6*delta)
+  k= ((n+5)*(n+7)*(n^3+37*n^2+11*n-313)) / (12*delta)
+  S1= e1071::skewness(x,type=1)   # parametr skośności
+  alpha= a+S1^2*c
+  K1= e1071::kurtosis(x,type=1)+3 # parametr kurtozy
+  chi= (K1-1-S1^2)*2*k
+  z2= ( (chi/(2*alpha))^(1/3)-1+(1/(9*alpha)) )*sqrt(9*alpha)
+  }
+z2 <- f2(ff); z2
+```
+Także parametr `z2` ma rozkład zbliżony do rozkładu normalnego (rys. \@ref(fig:wy112)).
+```{r}
+# rozkład statystyki z2 dla 10000 replikacji
+statsK <- sapply(1:10000, function(i) f2(sample(ff,length(ff),TRUE)))
+```
+```{r wy112, fig.cap='Rozkład statystyki z2 dla 10000 replikacji.',fig.pos= 'h', fig.show='hold', fig.align='center', fig.width=9, fig.height=6,out.width='70%'}
+par(mar=c(4,4,1,1)+0.1, mgp=c(3,0.6,0),bg="lightgoldenrodyellow",las=1)
+plot(1,axes=F,xlab="",ylab="",main="", col="white")
+u <- par("usr")
+rect(u[1], u[3], u[2], u[4], col="white")
+par(new=plot)
+hist(statsK,prob=TRUE,col='SteelBlue',border='white')
+curve(dnorm(x,mean(statsK),sd(statsK)),add=TRUE,lwd=3,col='violetred3')
+legend("topright",bg='white',bty="n",lty=1,lwd=c(4,3),
+       c('empiryczna','teoretyczna'),col=c('SteelBlue','violetred3'))
+```
+Na podstawie obliczonej wartości `z2` dokonamy wefyfikacji następujących hipotez
+statystycznych dotyczących kurtozy (wzór \@ref(eq:wz1113)):
+$$
+\begin{array}{ll}
+H_0: & K_1 = 3\\
+H_1: & K_1 \neq 3
+\end{array}
+\qquad\text{lub}\qquad
+\begin{array}{ll}
+H_0: & K_1 \geq 3\\
+H_1: & K_1 < 3
+\end{array}
+\qquad\text{lub}\qquad
+\begin{array}{ll}
+H_0: & K_1 \leq 3\\
+H_1: & K_1 > 3
+\end{array}
+$$
+```{r}
+2*(1-pnorm(abs(z2))) # p-value dla H1: K1!=3
+pnorm(z2)            # p-value dla H1: K1<3
+1-pnorm(z2)          # p-value dla H1: K1>3
+```
+W przypadku weryfikacji powyższych hipotez statystycznych możemy zastosować
+test kurtozy Anscombe-Glynn:
+\begin{equation}
+a=\frac{3(n-1)}{(n+1)}
+(\#eq:wz1116)
+\end{equation}
+
+\begin{equation}
+b=\frac{24n(n-2)(n-3)}{(n+1)^2(n+3)(n+5)}
+(\#eq:wz1117)
+\end{equation}
+
+\begin{equation}
+c=\frac{6(n^2-5n+2)}{(n+7)(n+9)}\sqrt{\frac{6(n+3)(n+5)}{n(n-2)(n-3)}}
+(\#eq:wz1118)
+\end{equation}
+
+\begin{equation}
+d=6+\frac{8}{c}\left(\frac{2}{c}+\sqrt{1+\frac{4}{c}}\right)
+(\#eq:wz1119)
+\end{equation}
+
+\begin{equation}
+K_1=\frac{\frac{1}{n}\sum_{i=1}^{n}(x_i-\bar{x})^4}{\left(\frac{1}{n}\sum_{i=1}^{n}(x_i-\bar{x})^2\right)^2}
+(\#eq:wz1120)
+\end{equation}
+
+\begin{equation}
+\chi=\frac{K_1-a}{\sqrt{b}}
+(\#eq:wz1121)
+\end{equation}
+
+\begin{equation}
+z=\frac{1-\frac{2}{9d}-\left(\frac{1-2/d}{1+\chi\sqrt{2/(d-4)}}\right)^{1/3}}{\sqrt{2/9d}}
+(\#eq:wz1122)
+\end{equation}
+
+```{r}
+moments::anscombe.test(f)
+```
+Po wyznaczeniu wartości `z1` oraz `z2` możemy obliczyć statystykę testu normalności $ep$ według wzoru:
+\begin{equation}
+ep=z_1^2+z_2^2
+(\#eq:wz1123)
+\end{equation}
+
+```{r}
+ep <- z1^2+z2^2; ep
+```
+Ponieważ statystyki `z1` oraz `z2` mają rozkłady zbliżone do normalnych (rys. \@ref(fig:wy111) i rys. \@ref(fig:wy112)) to suma ich kwadratów będzie miała rozkład $\chi^2$ z dwoma stopniami swobody.
+```{r}
+# rozkład statystyki ep dla 10000 replikacji
+statsC <- sapply(1:10000, function(i) f1(sample(ff,length(ff),TRUE))^2 +
+                   f2(sample(ff,length(ff),TRUE))^2)
+```
+```{r wy113, fig.cap='Rozkład statystyki ep dla 10000 replikacji.',fig.pos= 'h', fig.show='hold', fig.align='center', fig.width=9, fig.height=5,out.width='70%'}
+par(mar=c(4,4,1,1)+0.1, mgp=c(3,0.6,0),bg="lightgoldenrodyellow",las=1)
+plot(1,axes=F,xlab="",ylab="",main="", col="white")
+u <- par("usr")
+rect(u[1], u[3], u[2], u[4], col="white")
+par(new=plot)
+hist(statsC,prob=TRUE,col='SteelBlue',border='white')
+curve(dchisq(x,2),add=TRUE,lwd=3,col='violetred3')
+legend("topright",bg='white',bty="n",lty=1,lwd=c(4,3),
+       c('empiryczna','teoretyczna'),col=c('SteelBlue','violetred3'))
+```
+```{r}
+1-pchisq(ep,2)
+```
+Teraz zostaną przedstawione wyniki testu Doornika-Hansena z wykorzystaniem gotowej funkcji [`normwhn.test::normality.test1`](https://rdrr.io/cran/normwhn.test/man/normality.test1.html).
+```{r}
+normwhn.test::normality.test1(as.matrix(f))
+```
+Ponieważ w teście Doornika-Hansena p-value = $0,1175283$, należy stwierdzić, że
+zmienna `f` (długość płatka gatunku setosa) charakteryzuje się rozkładem normalnym. Również test skośności (p-value = $0,7402641$) oraz kurtozy (p-value =
+$0,04109101$) potwierdzają naszą decyzję.
+```{r}
+shapiro.test(f)
+```
+Także test Shapiro-Wilka wskazuje na normalność rozkładu badanej zmiennej (p-value = $0,05481$).
+
+```{r wy114, fig.cap='Histogram - długość płatka irysa, gatunek setosa.',fig.pos= 'h', fig.show='hold', fig.align='center', fig.width=9, fig.height=5,out.width='70%'}
+par(mar=c(4,4,1,1)+0.1, mgp=c(3,0.6,0),bg="lightgoldenrodyellow",las=1)
+plot(1,axes=F,xlab="",ylab="",main="", col="white")
+u <- par("usr")
+rect(u[1], u[3], u[2], u[4], col="white")
+par(new=plot)
+hist(f,prob=TRUE,col='SteelBlue',border='white')
+curve(dnorm(x,mean(f),sd(f)),add=TRUE,lwd=3,col='violetred3')
+legend("topright",bg='white',bty="n",lty=1,lwd=c(4,3),
+       c('empiryczna','teoretyczna'),col=c('SteelBlue','violetred3'))
+```
+Gdy badamy normalność za pomocą kilku testów np. Doornika-Hansena i Shapiro-
+Wilka zawsze warto porównać ich moc. Poniżej zostały przedstawione obliczenia
+dotyczące mocy obu testów.
+```{r}
+# moc testu Doornika-Hansena:
+set.seed(2305)
+statP <- sapply(1:10000, function(i) 
+  1-pchisq(f1(sample(ff,length(ff),TRUE))^2 + f2(sample(ff,length(ff),TRUE))^2,2))
+mean(statP< 0.05)
+# moc testu Shapiro-Wilka:
+set.seed(2305)
+statSW <- sapply(1:10000, function(i)
+  shapiro.test(sample(f,length(f),TRUE))$p.value)
+mean(statSW< 0.05)
+```
+Tak więc test Shapiro-Wilka charakteryzuje się zdecydowanie większą mocą $(0,8758)$ niż test Doornika-Hansena $(0,2605)$. Czyli do oceny normalności wektora danych `f` należy posłużyć się testem Shapiro-Wilka.
+
+Za pomocą funkcji [`normwhn.test::normality.test1`](https://rdrr.io/cran/normwhn.test/man/normality.test1.html) mamy możliwość także badania wielowymiarowej normalności macierzy danych. Sposób przeprowadzania obliczeń dla wielowymiarowego testu Doornika-Hansena przedstawimy na przykładzie macierzy `X`.
+```{r}
+# długość i szerokość płatka - setosa:
+X <- iris[1:50,3:4]
+p <- length(X[1,])
+n <- length(X[,1])
+# wektor średnich dla kolumn macierzy X:
+m <-  NULL
+for (i in 1:p) m[i]= mean(X[,i])
+```
+W pierwszym kroku dokonamy przekształcenia macierzy `X` w poniższy sposób.
+\begin{equation}
+\check{X}_{p \times n}=\left[
+\begin{array}{*{4}{c}}
+X_{11}-\bar{X}_1 & \ldots & X_{p1}-\bar{X}_p\\
+\vdots & \ddots & \vdots\\
+X_{1n}-\bar{X}_1 & \ldots & X_{pn}-\bar{X}_p
+\end{array}
+\right]
+(\#eq:wz1124)
+\end{equation}
+```{r}
+M <-  matrix(rep(m, n), nrow=p)
+Xhat <- X-t(M)
+```
+
+\begin{equation}
+V=\mbox{diag}\left({S_{11}}^{-1/2},\ldots,\;{S_{pp}}^{-1/2}\right)
+(\#eq:wz1125)
+\end{equation}
+```{r}
+V <- diag(1/sqrt(diag(cov(X))))
+```
+
+\begin{equation}
+\Lambda=\mbox{diag}(\lambda_1,\ldots,\;\lambda_n)
+(\#eq:wz1126)
+\end{equation}
+```{r}
+lambda <- diag(eigen(cor(X))$values)
+H <- eigen(cor(X))$vectors
+```
+
+\begin{equation}
+R^T=H\Lambda^{-1/2}H^TV\check{X}^{T}
+(\#eq:wz1127)
+\end{equation}
+```{r}
+RT <- H %*% solve(lambda)^(1/2) %*% t(H) %*% V %*% t(Xhat)
+R <- t(RT)
+```
+Po otrzymaniu macierzy `R` możemy teraz obliczyć wartości wektorów `z1` i `z2` w
+podobny sposób jak w przypadku testu jednowymiarowego.
+```{r}
+# obliczenia dla z1:
+f1= function(x){
+  DNAME <- deparse(substitute(x))
+  rS1 <- apply(x,2,FUN=function(x)e1071::skewness(x,type=1))
+  rK1 <- apply(x,2,FUN=function(x)e1071::kurtosis(x,type=1)+3)
+  beta <- (3*(n^2+27*n-70)*(n+1)*(n+3)) / ((n-2)*(n+5)*(n+7)*(n+9))
+  w2 <- -1+(2*(beta-1))^(1/2)
+  del <- 1/sqrt(log(sqrt(w2)))
+  y <- rS1*sqrt(((w2-1) / (2))*(((n+1)*(n+3))/(6*(n-2))))
+  z1 <- del*log(y+sqrt(y^2+1))
+}
+z1 <- f1(R); z1
+# p-value dla jednowymiarowych testów skośności - H1: S1!=0
+2*(1-pnorm(abs(z1)))
+# obliczenia dla z2:
+f2 <- function(x){
+  delta <- (n-3)*(n+1)*(n^2+15*n-4)
+  a <- ((n-2)*(n+5)*(n+7)*(n^2+27*n-70)) / (6*delta)
+  c <- ((n-7)*(n+5)*(n+7)*(n^2+2*n-5)) / (6*delta)
+  k <- ((n+5)*(n+7)*(n^3+37*n^2+11*n-313)) / (12*delta)
+  rS1 <- apply(x,2,FUN=function(x)e1071::skewness(x,type=1))
+  alpha <- a+rS1^2*c
+  rK1 <- apply(x,2,FUN=function(x)e1071::kurtosis(x,type=1)+3)
+  chi <- (rK1-1-rS1^2)*2*k
+  z2 <- ( (chi/(2*alpha))^(1/3)-1+(1/(9*alpha)) )*sqrt(9*alpha)
+  }
+z2 <- f2(R); z2
+# p-value dla jednowymiarowych testów kurtozy - H1: K1!=3
+2*(1-pnorm(abs(z2)))
+```
+\begin{equation}
+Ep={Z_1}^TZ_1+{Z_2}^TZ_2
+(\#eq:wz1128)
+\end{equation}
+```{r}
+z1 <- matrix(z1,p,1)
+z2 <- matrix(z2,p,1)
+Ep <- t(z1) %*% z1 + t(z2) %*% z2; Ep
+```
+
+\begin{equation}
+Ep\longrightarrow {{\chi}^{2}}_{df=2p}
+(\#eq:wz1129)
+\end{equation}
+```{r}
+1-pchisq(Ep,2*p)
+```
+Identyczne wyniki otrzymamy wykonując poniższą komendę.
+```{r}
+normwhn.test::normality.test1(X)
+```
+Wartość p-value = $0,001565663$ jest mniejsza od $\alpha = 0,05$, a więc należy odrzucić
+hipotezę zerową zakładającą wielowymiarowy rozkład normalny macierzy `X`. Warto zwrócić uwagę na wysoki wskaźnik skośności $(1,2159276)$ dla drugiej zmiennej
+(szerokość płatka) co może sugerować prawostronną skośność rozkładu.
+```{r}
+mvnormtest::mshapiro.test(t(X))
+```
+Na podstwie wielowymiarowego testu Shapiro-Wilka także należy odrzcić hipotezę
+zerową zakładającą dwuwymiarowy rozkład normalny macierzy `X`.
+```{r wy115, fig.cap='Długość i szerokość płatka setosa.', fig.show='hold',fig.pos= 'h', fig.align='center', fig.width=12, fig.height=4,out.width='100%'}
+par(mfcol=c(1,2),mar=c(4,4,1,1)+0.1, mgp=c(3,0.6,0),bg="lightgoldenrodyellow",las=1)
+plot(1,axes=F,xlab="",ylab="",main="", col="white")
+u <- par("usr")
+rect(u[1], u[3], u[2], u[4], col="white")
+par(new=plot)
+hist(X[,1],prob=TRUE,main="długość",border="white",col="SteelBlue")
+curve(dnorm(x,mean(X[,1]),sd(X[,1])),add=TRUE,lwd=3,col="violetred3")
+plot(1,axes=F,xlab="",ylab="",main="", col="white")
+u <- par("usr")
+rect(u[1], u[3], u[2], u[4], col="white")
+par(new=plot)
+hist(X[,2],prob=TRUE,main="szerokość",border="white",col="SteelBlue")
+curve(dnorm(x,mean(X[,2]),sd(X[,2])),add=TRUE,lwd=3,col="violetred3")
+```
+W celu porównania obu wielowymiaroych testów normalności obliczymy ich moc.
+```{r}
+set.seed(2305)
+statP= NULL
+for (i in 1:10000) {
+  R1 <- matrix(c(sample(R[,1],n,TRUE),sample(R[,2],n,TRUE)),n,2)
+  z1 <- matrix(f1(R1))
+  z2 <- matrix(f2(R1))
+  Ep <- t(z1) %*% z1 + t(z2) %*% z2
+  statP[i] <- 1-pchisq(Ep, 2*p)
+}
+# moc wielowymiarowego testu Doornika-Hansena:
+mean(statP< 0.05)
+set.seed(2305)
+statP= NULL
+for (i in 1:10000) {
+  X1 <- t(matrix(c(sample(X[,1],n,TRUE),sample(X[,2],n,TRUE)),n,2))
+  statP[i] = mvnormtest::mshapiro.test(X1)$p.value
+}
+# moc wielowymiarowego testu Shapiro-Wilka:
+mean(statP< 0.05)
+```
+Tym razem okazało się, że większą moc ma wielowymiarowy test Doornika-Hansena
+niż wielowymiarowy test Shapiro-Wilka. Różnica między mocą obu testów nie jest
+zbyt wysoka i wynosi $0,0728$.
+
+Kolejną grupa testów jaką przedstawimy to takie które badają wielowymiarową
+normalność w oparciu o wielowymiarowy parametr skośności lub kurtozy. Jednym z
+takich testów jest procedura zaproponowana przez Kanti V. Mardiego. Obliczenia dla tego testu są przedstawione poniżej.
+\begin{equation}
+J_n=\left[
+\begin{array}{*{4}{c}}
+1 \\
+\vdots \\
+1
+\end{array}
+\right]
+(\#eq:wz1130)
+\end{equation}
+```{r}
+Jn <- matrix(1, n)
+```
+
+\begin{equation}
+I_n
+(\#eq:wz1131)
+\end{equation}
+```{r}
+In <- matrix(0, n, n)
+diag(In) <- 1
+```
+
+\begin{equation}
+D_{p \times n}=\left[
+\begin{array}{*{4}{c}}
+d_{11} & \ldots & d_{p1}\\
+\vdots & \ddots & \vdots\\
+d_{1n} & \ldots & d_{pn}
+\end{array}
+\right]
+(\#eq:wz1132)
+\end{equation}
+```{r}
+Q <- In - 1/n * Jn %*% t(Jn)
+X <- as.matrix(X)
+D <- Q %*% X %*% solve(var(X)) %*% t(X) %*% Q
+```
+Parametr wielowymiarowej skośności:
+\begin{equation}
+\hat{S}_1=\frac{1}{n^2}\sum_{p=1}^{n}\sum_{n=1}^{n}{d_{pn}}^3
+(\#eq:wz1133)
+\end{equation}
+```{r}
+S_hat <- 1/(n^2) * sum(D^3); S_hat
+```
+
+Statystyka testu:
+\begin{equation}
+\kappa_1=\frac{n\hat{S}_1}{6}
+(\#eq:wz1134)
+\end{equation}
+```{r}
+kappa1 <- (n * S_hat)/6; kappa1
+```
+
+\begin{equation}
+\kappa_1\longrightarrow {{\chi}^{2}}_{df=p(p+1)(p+2)/6}
+(\#eq:wz1135)
+\end{equation}
+```{r}
+df <- p*(p+1)*(p+2)/6; df
+1-pchisq(kappa1,df)
+```
+
+Parametr wielowymiarowej kurtozy:
+\begin{equation}
+K_1=\frac{1}{n}\sum_{p=1}^{n}{d_{pp}}^2
+(\#eq:wz1136)
+\end{equation}
+```{r}
+K_hat <- 1/n * sum(diag(D)^2); K_hat
+```
+
+Statystyka testu:
+\begin{equation}
+\kappa_2=\frac{\hat{K}_1-p(p+2)}{\sqrt{8p(p+2/n)}}
+(\#eq:wz1137)
+\end{equation}
+```{r}
+kappa2 <- (K_hat-p*(p+2)) / (8*p*(p+2)/n)^0.5; kappa2
+```
+
+\begin{equation}
+\kappa_2\longrightarrow N(0,1)
+(\#eq:wz1138)
+\end{equation}
+```{r}
+2*(1-pnorm(abs(kappa2)))
+```
+Wykorzystując funkcję [`QuantPsyc::mult.norm`](https://rdrr.io/cran/QuantPsyc/man/mult.norm.html) mamy możliwość uzyskać jednocześnie wszystkie wartości, które zostały obliczone powyżej.
+```{r}
+# wielowymiarowy test Mardiego w oparciu o skośność i kurtozę:
+QuantPsyc::mult.norm(X)$mult.test
+```
+W programie R są dostępne także inne funkcje umożliwiające badanie wielowy-
+miarowej normalności w oparciu o parametr skośności [`ICS::mvnorm.skew.test`](https://rdrr.io/cran/ICS/man/mvnorm.skew.test.html) lub
+kurtozy [`ICS::mvnorm.kur.test`](https://rdrr.io/cran/ICS/man/mvnorm.kur.test.html)
+```{r}
+# wielowymiarowy test w oparciu o skośność:
+ICS::mvnorm.skew.test(X)
+# wielowymiarowy test w oparciu o kurtozę:
+ICS::mvnorm.kur.test(X, method="satterthwaite")
+```
+Badając wielowymiarowy rozkład macierzy `X` w oparciu o parametr skośności należy
+odrzucić hipotezę zerową (na poziomie istotności $\alpha = 0,05$), która zakłada rozkład
+normalny. Wartości p-value są równe $0,01847$ (test Mardiego) oraz $0,01622$. Z kolei
+na podstawie testu kurtozy p-value wynoszą: $0,2485$ (test Mardiego) i $0,5195$, a zatem
+brak jest podstaw do odrzucenia hipotezy zerowej na poziomie istotności $\alpha = 0,05$.
+
+Porównanie mocy testów skośności i kurtozy:
+```{r}
+B <- 10000
+pv <- lapply(1:B, function(i) {
+  X1 <- matrix(c(sample(X[,1],50,TRUE),sample(X[,2],50,TRUE)),50,2);
+  list(QuantPsyc::mult.norm(X1)$mult.test[1,3],
+       ICS::mvnorm.skew.test(X1)$p.value,
+       QuantPsyc::mult.norm(X1)$mult.test[2,3],
+       ICS::mvnorm.kur.test(X1, method="satterthwaite")$p.value)
+  })
+df <- data.frame(matrix(unlist(pv), nrow=B, byrow=T),stringsAsFactors=FALSE)
+colnames(df) <- c("skewMard","skewICS","kurtMard","kurtICS")
+apply(df,2,function(i) mean(i<0.05))
+```
+
+Na koniec przedstawimy kilka dwuwymiarowych wykresów gęstości macierzy `X`
+za pomocą poniższych komend:
+```{r}
+# przygotowanie zmiennych:
+library(MASS)
+x <- kde2d(X[,1],X[,2])$x
+y <- kde2d(X[,1],X[,2])$y
+z <- kde2d(X[,1],X[,2])$z
+# kolory:
+jet.colors= colorRampPalette(
+  c("blue", "cyan", "green", "yellow", "orange", "red") )
+nrz <- nrow(z); ncz= ncol(z)
+nbcol <- 100
+color <- jet.colors(nbcol)
+zfacet <- z[-1, -1] + z[-1, -ncz] + z[-nrz, -1] + z[-nrz, -ncz]
+facetcol <- cut(zfacet, nbcol)
+```
+```{r wy116, fig.cap='Gęstość empiryczna.', fig.show='hold',fig.pos= 'h', fig.align='center', fig.width=12, fig.height=6,out.width='100%'}
+par(mfcol=c(1,2),mar=c(4,4,1,1)+0.1,
+    mgp=c(3,0.6,0),las=1)
+persp(x,y,z, expand= 0.5, col= color[facetcol],xlab= "długość płatka",
+      ylab= "szerokość płatka",zlab= "gęstość",theta= 210, phi= 30)
+persp(x,y,z, expand= 0.5, col= color[facetcol],xlab= "długość płatka",
+      ylab= "szerokość płatka",zlab= "gęstość",theta= 120, phi= 30)
+```
+```{r wy117, fig.cap='Gęstość empiryczna.', fig.show='hold',fig.pos= 'h', fig.align='center', fig.width=12, fig.height=6,out.width='100%'}
+# tzw. mapy ciepła - gęstość empiryczna:
+par(mfcol=c(1,2),mar=c(4,4,1,1)+0.1,
+    mgp=c(3,0.6,0),las=1)
+persp(x,y,z, expand = 0.5, col = color[facetcol],xlab= "długość płatka",
+      ylab= "szerokość płatka",zlab= "gęstość",theta= 90, phi= 90)
+persp(x,y,z, expand = 0.5, col = color[facetcol],xlab= "długość płatka",
+      ylab= "szerokość płatka",zlab= "gęstość",theta= 180, phi= 90)
+```
+
+Możemy również przedstawić wykresy gęstości dwuwymiarowego rozkładu normalnego o określonych parametrach obliczonych na podstawie macierzy `X`.
+```{r}
+mu1 <- mean(X[,1])      # średnia dla X[,1]
+mu2 <- mean(X[,2])      # średnia dla X[,2]
+s11 <- var(X[,1])       # wariancja dla X[,1]
+s12 <- cov(X[,1],X[,2]) # kowariancja dla X[,1] i X[,2]
+s22 <- var(X[,2])       # wariancja dla X[,2]
+rho <- cor(X)[1,2]      # korelacja między X[,1] i X[,2]
+x1 <- seq(1,2,length=41)      # zakres osi x
+x2 <- seq(0,1,length=41)      # zakres osi y
+f <- function(x1,x2)
+  {
+  term1 <- 1/(2*pi*sqrt(s11*s22*(1-rho^2)))
+  term2 <- -1/(2*(1-rho^2))
+  term3 <- (x1-mu1)^2/s11
+  term4 <- (x2-mu2)^2/s22
+  term5 <- -2*rho*((x1-mu1)*(x2-mu2))/(sqrt(s11)*sqrt(s22))
+  term1*exp(term2*(term3+term4-term5))
+  }
+z <- outer(x1,x2,f)
+# kolory:
+jet.colors= colorRampPalette(
+c("blue", "cyan", "green", "yellow", "orange", "red") )
+nrz <- nrow(z); ncz= ncol(z)
+nbcol <- 100
+color <- jet.colors(nbcol)
+zfacet <- z[-1, -1] + z[-1, -ncz] + z[-nrz, -1] + z[-nrz, -ncz]
+facetcol <- cut(zfacet, nbcol)
+```
+```{r wy118, fig.cap='Gęstość teoretyczna.', fig.show='hold',fig.pos= 'h', fig.align='center', fig.width=12, fig.height=4,out.width='100%'}
+par(mfcol=c(1,2),mar=c(4,4,1,1)+0.1,
+    mgp=c(3,0.6,0),las=1)
+persp(x1,x2,z, expand= 0.5, col= color[facetcol], xlab="długość płatka",
+      ylab= "szerokość płatka",zlab= "gęstość",theta= 120, phi= 30)
+persp(x1,x2,z, expand= 0.5, col= color[facetcol], xlab="długość płatka",
+      ylab= "szerokość płatka",zlab= "gęstość",theta= 90, phi= 90)
+```
+
+W środowisku R dostępnych jest jeszcze wiele innych testów badających normalność zmiennych. Wymienimy niektóre z nich: wielowymiarowy test Doornika-
+Hansena - [`asbio::DH.test`](https://rdrr.io/cran/asbio/man/DH.test.html),Energy test - [`energy::mvnorm.etest`](https://rdrr.io/cran/energy/man/mvnorm-etest.html), Shapiro-Francia
+- [`mvsf::mvsf`](https://rdrr.io/cran/mvsf/man/mvsf.html). Warto także wspomnieć o gładkim teście adaptacyjnym Neymana, za
+pomocą którego mamy możliwość zbadania czy wektor danych pochodzi z rozkładu
+normalnego - [`ddst::ddst.norm.test`](https://rdrr.io/cran/ddst/man/ddst.norm.test.html), jednostajnego - [`ddst::ddst.unifrom.test`](https://rdrr.io/cran/ddst/man/ddst.uniform.test.html),
+wykładniczego - [`ddst::ddst.exp.test`](https://rdrr.io/cran/ddst/man/ddst.exp.test.html) lub z rozkładu wartości ekstremalnych -
+[`ddst::ddst.extr.test`](https://rdrr.io/cran/ddst/man/ddst.extr.test.html).

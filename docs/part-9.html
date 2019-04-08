@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html  lang="pl">
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Rozdział 9 Przykład badania rozkładu stopy zwrotu z akcji | Na przełaj przez Data Mining z pakietem R</title>
+  <meta name="description" content="Zbiór przykładów użycia wybranych funkcji statystycznych i Data Mining dostępnych w programie R.">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
+
+  <meta property="og:title" content="Rozdział 9 Przykład badania rozkładu stopy zwrotu z akcji | Na przełaj przez Data Mining z pakietem R" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Zbiór przykładów użycia wybranych funkcji statystycznych i Data Mining dostępnych w programie R." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Rozdział 9 Przykład badania rozkładu stopy zwrotu z akcji | Na przełaj przez Data Mining z pakietem R" />
+  
+  <meta name="twitter:description" content="Zbiór przykładów użycia wybranych funkcji statystycznych i Data Mining dostępnych w programie R." />
+  
+
+<meta name="author" content="Przemysław Biecek, Krzysztof Trajkowski">
+
+
+<meta name="date" content="2019-04-08">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="part-8.html">
+<link rel="next" href="part-10.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; position: absolute; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; }
+pre.numberSource a.sourceLine:empty
+  { position: absolute; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Na przełaj przez Data Mining<br/> z pakietem R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Kilka słów zamiast wstępu</a></li>
+<li class="chapter" data-level="2" data-path="part-2.html"><a href="part-2.html"><i class="fa fa-check"></i><b>2</b> Redukcja wymiaru</a><ul>
+<li class="chapter" data-level="2.1" data-path="part-2.html"><a href="part-2.html#part_21"><i class="fa fa-check"></i><b>2.1</b> Analiza składowych głównych (PCA, ang. Principal Components Analysis)</a></li>
+<li class="chapter" data-level="2.2" data-path="part-2.html"><a href="part-2.html#part_22"><i class="fa fa-check"></i><b>2.2</b> Nieliniowe skalowanie wielowymiarowe (Sammon Mapping)</a></li>
+<li class="chapter" data-level="2.3" data-path="part-2.html"><a href="part-2.html#part_23"><i class="fa fa-check"></i><b>2.3</b> Skalowanie wielowymiarowe Kruskalla (MDS, ang. Multidimensional Scaling)</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="part-3.html"><a href="part-3.html"><i class="fa fa-check"></i><b>3</b> Analiza skupień</a><ul>
+<li class="chapter" data-level="3.1" data-path="part-3.html"><a href="part-3.html#part_31"><i class="fa fa-check"></i><b>3.1</b> Metoda k-średnich</a></li>
+<li class="chapter" data-level="3.2" data-path="part-3.html"><a href="part-3.html#part_32"><i class="fa fa-check"></i><b>3.2</b> Metoda grupowania wokół centroidów (PAM, ang. Partitioning Around Medoids)</a></li>
+<li class="chapter" data-level="3.3" data-path="part-3.html"><a href="part-3.html#part_33"><i class="fa fa-check"></i><b>3.3</b> Metoda aglomeracyjnego klastrowania hierarchicznego</a></li>
+<li class="chapter" data-level="3.4" data-path="part-3.html"><a href="part-3.html#part_34"><i class="fa fa-check"></i><b>3.4</b> Ile skupień wybrać?</a></li>
+<li class="chapter" data-level="3.5" data-path="part-3.html"><a href="part-3.html#part_35"><i class="fa fa-check"></i><b>3.5</b> Inne metody analizy skupień</a></li>
+<li class="chapter" data-level="3.6" data-path="part-3.html"><a href="part-3.html#part_36"><i class="fa fa-check"></i><b>3.6</b> Case study</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="part-4.html"><a href="part-4.html"><i class="fa fa-check"></i><b>4</b> Analiza dyskryminacji</a><ul>
+<li class="chapter" data-level="4.1" data-path="part-4.html"><a href="part-4.html#part_41"><i class="fa fa-check"></i><b>4.1</b> Dyskryminacja liniowa i kwadratowa</a></li>
+<li class="chapter" data-level="4.2" data-path="part-4.html"><a href="part-4.html#part_42"><i class="fa fa-check"></i><b>4.2</b> Metoda najbliższych sąsiadów</a></li>
+<li class="chapter" data-level="4.3" data-path="part-4.html"><a href="part-4.html#part_43"><i class="fa fa-check"></i><b>4.3</b> Naiwny klasyfikator Bayesowski</a></li>
+<li class="chapter" data-level="4.4" data-path="part-4.html"><a href="part-4.html#part_44"><i class="fa fa-check"></i><b>4.4</b> Drzewa decyzyjne</a></li>
+<li class="chapter" data-level="4.5" data-path="part-4.html"><a href="part-4.html#part_45"><i class="fa fa-check"></i><b>4.5</b> Lasy losowe</a></li>
+<li class="chapter" data-level="4.6" data-path="part-4.html"><a href="part-4.html#part_46"><i class="fa fa-check"></i><b>4.6</b> Inne klasyfikatory</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="part-5.html"><a href="part-5.html"><i class="fa fa-check"></i><b>5</b> Analiza kanoniczna</a><ul>
+<li class="chapter" data-level="5.1" data-path="part-5.html"><a href="part-5.html#part_51"><i class="fa fa-check"></i><b>5.1</b> Problem</a></li>
+<li class="chapter" data-level="5.2" data-path="part-5.html"><a href="part-5.html#part_52"><i class="fa fa-check"></i><b>5.2</b> Rozwiązanie</a></li>
+<li class="chapter" data-level="5.3" data-path="part-5.html"><a href="part-5.html#part_53"><i class="fa fa-check"></i><b>5.3</b> Założenia</a></li>
+<li class="chapter" data-level="5.4" data-path="part-5.html"><a href="part-5.html#part_54"><i class="fa fa-check"></i><b>5.4</b> Jak to zrobić w R</a></li>
+<li class="chapter" data-level="5.5" data-path="part-5.html"><a href="part-5.html#part_55"><i class="fa fa-check"></i><b>5.5</b> Przykładowe wyniki</a></li>
+<li class="chapter" data-level="5.6" data-path="part-5.html"><a href="part-5.html#part_56"><i class="fa fa-check"></i><b>5.6</b> Studium przypadku</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="part-6.html"><a href="part-6.html"><i class="fa fa-check"></i><b>6</b> Analiza korespondencji (odpowiedniości)</a><ul>
+<li class="chapter" data-level="6.1" data-path="part-6.html"><a href="part-6.html#part_61"><i class="fa fa-check"></i><b>6.1</b> Problem</a></li>
+<li class="chapter" data-level="6.2" data-path="part-6.html"><a href="part-6.html#part_62"><i class="fa fa-check"></i><b>6.2</b> Rozwiązanie</a></li>
+<li class="chapter" data-level="6.3" data-path="part-6.html"><a href="part-6.html#part_63"><i class="fa fa-check"></i><b>6.3</b> Jak to zrobić w R?</a></li>
+<li class="chapter" data-level="6.4" data-path="part-6.html"><a href="part-6.html#part_64"><i class="fa fa-check"></i><b>6.4</b> Studium przypadku</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="part-7.html"><a href="part-7.html"><i class="fa fa-check"></i><b>7</b> Przykład analizy szeregów czasowych</a><ul>
+<li class="chapter" data-level="7.1" data-path="part-7.html"><a href="part-7.html#part_71"><i class="fa fa-check"></i><b>7.1</b> Wprowadzenie</a></li>
+<li class="chapter" data-level="7.2" data-path="part-7.html"><a href="part-7.html#part_72"><i class="fa fa-check"></i><b>7.2</b> Identyfikacja trendu i sezonowości</a><ul>
+<li class="chapter" data-level="7.2.1" data-path="part-7.html"><a href="part-7.html#part_721"><i class="fa fa-check"></i><b>7.2.1</b> Analiza wariancji - ANOVA</a></li>
+<li class="chapter" data-level="7.2.2" data-path="part-7.html"><a href="part-7.html#part_722"><i class="fa fa-check"></i><b>7.2.2</b> Funkcja autokorelacji - ACF</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="part-7.html"><a href="part-7.html#part_73"><i class="fa fa-check"></i><b>7.3</b> Modele autoregresyjne ARIMA</a><ul>
+<li class="chapter" data-level="7.3.1" data-path="part-7.html"><a href="part-7.html#part_731"><i class="fa fa-check"></i><b>7.3.1</b> Estymacja</a></li>
+<li class="chapter" data-level="7.3.2" data-path="part-7.html"><a href="part-7.html#part_732"><i class="fa fa-check"></i><b>7.3.2</b> Weryfikacja</a></li>
+<li class="chapter" data-level="7.3.3" data-path="part-7.html"><a href="part-7.html#part_733"><i class="fa fa-check"></i><b>7.3.3</b> Prognozowanie</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="part-7.html"><a href="part-7.html#part_74"><i class="fa fa-check"></i><b>7.4</b> Modele adaptacyjne</a><ul>
+<li class="chapter" data-level="7.4.1" data-path="part-7.html"><a href="part-7.html#part_741"><i class="fa fa-check"></i><b>7.4.1</b> Estymacja</a></li>
+<li class="chapter" data-level="7.4.2" data-path="part-7.html"><a href="part-7.html#part_742"><i class="fa fa-check"></i><b>7.4.2</b> Prognozowanie</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="part-8.html"><a href="part-8.html"><i class="fa fa-check"></i><b>8</b> Przykład analizy tabel wielodzielczych</a><ul>
+<li class="chapter" data-level="8.1" data-path="part-8.html"><a href="part-8.html#part_81"><i class="fa fa-check"></i><b>8.1</b> Wprowadzenie</a></li>
+<li class="chapter" data-level="8.2" data-path="part-8.html"><a href="part-8.html#part_82"><i class="fa fa-check"></i><b>8.2</b> Test chi-kwadrat</a></li>
+<li class="chapter" data-level="8.3" data-path="part-8.html"><a href="part-8.html#part_83"><i class="fa fa-check"></i><b>8.3</b> Model logitowy</a></li>
+<li class="chapter" data-level="8.4" data-path="part-8.html"><a href="part-8.html#part_84"><i class="fa fa-check"></i><b>8.4</b> Model logitowy</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="part-9.html"><a href="part-9.html"><i class="fa fa-check"></i><b>9</b> Przykład badania rozkładu stopy zwrotu z akcji</a><ul>
+<li class="chapter" data-level="9.1" data-path="part-9.html"><a href="part-9.html#part_9.1"><i class="fa fa-check"></i><b>9.1</b> Wprowadzenie</a></li>
+<li class="chapter" data-level="9.2" data-path="part-9.html"><a href="part-9.html#part_9.2"><i class="fa fa-check"></i><b>9.2</b> Statystyki opisowe</a></li>
+<li class="chapter" data-level="9.3" data-path="part-9.html"><a href="part-9.html#part_9.3"><i class="fa fa-check"></i><b>9.3</b> Rozkład normalny</a></li>
+<li class="chapter" data-level="9.4" data-path="part-9.html"><a href="part-9.html#part_9.4"><i class="fa fa-check"></i><b>9.4</b> Rozkład Cauchy’ego</a></li>
+<li class="chapter" data-level="9.5" data-path="part-9.html"><a href="part-9.html#part_9.5"><i class="fa fa-check"></i><b>9.5</b> Rozkład Laplace’a</a></li>
+<li class="chapter" data-level="9.6" data-path="part-9.html"><a href="part-9.html#part_9.6"><i class="fa fa-check"></i><b>9.6</b> Rozkład Stabilny</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="part-10.html"><a href="part-10.html"><i class="fa fa-check"></i><b>10</b> Przykład budowy dynamicznego modelu liniowego</a><ul>
+<li class="chapter" data-level="10.1" data-path="part-10.html"><a href="part-10.html#part_10.1"><i class="fa fa-check"></i><b>10.1</b> Wprowadzenie</a></li>
+<li class="chapter" data-level="10.2" data-path="part-10.html"><a href="part-10.html#part_10.2"><i class="fa fa-check"></i><b>10.2</b> Badanie wewnętrznej struktury procesu</a><ul>
+<li class="chapter" data-level="10.2.1" data-path="part-10.html"><a href="part-10.html#part_10.2.1"><i class="fa fa-check"></i><b>10.2.1</b> Trend</a></li>
+<li class="chapter" data-level="10.2.2" data-path="part-10.html"><a href="part-10.html#part_10.2.2"><i class="fa fa-check"></i><b>10.2.2</b> Sezonowość</a></li>
+<li class="chapter" data-level="10.2.3" data-path="part-10.html"><a href="part-10.html#part_10.2.3"><i class="fa fa-check"></i><b>10.2.3</b> Stopień autoregresji – funkcja PACF</a></li>
+<li class="chapter" data-level="10.2.4" data-path="part-10.html"><a href="part-10.html#part_10.2.4"><i class="fa fa-check"></i><b>10.2.4</b> Stopień integracji – test ADF/PP</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="part-10.html"><a href="part-10.html#part_10.3"><i class="fa fa-check"></i><b>10.3</b> Weryfikacja modelu</a><ul>
+<li class="chapter" data-level="10.3.1" data-path="part-10.html"><a href="part-10.html#part_10.3.1"><i class="fa fa-check"></i><b>10.3.1</b> Estymacja dynamicznego modelu liniowego</a></li>
+<li class="chapter" data-level="10.3.2" data-path="part-10.html"><a href="part-10.html#part_10.3.2"><i class="fa fa-check"></i><b>10.3.2</b> Ocena jakości modelu</a></li>
+</ul></li>
+<li class="chapter" data-level="10.4" data-path="part-10.html"><a href="part-10.html#part_10.4"><i class="fa fa-check"></i><b>10.4</b> Diagnostyka modelu</a><ul>
+<li class="chapter" data-level="10.4.1" data-path="part-10.html"><a href="part-10.html#part_10.4.1"><i class="fa fa-check"></i><b>10.4.1</b> Normalność procesu resztowego</a></li>
+<li class="chapter" data-level="10.4.2" data-path="part-10.html"><a href="part-10.html#part_10.4.2"><i class="fa fa-check"></i><b>10.4.2</b> Autokorelacja procesu resztowego</a></li>
+<li class="chapter" data-level="10.4.3" data-path="part-10.html"><a href="part-10.html#part_10.4.3"><i class="fa fa-check"></i><b>10.4.3</b> Heteroskedastyczność procesu resztowego</a></li>
+<li class="chapter" data-level="10.4.4" data-path="part-10.html"><a href="part-10.html#part_10.4.4"><i class="fa fa-check"></i><b>10.4.4</b> Stabilność parametrów modelu</a></li>
+<li class="chapter" data-level="10.4.5" data-path="part-10.html"><a href="part-10.html#part_10.4.5"><i class="fa fa-check"></i><b>10.4.5</b> Postać analityczna modelu</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="part-11.html"><a href="part-11.html"><i class="fa fa-check"></i><b>11</b> Przegląd wybranych testów statystycznych</a><ul>
+<li class="chapter" data-level="11.1" data-path="part-11.html"><a href="part-11.html#part_11.1"><i class="fa fa-check"></i><b>11.1</b> Testy normalności</a></li>
+<li class="chapter" data-level="11.2" data-path="part-11.html"><a href="part-11.html#part_11.2"><i class="fa fa-check"></i><b>11.2</b> Testy asymptotyczne</a></li>
+<li class="chapter" data-level="11.3" data-path="part-11.html"><a href="part-11.html#part_11.3"><i class="fa fa-check"></i><b>11.3</b> Testy dla proporcji</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="part-12.html"><a href="part-12.html"><i class="fa fa-check"></i><b>12</b> Przykład analizy liczby przestępstw w Polsce w 2009 r.</a><ul>
+<li class="chapter" data-level="12.1" data-path="part-12.html"><a href="part-12.html#part_12.1"><i class="fa fa-check"></i><b>12.1</b> Wprowadzenie</a></li>
+<li class="chapter" data-level="12.2" data-path="part-12.html"><a href="part-12.html#part_12.2"><i class="fa fa-check"></i><b>12.2</b> Mapy</a></li>
+<li class="chapter" data-level="12.3" data-path="part-12.html"><a href="part-12.html#part_12.3"><i class="fa fa-check"></i><b>12.3</b> Analiza wariancji</a></li>
+<li class="chapter" data-level="12.4" data-path="part-12.html"><a href="part-12.html#part_12.4"><i class="fa fa-check"></i><b>12.4</b> Modele dla liczebności</a></li>
+<li class="chapter" data-level="12.5" data-path="part-12.html"><a href="part-12.html#part_12.5"><i class="fa fa-check"></i><b>12.5</b> Modele dla częstości</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="part-13.html"><a href="part-13.html"><i class="fa fa-check"></i><b>13</b> Modele regresji</a><ul>
+<li class="chapter" data-level="13.1" data-path="part-13.html"><a href="part-13.html#part_13.1"><i class="fa fa-check"></i><b>13.1</b> Wprowadzenie</a></li>
+<li class="chapter" data-level="13.2" data-path="part-13.html"><a href="part-13.html#part_13.2"><i class="fa fa-check"></i><b>13.2</b> Estymacja modelu liniowego</a><ul>
+<li class="chapter" data-level="13.2.1" data-path="part-13.html"><a href="part-13.html#part_13.2.1"><i class="fa fa-check"></i><b>13.2.1</b> Metoda najmniejszych kwadratów</a></li>
+<li class="chapter" data-level="13.2.2" data-path="part-13.html"><a href="part-13.html#part_13.2.2"><i class="fa fa-check"></i><b>13.2.2</b> Poprawność specyfikacji modelu</a></li>
+<li class="chapter" data-level="13.2.3" data-path="part-13.html"><a href="part-13.html#part_13.2.3"><i class="fa fa-check"></i><b>13.2.3</b> Normalność</a></li>
+<li class="chapter" data-level="13.2.4" data-path="part-13.html"><a href="part-13.html#part_13.2.4"><i class="fa fa-check"></i><b>13.2.4</b> Heteroskedastyczność</a></li>
+<li class="chapter" data-level="13.2.5" data-path="part-13.html"><a href="part-13.html#part_13.2.5"><i class="fa fa-check"></i><b>13.2.5</b> Obserwacje odstające</a></li>
+<li class="chapter" data-level="13.2.6" data-path="part-13.html"><a href="part-13.html#part_13.2.6"><i class="fa fa-check"></i><b>13.2.6</b> Metoda najmniejszych wartości bezwzględnych</a></li>
+</ul></li>
+<li class="chapter" data-level="13.3" data-path="part-13.html"><a href="part-13.html#part_13.3"><i class="fa fa-check"></i><b>13.3</b> Estymacja modelu nieliniowego</a><ul>
+<li class="chapter" data-level="13.3.1" data-path="part-13.html"><a href="part-13.html#part_13.3.1"><i class="fa fa-check"></i><b>13.3.1</b> Model kwadratowy</a></li>
+<li class="chapter" data-level="13.3.2" data-path="part-13.html"><a href="part-13.html#part_13.3.2"><i class="fa fa-check"></i><b>13.3.2</b> Model wykładniczy</a></li>
+<li class="chapter" data-level="13.3.3" data-path="part-13.html"><a href="part-13.html#part_13.3.3"><i class="fa fa-check"></i><b>13.3.3</b> Model hiperboliczny</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="part-14.html"><a href="part-14.html"><i class="fa fa-check"></i><b>14</b> Zbiory danych</a><ul>
+<li class="chapter" data-level="14.1" data-path="part-14.html"><a href="part-14.html#part_14.1"><i class="fa fa-check"></i><b>14.1</b> Zbiór danych GUSowskich</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="bibliografia.html"><a href="bibliografia.html"><i class="fa fa-check"></i>Bibliografia</a></li>
+<li class="divider"></li>
+<li><a href="http://www.biecek.pl/NaPrzelajPrzezDataMining/" target="blank">strona projektu</a></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Na przełaj przez Data Mining z pakietem R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="part_9" class="section level1">
+<h1><span class="header-section-number">Rozdział 9</span> Przykład badania rozkładu stopy zwrotu z akcji</h1>
+<hr />
+<div id="part_9.1" class="section level2">
+<h2><span class="header-section-number">9.1</span> Wprowadzenie</h2>
+<p>W tym opracowaniu będziemy analizować dzienne stopy zwrotu z akcji spółki PKOBP,
+która wchodzi w skład indeksu giełdowego WIG20. Indeks WIG20 to portfel akcji
+dwudziestu największych i najbardziej płynnych spółek notowanych na GPW w
+Warszawie. Jego skład jest ustalany po ostatniej sesji w styczniu (korekta roczna),
+kwietniu, lipcu i październiku (korekty kwartalne). Akutalny stan portfela WIG20
+przedstawia poniższy wykres (rys. <a href="part-9.html#fig:wy91">9.1</a>).</p>
+<pre class="sourceCode r"><code class="sourceCode r">spolki1 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">15.00</span>,<span class="fl">13.06</span>,<span class="fl">11.44</span>,<span class="fl">8.95</span>,<span class="fl">8.24</span>,<span class="fl">8.17</span>,<span class="fl">7.17</span>,<span class="fl">3.98</span>,<span class="fl">3.94</span>,<span class="fl">3.00</span>,<span class="fl">2.40</span>,
+             <span class="fl">2.21</span>,<span class="fl">2.20</span>,<span class="fl">1.90</span>,<span class="fl">1.87</span>,<span class="fl">1.76</span>,<span class="fl">1.43</span>,<span class="fl">1.26</span>,<span class="fl">1.21</span>,<span class="fl">0.82</span>)
+val &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;15.00%&#39;</span>,<span class="st">&#39;13.06%&#39;</span>,<span class="st">&#39;11.44%&#39;</span>,<span class="st">&#39;8.95%&#39;</span>,<span class="st">&#39;8.24%&#39;</span>,<span class="st">&#39;8.17%&#39;</span>,<span class="st">&#39;7.17%&#39;</span>,<span class="st">&#39;3.98%&#39;</span>,<span class="st">&#39;3.94%&#39;</span>,<span class="st">&#39;3.00%&#39;</span>,
+         <span class="st">&#39;2.40%&#39;</span>,<span class="st">&#39;2.21%&#39;</span>,<span class="st">&#39;2.20%&#39;</span>,<span class="st">&#39;1.90%&#39;</span>,<span class="st">&#39;1.87%&#39;</span>,<span class="st">&#39;1.76%&#39;</span>,<span class="st">&#39;1.43%&#39;</span>,<span class="st">&#39;1.26%&#39;</span>,<span class="st">&#39;1.21%&#39;</span>,<span class="st">&#39;0.82%&#39;</span>)
+nam &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;PKOBP&#39;</span>,<span class="st">&#39;PEKAO&#39;</span>,<span class="st">&#39;KGHM&#39;</span>,<span class="st">&#39;PZU&#39;</span>,<span class="st">&#39;PGE&#39;</span>,<span class="st">&#39;PKNORLEN&#39;</span>,<span class="st">&#39;TPSA&#39;</span>,<span class="st">&#39;TAURONPE&#39;</span>,<span class="st">&#39;PGNIG&#39;</span>,
+         <span class="st">&#39;BZWBK&#39;</span>,<span class="st">&#39;BRE&#39;</span>,<span class="st">&#39;ASSECOPOL&#39;</span>,<span class="st">&#39;GETIN&#39;</span>,<span class="st">&#39;GTC&#39;</span>,<span class="st">&#39;CEZ&#39;</span>,<span class="st">&#39;TVN&#39;</span>,<span class="st">&#39;PBG&#39;</span>,<span class="st">&#39;POLIMEXMS&#39;</span>,
+         <span class="st">&#39;LOTOS&#39;</span>,<span class="st">&#39;CYFRPLSAT&#39;</span>)
+<span class="kw">par</span>(<span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">6</span>,<span class="dv">1</span>,<span class="dv">1</span>)<span class="op">+</span><span class="fl">0.1</span>, <span class="dt">mgp=</span><span class="kw">c</span>(<span class="dv">3</span>,<span class="fl">0.6</span>,<span class="dv">0</span>),<span class="dt">las=</span><span class="dv">1</span>)
+b &lt;-<span class="st"> </span><span class="kw">barplot</span>(spolki1, <span class="dt">names.arg=</span>nam, <span class="dt">horiz=</span><span class="ot">TRUE</span>,<span class="dt">xlim=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">18</span>))
+<span class="kw">text</span>(spolki1, b, <span class="dt">labels=</span>val, <span class="dt">pos=</span><span class="dv">4</span>)</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:wy91"></span>
+<img src="NaPrzelajR_files/figure-html/wy91-1.png" alt="Struktura indeksu WIG20 -- stan na 17 grudnia 2010 r." width="70%" />
+<p class="caption">
+Rysunek 9.1: Struktura indeksu WIG20 – stan na 17 grudnia 2010 r.
+</p>
+</div>
+
+</div>
+<div id="part_9.2" class="section level2">
+<h2><span class="header-section-number">9.2</span> Statystyki opisowe</h2>
+<p>Do naszych analiz zostanie wykorzystana stopa zwrotu spółki PKOBP, która ma
+największy udział w strukturze portfela WIG20 (rys. <a href="part-9.html#fig:wy91">9.1</a>). Dane dotyczące notowań na warszawskiej giełdzie papierów wartościowych są dostępne w internecie. Przykładowo, po kliknięciu w odnośnik <a href="https://www.money.pl/gielda/spolki-gpw/PLPKO0000016.html">PKOBP</a>
+zostaniemy przekierowani do serwisu internetowego z którego można pobrać interesujące nas dane. W kolejnym kroku można samodzielnie obliczyć logarytmiczne stopy zwrotu według wzoru:
+<span class="math display" id="eq:wz91">\[\begin{equation}
+z=\ln(Close)-\ln(Open)=\ln\left(\frac{Close}{Open}\right)
+\tag{9.1}
+\end{equation}\]</span>
+gdzie: <span class="math inline">\(Close\)</span> to cena zamknięcia oraz <span class="math inline">\(Open\)</span> to cena otwarcia.</p>
+<p>Innym rozwiązaniem jest pobranie już przetworzonego zestawu danych:</p>
+<pre class="sourceCode r"><code class="sourceCode r">t &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;https://raw.githubusercontent.com/krzysiektr/datacsv/master/pkobp.csv&quot;</span>)
+<span class="kw">head</span>(t, <span class="dv">3</span>)</code></pre>
+<pre><code>##         Data Otwarcie Zamkniecie  Maks   Min Obrot_mln_zl           z
+## 1 2004-11-10    14.34      15.14 15.20 14.34      2780.40 0.054287413
+## 2 2004-11-12    15.14      15.26 15.94 15.14      1049.56 0.007894778
+## 3 2004-11-15    15.14      15.20 15.26 14.89       425.14 0.003955180</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mfcol=</span><span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">1</span>),<span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">1</span>,<span class="dv">1</span>)<span class="op">+</span><span class="fl">0.1</span>, <span class="dt">mgp=</span><span class="kw">c</span>(<span class="dv">3</span>,<span class="fl">0.6</span>,<span class="dv">0</span>),<span class="dt">las=</span><span class="dv">1</span>)
+<span class="kw">plot</span>(<span class="kw">as.Date</span>(t<span class="op">$</span>Data),t<span class="op">$</span>Zamkniecie,<span class="dt">type=</span><span class="st">&quot;l&quot;</span>,<span class="dt">main=</span><span class="st">&quot;cena zamknięcia&quot;</span>)
+<span class="kw">plot</span>(<span class="kw">as.Date</span>(t<span class="op">$</span>Data),t<span class="op">$</span>z,<span class="dt">type=</span><span class="st">&quot;l&quot;</span>,<span class="dt">main=</span><span class="st">&quot;stopa zwrotu&quot;</span>)</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:wy92"></span>
+<img src="NaPrzelajR_files/figure-html/wy92-1.png" alt="Stopy zwrotu i ceny zamknięcia od 10.11.2004 r. do 29.01.2010 r." width="70%" />
+<p class="caption">
+Rysunek 9.2: Stopy zwrotu i ceny zamknięcia od 10.11.2004 r. do 29.01.2010 r.
+</p>
+</div>
+<p>Poniżej obliczymy m.in. miary położenia tzn. średnią, medianę oraz kwartyle.</p>
+<pre class="sourceCode r"><code class="sourceCode r">z &lt;-<span class="st"> </span>t<span class="op">$</span>z
+<span class="kw">summary</span>(z)</code></pre>
+<pre><code>##      Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+## -0.118224 -0.010002  0.001767  0.002169  0.014393  0.086565</code></pre>
+<p>a także odchylenie standardowe według wzoru:
+<span class="math display" id="eq:wz92">\[\begin{equation}
+s=\sqrt{\frac{1}{n-1}\sum_{i=1}^{n}(x_i-\bar{x})^2}
+\tag{9.2}
+\end{equation}\]</span></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sd</span>(z)</code></pre>
+<pre><code>## [1] 0.02225315</code></pre>
+<p>Z powyższych obliczeń wynika, że średnia stopa zwrotu w badanym okresie wyniosła
+<span class="math inline">\(0,22\%\)</span>, wartość maksymalna <span class="math inline">\(8,66\%\)</span> a minimalna <span class="math inline">\(-11,82\%\)</span>. Natomiast w wypadku <span class="math inline">\(25\%\)</span> sesji
+stopy zwrotu były mniejsze niż <span class="math inline">\(-0,01\%\)</span>, podczas <span class="math inline">\(50\%\)</span> sesji wartości były mniejsze
+niż <span class="math inline">\(0,18\%\)</span>. Z kolei w przypadku <span class="math inline">\(75\%\)</span> sesji zysk z akcji był mniejszy niż <span class="math inline">\(1,44\%\)</span>, a w
+przypadku pozostałych 25% sesji zysk był większy niż <span class="math inline">\(1,44\%\)</span> (rys. <a href="part-9.html#fig:wy93">9.3</a>).</p>
+<p>Przy omawianiu różnych statystyk opisowych wato także wspomnieć o funkcji
+<a href="https://rdrr.io/r/stats/quantile.html"><code>quantile</code></a>. Za jej pomocą mamy możliwość obliczenia wartość dowolnego kwantyla wykorzystując jedną z dziewięciu dostępnych metod. W
+tym opracowaniu zaprezentujemy sposób obliczania kwantyli za pomocą metody
+siódmej. W pierwszym kroku uporządkujemy nasz wektor danych w sposób rosnący:</p>
+<pre class="sourceCode r"><code class="sourceCode r">sz &lt;-<span class="st"> </span><span class="kw">sort</span>(z) <span class="co"># wektor danych uporządkowany rosnąco</span></code></pre>
+<p>Następnie wyznaczymy numer kwantyla <span class="math inline">\(Q = 80\%\)</span> według wzoru:
+<span class="math display" id="eq:wz93">\[\begin{equation}
+h=(n-1)\cdot Q+1
+\tag{9.3}
+\end{equation}\]</span></p>
+<pre class="sourceCode r"><code class="sourceCode r">h &lt;-<span class="st"> </span>(<span class="kw">length</span>(z)<span class="op">-</span><span class="dv">1</span>)<span class="op">*</span><span class="fl">0.8</span><span class="op">+</span><span class="dv">1</span>; h <span class="co"># numer kwantyla</span></code></pre>
+<pre><code>## [1] 1013.8</code></pre>
+<p>Kolejnym krokiem będzie obliczenie wartości kwantyla na podstawie wzoru:
+<span class="math display" id="eq:wz94">\[\begin{equation}
+x_{\lfloor h \rfloor}+(h-{\lfloor h \rfloor})(x_{\lceil h\rceil}-x_{\lfloor h \rfloor})
+\tag{9.4}
+\end{equation}\]</span>
+gdzie: <span class="math inline">\(\lfloor h \rfloor\)</span> to największa liczba całkowita nie większa od <code>h</code> oraz <span class="math inline">\(\lceil h \rceil\)</span> to najmniejsza liczba całkowita nie mniejsza od <code>h</code>.</p>
+<pre class="sourceCode r"><code class="sourceCode r">xL &lt;-<span class="st"> </span>sz[<span class="kw">floor</span>(h)]; xP &lt;-<span class="st"> </span>sz[<span class="kw">ceiling</span>(h)]
+xL<span class="op">+</span>(h<span class="op">-</span><span class="kw">floor</span>(h))<span class="op">*</span>(xP<span class="op">-</span>xL) <span class="co"># wartość kwantyla</span></code></pre>
+<pre><code>## [1] 0.01779921</code></pre>
+<p>Teraz wykorzystamy gotową funkcję z pakietu <a href="https://rdrr.io/r/#stats"><code>stats</code></a>:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">quantile</span>(z,<span class="fl">0.80</span>,<span class="dt">type=</span><span class="dv">7</span>)</code></pre>
+<pre><code>##        80% 
+## 0.01779921</code></pre>
+<p>Otrzymane wartości kwantyli możemy również zaznaczyć na wykresie (rys. <a href="part-9.html#fig:wy93">9.3</a>).</p>
+<pre class="sourceCode r"><code class="sourceCode r">q &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(<span class="kw">quantile</span>(z,<span class="kw">c</span>(<span class="fl">0.25</span>,<span class="fl">0.5</span>,<span class="fl">0.75</span>,<span class="fl">0.80</span>)))
+<span class="kw">par</span>(<span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">1</span>,<span class="dv">1</span>)<span class="op">+</span><span class="fl">0.1</span>, <span class="dt">mgp=</span><span class="kw">c</span>(<span class="dv">3</span>,<span class="fl">0.6</span>,<span class="dv">0</span>),<span class="dt">las=</span><span class="dv">1</span>)
+<span class="kw">plot</span>(<span class="kw">ecdf</span>(z))
+<span class="kw">arrows</span>(q,<span class="kw">c</span>(<span class="fl">0.25</span>,<span class="fl">0.5</span>,<span class="fl">0.75</span>,<span class="fl">0.80</span>),q,<span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>),<span class="dt">length=</span><span class="fl">0.1</span>,<span class="dt">angle=</span><span class="dv">15</span>,
+       <span class="dt">col=</span><span class="kw">c</span>(<span class="st">&quot;violetred3&quot;</span>,<span class="st">&quot;YellowGreen&quot;</span>,<span class="st">&quot;SteelBlue&quot;</span>,<span class="st">&quot;wheat4&quot;</span>))
+<span class="kw">arrows</span>(q,<span class="kw">c</span>(<span class="fl">0.25</span>,<span class="fl">0.5</span>,<span class="fl">0.75</span>,<span class="fl">0.80</span>),<span class="kw">c</span>(<span class="op">-</span><span class="dv">5</span>,<span class="op">-</span><span class="dv">5</span>,<span class="op">-</span><span class="dv">5</span>,<span class="op">-</span><span class="dv">5</span>),<span class="kw">c</span>(<span class="fl">0.25</span>,<span class="fl">0.5</span>,<span class="fl">0.75</span>,<span class="fl">0.8</span>),<span class="dt">angle=</span><span class="dv">0</span>,
+       <span class="dt">col=</span><span class="kw">c</span>(<span class="st">&quot;violetred3&quot;</span>,<span class="st">&quot;YellowGreen&quot;</span>,<span class="st">&quot;SteelBlue&quot;</span>,<span class="st">&quot;wheat4&quot;</span>))
+<span class="kw">points</span>(q,<span class="kw">c</span>(<span class="fl">0.25</span>,<span class="fl">0.5</span>,<span class="fl">0.75</span>,<span class="fl">0.8</span>),<span class="dt">bg=</span><span class="st">&quot;white&quot;</span>,<span class="dt">pch=</span><span class="dv">21</span>,
+       <span class="dt">col=</span><span class="kw">c</span>(<span class="st">&quot;violetred3&quot;</span>,<span class="st">&quot;YellowGreen&quot;</span>,<span class="st">&quot;SteelBlue&quot;</span>,<span class="st">&quot;wheat4&quot;</span>))
+<span class="kw">legend</span>(<span class="st">&quot;right&quot;</span>, <span class="kw">paste</span>(<span class="kw">c</span>(<span class="st">&quot;Q25=&quot;</span>, <span class="st">&quot;Q50=&quot;</span>, <span class="st">&quot;Q75=&quot;</span>, <span class="st">&quot;Q80=&quot;</span>),<span class="kw">round</span>(q,<span class="dv">4</span>)),<span class="dt">bty=</span><span class="st">&quot;n&quot;</span>,<span class="co">#lty=1,</span>
+       <span class="dt">text.col=</span><span class="kw">c</span>(<span class="st">&quot;violetred3&quot;</span>,<span class="st">&quot;YellowGreen&quot;</span>,<span class="st">&quot;SteelBlue&quot;</span>,<span class="st">&quot;wheat4&quot;</span>))</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:wy93"></span>
+<img src="NaPrzelajR_files/figure-html/wy93-1.png" alt="Dystrybuanta – prezentacja graficzna kwantyli." width="70%" />
+<p class="caption">
+Rysunek 9.3: Dystrybuanta – prezentacja graficzna kwantyli.
+</p>
+</div>
+<p>Wyznaczmy jeszcze wzory dla pozostałych metod szcowania kwantyli. Dla me-
+tod od 4 do 9 algorytmy różnią się tylko sposobem wyznaczenia numeru kwantyla.
+Wartość kwantyla jest obliczana tak jak to zostało przedstawione w powyższym
+przykładzie czyli według wzoru <a href="part-9.html#eq:wz94">(9.4)</a></p>
+<ul>
+<li>typ 4:</li>
+</ul>
+<p><span class="math display" id="eq:wz95">\[\begin{equation}
+h=n\cdot Q
+\tag{9.5}
+\end{equation}\]</span></p>
+<ul>
+<li>typ 5:</li>
+</ul>
+<p><span class="math display" id="eq:wz96">\[\begin{equation}
+h=n\cdot Q + 1/2
+\tag{9.6}
+\end{equation}\]</span></p>
+<ul>
+<li>typ 6:</li>
+</ul>
+<p><span class="math display" id="eq:wz97">\[\begin{equation}
+h=(n+1)\cdot Q
+\tag{9.7}
+\end{equation}\]</span></p>
+<ul>
+<li>typ 7:</li>
+</ul>
+<p><span class="math display" id="eq:wz98">\[\begin{equation}
+h=(n-1)\cdot Q + 1
+\tag{9.8}
+\end{equation}\]</span></p>
+<ul>
+<li>typ 8:</li>
+</ul>
+<p><span class="math display" id="eq:wz99">\[\begin{equation}
+h=(n+1/3)\cdot Q + 1/3
+\tag{9.9}
+\end{equation}\]</span></p>
+<ul>
+<li>typ 9:</li>
+</ul>
+<p><span class="math display" id="eq:wz910">\[\begin{equation}
+h=(n+1/4)\cdot Q + 3/8
+\tag{9.10}
+\end{equation}\]</span></p>
+<p>W przypadku metod od 1 do 3 do wyznaczenia numeru kwantyla oraz jego wartości
+korzystamy z nastęujących wzorów:</p>
+<ul>
+<li>typ 1:</li>
+</ul>
+<p><span class="math display" id="eq:wz911">\[\begin{equation}
+h=n\cdot Q +1/2 \quad\wedge\quad x_{\lceil h-1/2\rceil}
+\tag{9.11}
+\end{equation}\]</span></p>
+<ul>
+<li>typ 2:</li>
+</ul>
+<p><span class="math display" id="eq:wz912">\[\begin{equation}
+h=n\cdot Q +1/2 \quad\wedge\quad (x_{\lceil h-1/2\rceil}+x_{\lfloor h+1/2\rfloor})/2
+\tag{9.12}
+\end{equation}\]</span></p>
+<ul>
+<li>typ 3:</li>
+</ul>
+<p><span class="math display" id="eq:wz913">\[\begin{equation}
+h=n\cdot Q \quad\wedge\quad x_{[h]}
+\tag{9.13}
+\end{equation}\]</span></p>
+<p>Za pomocą komendy <code>quantile</code> można także wyznaczyć jednocześnie kilka wartości
+dowolnych kwantyli:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">quantile</span>(z,<span class="kw">c</span>(<span class="fl">0.17</span>,<span class="fl">0.60</span>,<span class="fl">0.83</span>),<span class="dt">type=</span><span class="dv">7</span>)</code></pre>
+<pre><code>##          17%          60%          83% 
+## -0.015450594  0.006886427  0.020418864</code></pre>
+<p>W różnych opracowaniach często spotykamy się z następującymi wzorami dotyczącymi skośności:
+<span class="math display" id="eq:wz914">\[\begin{equation}
+S_{1}=\frac{\frac{1}{n}\sum_{i=1}^{n}(x_i-\bar{x})^3}{\sqrt{\left(\frac{1}{n}\sum_{i=1}^{n}(x_i-\bar{x})^2\right)^3}}
+\tag{9.14}
+\end{equation}\]</span></p>
+<pre class="sourceCode r"><code class="sourceCode r">(S1 &lt;-<span class="st"> </span>e1071<span class="op">::</span><span class="kw">skewness</span>(z,<span class="dt">type=</span><span class="dv">1</span>))</code></pre>
+<pre><code>## [1] -0.2199644</code></pre>
+<p><span class="math display" id="eq:wz915">\[\begin{equation}
+S_{2}=\frac{\frac{1}{n}\sum_{i=1}^{n}(x_i-\bar{x})^3\frac{\sqrt{n(n-1)}}{n-2}}{\sqrt{\left(\frac{1}{n}\sum_{i=1}^{n}(x_i-\bar{x})^2\right)^3}}
+\tag{9.15}
+\end{equation}\]</span></p>
+<pre class="sourceCode r"><code class="sourceCode r">(S2 &lt;-<span class="st"> </span>e1071<span class="op">::</span><span class="kw">skewness</span>(z,<span class="dt">type=</span><span class="dv">2</span>))</code></pre>
+<pre><code>## [1] -0.2202252</code></pre>
+<p><span class="math display" id="eq:wz916">\[\begin{equation}
+S_{3}=\frac{\frac{1}{n}\sum_{i=1}^{n}(x_i-\bar{x})^3}{s^3}
+\tag{9.16}
+\end{equation}\]</span>
+gdzie <span class="math inline">\(\frac{1}{n}\sum_{i=1}^{n}(x_i-\bar{x})^3\)</span> oraz <span class="math inline">\(\frac{1}{n}\sum_{i=1}^{n}(x_i-\bar{x})^2\)</span> to odpowiednio trzeci i drugi moment
+centralny oraz s to odchylenie standardowe z próby.</p>
+<pre class="sourceCode r"><code class="sourceCode r">(S3 &lt;-<span class="st"> </span>e1071<span class="op">::</span><span class="kw">skewness</span>(z,<span class="dt">type=</span><span class="dv">3</span>))</code></pre>
+<pre><code>## [1] -0.219704</code></pre>
+<p>Ponieważ obliczony wskaźnik skośności jest równy <span class="math inline">\(-0,22\)</span> możemy sądzić, że rozkład stopy zwrotu charakteryzuje się niewielką lewostronną skośnością.</p>
+<pre class="sourceCode r"><code class="sourceCode r">moments<span class="op">::</span><span class="kw">agostino.test</span>(z)</code></pre>
+<pre><code>## 
+##  D&#39;Agostino skewness test
+## 
+## data:  z
+## skew = -0.21996, z = -3.17810, p-value = 0.001483
+## alternative hypothesis: data have a skewness</code></pre>
+<p>Również w przypadku miar koncentracji możemy spotkać się kilkoma wzorami
+na kurtozę:
+<span class="math display" id="eq:wz917">\[\begin{equation}
+K_{1}=\frac{\frac{1}{n}\sum_{i=1}^{n}(x_i-\bar{x})^4}{\left(\frac{1}{n}\sum_{i=1}^{n}(x_i-\bar{x})^2\right)}-3
+\tag{9.17}
+\end{equation}\]</span></p>
+<pre class="sourceCode r"><code class="sourceCode r">(K1 &lt;-<span class="st"> </span>e1071<span class="op">::</span><span class="kw">kurtosis</span>(z,<span class="dt">type=</span><span class="dv">1</span>))</code></pre>
+<pre><code>## [1] 2.315957</code></pre>
+<p><span class="math display" id="eq:wz918">\[\begin{equation}
+K_{2}=\frac{n(n+1)}{(n-1)(n-2)(n-3)}\sum_{i=1}^{n}\left(\frac{x_i-\bar{x}}{s}\right)^4-\frac{3(n-1)^2}{(n-2)(n-3)}
+\tag{9.18}
+\end{equation}\]</span></p>
+<pre class="sourceCode r"><code class="sourceCode r">(K2 &lt;-<span class="st"> </span>e1071<span class="op">::</span><span class="kw">kurtosis</span>(z,<span class="dt">type=</span><span class="dv">2</span>))</code></pre>
+<pre><code>## [1] 2.329873</code></pre>
+<p><span class="math display" id="eq:wz919">\[\begin{equation}
+K_{3}=\frac{\frac{1}{n}\sum_{i=1}^{n}(x_i-\bar{x})^4}{s^4}-3
+\tag{9.19}
+\end{equation}\]</span>
+gdzie <span class="math inline">\(\frac{1}{n}\sum_{i=1}^{n}(x_i-\bar{x})^4\)</span> oraz <span class="math inline">\(\frac{1}{n}\sum_{i=1}^{n}(x_i-\bar{x})^2\)</span> to odpowiednio czwarty i drugi moment
+centralny oraz <span class="math inline">\(s\)</span> to odchylenie standardowe z próby.</p>
+<pre class="sourceCode r"><code class="sourceCode r">(K3 &lt;-<span class="st"> </span>e1071<span class="op">::</span><span class="kw">kurtosis</span>(z,<span class="dt">type=</span><span class="dv">3</span>))</code></pre>
+<pre><code>## [1] 2.307569</code></pre>
+<p>Wysoka wartość kurtozy świadczy o tym, że rozkład stóp zwrotu charakteryzuje się
+spiczastością (rozkład leptokurtyczny) w stosunku do rozkładu normalnego (rozkład
+mezokurtyczny).</p>
+<pre class="sourceCode r"><code class="sourceCode r">moments<span class="op">::</span><span class="kw">anscombe.test</span>(z)</code></pre>
+<pre><code>## 
+##  Anscombe-Glynn kurtosis test
+## 
+## data:  z
+## kurt = 5.3160, z = 8.5299, p-value &lt; 2.2e-16
+## alternative hypothesis: kurtosis is not equal to 3</code></pre>
+
+</div>
+<div id="part_9.3" class="section level2">
+<h2><span class="header-section-number">9.3</span> Rozkład normalny</h2>
+<p>Funkcja gęstości rozkładu normalnego <span class="math inline">\(N(\mu,\sigma)\)</span> dla <span class="math inline">\(\mu\in R\)</span> oraz <span class="math inline">\(\sigma&gt;0\)</span> czyli <a href="https://rdrr.io/r/stats/Normal.html"><code>dnorm</code></a> jest przedstawiona poniżej:
+<span class="math display" id="eq:wz920">\[\begin{equation}
+f(x)=\frac{1}{\sigma\sqrt(2\pi)}\exp\left(\frac{-(x-\mu)^2}{2\sigma^2}\right)
+\tag{9.20}
+\end{equation}\]</span>
+gdzie: <span class="math inline">\(\mu\)</span> to średnia, natomiast <span class="math inline">\(\sigma\)</span> to odchylenie standardowe.</p>
+<p>Do estymacji nieznanych parametrów rozkładu normalnego wykorzystamy następujące funkcję:</p>
+<pre class="sourceCode r"><code class="sourceCode r">a &lt;-<span class="st"> </span><span class="kw">mean</span>(z); a <span class="co"># średnia</span></code></pre>
+<pre><code>## [1] 0.00216913</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">b &lt;-<span class="st"> </span><span class="kw">sd</span>(z); b   <span class="co"># odchylenie standardowe</span></code></pre>
+<pre><code>## [1] 0.02225315</code></pre>
+<p>W przypadku gdybyśmy chcieli estymować parametry <span class="math inline">\(\mu\)</span> oraz <span class="math inline">\(\sigma\)</span> za pomocą funkcji <a href="https://rdrr.io/r/stats/nlminb.html"><code>nlminb</code></a> kod wyglądałby następująco:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># logarytm funkcji wiarygodności:</span>
+f1 &lt;-<span class="st"> </span><span class="cf">function</span>(theta, z) {
+  <span class="kw">sum</span>(<span class="op">-</span><span class="kw">dnorm</span>(z, <span class="dt">mean=</span>theta[<span class="dv">1</span>], <span class="dt">sd=</span>theta[<span class="dv">2</span>], <span class="dt">log=</span><span class="ot">TRUE</span>))
+  }
+<span class="co"># parametry startowe:</span>
+p.start &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">mean</span>(z), <span class="kw">sd</span>(z))
+<span class="co"># optymalizacja funkcji f1:</span>
+e1 &lt;-<span class="st"> </span><span class="kw">nlminb</span>(p.start, f1, <span class="dt">z=</span>z, <span class="dt">lower=</span><span class="kw">c</span>(<span class="op">-</span><span class="ot">Inf</span>,<span class="dv">0</span>), <span class="dt">upper=</span><span class="kw">c</span>(<span class="ot">Inf</span>,<span class="ot">Inf</span>))
+e1[<span class="kw">c</span>(<span class="st">&#39;par&#39;</span>,<span class="st">&#39;objective&#39;</span>)]</code></pre>
+<pre><code>## $par
+## [1] 0.002169126 0.022244371
+## 
+## $objective
+## [1] -3023.984</code></pre>
+<p>Jak można zauważyć otrzymane parametry są dokładnie takie same jak te, które
+oszacowaliśmy za pomocą funkcji <a href="https://rdrr.io/r/base/mean.html"><code>mean</code></a> i <a href="https://rdrr.io/r/stats/sd.html"><code>sd</code></a>.</p>
+<p>W środowisku R można oszacować nieznane parametry również za pomocą funkcji <a href="https://rdrr.io/cran/MASS/man/fitdistr.html"><code>MASS::fitdistr</code></a> lub bardziej rozbudowanej wersji <a href="https://rdrr.io/cran/fitdistrplus/man/fitdist.html"><code>fitdistrplus::fitdist</code></a>. Dla wbudowanych dystrybuant nie ma konieczności podawania parametrów startowych oraz ograniczeń przedziałowych. Takie opcje są bardzo użyteczne jeśli chcemy szukać parametrów dla dystrybuant zdefiniowanych przez nas.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(fitdistrplus<span class="op">::</span><span class="kw">fitdist</span>(z,<span class="st">&#39;norm&#39;</span>))</code></pre>
+<pre><code>## Fitting of the distribution &#39; norm &#39; by maximum likelihood 
+## Parameters : 
+##        estimate   Std. Error
+## mean 0.00216913 0.0006249307
+## sd   0.02224437 0.0004378806
+## Loglikelihood:  3023.984   AIC:  -6043.968   BIC:  -6033.679 
+## Correlation matrix:
+##      mean sd
+## mean    1  0
+## sd      0  1</code></pre>
+<p>Znając już parametry <span class="math inline">\(\mu\)</span> oraz <span class="math inline">\(\sigma\)</span> możemy teraz przeprowadzić test zgodności
+Andersona-Darlinga i odpowiedzieć na pytanie: czy stopa zwrotu PKOBP pochodzi z rozkładu normalnego?</p>
+<pre class="sourceCode r"><code class="sourceCode r">ADGofTest<span class="op">::</span><span class="kw">ad.test</span>(z,pnorm,<span class="kw">mean</span>(z),<span class="kw">sd</span>(z))</code></pre>
+<pre><code>## 
+##  Anderson-Darling GoF Test
+## 
+## data:  z  and  pnorm
+## AD = 7.2474, p-value = 0.0002546
+## alternative hypothesis: NA</code></pre>
+<p>Ponieważ <span class="math inline">\(p-value = 0.0002546\)</span> to hipotetę zerową należy odrzucić. Zatem na
+poziomie istotności <span class="math inline">\(\alpha = 0,05\)</span> należy stwierdzić, że stopa zwrotu PKOBP nie ma rozkładu normalnego. Naszą decyzję potwierdza także (rys. <a href="part-9.html#fig:wy94">9.4</a>).</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mfcol=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>),<span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">1</span>,<span class="dv">1</span>)<span class="op">+</span><span class="fl">0.1</span>, <span class="dt">mgp=</span><span class="kw">c</span>(<span class="dv">3</span>,<span class="fl">0.6</span>,<span class="dv">0</span>),<span class="dt">las=</span><span class="dv">1</span>)
+<span class="kw">plot</span>(<span class="kw">density</span>(z),<span class="dt">col=</span><span class="st">&#39;SteelBlue&#39;</span>,<span class="dt">lwd=</span><span class="dv">4</span>,<span class="dt">main=</span><span class="st">&#39;gęstość&#39;</span>)
+<span class="kw">curve</span>(<span class="kw">dnorm</span>(x,<span class="kw">mean</span>(z),<span class="kw">sd</span>(z)),<span class="dt">add=</span><span class="ot">TRUE</span>,<span class="dt">col=</span><span class="st">&#39;violetred3&#39;</span>,<span class="dt">lwd=</span><span class="dv">3</span>)
+<span class="kw">legend</span>(<span class="st">&quot;topright&quot;</span>,<span class="dt">bg=</span><span class="st">&#39;white&#39;</span>,<span class="dt">bty=</span><span class="st">&quot;n&quot;</span>,<span class="dt">cex=</span><span class="dv">1</span>,<span class="dt">lty=</span><span class="dv">1</span>,<span class="dt">lwd=</span><span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">3</span>),
+       <span class="kw">c</span>(<span class="st">&#39;empiryczna&#39;</span>,<span class="st">&#39;teoretyczna&#39;</span>),<span class="dt">col=</span><span class="kw">c</span>(<span class="st">&#39;SteelBlue&#39;</span>,<span class="st">&#39;violetred3&#39;</span>))
+<span class="kw">plot</span>(<span class="kw">ecdf</span>(z),<span class="dt">col=</span><span class="st">&#39;SteelBlue&#39;</span>,<span class="dt">lwd=</span><span class="dv">4</span>,<span class="dt">main=</span><span class="st">&#39;dystrybuanta&#39;</span>)
+<span class="kw">curve</span>(<span class="kw">pnorm</span>(x,<span class="kw">mean</span>(z),<span class="kw">sd</span>(z)),<span class="dt">add=</span><span class="ot">TRUE</span>,<span class="dt">col=</span><span class="st">&#39;violetred3&#39;</span>,<span class="dt">lwd=</span><span class="dv">3</span>)
+<span class="kw">legend</span>(<span class="st">&quot;topleft&quot;</span>,<span class="dt">bg=</span><span class="st">&#39;white&#39;</span>,<span class="dt">bty=</span><span class="st">&quot;n&quot;</span>,<span class="dt">lty=</span><span class="dv">1</span>,<span class="dt">lwd=</span><span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">3</span>),
+       <span class="kw">c</span>(<span class="st">&#39;empiryczna&#39;</span>,<span class="st">&#39;teoretyczna&#39;</span>),<span class="dt">col=</span><span class="kw">c</span>(<span class="st">&#39;SteelBlue&#39;</span>,<span class="st">&#39;violetred3&#39;</span>))</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:wy94"></span>
+<img src="NaPrzelajR_files/figure-html/wy94-1.png" alt="Porównanie wykresu gęstości z rozkładem normalnym." width="100%" />
+<p class="caption">
+Rysunek 9.4: Porównanie wykresu gęstości z rozkładem normalnym.
+</p>
+</div>
+
+</div>
+<div id="part_9.4" class="section level2">
+<h2><span class="header-section-number">9.4</span> Rozkład Cauchy’ego</h2>
+<p>Funkcja gęstości rozkładu Cauchy’ego <span class="math inline">\(C(a, b)\)</span> dla <span class="math inline">\(a \in R\)</span> oraz <span class="math inline">\(b &gt; 0\)</span> czyli <a href="https://rdrr.io/r/stats/Cauchy.html"><code>dcauchy</code></a> jest przedstawiona poniżej:
+<span class="math display" id="eq:wz921">\[\begin{equation}
+f(x)=\frac{1}{\pi b \left(1+\left(\frac{x-a}{b}\right)^2\right)}
+\tag{9.21}
+\end{equation}\]</span>
+gdzie: <span class="math inline">\(a\)</span> to parametr położenia, natomiast <span class="math inline">\(b\)</span> to parametr skali.</p>
+<p>Tak samo jak w przypadku rozkładu normalnego, aby wykorzystać funkcję <a href="https://rdrr.io/r/stats/nlminb.html"><code>nlminb</code></a> należy oszacować parametry startowe. Dla rozkładu Cauchy’ego można to zrobić w
+następujący sposób:</p>
+<pre class="sourceCode r"><code class="sourceCode r">a &lt;-<span class="st"> </span><span class="kw">median</span>(z); a <span class="co"># parametr położenia: a</span></code></pre>
+<pre><code>## [1] 0.001766785</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">b &lt;-<span class="st"> </span><span class="kw">IQR</span>(z)<span class="op">/</span><span class="dv">2</span>; b  <span class="co"># parametr skali: b</span></code></pre>
+<pre><code>## [1] 0.0121972</code></pre>
+<p>Teraz metodą największej wiarygodności oszacujemy parametry rozkładu Cauche’go.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># logarytm funkcji wiarygodności:</span>
+f2 &lt;-<span class="st"> </span><span class="cf">function</span>(theta, z) {
+  <span class="kw">sum</span>(<span class="op">-</span><span class="kw">dcauchy</span>(z, <span class="dt">location=</span>theta[<span class="dv">1</span>], <span class="dt">scale=</span>theta[<span class="dv">2</span>], <span class="dt">log=</span><span class="ot">TRUE</span>))
+  }
+<span class="co"># parametry startowe:</span>
+p.start &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">median</span>(z), <span class="kw">IQR</span>(z)<span class="op">/</span><span class="dv">2</span>)
+<span class="co"># optymalizacja funkcji f2:</span>
+e2 &lt;-<span class="st"> </span><span class="kw">nlminb</span>(p.start, f2, <span class="dt">z=</span>z, <span class="dt">lower=</span><span class="kw">c</span>(<span class="op">-</span><span class="ot">Inf</span>,<span class="dv">0</span>), <span class="dt">upper=</span><span class="kw">c</span>(<span class="ot">Inf</span>,<span class="ot">Inf</span>))
+e2[<span class="kw">c</span>(<span class="st">&#39;par&#39;</span>,<span class="st">&#39;objective&#39;</span>)]</code></pre>
+<pre><code>## $par
+## [1] 0.002025263 0.011231456
+## 
+## $objective
+## [1] -2945.315</code></pre>
+<p>Prawie identyczne wyniki otrzymamy przy wykorzystaniu funkcji <a href="https://rdrr.io/cran/fitdistrplus/man/fitdist.html"><code>fitdistrplus::fitdist</code></a>.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(fitdistrplus<span class="op">::</span><span class="kw">fitdist</span>(z,<span class="st">&#39;cauchy&#39;</span>))</code></pre>
+<pre><code>## Fitting of the distribution &#39; cauchy &#39; by maximum likelihood 
+## Parameters : 
+##             estimate   Std. Error
+## location 0.002029574 0.0004912212
+## scale    0.011230842 0.0004071368
+## Loglikelihood:  2945.315   AIC:  -5886.63   BIC:  -5876.341 
+## Correlation matrix:
+##            location      scale
+## location 1.00000000 0.03089075
+## scale    0.03089075 1.00000000</code></pre>
+<p>Do sprawdzenia zgoności rozkładu empirycznego z rozkładem Cauchy’ego zastosujemy test Andersona-Darlinga.</p>
+<pre class="sourceCode r"><code class="sourceCode r">ADGofTest<span class="op">::</span><span class="kw">ad.test</span>(z,pcauchy, <span class="fl">0.002029574</span>, <span class="fl">0.011230842</span>)</code></pre>
+<pre><code>## 
+##  Anderson-Darling GoF Test
+## 
+## data:  z  and  pcauchy
+## AD = 10.36, p-value = 3.782e-06
+## alternative hypothesis: NA</code></pre>
+<p>Także i w tym razem na poziomie istotności <span class="math inline">\(\alpha = 0,05\)</span> odrzucamy hipotezę zerową, która zakłada, że stopa zwrotu ma rozkład Cauchy’ego.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mfcol=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>),<span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">1</span>,<span class="dv">1</span>)<span class="op">+</span><span class="fl">0.1</span>, <span class="dt">mgp=</span><span class="kw">c</span>(<span class="dv">3</span>,<span class="fl">0.6</span>,<span class="dv">0</span>),<span class="dt">las=</span><span class="dv">1</span>)
+<span class="kw">plot</span>(<span class="kw">density</span>(z),<span class="dt">col=</span><span class="st">&#39;SteelBlue&#39;</span>,<span class="dt">lwd=</span><span class="dv">4</span>,<span class="dt">main=</span><span class="st">&#39;gęstość&#39;</span>,<span class="dt">ylim=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">30</span>))
+<span class="kw">curve</span>(<span class="kw">dcauchy</span>(x,<span class="fl">0.002029574</span>, <span class="fl">0.011230842</span>),<span class="dt">add=</span><span class="ot">TRUE</span>,<span class="dt">col=</span><span class="st">&#39;violetred3&#39;</span>,<span class="dt">lwd=</span><span class="dv">3</span>)
+<span class="kw">legend</span>(<span class="st">&quot;topright&quot;</span>,<span class="dt">bg=</span><span class="st">&#39;white&#39;</span>,<span class="dt">bty=</span><span class="st">&quot;n&quot;</span>,<span class="dt">cex=</span><span class="dv">1</span>,<span class="dt">lty=</span><span class="dv">1</span>,<span class="dt">lwd=</span><span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">3</span>),
+       <span class="kw">c</span>(<span class="st">&#39;empiryczna&#39;</span>,<span class="st">&#39;teoretyczna&#39;</span>),<span class="dt">col=</span><span class="kw">c</span>(<span class="st">&#39;SteelBlue&#39;</span>,<span class="st">&#39;violetred3&#39;</span>))
+<span class="kw">plot</span>(<span class="kw">ecdf</span>(z),<span class="dt">col=</span><span class="st">&#39;SteelBlue&#39;</span>,<span class="dt">lwd=</span><span class="dv">4</span>,<span class="dt">main=</span><span class="st">&#39;dystrybuanta&#39;</span>)
+<span class="kw">curve</span>(<span class="kw">pcauchy</span>(x,<span class="fl">0.002029574</span>, <span class="fl">0.011230842</span>),<span class="dt">add=</span><span class="ot">TRUE</span>,<span class="dt">col=</span><span class="st">&#39;violetred3&#39;</span>,<span class="dt">lwd=</span><span class="dv">3</span>)
+<span class="kw">legend</span>(<span class="st">&quot;topleft&quot;</span>,<span class="dt">bg=</span><span class="st">&#39;white&#39;</span>,<span class="dt">bty=</span><span class="st">&quot;n&quot;</span>,<span class="dt">lty=</span><span class="dv">1</span>,<span class="dt">lwd=</span><span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">3</span>),
+       <span class="kw">c</span>(<span class="st">&#39;empiryczna&#39;</span>,<span class="st">&#39;teoretyczna&#39;</span>),<span class="dt">col=</span><span class="kw">c</span>(<span class="st">&#39;SteelBlue&#39;</span>,<span class="st">&#39;violetred3&#39;</span>))</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:wy95"></span>
+<img src="NaPrzelajR_files/figure-html/wy95-1.png" alt="Porównanie wykresu gęstości z rozkładem Cauchy`ego." width="100%" />
+<p class="caption">
+Rysunek 9.5: Porównanie wykresu gęstości z rozkładem Cauchy`ego.
+</p>
+</div>
+
+</div>
+<div id="part_9.5" class="section level2">
+<h2><span class="header-section-number">9.5</span> Rozkład Laplace’a</h2>
+<p>Funkcja gęstości rozkładu Laplace’a <span class="math inline">\(L(a, b)\)</span> dla <span class="math inline">\(a \in R\)</span> oraz <span class="math inline">\(b &gt; 0\)</span> czyli <a href="https://rdrr.io/cran/VGAM/man/laplaceUC.html"><code>VGAM::dlaplace</code></a> jest przedstawiona poniżej:
+<span class="math display" id="eq:wz922">\[\begin{equation}
+f(x)=\frac{1}{2b}\exp\left(\frac{-|x-a|}{b}\right)
+\tag{9.22}
+\end{equation}\]</span>
+gdzie: <span class="math inline">\(a\)</span> to parametr położenia, natomiast <span class="math inline">\(b\)</span> to parametr skali.</p>
+<p>Parametry startowe oszacujemy w następujący sposób:</p>
+<pre class="sourceCode r"><code class="sourceCode r">a &lt;-<span class="st"> </span><span class="kw">median</span>(z); a     <span class="co"># parametr położenia: a</span></code></pre>
+<pre><code>## [1] 0.001766785</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">b &lt;-<span class="st"> </span><span class="kw">mean</span>(<span class="kw">abs</span>(z<span class="op">-</span><span class="kw">median</span>(z))); b <span class="co"># parametr skali: b</span></code></pre>
+<pre><code>## [1] 0.01628686</code></pre>
+<p>Mając do dyspozycji funkcję gęstości <a href="https://rdrr.io/cran/VGAM/man/laplaceUC.html"><code>VGAM::dlaplace</code></a> oraz parametry startowe dokonamy estymacji parametrów <code>a</code> oraz <code>b</code> dla rozkładu Laplace’a.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># logarytm funkcji wiarygodności:</span>
+f3 &lt;-<span class="st"> </span><span class="cf">function</span>(theta, z) {
+  <span class="kw">sum</span>(<span class="op">-</span>VGAM<span class="op">::</span><span class="kw">dlaplace</span>(z, <span class="dt">location=</span>theta[<span class="dv">1</span>], <span class="dt">scale=</span>theta[<span class="dv">2</span>], <span class="dt">log=</span><span class="ot">TRUE</span>))
+  }
+<span class="co"># parametry startowe:</span>
+p.start &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">median</span>(z), <span class="kw">mean</span>(<span class="kw">abs</span>(z<span class="op">-</span><span class="kw">median</span>(z))))
+<span class="co"># optymalizacja funkcji f3:</span>
+e3 &lt;-<span class="st"> </span><span class="kw">nlminb</span>(p.start, f3, <span class="dt">z=</span>z, <span class="dt">lower=</span><span class="kw">c</span>(<span class="op">-</span><span class="ot">Inf</span>,<span class="dv">0</span>), <span class="dt">upper=</span><span class="kw">c</span>(<span class="ot">Inf</span>,<span class="ot">Inf</span>))
+e3</code></pre>
+<pre><code>## $par
+## [1] 0.001766785 0.016286861
+## 
+## $objective
+## [1] -3071.524
+## 
+## $convergence
+## [1] 1
+## 
+## $iterations
+## [1] 1
+## 
+## $evaluations
+## function gradient 
+##       25        2 
+## 
+## $message
+## [1] &quot;false convergence (8)&quot;</code></pre>
+<p>Stosowanie algorytmów optymalizacyjnych ogólnego przeznaczenia np. <a href="https://rdrr.io/r/stats/nlminb.html"><code>nlminb</code></a> do wyznaczania parametrów funkcji
+wymaga podawania parametrów startowych. Jeśli nie chcemy ich podawać
+warto skorzystać z funkcj <a href="https://rdrr.io/cran/VGAM/man/vglm.html"><code>VGAM::vglm</code></a>.
+Za jej pomocą można oszacować szukane parametry dla wielu ciekawych rozkładów np. Laplace’a.</p>
+<pre class="sourceCode r"><code class="sourceCode r">fit &lt;-<span class="st"> </span>VGAM<span class="op">::</span><span class="kw">vglm</span>(z <span class="op">~</span><span class="st"> </span><span class="dv">1</span>, VGAM<span class="op">::</span>laplace, <span class="kw">data.frame</span>(z), <span class="dt">trace=</span><span class="ot">FALSE</span>, <span class="dt">crit=</span><span class="st">&quot;l&quot;</span>)
+VGAM<span class="op">::</span><span class="kw">Coef</span>(fit)</code></pre>
+<pre><code>##    location       scale 
+## 0.001766785 0.016296640</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">ADGofTest<span class="op">::</span><span class="kw">ad.test</span>(z,VGAM<span class="op">::</span>plaplace, <span class="fl">0.001766785</span>, <span class="fl">0.016296640</span>)</code></pre>
+<pre><code>## 
+##  Anderson-Darling GoF Test
+## 
+## data:  z  and  VGAM::plaplace
+## AD = 1.4474, p-value = 0.1896
+## alternative hypothesis: NA</code></pre>
+<p>Ponieważ <span class="math inline">\(p-value = 0.1896\)</span>, więc nie ma podstaw do odrzucenia hipotezy zerowej.
+Zatem można przyjąć, że rozkład stóp zwrotu spółki PKOBP ma rozkład Laplace’a.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mfcol=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>),<span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">1</span>,<span class="dv">1</span>)<span class="op">+</span><span class="fl">0.1</span>, <span class="dt">mgp=</span><span class="kw">c</span>(<span class="dv">3</span>,<span class="fl">0.6</span>,<span class="dv">0</span>),<span class="dt">las=</span><span class="dv">1</span>)
+<span class="kw">plot</span>(<span class="kw">density</span>(z),<span class="dt">col=</span><span class="st">&#39;SteelBlue&#39;</span>,<span class="dt">lwd=</span><span class="dv">4</span>,<span class="dt">main=</span><span class="st">&#39;gęstość&#39;</span>,<span class="dt">ylim=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">30</span>))
+<span class="kw">curve</span>(VGAM<span class="op">::</span><span class="kw">dlaplace</span>(x,<span class="fl">0.001766785</span>, <span class="fl">0.016296640</span>),<span class="dt">add=</span><span class="ot">TRUE</span>,<span class="dt">col=</span><span class="st">&#39;violetred3&#39;</span>,<span class="dt">lwd=</span><span class="dv">3</span>)
+<span class="kw">legend</span>(<span class="st">&quot;topright&quot;</span>,<span class="dt">bg=</span><span class="st">&#39;white&#39;</span>,<span class="dt">bty=</span><span class="st">&quot;n&quot;</span>,<span class="dt">cex=</span><span class="dv">1</span>,<span class="dt">lty=</span><span class="dv">1</span>,<span class="dt">lwd=</span><span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">3</span>),
+       <span class="kw">c</span>(<span class="st">&#39;empiryczna&#39;</span>,<span class="st">&#39;teoretyczna&#39;</span>),<span class="dt">col=</span><span class="kw">c</span>(<span class="st">&#39;SteelBlue&#39;</span>,<span class="st">&#39;violetred3&#39;</span>))
+<span class="kw">plot</span>(<span class="kw">ecdf</span>(z),<span class="dt">col=</span><span class="st">&#39;SteelBlue&#39;</span>,<span class="dt">lwd=</span><span class="dv">4</span>,<span class="dt">main=</span><span class="st">&#39;dystrybuanta&#39;</span>)
+<span class="kw">curve</span>(VGAM<span class="op">::</span><span class="kw">plaplace</span>(x,<span class="fl">0.001766785</span>, <span class="fl">0.016296640</span>),<span class="dt">add=</span><span class="ot">TRUE</span>,<span class="dt">col=</span><span class="st">&#39;violetred3&#39;</span>,<span class="dt">lwd=</span><span class="dv">3</span>)
+<span class="kw">legend</span>(<span class="st">&quot;topleft&quot;</span>,<span class="dt">bg=</span><span class="st">&#39;white&#39;</span>,<span class="dt">bty=</span><span class="st">&quot;n&quot;</span>,<span class="dt">lty=</span><span class="dv">1</span>,<span class="dt">lwd=</span><span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">3</span>),
+       <span class="kw">c</span>(<span class="st">&#39;empiryczna&#39;</span>,<span class="st">&#39;teoretyczna&#39;</span>),<span class="dt">col=</span><span class="kw">c</span>(<span class="st">&#39;SteelBlue&#39;</span>,<span class="st">&#39;violetred3&#39;</span>))</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:wy96"></span>
+<img src="NaPrzelajR_files/figure-html/wy96-1.png" alt="Porównanie wykresu gęstości z rozkładem Laplace`a." width="100%" />
+<p class="caption">
+Rysunek 9.6: Porównanie wykresu gęstości z rozkładem Laplace`a.
+</p>
+</div>
+
+</div>
+<div id="part_9.6" class="section level2">
+<h2><span class="header-section-number">9.6</span> Rozkład Stabilny</h2>
+<p>Rozkład stabilny <span class="math inline">\(S(\alpha, \beta, \gamma, \delta)\)</span>, gdzie <span class="math inline">\(\alpha \in(0; 2)\)</span> to parametr kształtu, <span class="math inline">\(\beta \in(-1; 1)\)</span>
+to indeks skośności, <span class="math inline">\(\gamma &gt; 0\)</span> to parametr skali, oraz <span class="math inline">\(\delta \in R\)</span> to parametr położenia,
+nie ma ściśle określonej funkcji gęstości – <a href="https://rdrr.io/cran/stabledist/man/dist-stable.html"><code>stabledist::dstable</code></a>. W zależności od wartości parametrów <span class="math inline">\(\alpha\)</span>
+oraz <span class="math inline">\(\beta\)</span> możemy otrzymać rozkłady, takie jak: rozkład normalny: <span class="math inline">\(\alpha = 2\)</span>, rozkład
+Cauchy’ego: <span class="math inline">\(\alpha = 1\)</span> i <span class="math inline">\(\beta = 0\)</span> oraz rozkład Levy’ego: <span class="math inline">\(\alpha = 12\)</span> i <span class="math inline">\(\beta = -1\)</span>.</p>
+<p>Do oszacowania parametrów rozkładu stabilnego można wykorzystać funkcję <a href="https://rdrr.io/cran/libstableR/man/stable_fit.html"><code>libstableR::stable_fit_mle</code></a> która stosuje metodę największej wiarygodności.</p>
+<pre class="sourceCode r"><code class="sourceCode r">p &lt;-<span class="st"> </span>libstableR<span class="op">::</span><span class="kw">stable_fit_mle</span>(z)</code></pre>
+<pre><code>## INIT MCCULLCOH</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">p</code></pre>
+<pre><code>## [1]  1.7281736156 -0.0007958884  0.0132426670  0.0023446287</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">ADGofTest<span class="op">::</span><span class="kw">ad.test</span>(z,stabledist<span class="op">::</span>pstable,p[<span class="dv">1</span>],p[<span class="dv">2</span>],p[<span class="dv">3</span>],p[<span class="dv">4</span>])</code></pre>
+<pre><code>## 
+##  Anderson-Darling GoF Test
+## 
+## data:  z  and  stabledist::pstable
+## AD = 0.72666, p-value = 0.5369
+## alternative hypothesis: NA</code></pre>
+<p>Test Andersona-Darlinga wykazał, że badana zmienna ma rozkład stabilny o parametrach: <span class="math inline">\(\alpha = 1,73\)</span>, <span class="math inline">\(\beta = -0,000796\)</span>, <span class="math inline">\(\gamma = 0,01\)</span> oraz <span class="math inline">\(\delta = 0,002\)</span>. Warto zwrócić
+uwagę na wysokość p-value dla rozkładu stabilnego, które wynosi <span class="math inline">\(0,5369\)</span> i jest większa
+niż dla rozkładu Laplace’a <span class="math inline">\((0,1896)\)</span>. A zatem należy sądzić, że właśnie ten rozkład
+lepiej opisuje badaną zmienną (rys. <a href="part-9.html#fig:wy97">9.7</a>).</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mfcol=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>),<span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">1</span>,<span class="dv">1</span>)<span class="op">+</span><span class="fl">0.1</span>, <span class="dt">mgp=</span><span class="kw">c</span>(<span class="dv">3</span>,<span class="fl">0.6</span>,<span class="dv">0</span>),<span class="dt">las=</span><span class="dv">1</span>)
+<span class="kw">plot</span>(<span class="kw">density</span>(z),<span class="dt">col=</span><span class="st">&#39;SteelBlue&#39;</span>,<span class="dt">lwd=</span><span class="dv">4</span>,<span class="dt">main=</span><span class="st">&#39;gęstość&#39;</span>)
+<span class="kw">curve</span>(stabledist<span class="op">::</span><span class="kw">dstable</span>(x, <span class="fl">1.7281736156</span>, <span class="fl">-0.0007958884</span>, <span class="fl">0.0132426670</span>,  <span class="fl">0.0023446287</span>),
+      <span class="dt">add=</span><span class="ot">TRUE</span>,<span class="dt">col=</span><span class="st">&#39;violetred3&#39;</span>,<span class="dt">lwd=</span><span class="dv">3</span>)
+<span class="kw">legend</span>(<span class="st">&quot;topright&quot;</span>,<span class="dt">bg=</span><span class="st">&#39;white&#39;</span>,<span class="dt">bty=</span><span class="st">&quot;n&quot;</span>,<span class="dt">cex=</span><span class="dv">1</span>,<span class="dt">lty=</span><span class="dv">1</span>,<span class="dt">lwd=</span><span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">3</span>),
+<span class="kw">c</span>(<span class="st">&#39;empiryczna&#39;</span>,<span class="st">&#39;teoretyczna&#39;</span>),<span class="dt">col=</span><span class="kw">c</span>(<span class="st">&#39;SteelBlue&#39;</span>,<span class="st">&#39;violetred3&#39;</span>))
+<span class="kw">plot</span>(<span class="kw">ecdf</span>(z),<span class="dt">col=</span><span class="st">&#39;SteelBlue&#39;</span>,<span class="dt">lwd=</span><span class="dv">4</span>,<span class="dt">main=</span><span class="st">&#39;dystrybuanta&#39;</span>)
+<span class="kw">curve</span>(stabledist<span class="op">::</span><span class="kw">pstable</span>(x, <span class="fl">1.7281736156</span>, <span class="fl">-0.0007958884</span>, <span class="fl">0.0132426670</span>,  <span class="fl">0.0023446287</span>),
+      <span class="dt">add=</span><span class="ot">TRUE</span>,<span class="dt">col=</span><span class="st">&#39;violetred3&#39;</span>,<span class="dt">lwd=</span><span class="dv">3</span>)
+<span class="kw">legend</span>(<span class="st">&quot;topleft&quot;</span>,<span class="dt">bg=</span><span class="st">&#39;white&#39;</span>,<span class="dt">bty=</span><span class="st">&quot;n&quot;</span>,<span class="dt">lty=</span><span class="dv">1</span>,<span class="dt">lwd=</span><span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">3</span>),
+<span class="kw">c</span>(<span class="st">&#39;empiryczna&#39;</span>,<span class="st">&#39;teoretyczna&#39;</span>),<span class="dt">col=</span><span class="kw">c</span>(<span class="st">&#39;SteelBlue&#39;</span>,<span class="st">&#39;violetred3&#39;</span>))</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:wy97"></span>
+<img src="NaPrzelajR_files/figure-html/wy97-1.png" alt="Porównanie wykresu gęstości z rozkładem Stabilnym." width="100%" />
+<p class="caption">
+Rysunek 9.7: Porównanie wykresu gęstości z rozkładem Stabilnym.
+</p>
+</div>
+<p>Znając rozkład badanej zmiennej można także obliczyć prawdopodobieństwo wystąpienia określonej stopy zwrotu. W tym celu wykorzystamy funkcję <a href="https://rdrr.io/cran/stabledist/man/dist-stable.html"><code>stabledist::pstable</code></a>
+czyli dystrybuantę rozkładu stabilnego.</p>
+<ol style="list-style-type: decimal">
+<li>Jakie jest prawdopodobieństwo, że stopa zwrotu będzie mniejsza niż <span class="math inline">\(2\%\)</span>?
+<span class="math display">\[P(z&lt;0,02)\]</span></li>
+</ol>
+<pre class="sourceCode r"><code class="sourceCode r">a &lt;-<span class="st"> </span>p[<span class="dv">1</span>]
+b &lt;-<span class="st"> </span>p[<span class="dv">2</span>]
+g &lt;-<span class="st"> </span>p[<span class="dv">3</span>]
+d &lt;-<span class="st"> </span>p[<span class="dv">4</span>]
+stabledist<span class="op">::</span><span class="kw">pstable</span>(<span class="fl">0.02</span>, a,b,g,d)</code></pre>
+<pre><code>## [1] 0.821845</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">1</span>,<span class="dv">1</span>)<span class="op">+</span><span class="fl">0.1</span>, <span class="dt">mgp=</span><span class="kw">c</span>(<span class="dv">3</span>,<span class="fl">0.6</span>,<span class="dv">0</span>),<span class="dt">las=</span><span class="dv">1</span>)
+<span class="kw">curve</span>(stabledist<span class="op">::</span><span class="kw">dstable</span>(x,a,b,g,d),<span class="op">-</span><span class="fl">0.1</span>,<span class="fl">0.1</span>,
+      <span class="dt">col=</span><span class="st">&#39;white&#39;</span>, <span class="dt">main=</span><span class="st">&#39;prawdopodobieństwo&#39;</span>)
+x &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="fl">0.02</span>,<span class="op">-</span><span class="fl">0.1</span>,<span class="dt">length=</span><span class="dv">300</span>)
+y &lt;-<span class="st"> </span>stabledist<span class="op">::</span><span class="kw">dstable</span>(x,a,b,g,d)
+<span class="kw">polygon</span>(<span class="kw">c</span>(<span class="fl">0.02</span>,x,<span class="op">-</span><span class="fl">0.1</span>),<span class="kw">c</span>(<span class="dv">0</span>,y,<span class="dv">0</span>),
+        <span class="dt">col=</span><span class="st">&#39;Violet&#39;</span>,<span class="dt">border =</span> <span class="st">&quot;Dark Magenta&quot;</span>)
+<span class="kw">curve</span>(stabledist<span class="op">::</span><span class="kw">dstable</span>(x,a,b,g,d),<span class="op">-</span><span class="fl">0.1</span>,<span class="fl">0.1</span>,
+      <span class="dt">lwd=</span><span class="dv">4</span>,<span class="dt">col=</span><span class="st">&#39;Dark Magenta&#39;</span>,<span class="dt">add=</span><span class="ot">TRUE</span>)</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:wy98"></span>
+<img src="NaPrzelajR_files/figure-html/wy98-1.png" alt="Obszar prawdopodobieństwa $P(z&lt;0,02)=0,821845$" width="70%" />
+<p class="caption">
+Rysunek 9.8: Obszar prawdopodobieństwa <span class="math inline">\(P(z&lt;0,02)=0,821845\)</span>
+</p>
+</div>
+<ol start="2" style="list-style-type: decimal">
+<li>Jakie jest prawdopodobieństwo, że stopa zwrotu będzie większa niż <span class="math inline">\(3,2\%\)</span>?
+<span class="math display">\[P(z &gt; 0,032)\]</span></li>
+</ol>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="dv">1</span><span class="op">-</span>stabledist<span class="op">::</span><span class="kw">pstable</span>(<span class="fl">0.032</span>, a,b,g,d)</code></pre>
+<pre><code>## [1] 0.07146513</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">1</span>,<span class="dv">1</span>)<span class="op">+</span><span class="fl">0.1</span>, <span class="dt">mgp=</span><span class="kw">c</span>(<span class="dv">3</span>,<span class="fl">0.6</span>,<span class="dv">0</span>),<span class="dt">las=</span><span class="dv">1</span>)
+<span class="kw">curve</span>(stabledist<span class="op">::</span><span class="kw">dstable</span>(x,a,b,g,d),<span class="op">-</span><span class="fl">0.1</span>,<span class="fl">0.1</span>,
+      <span class="dt">col=</span><span class="st">&#39;white&#39;</span>,<span class="dt">main=</span><span class="st">&#39;prawdopodobieństwo&#39;</span>)
+x &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="fl">0.032</span>,<span class="fl">0.1</span>,<span class="dt">length=</span><span class="dv">300</span>)
+y &lt;-<span class="st"> </span>stabledist<span class="op">::</span><span class="kw">dstable</span>(x,a,b,g,d)
+<span class="kw">polygon</span>(<span class="kw">c</span>(<span class="fl">0.032</span>,x,<span class="fl">0.1</span>),<span class="kw">c</span>(<span class="dv">0</span>,y,<span class="dv">0</span>),
+        <span class="dt">col=</span><span class="st">&#39;Violet&#39;</span>,<span class="dt">border =</span> <span class="st">&quot;Dark Magenta&quot;</span>)
+<span class="kw">curve</span>(stabledist<span class="op">::</span><span class="kw">dstable</span>(x,a,b,g,d),<span class="op">-</span><span class="fl">0.1</span>,<span class="fl">0.1</span>,
+      <span class="dt">lwd=</span><span class="dv">4</span>,<span class="dt">col=</span><span class="st">&#39;Dark Magenta&#39;</span>,<span class="dt">add=</span><span class="ot">TRUE</span>)</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:wy99"></span>
+<img src="NaPrzelajR_files/figure-html/wy99-1.png" alt="Obszar prawdopodobieństwa $P(z&gt;0,032)=0,07146513$" width="70%" />
+<p class="caption">
+Rysunek 9.9: Obszar prawdopodobieństwa <span class="math inline">\(P(z&gt;0,032)=0,07146513\)</span>
+</p>
+</div>
+<ol start="3" style="list-style-type: decimal">
+<li>Jakie jest prawdopodobieństwo, że stopa zwrotu będzie się zawierać w przedziale
+<span class="math inline">\((0\%; 3,78\%)\)</span>?
+<span class="math display">\[P(0&lt;z&lt;0,0378)\]</span></li>
+</ol>
+<pre class="sourceCode r"><code class="sourceCode r">stabledist<span class="op">::</span><span class="kw">pstable</span>(<span class="fl">0.0378</span>, a,b,g,d)<span class="op">-</span>stabledist<span class="op">::</span><span class="kw">pstable</span>(<span class="dv">0</span>, a,b,g,d)</code></pre>
+<pre><code>## [1] 0.5038598</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">1</span>,<span class="dv">1</span>)<span class="op">+</span><span class="fl">0.1</span>, <span class="dt">mgp=</span><span class="kw">c</span>(<span class="dv">3</span>,<span class="fl">0.6</span>,<span class="dv">0</span>),<span class="dt">las=</span><span class="dv">1</span>)
+<span class="kw">curve</span>(stabledist<span class="op">::</span><span class="kw">dstable</span>(x,a,b,g,d),<span class="op">-</span><span class="fl">0.1</span>,<span class="fl">0.1</span>,
+      <span class="dt">col=</span><span class="st">&#39;white&#39;</span>,<span class="dt">main=</span><span class="st">&#39;prawdopodobieństwo&#39;</span>)
+x &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>,<span class="fl">0.0378</span>,<span class="dt">length=</span><span class="dv">300</span>)
+y &lt;-<span class="st"> </span>stabledist<span class="op">::</span><span class="kw">dstable</span>(x,a,b,g,d)
+<span class="kw">polygon</span>(<span class="kw">c</span>(<span class="dv">0</span>,x,<span class="fl">0.0378</span>),<span class="kw">c</span>(<span class="dv">0</span>,y,<span class="dv">0</span>),
+        <span class="dt">col=</span><span class="st">&#39;Violet&#39;</span>,<span class="dt">border =</span> <span class="st">&quot;Dark Magenta&quot;</span>)
+<span class="kw">curve</span>(stabledist<span class="op">::</span><span class="kw">dstable</span>(x,a,b,g,d),<span class="op">-</span><span class="fl">0.1</span>,<span class="fl">0.1</span>,
+      <span class="dt">lwd=</span><span class="dv">4</span>,<span class="dt">col=</span><span class="st">&#39;Dark Magenta&#39;</span>,<span class="dt">add=</span><span class="ot">TRUE</span>)</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:wy910"></span>
+<img src="NaPrzelajR_files/figure-html/wy910-1.png" alt="Obszar prawdopodobieństwa $P(0&lt;z&lt;0,0378)=0,5038598$" width="70%" />
+<p class="caption">
+Rysunek 9.10: Obszar prawdopodobieństwa <span class="math inline">\(P(0&lt;z&lt;0,0378)=0,5038598\)</span>
+</p>
+</div>
+<ol start="4" style="list-style-type: decimal">
+<li>Jakie jest prawdopodobieństwo, że stopa zwrotu będzie mniejsza niż <span class="math inline">\(1,75\%\)</span> lub
+większa niż <span class="math inline">\(3,78\%\)</span>?
+<span class="math display">\[P (0,0175 &gt; z &gt; 0,0378)\]</span></li>
+</ol>
+<pre class="sourceCode r"><code class="sourceCode r">stabledist<span class="op">::</span><span class="kw">pstable</span>(<span class="fl">0.0175</span>, a,b,g,d)<span class="op">+</span>(<span class="dv">1</span><span class="op">-</span>stabledist<span class="op">::</span><span class="kw">pstable</span>(<span class="fl">0.0378</span>, a,b,g,d))</code></pre>
+<pre><code>## [1] 0.8336819</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">1</span>,<span class="dv">1</span>)<span class="op">+</span><span class="fl">0.1</span>, <span class="dt">mgp=</span><span class="kw">c</span>(<span class="dv">3</span>,<span class="fl">0.6</span>,<span class="dv">0</span>),<span class="dt">las=</span><span class="dv">1</span>)
+<span class="kw">curve</span>(stabledist<span class="op">::</span><span class="kw">dstable</span>(x,a,b,g,d),<span class="op">-</span><span class="fl">0.1</span>,<span class="fl">0.1</span>,
+      <span class="dt">col=</span><span class="st">&#39;white&#39;</span>,<span class="dt">main=</span><span class="st">&#39;prawdopodobieństwo&#39;</span>)
+x &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="op">-</span><span class="fl">0.1</span>,<span class="fl">0.0175</span>,<span class="dt">length=</span><span class="dv">300</span>)
+y &lt;-<span class="st"> </span>stabledist<span class="op">::</span><span class="kw">dstable</span>(x,a,b,g,d)
+<span class="kw">polygon</span>(<span class="kw">c</span>(<span class="op">-</span><span class="fl">0.1</span>,x,<span class="fl">0.0175</span>),<span class="kw">c</span>(<span class="dv">0</span>,y,<span class="dv">0</span>),
+        <span class="dt">col=</span><span class="st">&#39;Violet&#39;</span>,<span class="dt">border =</span> <span class="st">&quot;Dark Magenta&quot;</span>)
+x &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="fl">0.0378</span>,<span class="fl">0.1</span>,<span class="dt">length=</span><span class="dv">300</span>)
+y &lt;-<span class="st"> </span>stabledist<span class="op">::</span><span class="kw">dstable</span>(x,a,b,g,d)
+<span class="kw">polygon</span>(<span class="kw">c</span>(<span class="fl">0.0378</span>,x,<span class="fl">0.1</span>),<span class="kw">c</span>(<span class="dv">0</span>,y,<span class="dv">0</span>),
+        <span class="dt">col=</span><span class="st">&#39;Violet&#39;</span>,<span class="dt">border =</span> <span class="st">&quot;Dark Magenta&quot;</span>)
+<span class="kw">curve</span>(stabledist<span class="op">::</span><span class="kw">dstable</span>(x,a,b,g,d),<span class="op">-</span><span class="fl">0.1</span>,<span class="fl">0.1</span>,
+      <span class="dt">lwd=</span><span class="dv">4</span>,<span class="dt">col=</span><span class="st">&#39;Dark Magenta&#39;</span>,<span class="dt">add=</span><span class="ot">TRUE</span>)</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:wy911"></span>
+<img src="NaPrzelajR_files/figure-html/wy911-1.png" alt="Obszar prawdopodobieństwa $P(0,0175&gt;z&gt;0,0378)=0,8336819$" width="70%" />
+<p class="caption">
+Rysunek 9.11: Obszar prawdopodobieństwa <span class="math inline">\(P(0,0175&gt;z&gt;0,0378)=0,8336819\)</span>
+</p>
+</div>
+<p>Na zakończenie warto jeszcze wspomnieć, że środowisko R oferuje także wiele innych rozkładów prawdopodobieństwa wraz z funkcjami do szacowania
+ich parametrów. W paczce <a href="https://rdrr.io/cran/fBasics/"><code>fBasics</code></a> oprócz funkcji do estymacji parametrów rozkładu stabilnego <a href="https://rdrr.io/cran/fBasics/man/dist-DistributionFits.html"><code>fBasic::stableFit</code></a> mamy do dyspozycji takie rozkłady jak:</p>
+<ul>
+<li><p>odwrotny rozkład normalny (<em>Normal Inverse Gaussian Distribution</em>)
+gdzie:
+<code>dnig</code> – funkcja gęstości, <code>pnig</code> – dystrybuanta, <code>qnig</code> – kwantyle, <code>rnig</code> – zmienne
+losowe, <code>nigFit</code> – estymacja parametrów.</p></li>
+<li><p>rozkład hiperboliczny (<em>Hyperbolic Distribution</em>)
+gdzie:
+<code>dhyp</code> – funkcja gęstości, <code>phyp</code> – dystrybuanta, <code>qhyp</code> – kwantyle, <code>rhyp</code> – zmienne
+losowe, <code>hypFit</code> – estymacja parametrów.</p></li>
+<li><p>uogolniony rozkład hiperboliczy (<em>Generalized Hyperbolic Distribution</em>)
+gdzie:
+<code>dgh</code> – funkcja gęstości, <code>pgh</code> – dystrybuanta, <code>qgh</code> – kwantyle, <code>rgh</code> – zmienne
+losowe, <code>ghFit</code> – estymacja parametrów.</p></li>
+<li><p>uogolniony rozkład hiperboliczy t-Studenta (<em>Generalized Hyperbolic Student-t</em>)
+gdzie:
+<code>dght</code> – funkcja gęstości, <code>pght</code> – dystrybuanta, <code>qght</code> – kwantyle, <code>rght</code> – zmienne
+losowe, <code>ghtFit</code> – estymacja parametrów.</p></li>
+<li><p>uogolniony rozkład lambda (<em>Generalized Lambda Distribution</em>)
+gdzie:
+<code>dgld</code> – funkcja gęstości, <code>pgld</code> – dystrybuanta, <code>qgld</code> – kwantyle, <code>rgld</code> – zmienne
+losowe, <code>gldFit</code> – estymacja parametrów.</p></li>
+</ul>
+<p>Z kolei w bibliotece <a href="https://rdrr.io/cran/fGarch/"><code>fGarch</code></a> są zaimplementowane następujące rozkłady:</p>
+<ul>
+<li><p>uogólniony rozkład błędów (<em>Generalized Error Distribution – GED</em>)
+gdzie:
+<code>dged</code> – symetryczna funkcja gęstości, <code>gedFit</code> – estymacja parametrów,
+<code>dsged</code> – skośna funkcja gęstości, <code>sgedFit</code> – estymacja parametrów.</p></li>
+<li><p>rozkład t-Studenta (<em>Student-t Distribution</em>)
+gdzie:
+<code>dstd</code> – symetryczna funkcja gęstości, <code>stdFit</code> – estymacja parametrów,
+<code>dsstd</code> – skośna funkcja gęstości, <code>sstdFit</code> – estymacja parametrów.</p></li>
+<li><p>rozkład normalny (<em>Normal Distribution</em>)
+gdzie:
+<code>dnorm</code> – symetryczna funkcja gęstości, <code>normFit</code> – estymacja parametrów,
+<code>dsnorm</code> – skośna funkcja gęstości, <code>snormFit</code> – estymacja parametrów.</p></li>
+</ul>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="part-8.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="part-10.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": ["NaPrzelajR.pdf", "NaPrzelajR.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

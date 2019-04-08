@@ -1,0 +1,35 @@
+## Weryfikacja modelu {#part_10.3}
+
+### Estymacja dynamicznego modelu liniowego {#part_10.3.1}
+
+```{r,warning=FALSE, message=FALSE}
+library("dyn")
+# estymacja modelu:
+m_dyn <- dyn$lm(bezrob~t1+t2+t3+month+
+      stats::lag(bezrob,-1)+stats::lag(bezrob,-2)+stats::lag(bezrob,-3))
+# podsumowanie modelu
+summary(m_dyn)
+```
+
+
+```{r}
+p_dyn <- predict(m_dyn)
+```
+```{r wy106, fig.cap='Wykres wartości empirycznych i teoretycznych.',fig.pos= 'h', fig.show='hold', fig.align='center', fig.width=8, fig.height=4,out.width='70%'}
+par(mar=c(4,4,1,1)+0.1, mgp=c(3,0.6,0),bg="lightgoldenrodyellow",las=1)
+plot(1,axes=F,xlab="",ylab="",main="", col="white")
+u <- par("usr")
+rect(u[1], u[3], u[2], u[4], col="white")
+par(new=plot)
+plot(bezrob,type='l',lwd=4,col='SteelBlue')
+lines(p_dyn,lwd=2,col='violetred3')
+legend("topright",bg='white',bty="n",lty=1,lwd=c(4,2),
+c('empiryczna','teoretyczna'),col=c('SteelBlue','violetred3'))
+```
+
+### Ocena jakości modelu {#part_10.3.2}
+
+Dokonując oceny jakości modelu należy zwrócić uwagę na wysoką wartość $R^2$ który wynosi $0,9993$. Oznacza to, że w $99,93\%$ została wyjaśniona zmienność zmiennej
+zależnej (stopa bezrobocia) przez model. Na podstawie oszacowanego błędu standardowego reszt $Se$, który jest równy $0,1006$ możemy stwierdzić, że średnio o $10,06\%$
+odchylają się wartości rzeczywiste stopy bezrobocia od wartości teoretycznych -- oszacowanych na podstawie modelu. Także test $F$ wskazuje na dobre dopasowanie
+modelu (p-value = $2,2e-16$).

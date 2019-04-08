@@ -1,0 +1,60 @@
+# Przykład budowy dynamicznego modelu liniowego {#part_10}
+
+---
+
+## Wprowadzenie {#part_10.1}
+
+W skład dynamicznego modelu liniowego wchodzą następujące elementy:
+
+* trend
+
+* składnik sezonowości
+
+* składnik autoregresji
+
+Do estymacji takiego modelu zostaną wykorzystane dodatkowe pakiety czyli takie
+które nie są instalowane wraz z oprogramowaniem R. Pod [`linkiem`](https://rdrr.io/r/) można zapoznać się dokumentacją bibliotek bazowych.
+
+Instalację pakietu wykonujemy tylko raz niezależnie od tego ile razy uruchomimy
+środowisko R.
+```
+install.packages("tseries")
+```
+Wykonując powyższe polecenie zostanie zainstalowana biblioteka wraz z wymaganymi zależnościami (dodatkowe pakiety) jeśli takie są wymagane. Następnie
+należy taką bibliotekę załadować:
+```
+library("tseries")
+```
+Inne podejście to odwoływanie się za każdym razem do wybranego pakietu który wcześniej został zainstalowany. Inaczej mówiąc, wskazujemy z jakiego pakietu chcemy wykorzystać funkcję. To rozwiązanie jest przydatne jeśli w dwóch różnych pakietach z których korzystamy występują takie same nazwy funkcji:
+```
+tseries::funkcja_z_pakietu_tseries( argumenty_funkcji )
+```
+
+Aby wprowadzić dane dotyczące miesięcznej stopy bezrobocia w
+Polsce można wykonać poniższe polecenie:
+```{r}
+b=c(
+19.5, 19.4, 19.3, 19.1, 18.9, 18.7, 18.7, 19.0, 19.4, 19.4, 19.2, 18.7,
+18.2, 18.0, 17.9, 17.7, 17.6, 17.3, 17.3, 17.6, 18.0, 18.0, 17.8, 17.2,
+16.5, 16.0, 15.7, 15.5, 15.2, 14.9, 14.8, 14.9, 15.1, 14.9, 14.4, 13.7,
+13.0, 12.4, 12.2, 11.9, 11.6, 11.3, 11.3, 11.4, 11.7, 11.5, 11.1, 10.5,
+10.0, 9.6,  9.4,  9.1,  8.9,  8.8,  9.1,  9.5,  10.5, 10.9, 11.2, 11.0,
+10.8, 10.7, 10.8, 10.8, 10.9, 11.1, 11.4, 11.9, 12.7, 13.0, 12.9, 12.3,
+11.9
+)
+```
+
+Ponieważ powyższe dane (procenty) dotyczą okresu od 05.2004 do 05.2010 więc przekształcimy zmienną `b`
+(zapisną w postaci wektora zmiennych) w szereg czasowy. Do budowy szeregu czasowego zostanie wykorzystana funkcja [`ts`](https://rdrr.io/r/stats/ts.html).
+```{r}
+bezrob <- ts(b,start=c(2004,5),freq=12)
+```
+```{r wy101, fig.cap='Stopa bezrobocia w Polsce od 0.5.2004 do 0.5.2010.',fig.pos= 'h', fig.show='hold', fig.align='center', fig.width=8, fig.height=4,out.width='70%'}
+par(mar=c(4,4,1,1)+0.1, mgp=c(3,0.6,0),bg="lightgoldenrodyellow",las=1)
+plot(bezrob,axes=F,xlab="",ylab="",main="", col="white")
+u <- par("usr")
+rect(u[1], u[3], u[2], u[4], col="white")
+par(new=plot)
+plot(bezrob,xlab="czas",ylab="stopa bezrobocia",col="SteelBlue",lwd=2,las=1)
+```
+

@@ -1,0 +1,48 @@
+## Model logitowy {#part_84}
+
+Innym sposobem analizy wielowymiarowych tabel kontyngencji jest zastosowanie
+modelu Poissona. Procedura estymacji i diagnostyki przebiega w taki sam sposób
+jak w przypadku modelu logitowego. Należy jednak pamiętać o tym, że w tego typu
+modelach zmienna zależna ma rozkład Poissona. A zatem nasz zbiór danych należy
+przekształcić.
+```{r}
+f <- as.data.frame(xtabs(~Survived+Class+Sex+Age,tt))
+f[1:3,]
+```
+```{r}
+p1 <- glm(Freq~.,f,family=poisson)
+p2 <- glm(Freq~.^2,f,family=poisson)
+p3 <- glm(Freq~.^3,f,family=poisson)
+p4 <- glm(Freq~.^4,f,family=poisson)
+# kryteria informacyjne:
+AIC(p1,p2,p3,p4)
+```
+```{r}
+# adekwatność modelu:
+1-pchisq(deviance(p1),p1$df.residual)
+1-pchisq(deviance(p2),p2$df.residual)
+1-pchisq(deviance(p3),p3$df.residual)
+1-pchisq(deviance(p4),p4$df.residual)
+# istotność poszczególnych interakcji:
+anova(p4,test="Chisq")
+# ilorazy wiarygodności:
+cbind(OR=round(exp(coef(p3)),1))
+```
+Na podstawie otrzymanych ilorazów wiarygodności możemy również sformułować
+kilka wniosków:
+
+* szanse zgonu w poszczególnych klasach były większe niż w pierwszej klasie
+o: $30\%$ w klasie drugiej, ponad 3 razy większe w klasie trzeciej oraz prawie
+sześciokrotnie większe wśród załogi.
+
+* szanse przeżycia w poszczególnych klasach były mniejsze niż w pierwszej klasie
+o: $80\%$ w klasie drugiej, $60\%$ w klasie trzeciej i $40\%$ wśród załogi. Z kolei szansa
+przeżycia kobiet była ponad $72$ razy większa niż mężczyzn, także dzieci miały
+wielokrotnie większe szanse na przeżycie niż dorośli.
+
+* szanse przeżycia w poszczególnych klasach wśród kobiet były mniejsze niż dla
+kobiet podróżujących w pierwszej klasie o: $10\%$ w klasie drugiej, $90\%$ w klasie
+trzeciej i $70\%$ wśród żeńskiej załogi statku.
+
+W środowisku R dostępne są także inne funkcje za pomocą których możemy ana-
+lizować wielowymiarowe tabele wielodzielcze np. [`MASS::loglm`](https://rdrr.io/cran/MASS/man/loglm.html) lub [`loglin`](https://rdrr.io/r/stats/loglin.html).

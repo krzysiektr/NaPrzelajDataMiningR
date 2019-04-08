@@ -1,0 +1,76 @@
+## Metoda grupowania wokół centroidów (PAM, ang. Partitioning Around Medoids) {#part_32}
+
+Metoda PAM działa na podobnej zasadzie jak k-średnich, z tą różnicą, że środkami klastrów są obserwacje ze zbioru danych (nazywane centroidami lub centrami
+klastrów). W metodzie PAM zbiór możliwych środków klastrów jest więc znacznie
+mniejszy, niż w metodzie k-średnich, zazwyczaj też wyniki działania metody PAM
+są stabilniejsze. Na rysunku \@ref(fig:pam) przedstawiony jest wynik działania poniższego przykładowego wywołania tej funkcji. Podobnie jak poprzednio różne klastry zaznaczono
+punktami o różnych kształtach. Czarne pełne punkty to środki klastrów (w tej metodzie odpowiadają przypadkom ze zbioru danych).
+```
+# ponownie szukamy 5 klastrow
+> klaster = pam(zbiorPerla,5)
+> # jak wygląda wynik w środku?
+  # pole $medoids określa współrzędne środków klastrów (wybranych
+  # przypadków), $in.med określa indeksy obserwacji, które są środkami
+  # klastrów, $clustering to wektor indeksów kolejnych klastrów, $silinfo
+  # to informacje o dopasowaniu danego obiektu do klastra w którym się
+  # znajduje (wartość silhouette)
+> str(klaster)
+List of 10
+$ medoids
+: num [1:5, 1:2] 6.47e-01 -6.26e-01 -6.38e-01 5.87e-01
+1.59e-05 ...
+$ id.med
+: int [1:5] 24 126 230 267 464
+$ clustering: int [1:1000] 1 1 2 1 1 2 1 1 1 2 ...
+$ objective : Named num [1:2] 0.526 0.461
+..- attr(*, "names")= chr [1:2] "build" "swap"
+$ isolation : Factor w/ 3 levels "no","L","L*": 1 1 1 1 1
+..- attr(*, "names")= chr [1:5] "1" "2" "3" "4" ...
+$ clusinfo : num [1:5, 1:5] 87 113 101 99 100 ...
+..- attr(*, "dimnames")=List of 2
+.. ..$ : NULL
+.. ..$ : chr [1:5] "size" "max_diss" "av_diss" "diameter" ...
+$ silinfo
+:List of 3
+..$ widths
+: num [1:1000, 1:3] 1 1 1 1 1 1 1 1 1 1 ...
+.. ..- attr(*, "dimnames")=List of 2
+.. .. ..$ : chr [1:500] "12" "96" "133" "155" ...
+.. .. ..$ : chr [1:3] "cluster" "neighbor" "sil_width"
+..$ clus.avg.widths: num [1:5] 0.434 0.440 0.482 0.443 0.508
+..$ avg.width
+: num 0.462
+$ diss
+: NULL
+$ call
+: language pam(x = zb1$x, k = 5)
+$ data
+: num [1:1000, 1:2] 0.0964 0.6938 -0.5325 1.2839 0.1743
+...
+- attr(*, "class")= chr [1:2] "pam" "partition"
+> # rysujemy punkty, różne klastry oznaczamy innymi kształtami punktów
+> plot(zbiorPerla, pch=klaster$clustering)
+> # dorysujmy środki klastrów
+> points(klaster$meoids, cex=2, pch=19)
+```
+Obiekt, będący wynikiem funkcji `pam()` ma sporo pól, najistotniejsze to `$medoids`
+ze współrzędnymi medoidów, `$id.med` z indeksami medoidów i `$clustering` z indeksami klastrów, do których zostały przypisane kolejne obserwacje.
+```{r pam, echo=FALSE, fig.align='center',fig.cap='Graficzna prezentacja działania funkcji pam().', out.width = '100%',fig.pos='h'}
+knitr::include_graphics("pam.png")
+```
+Metoda PAM jest obliczeniowo złożona. Może być niemożliwym obliczeniowo
+wykonanie jej na dużym zbiorze danych. Do klastrowania dużych zbiorów polecana jest metoda clara (Clustering Large Applications) zaimplementowana w funkcji
+`clara(cluster)`. Wykonuje ona wielokrotnie metodę PAM na mniejszych zbiorach
+danych i scala wyniki w jeden podział na klastry.
+
+Algorytm PAM (k-medoidów) opisuje następująca sekwencja
+
+1. wybiera się początkowy zbiór medoidów,
+
+2. przepisuje się obiekty do klas o najbliższym medoidzie,
+
+3. zmienia się medoidy o ile jest taka potrzeba, w takiej sytuacji wraca się do
+kroku 2.
+
+Minimalizowana jest $\sum_{r=1}^{u}d(r)$, gdzie $d(r)$ to najmniejsza z sum odległości jednego punktu z klasy $r$ do wszystkich pozostałych punktów z tej klasy.
+

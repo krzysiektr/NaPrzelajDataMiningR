@@ -1,0 +1,72 @@
+## Metoda najbliższych sąsiadów {#part_42}
+
+Bardzo popularną metodą klasyfikacji jest metoda k-sąsiadów. Idea jej działania
+jest prosta i intuicyjna. Nowemu obiektowi przypisuje się klasę, która występuje
+najczęściej wśród jego k sąsiadów (k najbliższych obiektów znajdujących się w zbiorze uczącym, najbliższych w sensie określonej miary odległości). Ten klasyfikator
+dostępny jest w różnych funkcjach, począwszy od `knn(class)` (zwykły klasyfikator najbliższych sąsiadów), przez `kknn(kknn)` (ważony klasyfikator k-sąsiadów) oraz
+`knncat(knncat)` (klasyfikator k-sąsiadów, również dla zmiennych jakościowych).
+Poniżej przedstawimy implementację metody k-sąsiadów z funkcji `ipredknn(ipred)`.
+Na rysunku \@ref(fig:ad43) prezentujemy obszary decyzyjne wyznaczone dla różnej liczby sąsiadów (odpowiednio k=3 i k=21) w omawianym zagadnieniu klasyfikacji na osoby
+zdrowe i chore na cukrzycę. Ponieważ metoda k-sąsiadów bazuje silnie na odległościach pomiędzy obiektami (jakoś trzeba mierzyć odległość od sąsiadów), przed rozpoczęciem obliczeń wykonamy skalowanie danych.
+```{r}
+# zaczynamy od przeskalownia danych
+dane[,1:2] = scale(dane[,1:2])
+# budujemy klasyfikator k-sąsiadów, dla 3 sąsiadów
+klasyfikatorKNN = ipred::ipredknn(diabetes~glucose+insulin, 
+                                  data = dane, subset=zbior.uczacy, k=3)
+# wykonujemy predykcję klas i wyświetlamy macierz kontyngencji
+oceny = predict(klasyfikatorKNN, dane[-zbior.uczacy, ], "class")
+table(predykcja = oceny, prawdziwe = dane[-zbior.uczacy,3])
+```
+
+Błąd klasyfikacji można liczyć na palcach (powyższą procedurę należało by uśrednić po kilku wstępnych podziałach na zbiór uczący i testowy). Można też błąd klasyfikacji wyznaczyć wykorzystać funkcję `errorest(ipred)`. Wylicza ona błąd klasyfikacji (okeślony jako procent źle zaklasyfikowanych obiektów) używając różnych
+estymatorów tego błędu, w tym opartego na walidacji skrośnej (ocenie krzyżowej,
+ang. cross validation, domyślnie z podziałem na 10 grup), metodzie bootstrap lub estymatorze 632+. Estymator błędu możemy wybrać określając argument `estimator`.
+W funkcji `errorest()` jako kolejne argumenty należy wskazać zbiór danych, metodę
+budowy klasyfikatora (argument `model`) oraz metodę wyznaczania ocen dla zbioru
+testowego (argument `predict`). Funkcja `errorest()` pozwala na jednolity sposób
+wyznaczenia błędu dla dowolnej metody klasyfikacji. Przedstawimy poniżej przykład
+dla metody najbliższych sąsiadów.
+
+```{r}
+# wyznaczmy błąd klasyfikacji dla metody 3 sąsiadów
+ipred::errorest(diabetes~glucose+insulin, data = dane, model=ipred::ipredknn, k=3,
+                estimator = "632plus",
+                predict= function(ob, newdata) predict(ob, newdata, "class"))
+```
+```{r}
+# wyznaczmy błąd klasyfikacji dla metody 21 sąsiadów, powinna być stabilniejsza
+blad = ipred::errorest(diabetes~glucose+insulin, data = dane, model=ipred::ipredknn, k=21,
+                estimator = "632plus",
+                predict= function(ob, newdata) predict(ob, newdata, "class"))
+blad$error
+```
+```{r ad43, fig.cap='Przykładowe obszary decyzyjne dla metody k-sąsiadów z parametrami k=3 i k=21.',fig.pos= 'h', fig.show='hold', fig.align='center', fig.width=12, fig.height=5,out.width='100%'}
+
+dane[,1:2]=scale(dane[,1:2])
+seqx = seq(-2.7,2.7,0.09)
+seqy = seq(-3.2,3.2,0.09)
+siata = as.data.frame(expand.grid(seqx, seqy))
+colnames(siata) = colnames(dane[,1:2])
+
+par(mfrow=c(1,2))
+
+klasyfikatorKNN = ipred::ipredknn(diabetes~glucose+insulin, 
+                                  data = dane, subset=zbior.uczacy, k=3)
+#predict(klasyfikatorKNN, dane[-zbior.uczacy, ], "class")
+wub = predict(klasyfikatorKNN, newdata=siata, "class")
+plot(siata, col=kol[as.numeric(wub)], pch=15, main="ipredknn(, k=3)",
+     ylim=c(-3,3),xlim=c(-2.5,2.5))
+points(dane[,1:2],pch=c(1,4)[as.numeric(dane[,3])], cex=1,
+       col=kol2[as.numeric(dane[,3])], lwd=2)
+
+klasyfikatorKNN = ipred::ipredknn(diabetes~glucose+insulin, 
+                                  data = dane, subset=zbior.uczacy, k=21)
+#predict(klasyfikatorKNN, dane[-zbior.uczacy, ], "class")
+wub = predict(klasyfikatorKNN, newdata=siata, "class")
+plot(siata, col=kol[as.numeric(wub)], pch=15, main="ipredknn(, k=21)",
+     xlim=c(-2.5,2.5),ylim=c(-3,3))
+points(dane[,1:2],pch=c(1,4)[as.numeric(dane[,3])], cex=1, 
+       col=kol2[as.numeric(dane[,3])], lwd=2)
+```
+

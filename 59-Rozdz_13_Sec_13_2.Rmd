@@ -1,0 +1,513 @@
+## Estymacja modelu liniowego {#part_13.2}
+
+### Metoda najmniejszych kwadratów {#part_13.2.1}
+
+W programie R do estymacji modeli liniowych służy funkcja lm(stats). Kryterium
+optymalizacji dla metody najmniejszych kwadratów jest przedstawione poniżej (wzory \@ref(eq:wz131a) oraz \@ref(eq:wz131b)).
+
+\begin{equation}
+\sum_{i=1}^{n}e_i^2 \longrightarrow\quad\mbox{min}
+(\#eq:wz131a)
+\end{equation}
+\begin{equation}
+\sum_{i=1}^{n}(y_i-\alpha_0-\alpha_1x_{1i})^2 \longrightarrow\quad\mbox{min}
+(\#eq:wz131b)
+\end{equation}
+```{r}
+# model z wyrazem wolnym:
+mnk <- lm(wyd~doch,data=t)
+summary(mnk)
+```
+Ponieważ wyraz wolny nie jest istotny statystycznie (p-value = $0,301$) zostanie on usunięty z modelu.
+```{r}
+# model bez wyrazu wolnego:
+mnk0 <- lm(wyd~doch+0, data=t)
+summary(mnk0)
+```
+Usunięcie wyrazu wolnego spowodowało podwyższenie skorygowanego współczynnika determinacji który teraz jest równy $0,998$. A więc model jest lepiej dopasowany.
+Potwierdza to także kryterium informacyjne $AIC$ oraz $BIC$.
+\begin{equation}
+AIC=n+n\ln(2\pi)+n\ln\left(\frac{RSS}{n}\right)+3k
+(\#eq:wz132)
+\end{equation}
+
+```{r}
+# kryterium AIC dla modelu z wyrazem wolnym:
+k <- 2; n <- length(doch)
+aic <- n + n*log(2*pi) + n * log(sum(resid(mnk)^2) / n) + 3 * k
+aic
+# kryterium AIC dla modelu bez wyrazu wolnego:
+aic0 <- n + n*log(2*pi) + n * log(sum(resid(mnk0)^2) / n) + 2 * k
+aic0
+# z wykorzystaniem funkcji AIC oraz parametru k:
+AIC(mnk,mnk0,k=2)
+```
+```{r}
+# kryterium BIC dla modelu z wyrazem wolnym:
+k <- log(n)
+bic <- n + n*log(2*pi) + n * log(sum(resid(mnk)^2) / n) + 3 * k
+bic
+# kryterium BIC dla modelu bez wyrazu wolnego:
+bic0 <- n + n*log(2*pi) + n * log(sum(resid(mnk0)^2) / n) + 2 * k
+bic0
+AIC(mnk,mnk0,k=log(n))
+```
+Porównamy teraz modele za pomocą funkcji [`anova`](https://rdrr.io/r/stats/anova.html). Badane hipotezy mają
+następującą postać:
+\begin{equation*}
+\begin{array}{r@{}l}
+H_0:&\;y_i=0,857387x_{1i}\\
+H_1:&\;y_i=0,76905x_{1i}+96,73935
+\end{array}
+\end{equation*}
+```{r}
+# test oparty na statystyce F:
+anova(mnk0,mnk)
+```
+```{r}
+# test oparty na statystyce chi-kwadrat:
+anova(mnk0,mnk, test="Chisq")
+```
+Takie same wyniki otrzymamy wykorzystując funkcję badającą restrykcje nałożone
+na parametry modelu liniowego. Czyli zweryfikujemy hipotezę zerową o
+nieistotności wyrazu wolnego.
+$$
+H_0:\;\alpha_0=0\quad\mbox{vs.}\quad H_1:\;\alpha_0=0
+$$
+```{r}
+# test oparty na statystyce F:
+car::linearHypothesis(mnk, c("(Intercept) = 0"))
+# test oparty na statystyce chi-kwadrat:
+car::linearHypothesis(mnk, c("(Intercept) = 0"),test="Chisq")
+```
+Tak więc powyższe testy potwierdziły nasz wniosek, że lepszym modelem jest regresja liniowa bez wyrazu wolnego.
+```{r wy132, fig.cap='Regresja liniowa.', fig.show='hold',fig.pos= 'h', fig.align='center', fig.width=8, fig.height=5,out.width='70%'}
+plot(doch,wyd,cex=1.2,pch=20)
+abline(mnk,col='red',lwd=2,lty=2); abline(mnk0,col='blue',lwd=2)
+legend("topleft",c("mnk","mnk0"),col=c("red","blue"),lty=c(2,1),lwd=2)
+```
+
+### Poprawność specyfikacji modelu  {#part_13.2.2}
+
+W tym podrozdziale omówimy dwa testy badające poprawną postać analityczną
+modelu: test RESET oraz test Rainbow. W programie R są one dostępne w paczce
+lmtest. W teście RESET należy oszacować model pomocniczy o równaniu:
+\begin{equation}
+y_i=\alpha_1x_{1i}+\alpha_2\hat{y}_i^2+\alpha_3\hat{y}_i^3
+(\#eq:wz135)
+\end{equation}
+```{r}
+reset23 <- lm(wyd~doch+I(fitted(mnk0)^2)+I(fitted(mnk0)^3)+0)
+```
+a następnie zweryfikować hipotezę zerową o postaci:
+\begin{equation*}
+H_{0}:
+\left[
+\begin{array}{c}
+\alpha_{2} \\[1mm]
+\alpha_{3}
+\end{array}
+\right]
+=
+\left[
+\begin{array}{c}
+0 \\[1mm]
+0
+\end{array}
+\right]
+\qquad
+H_1:
+\left[
+\begin{array}{c}
+\alpha_{2} \\[1mm]
+\alpha_{3}
+\end{array}
+\right]
+\neq
+\left[
+\begin{array}{c}
+0 \\[1mm]
+0
+\end{array}
+\right]
+\end{equation*}
+
+Do weryfikacji powyższej hipotezy statystycznej wykorzystamy funkcję [`car::linearHypothesis`](https://rdrr.io/cran/car/man/linearHypothesis.html). Umożliwia ona testowanie restrykcji nałożonych na
+parametry modelu liniowego.
+```{r}
+car::linearHypothesis(reset23,
+                 c("I(fitted(mnk0)^2)= 0","I(fitted(mnk0)^3)= 0"), test="F")
+```
+```{r}
+lmtest::resettest(mnk0, power=2:3, type= "fitted")
+```
+Na podstawie testu RESET stwierdzamy, że brak jest podstaw do odrzucenia hipotezy zerowej zakładającej liniowość modelu. Poniżej zostaną przedstawione także
+inne rodzaje tego testu.
+\begin{equation}
+y_i=\alpha_1x_{1i}+\alpha_2\hat{y}^2_i
+(\#eq:wz137)
+\end{equation}
+```{r}
+lmtest::resettest(mnk0, power=2, type= "fitted")
+```
+
+\begin{equation}
+y_i=\alpha_1x_{1i}+\alpha_2x^3_i
+(\#eq:wz137)
+\end{equation}
+```{r}
+lmtest::resettest(mnk0, power=3, type= "fitted")
+```
+Kolejnym testem który przedstawimy to test Rainbow. Służy on także do badania postaci analitycznej modelu. Poniżej zostanie zaprezentowana jego procedura
+obliczeniowa.
+```{r}
+k <- 1 # liczba parametrów modelu razem z wyrazem wolnym
+n <- length(doch)
+doch1 <- doch[order(doch)] # sortowanie niemalejąco doch
+wyd1 <- wyd[order(doch)]  # sortowanie niemalejąco wyd względem doch
+```
+Z tak posortowanych danych wybieramy $50\%$ (frakcja) środkowych (centrum) obserwacji:
+```{r}
+fraction <- 0.5 # frakcja: 50 procent obserwacji czyli 8
+center <- 0.5   # centrum podziału: 50 procent
+i <- 1:n        # indeksy zmiennych
+# początkowy indeks dla zmiennych doch1 i wyd1:
+from <- ceiling(quantile(i, probs = (center - fraction/2)))
+from
+# ostatni indeks dla zmiennych doch1 i wyd1:
+to <- from + floor(fraction * n) - 1; to
+sy <- wyd1[from:to]    # podpróba dla wyd1 o indeksach od 5 do 12
+sx <- doch1[from:to]   # podpróba dla doch1 o indeksach od 5 do 12
+n1 <- length(sy)     # liczebność podpróby
+e <- resid(mnk0)     # reszty dla badanego modelu mnk0
+r <- resid(lm(sy~sx+0)) # reszty dla modelu z podpróby
+ssr <- sum(e^2)      # suma kwadratów reszt dla mnk0
+ssr1 <- sum(r^2)     # suma kwadratów reszt dla modelu z podpróby
+```
+Statystyka testu:
+\begin{equation}
+RAIN=\frac{(\sum_{i=1}^{n}e_i^2-\sum_{i=1}^{n_1}r_i^2)/(n-n_1)}{\sum_{i=1}^{n_1}r_i^2/(n_1-k)}
+(\#eq:wz139)
+\end{equation}
+```{r}
+rain <- ((ssr - ssr1)/(n - n1))/(ssr1/(n1 - k)); rain
+df <- c((n - n1), (n1 - k))
+1-pf(rain, df[1], df[2])
+lmtest::raintest(mnk0,order.by=~doch,fraction=.5,center=.5)
+```
+
+### Normalność {#part_13.2.3}
+
+W R jest dostępnych wiele testów badających normalność rozkładu reszt. W tym
+opracowaniu zostanie przedstawiony jeden z nich. Test Andersona-Darlinga oraz
+szereg innych testów normalności możemy znaleźć w bibliotece [`nortest`](https://rdrr.io/cran/nortest/). Wzór na obliczenie statystyki tego testu jest przdstawiony poniżej.
+\begin{equation}
+A=-n-\frac{1}{n}\sum_{i=1}^n(2i-1)\left(\ln(z_i)+\ln(1-z_{n+1-i})\right)
+(\#eq:wz1310)
+\end{equation}
+```{r}
+z <- pnorm(sort(e),mean(e),sd(e))
+n <- length(e)
+i <- 1:n
+A <- -n-( (sum((2*i-1)*(log(z)+log(1-z[n+1-i]))))/n ); A
+```
+Wzór poprawki na wielkość póby dla rozkładu normalnego jest podany poniżej:
+\begin{equation}
+A1=\left(1+\frac{0,75}{n}+\frac{2,25}{n^2}\right)A
+(\#eq:wz1311)
+\end{equation}
+```{r}
+A1 <- (1+(0.75/n)+(2.25/n^2))*A
+A1
+```
+
+Wartości krytyczne są podawane w tablicach statystycznych np. [tutaj](https://en.wikipedia.org/wiki/Anderson%E2%80%93Darling_test). Można je też wyznaczyć symulacyjnie (np. $100000$ replikacji) za pomocą funkcji [`PoweR::many.crit`](https://rdrr.io/cran/PoweR/man/many.crit.html) dla dowolnego poziomu istotności $\alpha$ z uwzględnieniem liczebności próby.
+```{r}
+set.seed(2305)
+table_AD <- PoweR::many.crit(law.index= 2, stat.indices=c(2), M=10^5,
+                             vectn=c(10,16,40,80,100),
+                             level=c(0.05),
+                             alter=list(stat2=3), law.pars=NULL, parstats=NULL)
+table_AD
+```
+Ponieważ wartość krytyczna (dla poziomu istotności $\alpha = 0,05$ oraz liczebności próby $n=16$) wynosi $A^* = 0,711$ i jest większa od $A1 = 0,34348$ to należy stwierdzić, że jest brak
+podstaw do odrzucenia hipotezy zerowej zakładającej normalny rozkład reszt.
+
+Dodatkowo w zależności od otrzymanej wartości $A1$ (wzór \@ref(eq:wz1311)) należy użyć jednego z poniższych algorytmów w celu wyznaczenia wartości p-value:
+
+* jeżeli $A1 < 0,2$ to:
+
+\begin{equation}
+p-value=1-\exp(-13,436+101,14\,A1-223,73\,A1^2)
+(\#eq:wz1312a)
+\end{equation}
+
+* jeżeli $0,2\leq A1<0,34$ to:
+
+\begin{equation}
+p-value=1-\exp(-8,318+42,796\,A1-59,938\,A1^2)
+(\#eq:wz1312b)
+\end{equation}
+
+* jeżeli $0,34\leq A1 < 0,6$ to:
+
+\begin{equation}
+p-value=\exp(0,9177-4,279\,A1-1,38\,A1^2)
+(\#eq:wz1312c)
+\end{equation}
+
+* jeżeli $A1\geq 0,6$ to:
+
+\begin{equation}
+p-value= \exp(1,2937-5,709\,A1+0,0186\,A1^2)
+(\#eq:wz1312d)
+\end{equation}
+
+W omawianym przykładzie wartość statystyki $A1$ jest równa $0,34348$ a zatem należy skorzystać ze wzoru \@ref(eq:wz1312c).
+```{r}
+p.value <- exp(0.9177 - 4.279 * A1 - 1.38 * A1^2 )
+p.value
+```
+Teraz wykorzystamy gotową funkcje ad.[`ad.test`](https://rdrr.io/cran/nortest/man/ad.test.html):
+```{r}
+nortest::ad.test(e)
+```
+Także na podstawie adaptacyjnego testu Neymana możemy sądzić, że reszty mają
+rozkład normalny. Ten test jest dostępny w paczce [`ddst`](https://rdrr.io/cran/ddst/).
+```{r}
+set.seed(2305)
+ddst::ddst.norm.test(e, compute.p=TRUE, B=1000)
+```
+
+### Heteroskedastyczność {#part_13.2.4}
+
+Badanie niejednorodności wariancji w procesie resztowym zostanie zaprezentowa-
+ne za pomocą dwóch testów: Goldfelda-Quandta oraz Harrisona-McCabe'a. W obu
+przypadkach rozważane są następujące hipotezy:
+$$
+H_0:\;\sigma^2_1=\sigma^2_2\quad\quad H_1:\;\sigma^2_1\neq \sigma^2_2
+$$
+gdzie: $\sigma^2_1$ i $\sigma^2_2$ to wariancja odpowiednio w pierwszej i drugiej podpróbie. Wariancje resztowe wyznaczamy według następujących wzorów:
+\begin{equation}
+s_1^2=\frac{1}{(n_1-k-1)\sum_{i=1}^{n_1}e_i^2}
+(\#eq:wz1314a)
+\end{equation}
+\begin{equation}
+s_2^2=\frac{1}{(n_2-k-1)\sum_{i=1}^{n_2}e_i^2}
+(\#eq:wz1314b)
+\end{equation}
+
+W pierwszej kolejności należy posortować niemalejąco zmienne względem zmiennej niezależnej `doch`. Należy zaznaczyć, że w przypadku zmiennych przekrojowoczasowych takie porządkowanie nie jest wymagane.
+```{r}
+doch1 <- sort(doch)      # sortowanie danych - niemalejąco
+wyd1 <- wyd[order(doch)] # sortowanie danych - niemalejąco względem doch
+t1 <- data.frame(wyd1,doch1)
+m1 <- lm(wyd1~doch1+0,data=t1[1:8,])  # regresja dla 1 podpróby
+m2 <- lm(wyd1~doch1+0,data=t1[9:16,]) # regresja dla 2 podpróby
+S1 <- 1/(8-1-1)*sum(resid(m1)^2) # wariancja dla 1 podpróby
+S2 <- 1/(8-1-1)*sum(resid(m2)^2) # wariancja dla 2 podpróby
+```
+Statystyka testowa w teście Goldfelda-Quandta jest następująca:
+\begin{equation}
+F=\frac{s_2^2}{s_1^2}
+(\#eq:wz1315)
+\end{equation}
+```{r}
+F= S2/S1; F
+```
+```{r}
+lmtest::gqtest(mnk0,order.by=doch,fraction=0)
+```
+Z kolei w teście Harrisona-McCabe'a statystyka będzie miała postać:
+\begin{equation}
+HMC=\frac{\sum_{i=1}^{s}e_i^2}{\sum_{i=1}^{n}e_i^2}
+(\#eq:wz1316)
+\end{equation}
+```{r}
+s <- 8 # liczba (odsetek) obserwacji w podpróbie
+m <- lm(wyd1~doch1+0,data=t1)
+rm <- resid(m)
+hmc <- sum(rm[1:s]^2)/sum(rm^2)
+hmc
+```
+```{r}
+lmtest::hmctest(mnk0,order.by=doch,point=0.5)
+```
+Otrzymane wyniki na podstawie omawianych testów wskazują, że brak jest podstaw
+do odrzucenia $H_0$ zakładającej homoskedastyczność reszt.
+
+### Obserwacje odstające {#part_13.2.5}
+
+Obserwacje odstające dzielimy na: wpływowe (influential) oraz nietypowe (outliers).
+Pierwsze z nich wpływają na wartości ocen parametrów modelu (czyli na kąt na-
+chylenia linii regresji) a drugie na wielkości reszt (czyli na dopasowanie modelu). W
+programie R dzięki funkcjom [`influence.measures`](https://rdrr.io/r/stats/influence.measures.html) i [`car::outlierTest`](https://rdrr.io/cran/car/man/outlierTest.html)
+możemy zidentyfikować obserwacje odstające. W celu wykrycia obserwacji wpływo-
+wych zostaną wykorzystane następujące wartości:
+
+* wartości wpływu:
+
+\begin{equation}
+h_i=\mbox{diag}\left(X(X^{T}X)^{-1}X^{T}\right)
+(\#eq:wz1317)
+\end{equation}
+gdzie: dla $h_i>\frac{3k}{n}$ $i$-tą obserwację uważa się za wpływową.
+```{r}
+X <- as.matrix(doch)
+hi <- diag((X %*% solve(t(X) %*% X) %*% t(X)))
+# z wykorzystaniem gotowej funkcji:
+hi <- hatvalues(mnk0) # wartości hat values
+```
+
+* odległości Cooka:
+
+\begin{equation}
+CD_i=\frac{e_i\, h_i}{k\,s^2(1-h_i)^2}
+(\#eq:wz1318)
+\end{equation}
+gdzie: dla $CD_i>F(0,05,k,n-k)$ $i$-tą obserwację uważa się za wpływową.
+```{r}
+i <- 1:16 # indeksy obserwacji
+k <- 1    # liczba parametrów łącznie z wyrazem wolnym
+s <- summary(mnk0)$sigma      # błąd standardowy reszt
+s2 <- (summary(mnk0)$sigma)^2 # wariancja reszt
+CDi <- (e[i]^2*hi[i])/(k*s2*(1-hi[i])^2) # odległości Cooka.
+#z wykorzystaniem gotowej funkcji:
+cook <- cooks.distance(mnk0) # wartości Cook’s distance
+```
+
+* ilorazy kowariancji:
+
+\begin{equation}
+COVRIATO_i=\left(\frac{s_{(-i)}}{s}\right)^{2k}\,\frac{1}{1-h_i}
+(\#eq:wz1319)
+\end{equation}
+gdzie: dla $|1-COVRATIO|>\frac{3k}{n-k}$ $i$-tą obserwację uważa się za wpływową.
+```{r}
+covr <- covratio(mnk0)  # wartości COVRATIO
+```
+
+* miary $DFFITS$:
+
+\begin{equation}
+DFFITS_i=e_i\frac{\sqrt{h_i}}{s_{(-i)}(1-h_i)}
+(\#eq:wz1320)
+\end{equation}
+gdzie: $s_{(-i)}$ oznacza błąd standardowy reszt po usunięciu i-tej obserwacji ze zbioru danych:
+```{r}
+si <- influence(mnk0)$sigma
+```
+natomiast dla $|DFFITS_i|>3\sqrt{\frac{k}{n-k}}$ $i$-tą obserwację uważa się za wpływową.
+```{r}
+dff <- dffits(mnk0)  # wartości DFFITS
+```
+
+* miary $DFBETAS$:
+
+\begin{equation}
+DFBETAS_i=\frac{\beta-\beta_{(-i)}}{s_{(-i)}\sqrt{(X^{T}X)^{-1}}}
+(\#eq:wz1321)
+\end{equation}
+gdzie: $\beta$ to oszacowany współczynnik z wykorzystaniem pełnego zbioru danych oraz $\beta_{(-i)}$ to oszacowany współczynnik po usunięciu $i$-tej obserwacji ze zbioru danych:
+```{r}
+dbetai <- influence(mnk0)$coefficients
+```
+natomiast dla $|DFBETAS_i|>1$ $i$-tą obserwację uważa się za wpływową.
+```{r}
+dfb <- dfbetas(mnk0) # wartości DFBETAS
+```
+Wykorzystamy teraz gotową funkcję do wyznczenia obserwacji wpływowych.
+```{r}
+summary(influence.measures(mnk0))
+```
+Zatem obserwacja dotycząca województwa mazowieckiego okazała się wpływowa na
+podstawie ilorazu kowariancji. Poniżej zostały przedstawione obliczenia dla wszystkich obserwacji.
+```{r}
+influence.measures(mnk0)
+```
+Do identyfikacji obserwacji nietypowych możemy wykorzystać reszty standaryzowane:
+\begin{equation}
+e_{i(stand)}=\frac{e_i}{s\sqrt{1-h_i}}
+(\#eq:wz1322)
+\end{equation}
+gdzie: dla $|e_{i(stand)}|>2$ $i$-tą obserwację można podejrzewać o nietypowość.
+```{r}
+es <- rstandard(mnk0)  # reszty standaryzowane
+```
+lub reszty studentyzowane:
+\begin{equation}
+e_{i(stud)}=\frac{e_{-i}}{s_{(-i)}\sqrt{1-h_i}}
+(\#eq:wz1323)
+\end{equation}
+gdzie: dla $|e_{i(stud)}|>2$ $i$-tą obserwację można podejrzewać o nietypowość.
+```{r}
+et <- rstudent(mnk0)  # reszty studentyzowane
+```
+Reszty et mają rozkład t-Studenta o stopniach swobody: $n-p-2$ (model z wyrazem
+wolnym) lub $n-p-1$ (model bez wyrazy wolnego). Zatem do identyfikacji obserwacji
+odstających wykorzystamy p-value tego rozkładu weryfikując następukące hipotezy
+statystyczne:
+$$
+H_{0}:\,i\mbox{-ta obserwacja jest typowa}\quad H_{1}:\,i\mbox{-ta obserwacja jest nietypowa}
+$$
+Dla obserwacji o największej wartości bezwzględnej `et` statystyka testu będzie miała postać:
+\begin{equation}
+\mbox{max}|e_{i(stud)}|
+(\#eq:wz1325)
+\end{equation}
+```{r}
+# p-value z rozkładu t-Studenta:
+p.value <- 2*(1-pt( max(abs(et)) ,16-1-1))
+p.value
+# poprawka Bonferonniego:
+Bp.value= 16*p.value
+Bp.value
+# wykorzystanie funkcji outlierTest:
+car::outlierTest(mnk0)
+```
+Ponieważ p-value = $0,47004$ to na poziomie istotności $\alpha = 0,05$ brak jest podstaw do odrzucenia $H_0$ . Gdy dodamy odpowiednie argumenty do funkcji [`car::outlierTest`](https://rdrr.io/cran/car/man/outlierTest.html), to otrzymamy uporządkowane malejąco wartości $|e_{i(stud)}|$ oraz p-value.
+```{r}
+car::outlierTest(mnk0,order=T,cutoff=Inf,n.max=Inf)
+```
+W dignostyce modelu ekonometrycznego bardzo pomocnym narzędziem są również
+wykresy, które można wygenerować za pomocą komendy:
+```{r wy133, fig.cap='Diagnostyka modelu.',fig.pos= 'h', fig.show='hold', fig.align='center', fig.width=8, fig.height=7,out.width='70%'}
+par(mar=c(4,4,1,1)+0.1, mgp=c(3,0.6,0),las=1)
+par(mfrow=c(2,2))
+plot(mnk0)
+```
+
+### Metoda najmniejszych wartości bezwzględnych {#part_13.2.6}
+
+Jeśli w zbiorze danych występują obserwacje odstające to należy je wyeliminować
+lub zastosować regresję kwantylową. Dla parametru $\tau = 0,5$ (mediana) otrzymujemy estymator metody najmniejszego odchylenia bezwzględnego, którego kryterium optymalizacji jest przedstawione poniżej (wzory 13.26a oraz 13.26b).
+\begin{subequations}
+\begin{equation}
+\sum_{i=1}^{n}|e_i| \longrightarrow\quad\mbox{min}
+(\#eq:wz1326a)
+\end{equation}
+\begin{equation}
+\sum_{i=1}^{n}|y_i-\alpha_0-\alpha_1x_{1i}| \longrightarrow\quad\mbox{min}
+(\#eq:wz1326b)
+\end{equation}
+\end{subequations}
+```{r}
+# model z wyrazem wolnym:
+q <- quantreg::rq(wyd~doch,tau=0.5)
+summary(q, se='nid')
+```
+```{r}
+# model bez wyrazu wolnego:
+q0 <- quantreg::rq(wyd~doch+0,tau=0.5)
+summary(q0,se='nid')
+```
+```{r wy134, fig.cap='Regresja kwantylowa.', fig.show='hold',fig.pos= 'h', fig.align='center', fig.width=8, fig.height=5,out.width='70%'}
+par(mar=c(4,4,1,1)+0.1, mgp=c(3,0.6,0),las=1)
+plot(doch,wyd,cex=1.2,pch=20)
+abline(q,col='red',lwd=2,lty=2); abline(q0,col='blue',lwd=2)
+legend("topleft",c("q","q0"),col=c("red","blue"),lty=c(2,1),lwd=2)
+```
+
+
+
+

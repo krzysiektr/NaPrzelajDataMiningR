@@ -1,0 +1,137 @@
+## Analiza składowych głównych (PCA, ang. Principal Components Analysis) {#part_21}
+
+Analiza składowych głównych służy do wyznaczania nowych zmiennych, których
+możliwie mały podzbiór będzie mówił możliwie dużo o całej zmienności w zbiorze
+danych. Nowy zbiór zmiennych będzie tworzył bazę ortogonalną w przestrzeni cech.
+Zmienne będą wybierane w ten sposób by pierwsza zmienna odwzorowywała możliwie dużo zmienności w danych (po zrzutowaniu obserwacji na ten wektor, chcemy by
+wariancja rzutów była najwyższa). Po wyznaczeniu pierwszej zmiennej wyznaczamy
+drugą, tak by była ortogonalna do pierwszej, i wyjaśniała możliwie dużo pozostałej
+zmienności, kolejną zmienną wybieramy tak by była ortogonalna do dwóch pierwszych itd.
+
+Tak uzyskany zbiór wektorów tworzy bazę ortogonalną w przestrzeni cech, a co
+więcej pierwsze współrzędne wyjaśniają większość zmienności w obserwacjach. Celem metody składowych głównych jest więc znalezienie transformacji układu współrzędnych, która lepiej opisze zmienność pomiędzy obserwacjami. Przykład takiej
+transformacji pokazujemy na rysunku \@ref(fig:PCA). Przedstawiamy obserwacje w oryginalnym układzie współrzędnych (lewy rysunek) i w nowym układzie współrzędnych
+(prawy rysunek).
+
+```{r PCA, echo=FALSE, fig.align='center', fig.cap="Przykład transformacji zmiennych z użyciem metody PCA.", out.width = '100%'}
+knitr::include_graphics("PCAprzykald.png")
+```
+W pakiecie R dostępnych jest kilka implementacji metody składowych głównych.
+Przedstawione poniżej najpopularniejsze wersje znajdują się w funkcjach [`prcomp(stats)`](https://rdrr.io/r/stats/prcomp.html)
+i [`princomp(stats)`](https://rdrr.io/r/stats/princomp.html) z pakietu [`stats`](https://rdrr.io/r/#stats). Inne popularne wersje znaleźć można w funkcjach [`PCA(FactoMineR)`](https://rdrr.io/cran/FactoMineR/man/PCA.html), [`cmdscale(stats)`](https://rdrr.io/r/stats/cmdscale.html) lub `pca(pcurve)`.
+
+Poszczególne implementacje różnią się metodami wykorzystanymi do znalezienia
+nowego układu zmiennych. W przypadku funkcji [prcomp()](https://rdrr.io/r/stats/princomp.html) nowe zmienne wyznaczane są z z użyciem dekompozycji na wartości osobliwe SVD. Ten sposób wyznaczania
+składowych głównych jest zalecany z uwagi na dużą dokładność numeryczną. W
+funkcji [princomp()](https://rdrr.io/r/stats/princomp.html) składowe główne są wyznaczane poprzez wektory własne macierzy kowariancji pomiędzy zmiennymi, używana jest więc dekompozycja spektralna.
+Teoretyczne właściwości wyznaczonych składowych głównych będą identyczne, jednak w określonych sytuacjach otrzymane wyniki dla poszczególnych funkcji mogą
+się różnić.
+
+Poniższy kod pokazuje w jaki sposób działa funkcja [princomp()](https://rdrr.io/r/stats/princomp.html). Wyznaczane
+są wektory własne macierzy kowariancji, tworzą one macierz przekształcenia dla
+danych.
+```
+kowariancja = cov(dane)
+eig = eigen(kowariancja)
+noweDane = dane %*% eig$vectors
+```
+Poniższy kod pokazuje w jaki sposób działa funkcja `prcomp()`. Wykorzystywana
+jest dekompozycja SVD.
+```
+svdr = svd(dane)
+noweDane = dane %*% svdr$v
+```
+Obu funkcji do wyznaczania składowych głównych używa się w podobny sposób,
+kolejne argumenty określają zbiór danych (można wskazać macierz, ramkę danych,
+lub formułę określającą które zmienne mają być transformowane) oraz informacje
+czy zmienne powinny być uprzednio wycentrowane i przeskalowane. To czy dane
+przed wykonaniem analizy składowych głównych mają być przeskalowane zależy od
+rozwiązywanego problemu, w większości sytuacji skalowanie pozwala usunąć wpływ
+takich artefaktów jak różne jednostki dla poszczególnych zmiennych. W obiektach
+przekazywanych jako wynik przez obie funkcje przechowywane są podobne informa-
+cje, choć w polach o różnej nazwie. Wynikiem funkcji [`prcomp()`](https://rdrr.io/r/stats/princomp.html)  jest obiekt klasy
+`prcomp`, którego pola są wymienione w tabeli \@ref(tab:tab01).
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE}
+library("dplyr")
+library("kableExtra")
+```
+```{r tab01, echo=FALSE,message=FALSE,warning=FALSE}
+text_tbl <- data.frame(
+  .=c("$\\texttt{\\$sdev}$","$\\texttt{\\$rotation}$","$\\texttt{\\$center}$",
+      "$\\texttt{\\$scale}$","$\\texttt{\\$x}$"),
+  opis=c("Wektor odchyleń standardowych dla obserwacji. Kolejne zmienne odpowiadają odchyleniom standardowym liczonym dla kolejnych składowych głównych.",
+         "Macierz obrotu przekształcająca oryginalny układ współrzędnych w nowy układ współrzędnych.",
+         "Wektor wartości wykorzystanych przy centrowaniu obserwacji.",
+         "Wektor wartości wykorzystanych przy skalowaniu obserwacji.",
+         "Macierz współrzędznych kolejnych obserwacji w nowym
+układzie współrzędnych, macierz ta ma identyczne wymiary co oryginalny zbiór zmiennych."))
+knitr::kable(text_tbl,caption="Pola obiektu klasy $\\texttt{prcomp}$.",escape = F) %>%
+  kable_styling(full_width = F) %>%
+  column_spec(1, bold = F, border_right = T) %>%
+  column_spec(2, width = "35em")
+```
+Dla obiektów klasy prcomp dostępne są przeciążone wersje funkcji `plot()`, `summary()`,
+`biplot()`. Poniżej przedstawiamy przykładowe wywołanie tych funkcji. Graficzny
+wynik ich działania jest przedstawiony na rysunku \@ref(fig:wy212). Lewy rysunek przedstawia
+wynik dla funkcji `plot()` a prawy przedstawia wynik funkcji `biplot()` wykonanych
+dla argumentu klasy `prcomp`. Na lewym rysunku przedstawione są wariancje wyjaśnione przez kolejne wektory nowego układu współrzędnych. Ta informacja jest
+podawana również przez funkcje `summary()`. Prawy rysunek przedstawia biplot, na
+którym umieszczone są dwa wykresy. Jeden przedstawia indeksy obserwacji przedstawione na układzie współrzędnych określonych przez dwie pierwsze składowe główne
+(w tym przypadku dwie współrzędne wyjaśniają około $50\%$ całej zmienności). Drugi
+rysunek przedstawia kierunki w których działają oryginalne zmienne, innymi słowy
+przedstawiają jak wartość danej zmiennej wpływa na wartości dwóch pierwszych
+składowych głównych.
+
+Jeżeli wektory mają przeciwne zwroty to dane zmienne są ujemnie skorelowane
+(nie można jednak ocenić wartości korelacji), jeżeli zwroty są prostopadłe to zmienne są nieskorelowane, a jeżeli zwroty są bliskie to zmienne są dodatnio skorelowane.
+```{r}
+daneO <- read.table("http://www.biecek.pl/R/dane/daneO.csv",sep=";",header = TRUE)
+# przygotowujemy dane, usuwamy zmienne jakościowe i brakujące przypadki
+dane = na.omit(daneO[,-c(4,5,6,7)])
+# wykonujemy analizę składowych głównych, normalizując wcześniej zmienne
+wynik = prcomp(dane, scale=T)
+# jak wygląda obiekt z wynikami od środka
+str(wynik)
+# zamiast obrazka możemy tę informację mieć przedstawioną jako ramkę danych
+summary(wynik)
+```
+```{r wy212, fig.cap='Graficzna reprezenacja wyników funkcji prcomp().', fig.show='hold',fig.pos= 'h', fig.align='center', fig.width=12, fig.height=6,out.width='70%'}
+par(mfcol=c(1,2))
+# ten wykres przedstawia ile wariancji jest wyjaśnione przez kolejne zmienne
+plot(wynik)
+# narysujmy biplot dla tych wyników
+biplot(wynik)
+```
+
+I jeszcze przykład dla danych GUSowskich
+
+```{r}
+daneGUS <- read.table("http://www.biecek.pl/R/dane/Dane2007GUS.csv", sep=";", h=T, dec=",")
+# przygotowujemy dane, wybieramy tylko kolumny dotyczące studentów
+dane = daneGUS[,5:19]
+# wykonujemy analizę składowych głównych
+wynik = prcomp(dane, scale=T)
+# zamiast obrazka możemy tę informację mieć przedstawioną jako ramkę danych
+summary(wynik)
+```
+```{r wy213, fig.cap='Graficzna reprezenacja wyników PCA dla danych GUSowych.', fig.show='hold',fig.pos= 'h', fig.align='center', fig.width=12, fig.height=6,out.width='70%'}
+par(mfcol=c(1,2))
+# ten wykres przedstawia ile wariancji jest wyjaśnione przez kolejne zmienne
+plot(wynik)
+# narysujmy biplot dla tych wyników
+biplot(wynik)
+```
+Zobaczmy jak wygląda macierz przekształcenia. Można z niej odczytać w jaki
+sposób poszczególne współrzędne wpływają na kolejne składowe.
+
+W przypadku pierwszej składowej współczynniki przy praktycznie każdej zmiennej wynoszą około $-0,25$. W przybliżeniu oznacza to, że pierwsza składowa będzie
+odpowiadała -łącznej liczbie studentów w danym województwie. A więc im więcej
+studentów tym mniejsza wartość pierwszej składowej.
+
+Druga składowa jest już ciekawsza, ponieważ różnym województwom odpowiadają różne współczynniki. Województwa o dużych wartościach na drugiej składowej
+to województwa z "nadreprezentacją" studentów z kierunków społecznych, dziennikarstwa, matematyki i ochrony a "niedomiarze" studentów z nauk biologicznych, fizycznych, informatycznych i produkcji.
+```{r}
+# macierz przekształcenia
+wynik$rotation[,1:4]
+```

@@ -1,0 +1,10 @@
+## Problem {#part_51}
+
+Mamy dwa zbiory zmiennych $\{X_1,\dots,X_p\}$ i $\{Y_1\dots,Y_p\}$.
+
+Chcemy znaleźć taką kombinację liniową zmiennych z pierwszego zbioru, aby
+korelowała ona możliwie najsilniej ze zmiennymi z drugiego zbioru.
+
+Innymi słowy, szukamy wektorów współczynników $a$ i $b$, takich, że
+$$cor(a^{\prime}X,b^{\prime}Y)$$
+jest możliwie największa.

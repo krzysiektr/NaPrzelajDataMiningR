@@ -1,0 +1,1570 @@
+<!DOCTYPE html>
+<html  lang="pl">
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Rozdział 11 Przegląd wybranych testów statystycznych | Na przełaj przez Data Mining z pakietem R</title>
+  <meta name="description" content="Zbiór przykładów użycia wybranych funkcji statystycznych i Data Mining dostępnych w programie R.">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
+
+  <meta property="og:title" content="Rozdział 11 Przegląd wybranych testów statystycznych | Na przełaj przez Data Mining z pakietem R" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Zbiór przykładów użycia wybranych funkcji statystycznych i Data Mining dostępnych w programie R." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Rozdział 11 Przegląd wybranych testów statystycznych | Na przełaj przez Data Mining z pakietem R" />
+  
+  <meta name="twitter:description" content="Zbiór przykładów użycia wybranych funkcji statystycznych i Data Mining dostępnych w programie R." />
+  
+
+<meta name="author" content="Przemysław Biecek, Krzysztof Trajkowski">
+
+
+<meta name="date" content="2019-04-08">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="part-10.html">
+<link rel="next" href="part-12.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; position: absolute; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; }
+pre.numberSource a.sourceLine:empty
+  { position: absolute; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Na przełaj przez Data Mining<br/> z pakietem R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Kilka słów zamiast wstępu</a></li>
+<li class="chapter" data-level="2" data-path="part-2.html"><a href="part-2.html"><i class="fa fa-check"></i><b>2</b> Redukcja wymiaru</a><ul>
+<li class="chapter" data-level="2.1" data-path="part-2.html"><a href="part-2.html#part_21"><i class="fa fa-check"></i><b>2.1</b> Analiza składowych głównych (PCA, ang. Principal Components Analysis)</a></li>
+<li class="chapter" data-level="2.2" data-path="part-2.html"><a href="part-2.html#part_22"><i class="fa fa-check"></i><b>2.2</b> Nieliniowe skalowanie wielowymiarowe (Sammon Mapping)</a></li>
+<li class="chapter" data-level="2.3" data-path="part-2.html"><a href="part-2.html#part_23"><i class="fa fa-check"></i><b>2.3</b> Skalowanie wielowymiarowe Kruskalla (MDS, ang. Multidimensional Scaling)</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="part-3.html"><a href="part-3.html"><i class="fa fa-check"></i><b>3</b> Analiza skupień</a><ul>
+<li class="chapter" data-level="3.1" data-path="part-3.html"><a href="part-3.html#part_31"><i class="fa fa-check"></i><b>3.1</b> Metoda k-średnich</a></li>
+<li class="chapter" data-level="3.2" data-path="part-3.html"><a href="part-3.html#part_32"><i class="fa fa-check"></i><b>3.2</b> Metoda grupowania wokół centroidów (PAM, ang. Partitioning Around Medoids)</a></li>
+<li class="chapter" data-level="3.3" data-path="part-3.html"><a href="part-3.html#part_33"><i class="fa fa-check"></i><b>3.3</b> Metoda aglomeracyjnego klastrowania hierarchicznego</a></li>
+<li class="chapter" data-level="3.4" data-path="part-3.html"><a href="part-3.html#part_34"><i class="fa fa-check"></i><b>3.4</b> Ile skupień wybrać?</a></li>
+<li class="chapter" data-level="3.5" data-path="part-3.html"><a href="part-3.html#part_35"><i class="fa fa-check"></i><b>3.5</b> Inne metody analizy skupień</a></li>
+<li class="chapter" data-level="3.6" data-path="part-3.html"><a href="part-3.html#part_36"><i class="fa fa-check"></i><b>3.6</b> Case study</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="part-4.html"><a href="part-4.html"><i class="fa fa-check"></i><b>4</b> Analiza dyskryminacji</a><ul>
+<li class="chapter" data-level="4.1" data-path="part-4.html"><a href="part-4.html#part_41"><i class="fa fa-check"></i><b>4.1</b> Dyskryminacja liniowa i kwadratowa</a></li>
+<li class="chapter" data-level="4.2" data-path="part-4.html"><a href="part-4.html#part_42"><i class="fa fa-check"></i><b>4.2</b> Metoda najbliższych sąsiadów</a></li>
+<li class="chapter" data-level="4.3" data-path="part-4.html"><a href="part-4.html#part_43"><i class="fa fa-check"></i><b>4.3</b> Naiwny klasyfikator Bayesowski</a></li>
+<li class="chapter" data-level="4.4" data-path="part-4.html"><a href="part-4.html#part_44"><i class="fa fa-check"></i><b>4.4</b> Drzewa decyzyjne</a></li>
+<li class="chapter" data-level="4.5" data-path="part-4.html"><a href="part-4.html#part_45"><i class="fa fa-check"></i><b>4.5</b> Lasy losowe</a></li>
+<li class="chapter" data-level="4.6" data-path="part-4.html"><a href="part-4.html#part_46"><i class="fa fa-check"></i><b>4.6</b> Inne klasyfikatory</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="part-5.html"><a href="part-5.html"><i class="fa fa-check"></i><b>5</b> Analiza kanoniczna</a><ul>
+<li class="chapter" data-level="5.1" data-path="part-5.html"><a href="part-5.html#part_51"><i class="fa fa-check"></i><b>5.1</b> Problem</a></li>
+<li class="chapter" data-level="5.2" data-path="part-5.html"><a href="part-5.html#part_52"><i class="fa fa-check"></i><b>5.2</b> Rozwiązanie</a></li>
+<li class="chapter" data-level="5.3" data-path="part-5.html"><a href="part-5.html#part_53"><i class="fa fa-check"></i><b>5.3</b> Założenia</a></li>
+<li class="chapter" data-level="5.4" data-path="part-5.html"><a href="part-5.html#part_54"><i class="fa fa-check"></i><b>5.4</b> Jak to zrobić w R</a></li>
+<li class="chapter" data-level="5.5" data-path="part-5.html"><a href="part-5.html#part_55"><i class="fa fa-check"></i><b>5.5</b> Przykładowe wyniki</a></li>
+<li class="chapter" data-level="5.6" data-path="part-5.html"><a href="part-5.html#part_56"><i class="fa fa-check"></i><b>5.6</b> Studium przypadku</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="part-6.html"><a href="part-6.html"><i class="fa fa-check"></i><b>6</b> Analiza korespondencji (odpowiedniości)</a><ul>
+<li class="chapter" data-level="6.1" data-path="part-6.html"><a href="part-6.html#part_61"><i class="fa fa-check"></i><b>6.1</b> Problem</a></li>
+<li class="chapter" data-level="6.2" data-path="part-6.html"><a href="part-6.html#part_62"><i class="fa fa-check"></i><b>6.2</b> Rozwiązanie</a></li>
+<li class="chapter" data-level="6.3" data-path="part-6.html"><a href="part-6.html#part_63"><i class="fa fa-check"></i><b>6.3</b> Jak to zrobić w R?</a></li>
+<li class="chapter" data-level="6.4" data-path="part-6.html"><a href="part-6.html#part_64"><i class="fa fa-check"></i><b>6.4</b> Studium przypadku</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="part-7.html"><a href="part-7.html"><i class="fa fa-check"></i><b>7</b> Przykład analizy szeregów czasowych</a><ul>
+<li class="chapter" data-level="7.1" data-path="part-7.html"><a href="part-7.html#part_71"><i class="fa fa-check"></i><b>7.1</b> Wprowadzenie</a></li>
+<li class="chapter" data-level="7.2" data-path="part-7.html"><a href="part-7.html#part_72"><i class="fa fa-check"></i><b>7.2</b> Identyfikacja trendu i sezonowości</a><ul>
+<li class="chapter" data-level="7.2.1" data-path="part-7.html"><a href="part-7.html#part_721"><i class="fa fa-check"></i><b>7.2.1</b> Analiza wariancji - ANOVA</a></li>
+<li class="chapter" data-level="7.2.2" data-path="part-7.html"><a href="part-7.html#part_722"><i class="fa fa-check"></i><b>7.2.2</b> Funkcja autokorelacji - ACF</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="part-7.html"><a href="part-7.html#part_73"><i class="fa fa-check"></i><b>7.3</b> Modele autoregresyjne ARIMA</a><ul>
+<li class="chapter" data-level="7.3.1" data-path="part-7.html"><a href="part-7.html#part_731"><i class="fa fa-check"></i><b>7.3.1</b> Estymacja</a></li>
+<li class="chapter" data-level="7.3.2" data-path="part-7.html"><a href="part-7.html#part_732"><i class="fa fa-check"></i><b>7.3.2</b> Weryfikacja</a></li>
+<li class="chapter" data-level="7.3.3" data-path="part-7.html"><a href="part-7.html#part_733"><i class="fa fa-check"></i><b>7.3.3</b> Prognozowanie</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="part-7.html"><a href="part-7.html#part_74"><i class="fa fa-check"></i><b>7.4</b> Modele adaptacyjne</a><ul>
+<li class="chapter" data-level="7.4.1" data-path="part-7.html"><a href="part-7.html#part_741"><i class="fa fa-check"></i><b>7.4.1</b> Estymacja</a></li>
+<li class="chapter" data-level="7.4.2" data-path="part-7.html"><a href="part-7.html#part_742"><i class="fa fa-check"></i><b>7.4.2</b> Prognozowanie</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="part-8.html"><a href="part-8.html"><i class="fa fa-check"></i><b>8</b> Przykład analizy tabel wielodzielczych</a><ul>
+<li class="chapter" data-level="8.1" data-path="part-8.html"><a href="part-8.html#part_81"><i class="fa fa-check"></i><b>8.1</b> Wprowadzenie</a></li>
+<li class="chapter" data-level="8.2" data-path="part-8.html"><a href="part-8.html#part_82"><i class="fa fa-check"></i><b>8.2</b> Test chi-kwadrat</a></li>
+<li class="chapter" data-level="8.3" data-path="part-8.html"><a href="part-8.html#part_83"><i class="fa fa-check"></i><b>8.3</b> Model logitowy</a></li>
+<li class="chapter" data-level="8.4" data-path="part-8.html"><a href="part-8.html#part_84"><i class="fa fa-check"></i><b>8.4</b> Model logitowy</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="part-9.html"><a href="part-9.html"><i class="fa fa-check"></i><b>9</b> Przykład badania rozkładu stopy zwrotu z akcji</a><ul>
+<li class="chapter" data-level="9.1" data-path="part-9.html"><a href="part-9.html#part_9.1"><i class="fa fa-check"></i><b>9.1</b> Wprowadzenie</a></li>
+<li class="chapter" data-level="9.2" data-path="part-9.html"><a href="part-9.html#part_9.2"><i class="fa fa-check"></i><b>9.2</b> Statystyki opisowe</a></li>
+<li class="chapter" data-level="9.3" data-path="part-9.html"><a href="part-9.html#part_9.3"><i class="fa fa-check"></i><b>9.3</b> Rozkład normalny</a></li>
+<li class="chapter" data-level="9.4" data-path="part-9.html"><a href="part-9.html#part_9.4"><i class="fa fa-check"></i><b>9.4</b> Rozkład Cauchy’ego</a></li>
+<li class="chapter" data-level="9.5" data-path="part-9.html"><a href="part-9.html#part_9.5"><i class="fa fa-check"></i><b>9.5</b> Rozkład Laplace’a</a></li>
+<li class="chapter" data-level="9.6" data-path="part-9.html"><a href="part-9.html#part_9.6"><i class="fa fa-check"></i><b>9.6</b> Rozkład Stabilny</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="part-10.html"><a href="part-10.html"><i class="fa fa-check"></i><b>10</b> Przykład budowy dynamicznego modelu liniowego</a><ul>
+<li class="chapter" data-level="10.1" data-path="part-10.html"><a href="part-10.html#part_10.1"><i class="fa fa-check"></i><b>10.1</b> Wprowadzenie</a></li>
+<li class="chapter" data-level="10.2" data-path="part-10.html"><a href="part-10.html#part_10.2"><i class="fa fa-check"></i><b>10.2</b> Badanie wewnętrznej struktury procesu</a><ul>
+<li class="chapter" data-level="10.2.1" data-path="part-10.html"><a href="part-10.html#part_10.2.1"><i class="fa fa-check"></i><b>10.2.1</b> Trend</a></li>
+<li class="chapter" data-level="10.2.2" data-path="part-10.html"><a href="part-10.html#part_10.2.2"><i class="fa fa-check"></i><b>10.2.2</b> Sezonowość</a></li>
+<li class="chapter" data-level="10.2.3" data-path="part-10.html"><a href="part-10.html#part_10.2.3"><i class="fa fa-check"></i><b>10.2.3</b> Stopień autoregresji – funkcja PACF</a></li>
+<li class="chapter" data-level="10.2.4" data-path="part-10.html"><a href="part-10.html#part_10.2.4"><i class="fa fa-check"></i><b>10.2.4</b> Stopień integracji – test ADF/PP</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="part-10.html"><a href="part-10.html#part_10.3"><i class="fa fa-check"></i><b>10.3</b> Weryfikacja modelu</a><ul>
+<li class="chapter" data-level="10.3.1" data-path="part-10.html"><a href="part-10.html#part_10.3.1"><i class="fa fa-check"></i><b>10.3.1</b> Estymacja dynamicznego modelu liniowego</a></li>
+<li class="chapter" data-level="10.3.2" data-path="part-10.html"><a href="part-10.html#part_10.3.2"><i class="fa fa-check"></i><b>10.3.2</b> Ocena jakości modelu</a></li>
+</ul></li>
+<li class="chapter" data-level="10.4" data-path="part-10.html"><a href="part-10.html#part_10.4"><i class="fa fa-check"></i><b>10.4</b> Diagnostyka modelu</a><ul>
+<li class="chapter" data-level="10.4.1" data-path="part-10.html"><a href="part-10.html#part_10.4.1"><i class="fa fa-check"></i><b>10.4.1</b> Normalność procesu resztowego</a></li>
+<li class="chapter" data-level="10.4.2" data-path="part-10.html"><a href="part-10.html#part_10.4.2"><i class="fa fa-check"></i><b>10.4.2</b> Autokorelacja procesu resztowego</a></li>
+<li class="chapter" data-level="10.4.3" data-path="part-10.html"><a href="part-10.html#part_10.4.3"><i class="fa fa-check"></i><b>10.4.3</b> Heteroskedastyczność procesu resztowego</a></li>
+<li class="chapter" data-level="10.4.4" data-path="part-10.html"><a href="part-10.html#part_10.4.4"><i class="fa fa-check"></i><b>10.4.4</b> Stabilność parametrów modelu</a></li>
+<li class="chapter" data-level="10.4.5" data-path="part-10.html"><a href="part-10.html#part_10.4.5"><i class="fa fa-check"></i><b>10.4.5</b> Postać analityczna modelu</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="part-11.html"><a href="part-11.html"><i class="fa fa-check"></i><b>11</b> Przegląd wybranych testów statystycznych</a><ul>
+<li class="chapter" data-level="11.1" data-path="part-11.html"><a href="part-11.html#part_11.1"><i class="fa fa-check"></i><b>11.1</b> Testy normalności</a></li>
+<li class="chapter" data-level="11.2" data-path="part-11.html"><a href="part-11.html#part_11.2"><i class="fa fa-check"></i><b>11.2</b> Testy asymptotyczne</a></li>
+<li class="chapter" data-level="11.3" data-path="part-11.html"><a href="part-11.html#part_11.3"><i class="fa fa-check"></i><b>11.3</b> Testy dla proporcji</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="part-12.html"><a href="part-12.html"><i class="fa fa-check"></i><b>12</b> Przykład analizy liczby przestępstw w Polsce w 2009 r.</a><ul>
+<li class="chapter" data-level="12.1" data-path="part-12.html"><a href="part-12.html#part_12.1"><i class="fa fa-check"></i><b>12.1</b> Wprowadzenie</a></li>
+<li class="chapter" data-level="12.2" data-path="part-12.html"><a href="part-12.html#part_12.2"><i class="fa fa-check"></i><b>12.2</b> Mapy</a></li>
+<li class="chapter" data-level="12.3" data-path="part-12.html"><a href="part-12.html#part_12.3"><i class="fa fa-check"></i><b>12.3</b> Analiza wariancji</a></li>
+<li class="chapter" data-level="12.4" data-path="part-12.html"><a href="part-12.html#part_12.4"><i class="fa fa-check"></i><b>12.4</b> Modele dla liczebności</a></li>
+<li class="chapter" data-level="12.5" data-path="part-12.html"><a href="part-12.html#part_12.5"><i class="fa fa-check"></i><b>12.5</b> Modele dla częstości</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="part-13.html"><a href="part-13.html"><i class="fa fa-check"></i><b>13</b> Modele regresji</a><ul>
+<li class="chapter" data-level="13.1" data-path="part-13.html"><a href="part-13.html#part_13.1"><i class="fa fa-check"></i><b>13.1</b> Wprowadzenie</a></li>
+<li class="chapter" data-level="13.2" data-path="part-13.html"><a href="part-13.html#part_13.2"><i class="fa fa-check"></i><b>13.2</b> Estymacja modelu liniowego</a><ul>
+<li class="chapter" data-level="13.2.1" data-path="part-13.html"><a href="part-13.html#part_13.2.1"><i class="fa fa-check"></i><b>13.2.1</b> Metoda najmniejszych kwadratów</a></li>
+<li class="chapter" data-level="13.2.2" data-path="part-13.html"><a href="part-13.html#part_13.2.2"><i class="fa fa-check"></i><b>13.2.2</b> Poprawność specyfikacji modelu</a></li>
+<li class="chapter" data-level="13.2.3" data-path="part-13.html"><a href="part-13.html#part_13.2.3"><i class="fa fa-check"></i><b>13.2.3</b> Normalność</a></li>
+<li class="chapter" data-level="13.2.4" data-path="part-13.html"><a href="part-13.html#part_13.2.4"><i class="fa fa-check"></i><b>13.2.4</b> Heteroskedastyczność</a></li>
+<li class="chapter" data-level="13.2.5" data-path="part-13.html"><a href="part-13.html#part_13.2.5"><i class="fa fa-check"></i><b>13.2.5</b> Obserwacje odstające</a></li>
+<li class="chapter" data-level="13.2.6" data-path="part-13.html"><a href="part-13.html#part_13.2.6"><i class="fa fa-check"></i><b>13.2.6</b> Metoda najmniejszych wartości bezwzględnych</a></li>
+</ul></li>
+<li class="chapter" data-level="13.3" data-path="part-13.html"><a href="part-13.html#part_13.3"><i class="fa fa-check"></i><b>13.3</b> Estymacja modelu nieliniowego</a><ul>
+<li class="chapter" data-level="13.3.1" data-path="part-13.html"><a href="part-13.html#part_13.3.1"><i class="fa fa-check"></i><b>13.3.1</b> Model kwadratowy</a></li>
+<li class="chapter" data-level="13.3.2" data-path="part-13.html"><a href="part-13.html#part_13.3.2"><i class="fa fa-check"></i><b>13.3.2</b> Model wykładniczy</a></li>
+<li class="chapter" data-level="13.3.3" data-path="part-13.html"><a href="part-13.html#part_13.3.3"><i class="fa fa-check"></i><b>13.3.3</b> Model hiperboliczny</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="part-14.html"><a href="part-14.html"><i class="fa fa-check"></i><b>14</b> Zbiory danych</a><ul>
+<li class="chapter" data-level="14.1" data-path="part-14.html"><a href="part-14.html#part_14.1"><i class="fa fa-check"></i><b>14.1</b> Zbiór danych GUSowskich</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="bibliografia.html"><a href="bibliografia.html"><i class="fa fa-check"></i>Bibliografia</a></li>
+<li class="divider"></li>
+<li><a href="http://www.biecek.pl/NaPrzelajPrzezDataMining/" target="blank">strona projektu</a></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Na przełaj przez Data Mining z pakietem R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="part_11" class="section level1">
+<h1><span class="header-section-number">Rozdział 11</span> Przegląd wybranych testów statystycznych</h1>
+<hr />
+<div id="part_11.1" class="section level2">
+<h2><span class="header-section-number">11.1</span> Testy normalności</h2>
+<p>W celu przedstawienia procedury obliczeniowej testu normalności Doornika-Hansena
+wykorzystamy dane dotyczące długości płatka kosaćca z gatunku setosa.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">attach</span>(iris)
+f &lt;-<span class="st">  </span>Petal.Length[Species<span class="op">==</span><span class="st">&quot;setosa&quot;</span>]</code></pre>
+<p>Przed przystąpieniem do obliczeń statystyki jednowymiarowego testu normalności Doornika-Hansena, należy przekształcić nasz wektor danych f w następujący
+sposób:</p>
+<pre class="sourceCode r"><code class="sourceCode r">ff &lt;-<span class="st"> </span>f<span class="op">-</span><span class="kw">mean</span>(f) <span class="co"># przekształcenie</span>
+n &lt;-<span class="st"> </span><span class="kw">length</span>(ff) <span class="co"># liczebność wektora danych</span></code></pre>
+<p>Teraz dokonamy transformacji skośności (D’Agostino) czyli obliczymy statystykę <code>z1</code>:</p>
+<p><span class="math display" id="eq:wz111">\[\begin{equation}
+\beta=\frac{3(n^2+27n-70)(n+1)(n+3)}{(n-2)(n+5)(n+7)(n+9)}
+\tag{11.1}
+\end{equation}\]</span></p>
+<p><span class="math display" id="eq:wz112">\[\begin{equation}
+\omega^2=-1+\left[2(\beta-1)\right]^{1/2}
+\tag{11.2}
+\end{equation}\]</span></p>
+<p><span class="math display" id="eq:wz113">\[\begin{equation}
+\delta=\left[\ln\left(\sqrt{\omega^2}\right)\right]^{-1/2}
+\tag{11.3}
+\end{equation}\]</span></p>
+<p><span class="math display" id="eq:wz114">\[\begin{equation}
+S_1=\frac{\frac{1}{n}\sum_{i=1}^{n}(x_i-\bar{x})^3}{\sqrt{\left(\frac{1}{n}\sum_{i=1}^{n}(x_i-\bar{x})^2\right)^3}}
+\tag{11.4}
+\end{equation}\]</span></p>
+<p><span class="math display" id="eq:wz115">\[\begin{equation}
+y=S_1\left[\frac{\omega^2-1}{2}\frac{(n+1)(n+3)}{6(n-2)}\right]^{1/2}
+\tag{11.5}
+\end{equation}\]</span></p>
+<p><span class="math display" id="eq:wz116">\[\begin{equation}
+z_1=\delta\ln\left[y+(y^2+1)^{1/2}\right]
+\tag{11.6}
+\end{equation}\]</span></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># obliczenia dla z1:</span>
+f1 &lt;-<span class="st"> </span><span class="cf">function</span>(x){
+  DNAME=<span class="st"> </span><span class="kw">deparse</span>(<span class="kw">substitute</span>(x))
+  x=<span class="st"> </span><span class="kw">sort</span>(x[<span class="kw">complete.cases</span>(x)])
+  n=<span class="st"> </span><span class="kw">length</span>(x)
+  beta=<span class="st"> </span>(<span class="dv">3</span><span class="op">*</span>(n<span class="op">^</span><span class="dv">2</span><span class="op">+</span><span class="dv">27</span><span class="op">*</span>n<span class="dv">-70</span>)<span class="op">*</span>(n<span class="op">+</span><span class="dv">1</span>)<span class="op">*</span>(n<span class="op">+</span><span class="dv">3</span>)) <span class="op">/</span><span class="st"> </span>((n<span class="dv">-2</span>)<span class="op">*</span>(n<span class="op">+</span><span class="dv">5</span>)<span class="op">*</span>(n<span class="op">+</span><span class="dv">7</span>)<span class="op">*</span>(n<span class="op">+</span><span class="dv">9</span>))
+  w2=<span class="st"> </span><span class="dv">-1</span><span class="op">+</span>(<span class="dv">2</span><span class="op">*</span>(beta<span class="dv">-1</span>))<span class="op">^</span>(<span class="dv">1</span><span class="op">/</span><span class="dv">2</span>)
+  del=<span class="st"> </span><span class="dv">1</span><span class="op">/</span><span class="kw">sqrt</span>(<span class="kw">log</span>(<span class="kw">sqrt</span>(w2)))
+  S1=<span class="st"> </span>e1071<span class="op">::</span><span class="kw">skewness</span>(x,<span class="dt">type=</span><span class="dv">1</span>) <span class="co"># parametr skośności</span>
+  y=<span class="st"> </span>S1<span class="op">*</span><span class="kw">sqrt</span>(((w2<span class="dv">-1</span>) <span class="op">/</span><span class="st"> </span>(<span class="dv">2</span>))<span class="op">*</span>(((n<span class="op">+</span><span class="dv">1</span>)<span class="op">*</span>(n<span class="op">+</span><span class="dv">3</span>))<span class="op">/</span>(<span class="dv">6</span><span class="op">*</span>(n<span class="dv">-2</span>))))
+  z1=<span class="st"> </span>del<span class="op">*</span><span class="kw">log</span>(y<span class="op">+</span><span class="kw">sqrt</span>(y<span class="op">^</span><span class="dv">2</span><span class="op">+</span><span class="dv">1</span>))
+  }
+z1 &lt;-<span class="st"> </span><span class="kw">f1</span>(ff); z1</code></pre>
+<pre><code>## [1] 0.3315036</code></pre>
+<p>Należy zaznaczyć, że statystyka z1 ma rozkład zbliżony do rozkładu normalnego.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># rozkład statystyki z1 dla 10000 replikacji</span>
+statsS &lt;-<span class="st"> </span><span class="kw">sapply</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">10000</span>, <span class="cf">function</span>(i) <span class="kw">f1</span>(<span class="kw">sample</span>(ff,<span class="kw">length</span>(ff),<span class="ot">TRUE</span>)))</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">1</span>,<span class="dv">1</span>)<span class="op">+</span><span class="fl">0.1</span>, <span class="dt">mgp=</span><span class="kw">c</span>(<span class="dv">3</span>,<span class="fl">0.6</span>,<span class="dv">0</span>),<span class="dt">bg=</span><span class="st">&quot;lightgoldenrodyellow&quot;</span>,<span class="dt">las=</span><span class="dv">1</span>)
+<span class="kw">plot</span>(<span class="dv">1</span>,<span class="dt">axes=</span>F,<span class="dt">xlab=</span><span class="st">&quot;&quot;</span>,<span class="dt">ylab=</span><span class="st">&quot;&quot;</span>,<span class="dt">main=</span><span class="st">&quot;&quot;</span>, <span class="dt">col=</span><span class="st">&quot;white&quot;</span>)
+u &lt;-<span class="st"> </span><span class="kw">par</span>(<span class="st">&quot;usr&quot;</span>)
+<span class="kw">rect</span>(u[<span class="dv">1</span>], u[<span class="dv">3</span>], u[<span class="dv">2</span>], u[<span class="dv">4</span>], <span class="dt">col=</span><span class="st">&quot;white&quot;</span>)
+<span class="kw">par</span>(<span class="dt">new=</span>plot)
+<span class="kw">hist</span>(statsS,<span class="dt">prob=</span><span class="ot">TRUE</span>,<span class="dt">col=</span><span class="st">&#39;SteelBlue&#39;</span>,<span class="dt">border=</span><span class="st">&#39;white&#39;</span>)
+<span class="kw">curve</span>(<span class="kw">dnorm</span>(x,<span class="kw">mean</span>(statsS),<span class="kw">sd</span>(statsS)),<span class="dt">add=</span><span class="ot">TRUE</span>,<span class="dt">lwd=</span><span class="dv">3</span>,<span class="dt">col=</span><span class="st">&#39;violetred3&#39;</span>)
+<span class="kw">legend</span>(<span class="st">&quot;topright&quot;</span>,<span class="dt">bg=</span><span class="st">&#39;white&#39;</span>,<span class="dt">bty=</span><span class="st">&quot;n&quot;</span>,<span class="dt">lty=</span><span class="dv">1</span>,<span class="dt">lwd=</span><span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">3</span>),
+       <span class="kw">c</span>(<span class="st">&#39;empiryczna&#39;</span>,<span class="st">&#39;teoretyczna&#39;</span>),<span class="dt">col=</span><span class="kw">c</span>(<span class="st">&#39;SteelBlue&#39;</span>,<span class="st">&#39;violetred3&#39;</span>))</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:wy111"></span>
+<img src="NaPrzelajR_files/figure-html/wy111-1.png" alt="Rozkład statystyki z1 dla 10000 replikacji." width="70%" />
+<p class="caption">
+Rysunek 11.1: Rozkład statystyki z1 dla 10000 replikacji.
+</p>
+</div>
+<p>Otrzymaną wartość <code>z1</code> możemy wykorzystać do zweryfikowania następujących hipotez dotyczących skośności (wzór <a href="part-11.html#eq:wz114">(11.4)</a>):
+<span class="math display">\[
+\begin{array}{ll}
+H_0: &amp; S_1 = 0\\
+H_1: &amp; S_1 \neq 0
+\end{array}
+\qquad\text{lub}\qquad
+\begin{array}{ll}
+H_0: &amp; S_1 \geq 0\\
+H_1: &amp; S_1 &lt; 0
+\end{array}
+\qquad\text{lub}\qquad
+\begin{array}{ll}
+H_0: &amp; S_1 \leq 0\\
+H_1: &amp; S_1 &gt; 0
+\end{array}
+\]</span></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="dv">2</span><span class="op">*</span>(<span class="dv">1</span><span class="op">-</span><span class="kw">pnorm</span>(<span class="kw">abs</span>(z1))) <span class="co"># p-value dla H1: S1!=0</span></code></pre>
+<pre><code>## [1] 0.7402641</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">pnorm</span>(z1)            <span class="co"># p-value dla H1: S1&lt;0</span></code></pre>
+<pre><code>## [1] 0.6298679</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="dv">1</span><span class="op">-</span><span class="kw">pnorm</span>(z1)          <span class="co"># p-value dla H1: S1&gt;0</span></code></pre>
+<pre><code>## [1] 0.3701321</code></pre>
+<p>Do weryfikacji tego typu hipotez możemy skorzystać z testu skośności D’Agostino
+wpisując następującą komendę:</p>
+<pre class="sourceCode r"><code class="sourceCode r">moments<span class="op">::</span><span class="kw">agostino.test</span>(f)</code></pre>
+<pre><code>## 
+##  D&#39;Agostino skewness test
+## 
+## data:  f
+## skew = 0.10318, z = 0.33150, p-value = 0.7403
+## alternative hypothesis: data have a skewness</code></pre>
+<p>Jak można zauważyć wartość statystyki <code>z</code> jest taka sama jak <code>z1</code>. Warto dodać, że we wzorach <a href="part-11.html#eq:wz113">(11.3)</a> oraz <a href="part-11.html#eq:wz116">(11.6)</a> może być stosowany
+logarytm dziesiętny – <span class="math inline">\(\log\)</span> zamiast logarytu naturalnego – <span class="math inline">\(\ln\)</span>. Wtedy wyniki
+testów D’Agostino mogą się różnić.</p>
+<p>W kolejnym kroku obliczymy statystykę <code>z2</code> czyli przeprowadzimy transformację
+kurtozy (Wilson-Hilferty) według poniższych wzorów:
+<span class="math display" id="eq:wz117">\[\begin{equation}
+\delta= (n-3)(n+1)(n^2+15n-4)
+\tag{11.7}
+\end{equation}\]</span></p>
+<p><span class="math display" id="eq:wz118">\[\begin{equation}
+a=\frac{(n-2)(n+5)(n+7)(n^2+27n-70)}{6\;\delta}
+\tag{11.8}
+\end{equation}\]</span></p>
+<p><span class="math display" id="eq:wz119">\[\begin{equation}
+c=\frac{(n-7)(n+5)(n+7)(n^2+2n-5)}{6\;\delta}
+\tag{11.9}
+\end{equation}\]</span></p>
+<p><span class="math display" id="eq:wz1110">\[\begin{equation}
+k=\frac{(n+5)(n+7)(n^3+37n^2+11n-313)}{12\;\delta}
+\tag{11.10}
+\end{equation}\]</span></p>
+<p><span class="math display" id="eq:wz1111">\[\begin{equation}
+S_1=\frac{\frac{1}{n}\sum_{i=1}^{n}(x_i-\bar{x})^3}{\sqrt{\left(\frac{1}{n}\sum_{i=1}^{n}(x_i-\bar{x})^2\right)^3}}
+\tag{11.11}
+\end{equation}\]</span></p>
+<p><span class="math display" id="eq:wz1112">\[\begin{equation}
+\alpha=a+{S_1}^2c
+\tag{11.12}
+\end{equation}\]</span></p>
+<p><span class="math display" id="eq:wz1113">\[\begin{equation}
+K_1=\frac{\frac{1}{n}\sum_{i=1}^{n}(x_i-\bar{x})^4}{\left(\frac{1}{n}\sum_{i=1}^{n}(x_i-\bar{x})^2\right)^2}
+\tag{11.13}
+\end{equation}\]</span></p>
+<p><span class="math display" id="eq:wz1114">\[\begin{equation}
+\chi=(K_1-1-{S_1}^2)2k
+\tag{11.14}
+\end{equation}\]</span></p>
+<p><span class="math display" id="eq:wz1115">\[\begin{equation}
+z_2=\left[\left(\frac{\chi}{2\alpha}\right)^{1/3}-1+\frac{1}{9\alpha}\right](9\alpha)^{1/2}
+\tag{11.15}
+\end{equation}\]</span></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># obliczenia dla z2:</span>
+f2 &lt;-<span class="st"> </span><span class="cf">function</span>(x){
+  DNAME=<span class="st"> </span><span class="kw">deparse</span>(<span class="kw">substitute</span>(x))
+  x=<span class="st"> </span><span class="kw">sort</span>(x[<span class="kw">complete.cases</span>(x)])
+  n=<span class="st"> </span><span class="kw">length</span>(x)
+  delta=<span class="st"> </span>(n<span class="dv">-3</span>)<span class="op">*</span>(n<span class="op">+</span><span class="dv">1</span>)<span class="op">*</span>(n<span class="op">^</span><span class="dv">2</span><span class="op">+</span><span class="dv">15</span><span class="op">*</span>n<span class="dv">-4</span>)
+  a=<span class="st"> </span>((n<span class="dv">-2</span>)<span class="op">*</span>(n<span class="op">+</span><span class="dv">5</span>)<span class="op">*</span>(n<span class="op">+</span><span class="dv">7</span>)<span class="op">*</span>(n<span class="op">^</span><span class="dv">2</span><span class="op">+</span><span class="dv">27</span><span class="op">*</span>n<span class="dv">-70</span>)) <span class="op">/</span><span class="st"> </span>(<span class="dv">6</span><span class="op">*</span>delta)
+  c=<span class="st"> </span>((n<span class="dv">-7</span>)<span class="op">*</span>(n<span class="op">+</span><span class="dv">5</span>)<span class="op">*</span>(n<span class="op">+</span><span class="dv">7</span>)<span class="op">*</span>(n<span class="op">^</span><span class="dv">2</span><span class="op">+</span><span class="dv">2</span><span class="op">*</span>n<span class="dv">-5</span>)) <span class="op">/</span><span class="st"> </span>(<span class="dv">6</span><span class="op">*</span>delta)
+  k=<span class="st"> </span>((n<span class="op">+</span><span class="dv">5</span>)<span class="op">*</span>(n<span class="op">+</span><span class="dv">7</span>)<span class="op">*</span>(n<span class="op">^</span><span class="dv">3</span><span class="op">+</span><span class="dv">37</span><span class="op">*</span>n<span class="op">^</span><span class="dv">2</span><span class="op">+</span><span class="dv">11</span><span class="op">*</span>n<span class="dv">-313</span>)) <span class="op">/</span><span class="st"> </span>(<span class="dv">12</span><span class="op">*</span>delta)
+  S1=<span class="st"> </span>e1071<span class="op">::</span><span class="kw">skewness</span>(x,<span class="dt">type=</span><span class="dv">1</span>)   <span class="co"># parametr skośności</span>
+  alpha=<span class="st"> </span>a<span class="op">+</span>S1<span class="op">^</span><span class="dv">2</span><span class="op">*</span>c
+  K1=<span class="st"> </span>e1071<span class="op">::</span><span class="kw">kurtosis</span>(x,<span class="dt">type=</span><span class="dv">1</span>)<span class="op">+</span><span class="dv">3</span> <span class="co"># parametr kurtozy</span>
+  chi=<span class="st"> </span>(K1<span class="dv">-1</span><span class="op">-</span>S1<span class="op">^</span><span class="dv">2</span>)<span class="op">*</span><span class="dv">2</span><span class="op">*</span>k
+  z2=<span class="st"> </span>( (chi<span class="op">/</span>(<span class="dv">2</span><span class="op">*</span>alpha))<span class="op">^</span>(<span class="dv">1</span><span class="op">/</span><span class="dv">3</span>)<span class="op">-</span><span class="dv">1</span><span class="op">+</span>(<span class="dv">1</span><span class="op">/</span>(<span class="dv">9</span><span class="op">*</span>alpha)) )<span class="op">*</span><span class="kw">sqrt</span>(<span class="dv">9</span><span class="op">*</span>alpha)
+  }
+z2 &lt;-<span class="st"> </span><span class="kw">f2</span>(ff); z2</code></pre>
+<pre><code>## [1] 2.04261</code></pre>
+<p>Także parametr <code>z2</code> ma rozkład zbliżony do rozkładu normalnego (rys. <a href="part-11.html#fig:wy112">11.2</a>).</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># rozkład statystyki z2 dla 10000 replikacji</span>
+statsK &lt;-<span class="st"> </span><span class="kw">sapply</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">10000</span>, <span class="cf">function</span>(i) <span class="kw">f2</span>(<span class="kw">sample</span>(ff,<span class="kw">length</span>(ff),<span class="ot">TRUE</span>)))</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">1</span>,<span class="dv">1</span>)<span class="op">+</span><span class="fl">0.1</span>, <span class="dt">mgp=</span><span class="kw">c</span>(<span class="dv">3</span>,<span class="fl">0.6</span>,<span class="dv">0</span>),<span class="dt">bg=</span><span class="st">&quot;lightgoldenrodyellow&quot;</span>,<span class="dt">las=</span><span class="dv">1</span>)
+<span class="kw">plot</span>(<span class="dv">1</span>,<span class="dt">axes=</span>F,<span class="dt">xlab=</span><span class="st">&quot;&quot;</span>,<span class="dt">ylab=</span><span class="st">&quot;&quot;</span>,<span class="dt">main=</span><span class="st">&quot;&quot;</span>, <span class="dt">col=</span><span class="st">&quot;white&quot;</span>)
+u &lt;-<span class="st"> </span><span class="kw">par</span>(<span class="st">&quot;usr&quot;</span>)
+<span class="kw">rect</span>(u[<span class="dv">1</span>], u[<span class="dv">3</span>], u[<span class="dv">2</span>], u[<span class="dv">4</span>], <span class="dt">col=</span><span class="st">&quot;white&quot;</span>)
+<span class="kw">par</span>(<span class="dt">new=</span>plot)
+<span class="kw">hist</span>(statsK,<span class="dt">prob=</span><span class="ot">TRUE</span>,<span class="dt">col=</span><span class="st">&#39;SteelBlue&#39;</span>,<span class="dt">border=</span><span class="st">&#39;white&#39;</span>)
+<span class="kw">curve</span>(<span class="kw">dnorm</span>(x,<span class="kw">mean</span>(statsK),<span class="kw">sd</span>(statsK)),<span class="dt">add=</span><span class="ot">TRUE</span>,<span class="dt">lwd=</span><span class="dv">3</span>,<span class="dt">col=</span><span class="st">&#39;violetred3&#39;</span>)
+<span class="kw">legend</span>(<span class="st">&quot;topright&quot;</span>,<span class="dt">bg=</span><span class="st">&#39;white&#39;</span>,<span class="dt">bty=</span><span class="st">&quot;n&quot;</span>,<span class="dt">lty=</span><span class="dv">1</span>,<span class="dt">lwd=</span><span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">3</span>),
+       <span class="kw">c</span>(<span class="st">&#39;empiryczna&#39;</span>,<span class="st">&#39;teoretyczna&#39;</span>),<span class="dt">col=</span><span class="kw">c</span>(<span class="st">&#39;SteelBlue&#39;</span>,<span class="st">&#39;violetred3&#39;</span>))</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:wy112"></span>
+<img src="NaPrzelajR_files/figure-html/wy112-1.png" alt="Rozkład statystyki z2 dla 10000 replikacji." width="70%" />
+<p class="caption">
+Rysunek 11.2: Rozkład statystyki z2 dla 10000 replikacji.
+</p>
+</div>
+<p>Na podstawie obliczonej wartości <code>z2</code> dokonamy wefyfikacji następujących hipotez
+statystycznych dotyczących kurtozy (wzór <a href="part-11.html#eq:wz1113">(11.13)</a>):
+<span class="math display">\[
+\begin{array}{ll}
+H_0: &amp; K_1 = 3\\
+H_1: &amp; K_1 \neq 3
+\end{array}
+\qquad\text{lub}\qquad
+\begin{array}{ll}
+H_0: &amp; K_1 \geq 3\\
+H_1: &amp; K_1 &lt; 3
+\end{array}
+\qquad\text{lub}\qquad
+\begin{array}{ll}
+H_0: &amp; K_1 \leq 3\\
+H_1: &amp; K_1 &gt; 3
+\end{array}
+\]</span></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="dv">2</span><span class="op">*</span>(<span class="dv">1</span><span class="op">-</span><span class="kw">pnorm</span>(<span class="kw">abs</span>(z2))) <span class="co"># p-value dla H1: K1!=3</span></code></pre>
+<pre><code>## [1] 0.04109101</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">pnorm</span>(z2)            <span class="co"># p-value dla H1: K1&lt;3</span></code></pre>
+<pre><code>## [1] 0.9794545</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="dv">1</span><span class="op">-</span><span class="kw">pnorm</span>(z2)          <span class="co"># p-value dla H1: K1&gt;3</span></code></pre>
+<pre><code>## [1] 0.02054551</code></pre>
+<p>W przypadku weryfikacji powyższych hipotez statystycznych możemy zastosować
+test kurtozy Anscombe-Glynn:
+<span class="math display" id="eq:wz1116">\[\begin{equation}
+a=\frac{3(n-1)}{(n+1)}
+\tag{11.16}
+\end{equation}\]</span></p>
+<p><span class="math display" id="eq:wz1117">\[\begin{equation}
+b=\frac{24n(n-2)(n-3)}{(n+1)^2(n+3)(n+5)}
+\tag{11.17}
+\end{equation}\]</span></p>
+<p><span class="math display" id="eq:wz1118">\[\begin{equation}
+c=\frac{6(n^2-5n+2)}{(n+7)(n+9)}\sqrt{\frac{6(n+3)(n+5)}{n(n-2)(n-3)}}
+\tag{11.18}
+\end{equation}\]</span></p>
+<p><span class="math display" id="eq:wz1119">\[\begin{equation}
+d=6+\frac{8}{c}\left(\frac{2}{c}+\sqrt{1+\frac{4}{c}}\right)
+\tag{11.19}
+\end{equation}\]</span></p>
+<p><span class="math display" id="eq:wz1120">\[\begin{equation}
+K_1=\frac{\frac{1}{n}\sum_{i=1}^{n}(x_i-\bar{x})^4}{\left(\frac{1}{n}\sum_{i=1}^{n}(x_i-\bar{x})^2\right)^2}
+\tag{11.20}
+\end{equation}\]</span></p>
+<p><span class="math display" id="eq:wz1121">\[\begin{equation}
+\chi=\frac{K_1-a}{\sqrt{b}}
+\tag{11.21}
+\end{equation}\]</span></p>
+<p><span class="math display" id="eq:wz1122">\[\begin{equation}
+z=\frac{1-\frac{2}{9d}-\left(\frac{1-2/d}{1+\chi\sqrt{2/(d-4)}}\right)^{1/3}}{\sqrt{2/9d}}
+\tag{11.22}
+\end{equation}\]</span></p>
+<pre class="sourceCode r"><code class="sourceCode r">moments<span class="op">::</span><span class="kw">anscombe.test</span>(f)</code></pre>
+<pre><code>## 
+##  Anscombe-Glynn kurtosis test
+## 
+## data:  f
+## kurt = 3.8046, z = 1.4585, p-value = 0.1447
+## alternative hypothesis: kurtosis is not equal to 3</code></pre>
+<p>Po wyznaczeniu wartości <code>z1</code> oraz <code>z2</code> możemy obliczyć statystykę testu normalności <span class="math inline">\(ep\)</span> według wzoru:
+<span class="math display" id="eq:wz1123">\[\begin{equation}
+ep=z_1^2+z_2^2
+\tag{11.23}
+\end{equation}\]</span></p>
+<pre class="sourceCode r"><code class="sourceCode r">ep &lt;-<span class="st"> </span>z1<span class="op">^</span><span class="dv">2</span><span class="op">+</span>z2<span class="op">^</span><span class="dv">2</span>; ep</code></pre>
+<pre><code>## [1] 4.282152</code></pre>
+<p>Ponieważ statystyki <code>z1</code> oraz <code>z2</code> mają rozkłady zbliżone do normalnych (rys. <a href="part-11.html#fig:wy111">11.1</a> i rys. <a href="part-11.html#fig:wy112">11.2</a>) to suma ich kwadratów będzie miała rozkład <span class="math inline">\(\chi^2\)</span> z dwoma stopniami swobody.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># rozkład statystyki ep dla 10000 replikacji</span>
+statsC &lt;-<span class="st"> </span><span class="kw">sapply</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">10000</span>, <span class="cf">function</span>(i) <span class="kw">f1</span>(<span class="kw">sample</span>(ff,<span class="kw">length</span>(ff),<span class="ot">TRUE</span>))<span class="op">^</span><span class="dv">2</span> <span class="op">+</span>
+<span class="st">                   </span><span class="kw">f2</span>(<span class="kw">sample</span>(ff,<span class="kw">length</span>(ff),<span class="ot">TRUE</span>))<span class="op">^</span><span class="dv">2</span>)</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">1</span>,<span class="dv">1</span>)<span class="op">+</span><span class="fl">0.1</span>, <span class="dt">mgp=</span><span class="kw">c</span>(<span class="dv">3</span>,<span class="fl">0.6</span>,<span class="dv">0</span>),<span class="dt">bg=</span><span class="st">&quot;lightgoldenrodyellow&quot;</span>,<span class="dt">las=</span><span class="dv">1</span>)
+<span class="kw">plot</span>(<span class="dv">1</span>,<span class="dt">axes=</span>F,<span class="dt">xlab=</span><span class="st">&quot;&quot;</span>,<span class="dt">ylab=</span><span class="st">&quot;&quot;</span>,<span class="dt">main=</span><span class="st">&quot;&quot;</span>, <span class="dt">col=</span><span class="st">&quot;white&quot;</span>)
+u &lt;-<span class="st"> </span><span class="kw">par</span>(<span class="st">&quot;usr&quot;</span>)
+<span class="kw">rect</span>(u[<span class="dv">1</span>], u[<span class="dv">3</span>], u[<span class="dv">2</span>], u[<span class="dv">4</span>], <span class="dt">col=</span><span class="st">&quot;white&quot;</span>)
+<span class="kw">par</span>(<span class="dt">new=</span>plot)
+<span class="kw">hist</span>(statsC,<span class="dt">prob=</span><span class="ot">TRUE</span>,<span class="dt">col=</span><span class="st">&#39;SteelBlue&#39;</span>,<span class="dt">border=</span><span class="st">&#39;white&#39;</span>)
+<span class="kw">curve</span>(<span class="kw">dchisq</span>(x,<span class="dv">2</span>),<span class="dt">add=</span><span class="ot">TRUE</span>,<span class="dt">lwd=</span><span class="dv">3</span>,<span class="dt">col=</span><span class="st">&#39;violetred3&#39;</span>)
+<span class="kw">legend</span>(<span class="st">&quot;topright&quot;</span>,<span class="dt">bg=</span><span class="st">&#39;white&#39;</span>,<span class="dt">bty=</span><span class="st">&quot;n&quot;</span>,<span class="dt">lty=</span><span class="dv">1</span>,<span class="dt">lwd=</span><span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">3</span>),
+       <span class="kw">c</span>(<span class="st">&#39;empiryczna&#39;</span>,<span class="st">&#39;teoretyczna&#39;</span>),<span class="dt">col=</span><span class="kw">c</span>(<span class="st">&#39;SteelBlue&#39;</span>,<span class="st">&#39;violetred3&#39;</span>))</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:wy113"></span>
+<img src="NaPrzelajR_files/figure-html/wy113-1.png" alt="Rozkład statystyki ep dla 10000 replikacji." width="70%" />
+<p class="caption">
+Rysunek 11.3: Rozkład statystyki ep dla 10000 replikacji.
+</p>
+</div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="dv">1</span><span class="op">-</span><span class="kw">pchisq</span>(ep,<span class="dv">2</span>)</code></pre>
+<pre><code>## [1] 0.1175283</code></pre>
+<p>Teraz zostaną przedstawione wyniki testu Doornika-Hansena z wykorzystaniem gotowej funkcji <a href="https://rdrr.io/cran/normwhn.test/man/normality.test1.html"><code>normwhn.test::normality.test1</code></a>.</p>
+<pre class="sourceCode r"><code class="sourceCode r">normwhn.test<span class="op">::</span><span class="kw">normality.test1</span>(<span class="kw">as.matrix</span>(f))</code></pre>
+<pre><code>## [1] &quot;sk&quot;
+## [1] 0.1031751
+## [1] &quot;k&quot;
+## [1] 3.804592
+## [1] &quot;rtb1&quot;
+## [1] 0.1031751
+## [1] &quot;b2&quot;
+## [1] 3.804592
+## [1] &quot;z1&quot;
+## [1] 0.3315036
+## [1] &quot;z2&quot;
+## [1] 2.04261
+## [1] &quot;H0: data do not have skewness&quot;
+## [1] &quot;pvalsk&quot;
+## [1] 0.7402641
+## [1] &quot;H0: data do not have negative skewness&quot;
+## [1] &quot;pskneg&quot;
+## [1] 0.6298679
+## [1] &quot;H0: data do not have positive skewness&quot;
+## [1] &quot;pskpos&quot;
+## [1] 0.3701321
+## [1] &quot;H0: data do not have kurtosis&quot;
+## [1] &quot;pvalk&quot;
+## [1] 0.04109101
+## [1] &quot;H0: data do not have negative kurtosis&quot;
+## [1] &quot;pkneg&quot;
+## [1] 0.9794545
+## [1] &quot;H0: data do not have positive kurtosis&quot;
+## [1] &quot;pkpos&quot;
+## [1] 0.02054551
+## [1] &quot;H0: data are normally distributed&quot;
+## [1] &quot;Ep&quot;
+##          [,1]
+## [1,] 4.282152
+## [1] &quot;dof&quot;
+## [1] 2
+## [1] &quot;sig.Ep&quot;
+##           [,1]
+## [1,] 0.1175283</code></pre>
+<p>Ponieważ w teście Doornika-Hansena p-value = <span class="math inline">\(0,1175283\)</span>, należy stwierdzić, że
+zmienna <code>f</code> (długość płatka gatunku setosa) charakteryzuje się rozkładem normalnym. Również test skośności (p-value = <span class="math inline">\(0,7402641\)</span>) oraz kurtozy (p-value =
+<span class="math inline">\(0,04109101\)</span>) potwierdzają naszą decyzję.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">shapiro.test</span>(f)</code></pre>
+<pre><code>## 
+##  Shapiro-Wilk normality test
+## 
+## data:  f
+## W = 0.95498, p-value = 0.05481</code></pre>
+<p>Także test Shapiro-Wilka wskazuje na normalność rozkładu badanej zmiennej (p-value = <span class="math inline">\(0,05481\)</span>).</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">1</span>,<span class="dv">1</span>)<span class="op">+</span><span class="fl">0.1</span>, <span class="dt">mgp=</span><span class="kw">c</span>(<span class="dv">3</span>,<span class="fl">0.6</span>,<span class="dv">0</span>),<span class="dt">bg=</span><span class="st">&quot;lightgoldenrodyellow&quot;</span>,<span class="dt">las=</span><span class="dv">1</span>)
+<span class="kw">plot</span>(<span class="dv">1</span>,<span class="dt">axes=</span>F,<span class="dt">xlab=</span><span class="st">&quot;&quot;</span>,<span class="dt">ylab=</span><span class="st">&quot;&quot;</span>,<span class="dt">main=</span><span class="st">&quot;&quot;</span>, <span class="dt">col=</span><span class="st">&quot;white&quot;</span>)
+u &lt;-<span class="st"> </span><span class="kw">par</span>(<span class="st">&quot;usr&quot;</span>)
+<span class="kw">rect</span>(u[<span class="dv">1</span>], u[<span class="dv">3</span>], u[<span class="dv">2</span>], u[<span class="dv">4</span>], <span class="dt">col=</span><span class="st">&quot;white&quot;</span>)
+<span class="kw">par</span>(<span class="dt">new=</span>plot)
+<span class="kw">hist</span>(f,<span class="dt">prob=</span><span class="ot">TRUE</span>,<span class="dt">col=</span><span class="st">&#39;SteelBlue&#39;</span>,<span class="dt">border=</span><span class="st">&#39;white&#39;</span>)
+<span class="kw">curve</span>(<span class="kw">dnorm</span>(x,<span class="kw">mean</span>(f),<span class="kw">sd</span>(f)),<span class="dt">add=</span><span class="ot">TRUE</span>,<span class="dt">lwd=</span><span class="dv">3</span>,<span class="dt">col=</span><span class="st">&#39;violetred3&#39;</span>)
+<span class="kw">legend</span>(<span class="st">&quot;topright&quot;</span>,<span class="dt">bg=</span><span class="st">&#39;white&#39;</span>,<span class="dt">bty=</span><span class="st">&quot;n&quot;</span>,<span class="dt">lty=</span><span class="dv">1</span>,<span class="dt">lwd=</span><span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">3</span>),
+       <span class="kw">c</span>(<span class="st">&#39;empiryczna&#39;</span>,<span class="st">&#39;teoretyczna&#39;</span>),<span class="dt">col=</span><span class="kw">c</span>(<span class="st">&#39;SteelBlue&#39;</span>,<span class="st">&#39;violetred3&#39;</span>))</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:wy114"></span>
+<img src="NaPrzelajR_files/figure-html/wy114-1.png" alt="Histogram - długość płatka irysa, gatunek setosa." width="70%" />
+<p class="caption">
+Rysunek 11.4: Histogram - długość płatka irysa, gatunek setosa.
+</p>
+</div>
+<p>Gdy badamy normalność za pomocą kilku testów np. Doornika-Hansena i Shapiro-
+Wilka zawsze warto porównać ich moc. Poniżej zostały przedstawione obliczenia
+dotyczące mocy obu testów.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># moc testu Doornika-Hansena:</span>
+<span class="kw">set.seed</span>(<span class="dv">2305</span>)
+statP &lt;-<span class="st"> </span><span class="kw">sapply</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">10000</span>, <span class="cf">function</span>(i) 
+  <span class="dv">1</span><span class="op">-</span><span class="kw">pchisq</span>(<span class="kw">f1</span>(<span class="kw">sample</span>(ff,<span class="kw">length</span>(ff),<span class="ot">TRUE</span>))<span class="op">^</span><span class="dv">2</span> <span class="op">+</span><span class="st"> </span><span class="kw">f2</span>(<span class="kw">sample</span>(ff,<span class="kw">length</span>(ff),<span class="ot">TRUE</span>))<span class="op">^</span><span class="dv">2</span>,<span class="dv">2</span>))
+<span class="kw">mean</span>(statP<span class="op">&lt;</span><span class="st"> </span><span class="fl">0.05</span>)</code></pre>
+<pre><code>## [1] 0.2605</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># moc testu Shapiro-Wilka:</span>
+<span class="kw">set.seed</span>(<span class="dv">2305</span>)
+statSW &lt;-<span class="st"> </span><span class="kw">sapply</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">10000</span>, <span class="cf">function</span>(i)
+  <span class="kw">shapiro.test</span>(<span class="kw">sample</span>(f,<span class="kw">length</span>(f),<span class="ot">TRUE</span>))<span class="op">$</span>p.value)
+<span class="kw">mean</span>(statSW<span class="op">&lt;</span><span class="st"> </span><span class="fl">0.05</span>)</code></pre>
+<pre><code>## [1] 0.8758</code></pre>
+<p>Tak więc test Shapiro-Wilka charakteryzuje się zdecydowanie większą mocą <span class="math inline">\((0,8758)\)</span> niż test Doornika-Hansena <span class="math inline">\((0,2605)\)</span>. Czyli do oceny normalności wektora danych <code>f</code> należy posłużyć się testem Shapiro-Wilka.</p>
+<p>Za pomocą funkcji <a href="https://rdrr.io/cran/normwhn.test/man/normality.test1.html"><code>normwhn.test::normality.test1</code></a> mamy możliwość także badania wielowymiarowej normalności macierzy danych. Sposób przeprowadzania obliczeń dla wielowymiarowego testu Doornika-Hansena przedstawimy na przykładzie macierzy <code>X</code>.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># długość i szerokość płatka - setosa:</span>
+X &lt;-<span class="st"> </span>iris[<span class="dv">1</span><span class="op">:</span><span class="dv">50</span>,<span class="dv">3</span><span class="op">:</span><span class="dv">4</span>]
+p &lt;-<span class="st"> </span><span class="kw">length</span>(X[<span class="dv">1</span>,])
+n &lt;-<span class="st"> </span><span class="kw">length</span>(X[,<span class="dv">1</span>])
+<span class="co"># wektor średnich dla kolumn macierzy X:</span>
+m &lt;-<span class="st">  </span><span class="ot">NULL</span>
+<span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>p) m[i]=<span class="st"> </span><span class="kw">mean</span>(X[,i])</code></pre>
+<p>W pierwszym kroku dokonamy przekształcenia macierzy <code>X</code> w poniższy sposób.
+<span class="math display" id="eq:wz1124">\[\begin{equation}
+\check{X}_{p \times n}=\left[
+\begin{array}{*{4}{c}}
+X_{11}-\bar{X}_1 &amp; \ldots &amp; X_{p1}-\bar{X}_p\\
+\vdots &amp; \ddots &amp; \vdots\\
+X_{1n}-\bar{X}_1 &amp; \ldots &amp; X_{pn}-\bar{X}_p
+\end{array}
+\right]
+\tag{11.24}
+\end{equation}\]</span></p>
+<pre class="sourceCode r"><code class="sourceCode r">M &lt;-<span class="st">  </span><span class="kw">matrix</span>(<span class="kw">rep</span>(m, n), <span class="dt">nrow=</span>p)
+Xhat &lt;-<span class="st"> </span>X<span class="op">-</span><span class="kw">t</span>(M)</code></pre>
+<p><span class="math display" id="eq:wz1125">\[\begin{equation}
+V=\mbox{diag}\left({S_{11}}^{-1/2},\ldots,\;{S_{pp}}^{-1/2}\right)
+\tag{11.25}
+\end{equation}\]</span></p>
+<pre class="sourceCode r"><code class="sourceCode r">V &lt;-<span class="st"> </span><span class="kw">diag</span>(<span class="dv">1</span><span class="op">/</span><span class="kw">sqrt</span>(<span class="kw">diag</span>(<span class="kw">cov</span>(X))))</code></pre>
+<p><span class="math display" id="eq:wz1126">\[\begin{equation}
+\Lambda=\mbox{diag}(\lambda_1,\ldots,\;\lambda_n)
+\tag{11.26}
+\end{equation}\]</span></p>
+<pre class="sourceCode r"><code class="sourceCode r">lambda &lt;-<span class="st"> </span><span class="kw">diag</span>(<span class="kw">eigen</span>(<span class="kw">cor</span>(X))<span class="op">$</span>values)
+H &lt;-<span class="st"> </span><span class="kw">eigen</span>(<span class="kw">cor</span>(X))<span class="op">$</span>vectors</code></pre>
+<p><span class="math display" id="eq:wz1127">\[\begin{equation}
+R^T=H\Lambda^{-1/2}H^TV\check{X}^{T}
+\tag{11.27}
+\end{equation}\]</span></p>
+<pre class="sourceCode r"><code class="sourceCode r">RT &lt;-<span class="st"> </span>H <span class="op">%*%</span><span class="st"> </span><span class="kw">solve</span>(lambda)<span class="op">^</span>(<span class="dv">1</span><span class="op">/</span><span class="dv">2</span>) <span class="op">%*%</span><span class="st"> </span><span class="kw">t</span>(H) <span class="op">%*%</span><span class="st"> </span>V <span class="op">%*%</span><span class="st"> </span><span class="kw">t</span>(Xhat)
+R &lt;-<span class="st"> </span><span class="kw">t</span>(RT)</code></pre>
+<p>Po otrzymaniu macierzy <code>R</code> możemy teraz obliczyć wartości wektorów <code>z1</code> i <code>z2</code> w
+podobny sposób jak w przypadku testu jednowymiarowego.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># obliczenia dla z1:</span>
+f1=<span class="st"> </span><span class="cf">function</span>(x){
+  DNAME &lt;-<span class="st"> </span><span class="kw">deparse</span>(<span class="kw">substitute</span>(x))
+  rS1 &lt;-<span class="st"> </span><span class="kw">apply</span>(x,<span class="dv">2</span>,<span class="dt">FUN=</span><span class="cf">function</span>(x)e1071<span class="op">::</span><span class="kw">skewness</span>(x,<span class="dt">type=</span><span class="dv">1</span>))
+  rK1 &lt;-<span class="st"> </span><span class="kw">apply</span>(x,<span class="dv">2</span>,<span class="dt">FUN=</span><span class="cf">function</span>(x)e1071<span class="op">::</span><span class="kw">kurtosis</span>(x,<span class="dt">type=</span><span class="dv">1</span>)<span class="op">+</span><span class="dv">3</span>)
+  beta &lt;-<span class="st"> </span>(<span class="dv">3</span><span class="op">*</span>(n<span class="op">^</span><span class="dv">2</span><span class="op">+</span><span class="dv">27</span><span class="op">*</span>n<span class="dv">-70</span>)<span class="op">*</span>(n<span class="op">+</span><span class="dv">1</span>)<span class="op">*</span>(n<span class="op">+</span><span class="dv">3</span>)) <span class="op">/</span><span class="st"> </span>((n<span class="dv">-2</span>)<span class="op">*</span>(n<span class="op">+</span><span class="dv">5</span>)<span class="op">*</span>(n<span class="op">+</span><span class="dv">7</span>)<span class="op">*</span>(n<span class="op">+</span><span class="dv">9</span>))
+  w2 &lt;-<span class="st"> </span><span class="dv">-1</span><span class="op">+</span>(<span class="dv">2</span><span class="op">*</span>(beta<span class="dv">-1</span>))<span class="op">^</span>(<span class="dv">1</span><span class="op">/</span><span class="dv">2</span>)
+  del &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">/</span><span class="kw">sqrt</span>(<span class="kw">log</span>(<span class="kw">sqrt</span>(w2)))
+  y &lt;-<span class="st"> </span>rS1<span class="op">*</span><span class="kw">sqrt</span>(((w2<span class="dv">-1</span>) <span class="op">/</span><span class="st"> </span>(<span class="dv">2</span>))<span class="op">*</span>(((n<span class="op">+</span><span class="dv">1</span>)<span class="op">*</span>(n<span class="op">+</span><span class="dv">3</span>))<span class="op">/</span>(<span class="dv">6</span><span class="op">*</span>(n<span class="dv">-2</span>))))
+  z1 &lt;-<span class="st"> </span>del<span class="op">*</span><span class="kw">log</span>(y<span class="op">+</span><span class="kw">sqrt</span>(y<span class="op">^</span><span class="dv">2</span><span class="op">+</span><span class="dv">1</span>))
+}
+z1 &lt;-<span class="st"> </span><span class="kw">f1</span>(R); z1</code></pre>
+<pre><code>## [1] 0.3200522 3.1503286</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># p-value dla jednowymiarowych testów skośności - H1: S1!=0</span>
+<span class="dv">2</span><span class="op">*</span>(<span class="dv">1</span><span class="op">-</span><span class="kw">pnorm</span>(<span class="kw">abs</span>(z1)))</code></pre>
+<pre><code>## [1] 0.748928767 0.001630869</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># obliczenia dla z2:</span>
+f2 &lt;-<span class="st"> </span><span class="cf">function</span>(x){
+  delta &lt;-<span class="st"> </span>(n<span class="dv">-3</span>)<span class="op">*</span>(n<span class="op">+</span><span class="dv">1</span>)<span class="op">*</span>(n<span class="op">^</span><span class="dv">2</span><span class="op">+</span><span class="dv">15</span><span class="op">*</span>n<span class="dv">-4</span>)
+  a &lt;-<span class="st"> </span>((n<span class="dv">-2</span>)<span class="op">*</span>(n<span class="op">+</span><span class="dv">5</span>)<span class="op">*</span>(n<span class="op">+</span><span class="dv">7</span>)<span class="op">*</span>(n<span class="op">^</span><span class="dv">2</span><span class="op">+</span><span class="dv">27</span><span class="op">*</span>n<span class="dv">-70</span>)) <span class="op">/</span><span class="st"> </span>(<span class="dv">6</span><span class="op">*</span>delta)
+  c &lt;-<span class="st"> </span>((n<span class="dv">-7</span>)<span class="op">*</span>(n<span class="op">+</span><span class="dv">5</span>)<span class="op">*</span>(n<span class="op">+</span><span class="dv">7</span>)<span class="op">*</span>(n<span class="op">^</span><span class="dv">2</span><span class="op">+</span><span class="dv">2</span><span class="op">*</span>n<span class="dv">-5</span>)) <span class="op">/</span><span class="st"> </span>(<span class="dv">6</span><span class="op">*</span>delta)
+  k &lt;-<span class="st"> </span>((n<span class="op">+</span><span class="dv">5</span>)<span class="op">*</span>(n<span class="op">+</span><span class="dv">7</span>)<span class="op">*</span>(n<span class="op">^</span><span class="dv">3</span><span class="op">+</span><span class="dv">37</span><span class="op">*</span>n<span class="op">^</span><span class="dv">2</span><span class="op">+</span><span class="dv">11</span><span class="op">*</span>n<span class="dv">-313</span>)) <span class="op">/</span><span class="st"> </span>(<span class="dv">12</span><span class="op">*</span>delta)
+  rS1 &lt;-<span class="st"> </span><span class="kw">apply</span>(x,<span class="dv">2</span>,<span class="dt">FUN=</span><span class="cf">function</span>(x)e1071<span class="op">::</span><span class="kw">skewness</span>(x,<span class="dt">type=</span><span class="dv">1</span>))
+  alpha &lt;-<span class="st"> </span>a<span class="op">+</span>rS1<span class="op">^</span><span class="dv">2</span><span class="op">*</span>c
+  rK1 &lt;-<span class="st"> </span><span class="kw">apply</span>(x,<span class="dv">2</span>,<span class="dt">FUN=</span><span class="cf">function</span>(x)e1071<span class="op">::</span><span class="kw">kurtosis</span>(x,<span class="dt">type=</span><span class="dv">1</span>)<span class="op">+</span><span class="dv">3</span>)
+  chi &lt;-<span class="st"> </span>(rK1<span class="dv">-1</span><span class="op">-</span>rS1<span class="op">^</span><span class="dv">2</span>)<span class="op">*</span><span class="dv">2</span><span class="op">*</span>k
+  z2 &lt;-<span class="st"> </span>( (chi<span class="op">/</span>(<span class="dv">2</span><span class="op">*</span>alpha))<span class="op">^</span>(<span class="dv">1</span><span class="op">/</span><span class="dv">3</span>)<span class="op">-</span><span class="dv">1</span><span class="op">+</span>(<span class="dv">1</span><span class="op">/</span>(<span class="dv">9</span><span class="op">*</span>alpha)) )<span class="op">*</span><span class="kw">sqrt</span>(<span class="dv">9</span><span class="op">*</span>alpha)
+  }
+z2 &lt;-<span class="st"> </span><span class="kw">f2</span>(R); z2</code></pre>
+<pre><code>## [1]  2.145361 -1.685471</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># p-value dla jednowymiarowych testów kurtozy - H1: K1!=3</span>
+<span class="dv">2</span><span class="op">*</span>(<span class="dv">1</span><span class="op">-</span><span class="kw">pnorm</span>(<span class="kw">abs</span>(z2)))</code></pre>
+<pre><code>## [1] 0.03192402 0.09189779</code></pre>
+<p><span class="math display" id="eq:wz1128">\[\begin{equation}
+Ep={Z_1}^TZ_1+{Z_2}^TZ_2
+\tag{11.28}
+\end{equation}\]</span></p>
+<pre class="sourceCode r"><code class="sourceCode r">z1 &lt;-<span class="st"> </span><span class="kw">matrix</span>(z1,p,<span class="dv">1</span>)
+z2 &lt;-<span class="st"> </span><span class="kw">matrix</span>(z2,p,<span class="dv">1</span>)
+Ep &lt;-<span class="st"> </span><span class="kw">t</span>(z1) <span class="op">%*%</span><span class="st"> </span>z1 <span class="op">+</span><span class="st"> </span><span class="kw">t</span>(z2) <span class="op">%*%</span><span class="st"> </span>z2; Ep</code></pre>
+<pre><code>##          [,1]
+## [1,] 17.47039</code></pre>
+<p><span class="math display" id="eq:wz1129">\[\begin{equation}
+Ep\longrightarrow {{\chi}^{2}}_{df=2p}
+\tag{11.29}
+\end{equation}\]</span></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="dv">1</span><span class="op">-</span><span class="kw">pchisq</span>(Ep,<span class="dv">2</span><span class="op">*</span>p)</code></pre>
+<pre><code>##             [,1]
+## [1,] 0.001565663</code></pre>
+<p>Identyczne wyniki otrzymamy wykonując poniższą komendę.</p>
+<pre class="sourceCode r"><code class="sourceCode r">normwhn.test<span class="op">::</span><span class="kw">normality.test1</span>(X)</code></pre>
+<pre><code>## [1] &quot;sk&quot;
+## [1] 0.1031751 1.2159276
+## [1] &quot;k&quot;
+## [1] 3.804592 4.434317
+## [1] &quot;rtb1&quot;
+## [1] 0.09959901 1.14396118
+## [1] &quot;b2&quot;
+## [1] 3.872623 4.324673
+## [1] &quot;z1&quot;
+## [1] 0.3200522 3.1503286
+## [1] &quot;z2&quot;
+## [1]  2.145361 -1.685471
+## [1] &quot;H0: data do not have skewness&quot;
+## [1] &quot;pvalsk&quot;
+## [1] 0.748928767 0.001630869
+## [1] &quot;H0: data do not have negative skewness&quot;
+## [1] &quot;pskneg&quot;
+## [1] 0.6255356 0.9991846
+## [1] &quot;H0: data do not have positive skewness&quot;
+## [1] &quot;pskpos&quot;
+## [1] 0.3744643837 0.0008154347
+## [1] &quot;H0: data do not have kurtosis&quot;
+## [1] &quot;pvalk&quot;
+## [1] 0.03192402 0.09189779
+## [1] &quot;H0: data do not have negative kurtosis&quot;
+## [1] &quot;pkneg&quot;
+## [1] 0.9840380 0.0459489
+## [1] &quot;H0: data do not have positive kurtosis&quot;
+## [1] &quot;pkpos&quot;
+## [1] 0.01596201 0.95405110
+## [1] &quot;H0: data are normally distributed&quot;
+## [1] &quot;Ep&quot;
+##          [,1]
+## [1,] 17.47039
+## [1] &quot;dof&quot;
+## [1] 4
+## [1] &quot;sig.Ep&quot;
+##             [,1]
+## [1,] 0.001565663</code></pre>
+<p>Wartość p-value = <span class="math inline">\(0,001565663\)</span> jest mniejsza od <span class="math inline">\(\alpha = 0,05\)</span>, a więc należy odrzucić
+hipotezę zerową zakładającą wielowymiarowy rozkład normalny macierzy <code>X</code>. Warto zwrócić uwagę na wysoki wskaźnik skośności <span class="math inline">\((1,2159276)\)</span> dla drugiej zmiennej
+(szerokość płatka) co może sugerować prawostronną skośność rozkładu.</p>
+<pre class="sourceCode r"><code class="sourceCode r">mvnormtest<span class="op">::</span><span class="kw">mshapiro.test</span>(<span class="kw">t</span>(X))</code></pre>
+<pre><code>## 
+##  Shapiro-Wilk normality test
+## 
+## data:  Z
+## W = 0.85492, p-value = 2.108e-05</code></pre>
+<p>Na podstwie wielowymiarowego testu Shapiro-Wilka także należy odrzcić hipotezę
+zerową zakładającą dwuwymiarowy rozkład normalny macierzy <code>X</code>.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mfcol=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>),<span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">1</span>,<span class="dv">1</span>)<span class="op">+</span><span class="fl">0.1</span>, <span class="dt">mgp=</span><span class="kw">c</span>(<span class="dv">3</span>,<span class="fl">0.6</span>,<span class="dv">0</span>),<span class="dt">bg=</span><span class="st">&quot;lightgoldenrodyellow&quot;</span>,<span class="dt">las=</span><span class="dv">1</span>)
+<span class="kw">plot</span>(<span class="dv">1</span>,<span class="dt">axes=</span>F,<span class="dt">xlab=</span><span class="st">&quot;&quot;</span>,<span class="dt">ylab=</span><span class="st">&quot;&quot;</span>,<span class="dt">main=</span><span class="st">&quot;&quot;</span>, <span class="dt">col=</span><span class="st">&quot;white&quot;</span>)
+u &lt;-<span class="st"> </span><span class="kw">par</span>(<span class="st">&quot;usr&quot;</span>)
+<span class="kw">rect</span>(u[<span class="dv">1</span>], u[<span class="dv">3</span>], u[<span class="dv">2</span>], u[<span class="dv">4</span>], <span class="dt">col=</span><span class="st">&quot;white&quot;</span>)
+<span class="kw">par</span>(<span class="dt">new=</span>plot)
+<span class="kw">hist</span>(X[,<span class="dv">1</span>],<span class="dt">prob=</span><span class="ot">TRUE</span>,<span class="dt">main=</span><span class="st">&quot;długość&quot;</span>,<span class="dt">border=</span><span class="st">&quot;white&quot;</span>,<span class="dt">col=</span><span class="st">&quot;SteelBlue&quot;</span>)
+<span class="kw">curve</span>(<span class="kw">dnorm</span>(x,<span class="kw">mean</span>(X[,<span class="dv">1</span>]),<span class="kw">sd</span>(X[,<span class="dv">1</span>])),<span class="dt">add=</span><span class="ot">TRUE</span>,<span class="dt">lwd=</span><span class="dv">3</span>,<span class="dt">col=</span><span class="st">&quot;violetred3&quot;</span>)
+<span class="kw">plot</span>(<span class="dv">1</span>,<span class="dt">axes=</span>F,<span class="dt">xlab=</span><span class="st">&quot;&quot;</span>,<span class="dt">ylab=</span><span class="st">&quot;&quot;</span>,<span class="dt">main=</span><span class="st">&quot;&quot;</span>, <span class="dt">col=</span><span class="st">&quot;white&quot;</span>)
+u &lt;-<span class="st"> </span><span class="kw">par</span>(<span class="st">&quot;usr&quot;</span>)
+<span class="kw">rect</span>(u[<span class="dv">1</span>], u[<span class="dv">3</span>], u[<span class="dv">2</span>], u[<span class="dv">4</span>], <span class="dt">col=</span><span class="st">&quot;white&quot;</span>)
+<span class="kw">par</span>(<span class="dt">new=</span>plot)
+<span class="kw">hist</span>(X[,<span class="dv">2</span>],<span class="dt">prob=</span><span class="ot">TRUE</span>,<span class="dt">main=</span><span class="st">&quot;szerokość&quot;</span>,<span class="dt">border=</span><span class="st">&quot;white&quot;</span>,<span class="dt">col=</span><span class="st">&quot;SteelBlue&quot;</span>)
+<span class="kw">curve</span>(<span class="kw">dnorm</span>(x,<span class="kw">mean</span>(X[,<span class="dv">2</span>]),<span class="kw">sd</span>(X[,<span class="dv">2</span>])),<span class="dt">add=</span><span class="ot">TRUE</span>,<span class="dt">lwd=</span><span class="dv">3</span>,<span class="dt">col=</span><span class="st">&quot;violetred3&quot;</span>)</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:wy115"></span>
+<img src="NaPrzelajR_files/figure-html/wy115-1.png" alt="Długość i szerokość płatka setosa." width="100%" />
+<p class="caption">
+Rysunek 11.5: Długość i szerokość płatka setosa.
+</p>
+</div>
+<p>W celu porównania obu wielowymiaroych testów normalności obliczymy ich moc.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">2305</span>)
+statP=<span class="st"> </span><span class="ot">NULL</span>
+<span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">10000</span>) {
+  R1 &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">c</span>(<span class="kw">sample</span>(R[,<span class="dv">1</span>],n,<span class="ot">TRUE</span>),<span class="kw">sample</span>(R[,<span class="dv">2</span>],n,<span class="ot">TRUE</span>)),n,<span class="dv">2</span>)
+  z1 &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">f1</span>(R1))
+  z2 &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">f2</span>(R1))
+  Ep &lt;-<span class="st"> </span><span class="kw">t</span>(z1) <span class="op">%*%</span><span class="st"> </span>z1 <span class="op">+</span><span class="st"> </span><span class="kw">t</span>(z2) <span class="op">%*%</span><span class="st"> </span>z2
+  statP[i] &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">-</span><span class="kw">pchisq</span>(Ep, <span class="dv">2</span><span class="op">*</span>p)
+}
+<span class="co"># moc wielowymiarowego testu Doornika-Hansena:</span>
+<span class="kw">mean</span>(statP<span class="op">&lt;</span><span class="st"> </span><span class="fl">0.05</span>)</code></pre>
+<pre><code>## [1] 0.8919</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">2305</span>)
+statP=<span class="st"> </span><span class="ot">NULL</span>
+<span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">10000</span>) {
+  X1 &lt;-<span class="st"> </span><span class="kw">t</span>(<span class="kw">matrix</span>(<span class="kw">c</span>(<span class="kw">sample</span>(X[,<span class="dv">1</span>],n,<span class="ot">TRUE</span>),<span class="kw">sample</span>(X[,<span class="dv">2</span>],n,<span class="ot">TRUE</span>)),n,<span class="dv">2</span>))
+  statP[i] =<span class="st"> </span>mvnormtest<span class="op">::</span><span class="kw">mshapiro.test</span>(X1)<span class="op">$</span>p.value
+}
+<span class="co"># moc wielowymiarowego testu Shapiro-Wilka:</span>
+<span class="kw">mean</span>(statP<span class="op">&lt;</span><span class="st"> </span><span class="fl">0.05</span>)</code></pre>
+<pre><code>## [1] 0.8191</code></pre>
+<p>Tym razem okazało się, że większą moc ma wielowymiarowy test Doornika-Hansena
+niż wielowymiarowy test Shapiro-Wilka. Różnica między mocą obu testów nie jest
+zbyt wysoka i wynosi <span class="math inline">\(0,0728\)</span>.</p>
+<p>Kolejną grupa testów jaką przedstawimy to takie które badają wielowymiarową
+normalność w oparciu o wielowymiarowy parametr skośności lub kurtozy. Jednym z
+takich testów jest procedura zaproponowana przez Kanti V. Mardiego. Obliczenia dla tego testu są przedstawione poniżej.
+<span class="math display" id="eq:wz1130">\[\begin{equation}
+J_n=\left[
+\begin{array}{*{4}{c}}
+1 \\
+\vdots \\
+1
+\end{array}
+\right]
+\tag{11.30}
+\end{equation}\]</span></p>
+<pre class="sourceCode r"><code class="sourceCode r">Jn &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">1</span>, n)</code></pre>
+<p><span class="math display" id="eq:wz1131">\[\begin{equation}
+I_n
+\tag{11.31}
+\end{equation}\]</span></p>
+<pre class="sourceCode r"><code class="sourceCode r">In &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">0</span>, n, n)
+<span class="kw">diag</span>(In) &lt;-<span class="st"> </span><span class="dv">1</span></code></pre>
+<p><span class="math display" id="eq:wz1132">\[\begin{equation}
+D_{p \times n}=\left[
+\begin{array}{*{4}{c}}
+d_{11} &amp; \ldots &amp; d_{p1}\\
+\vdots &amp; \ddots &amp; \vdots\\
+d_{1n} &amp; \ldots &amp; d_{pn}
+\end{array}
+\right]
+\tag{11.32}
+\end{equation}\]</span></p>
+<pre class="sourceCode r"><code class="sourceCode r">Q &lt;-<span class="st"> </span>In <span class="op">-</span><span class="st"> </span><span class="dv">1</span><span class="op">/</span>n <span class="op">*</span><span class="st"> </span>Jn <span class="op">%*%</span><span class="st"> </span><span class="kw">t</span>(Jn)
+X &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(X)
+D &lt;-<span class="st"> </span>Q <span class="op">%*%</span><span class="st"> </span>X <span class="op">%*%</span><span class="st"> </span><span class="kw">solve</span>(<span class="kw">var</span>(X)) <span class="op">%*%</span><span class="st"> </span><span class="kw">t</span>(X) <span class="op">%*%</span><span class="st"> </span>Q</code></pre>
+<p>Parametr wielowymiarowej skośności:
+<span class="math display" id="eq:wz1133">\[\begin{equation}
+\hat{S}_1=\frac{1}{n^2}\sum_{p=1}^{n}\sum_{n=1}^{n}{d_{pn}}^3
+\tag{11.33}
+\end{equation}\]</span></p>
+<pre class="sourceCode r"><code class="sourceCode r">S_hat &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">/</span>(n<span class="op">^</span><span class="dv">2</span>) <span class="op">*</span><span class="st"> </span><span class="kw">sum</span>(D<span class="op">^</span><span class="dv">3</span>); S_hat</code></pre>
+<pre><code>## [1] 1.42242</code></pre>
+<p>Statystyka testu:
+<span class="math display" id="eq:wz1134">\[\begin{equation}
+\kappa_1=\frac{n\hat{S}_1}{6}
+\tag{11.34}
+\end{equation}\]</span></p>
+<pre class="sourceCode r"><code class="sourceCode r">kappa1 &lt;-<span class="st"> </span>(n <span class="op">*</span><span class="st"> </span>S_hat)<span class="op">/</span><span class="dv">6</span>; kappa1</code></pre>
+<pre><code>## [1] 11.8535</code></pre>
+<p><span class="math display" id="eq:wz1135">\[\begin{equation}
+\kappa_1\longrightarrow {{\chi}^{2}}_{df=p(p+1)(p+2)/6}
+\tag{11.35}
+\end{equation}\]</span></p>
+<pre class="sourceCode r"><code class="sourceCode r">df &lt;-<span class="st"> </span>p<span class="op">*</span>(p<span class="op">+</span><span class="dv">1</span>)<span class="op">*</span>(p<span class="op">+</span><span class="dv">2</span>)<span class="op">/</span><span class="dv">6</span>; df</code></pre>
+<pre><code>## [1] 4</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="dv">1</span><span class="op">-</span><span class="kw">pchisq</span>(kappa1,df)</code></pre>
+<pre><code>## [1] 0.01847459</code></pre>
+<p>Parametr wielowymiarowej kurtozy:
+<span class="math display" id="eq:wz1136">\[\begin{equation}
+K_1=\frac{1}{n}\sum_{p=1}^{n}{d_{pp}}^2
+\tag{11.36}
+\end{equation}\]</span></p>
+<pre class="sourceCode r"><code class="sourceCode r">K_hat &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">/</span>n <span class="op">*</span><span class="st"> </span><span class="kw">sum</span>(<span class="kw">diag</span>(D)<span class="op">^</span><span class="dv">2</span>); K_hat</code></pre>
+<pre><code>## [1] 9.305538</code></pre>
+<p>Statystyka testu:
+<span class="math display" id="eq:wz1137">\[\begin{equation}
+\kappa_2=\frac{\hat{K}_1-p(p+2)}{\sqrt{8p(p+2/n)}}
+\tag{11.37}
+\end{equation}\]</span></p>
+<pre class="sourceCode r"><code class="sourceCode r">kappa2 &lt;-<span class="st"> </span>(K_hat<span class="op">-</span>p<span class="op">*</span>(p<span class="op">+</span><span class="dv">2</span>)) <span class="op">/</span><span class="st"> </span>(<span class="dv">8</span><span class="op">*</span>p<span class="op">*</span>(p<span class="op">+</span><span class="dv">2</span>)<span class="op">/</span>n)<span class="op">^</span><span class="fl">0.5</span>; kappa2</code></pre>
+<pre><code>## [1] 1.153943</code></pre>
+<p><span class="math display" id="eq:wz1138">\[\begin{equation}
+\kappa_2\longrightarrow N(0,1)
+\tag{11.38}
+\end{equation}\]</span></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="dv">2</span><span class="op">*</span>(<span class="dv">1</span><span class="op">-</span><span class="kw">pnorm</span>(<span class="kw">abs</span>(kappa2)))</code></pre>
+<pre><code>## [1] 0.2485234</code></pre>
+<p>Wykorzystując funkcję <a href="https://rdrr.io/cran/QuantPsyc/man/mult.norm.html"><code>QuantPsyc::mult.norm</code></a> mamy możliwość uzyskać jednocześnie wszystkie wartości, które zostały obliczone powyżej.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># wielowymiarowy test Mardiego w oparciu o skośność i kurtozę:</span>
+QuantPsyc<span class="op">::</span><span class="kw">mult.norm</span>(X)<span class="op">$</span>mult.test</code></pre>
+<pre><code>##          Beta-hat     kappa      p-val
+## Skewness 1.422420 11.853500 0.01847459
+## Kurtosis 9.305538  1.153943 0.24852335</code></pre>
+<p>W programie R są dostępne także inne funkcje umożliwiające badanie wielowy-
+miarowej normalności w oparciu o parametr skośności <a href="https://rdrr.io/cran/ICS/man/mvnorm.skew.test.html"><code>ICS::mvnorm.skew.test</code></a> lub
+kurtozy <a href="https://rdrr.io/cran/ICS/man/mvnorm.kur.test.html"><code>ICS::mvnorm.kur.test</code></a></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># wielowymiarowy test w oparciu o skośność:</span>
+ICS<span class="op">::</span><span class="kw">mvnorm.skew.test</span>(X)</code></pre>
+<pre><code>## 
+##  Multivariate Normality Test Based on Skewness
+## 
+## data:  X
+## U = 8.2428, df = 2, p-value = 0.01622</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># wielowymiarowy test w oparciu o kurtozę:</span>
+ICS<span class="op">::</span><span class="kw">mvnorm.kur.test</span>(X, <span class="dt">method=</span><span class="st">&quot;satterthwaite&quot;</span>)</code></pre>
+<pre><code>## 
+##  Multivariate Normality Test Based on Kurtosis
+## 
+## data:  X
+## W = 3.7523, w1 = 1.5, df1 = 2.0, w2 = 2.0, df2 = 1.0, p-value =
+## 0.5195</code></pre>
+<p>Badając wielowymiarowy rozkład macierzy <code>X</code> w oparciu o parametr skośności należy
+odrzucić hipotezę zerową (na poziomie istotności <span class="math inline">\(\alpha = 0,05\)</span>), która zakłada rozkład
+normalny. Wartości p-value są równe <span class="math inline">\(0,01847\)</span> (test Mardiego) oraz <span class="math inline">\(0,01622\)</span>. Z kolei
+na podstawie testu kurtozy p-value wynoszą: <span class="math inline">\(0,2485\)</span> (test Mardiego) i <span class="math inline">\(0,5195\)</span>, a zatem
+brak jest podstaw do odrzucenia hipotezy zerowej na poziomie istotności <span class="math inline">\(\alpha = 0,05\)</span>.</p>
+<p>Porównanie mocy testów skośności i kurtozy:</p>
+<pre class="sourceCode r"><code class="sourceCode r">B &lt;-<span class="st"> </span><span class="dv">10000</span>
+pv &lt;-<span class="st"> </span><span class="kw">lapply</span>(<span class="dv">1</span><span class="op">:</span>B, <span class="cf">function</span>(i) {
+  X1 &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">c</span>(<span class="kw">sample</span>(X[,<span class="dv">1</span>],<span class="dv">50</span>,<span class="ot">TRUE</span>),<span class="kw">sample</span>(X[,<span class="dv">2</span>],<span class="dv">50</span>,<span class="ot">TRUE</span>)),<span class="dv">50</span>,<span class="dv">2</span>);
+  <span class="kw">list</span>(QuantPsyc<span class="op">::</span><span class="kw">mult.norm</span>(X1)<span class="op">$</span>mult.test[<span class="dv">1</span>,<span class="dv">3</span>],
+       ICS<span class="op">::</span><span class="kw">mvnorm.skew.test</span>(X1)<span class="op">$</span>p.value,
+       QuantPsyc<span class="op">::</span><span class="kw">mult.norm</span>(X1)<span class="op">$</span>mult.test[<span class="dv">2</span>,<span class="dv">3</span>],
+       ICS<span class="op">::</span><span class="kw">mvnorm.kur.test</span>(X1, <span class="dt">method=</span><span class="st">&quot;satterthwaite&quot;</span>)<span class="op">$</span>p.value)
+  })
+df &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="kw">matrix</span>(<span class="kw">unlist</span>(pv), <span class="dt">nrow=</span>B, <span class="dt">byrow=</span>T),<span class="dt">stringsAsFactors=</span><span class="ot">FALSE</span>)
+<span class="kw">colnames</span>(df) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;skewMard&quot;</span>,<span class="st">&quot;skewICS&quot;</span>,<span class="st">&quot;kurtMard&quot;</span>,<span class="st">&quot;kurtICS&quot;</span>)
+<span class="kw">apply</span>(df,<span class="dv">2</span>,<span class="cf">function</span>(i) <span class="kw">mean</span>(i<span class="op">&lt;</span><span class="fl">0.05</span>))</code></pre>
+<pre><code>## skewMard  skewICS kurtMard  kurtICS 
+##   0.7250   0.6932   0.2384   0.2517</code></pre>
+<p>Na koniec przedstawimy kilka dwuwymiarowych wykresów gęstości macierzy <code>X</code>
+za pomocą poniższych komend:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># przygotowanie zmiennych:</span>
+<span class="kw">library</span>(MASS)
+x &lt;-<span class="st"> </span><span class="kw">kde2d</span>(X[,<span class="dv">1</span>],X[,<span class="dv">2</span>])<span class="op">$</span>x
+y &lt;-<span class="st"> </span><span class="kw">kde2d</span>(X[,<span class="dv">1</span>],X[,<span class="dv">2</span>])<span class="op">$</span>y
+z &lt;-<span class="st"> </span><span class="kw">kde2d</span>(X[,<span class="dv">1</span>],X[,<span class="dv">2</span>])<span class="op">$</span>z
+<span class="co"># kolory:</span>
+jet.colors=<span class="st"> </span><span class="kw">colorRampPalette</span>(
+  <span class="kw">c</span>(<span class="st">&quot;blue&quot;</span>, <span class="st">&quot;cyan&quot;</span>, <span class="st">&quot;green&quot;</span>, <span class="st">&quot;yellow&quot;</span>, <span class="st">&quot;orange&quot;</span>, <span class="st">&quot;red&quot;</span>) )
+nrz &lt;-<span class="st"> </span><span class="kw">nrow</span>(z); ncz=<span class="st"> </span><span class="kw">ncol</span>(z)
+nbcol &lt;-<span class="st"> </span><span class="dv">100</span>
+color &lt;-<span class="st"> </span><span class="kw">jet.colors</span>(nbcol)
+zfacet &lt;-<span class="st"> </span>z[<span class="op">-</span><span class="dv">1</span>, <span class="dv">-1</span>] <span class="op">+</span><span class="st"> </span>z[<span class="op">-</span><span class="dv">1</span>, <span class="op">-</span>ncz] <span class="op">+</span><span class="st"> </span>z[<span class="op">-</span>nrz, <span class="dv">-1</span>] <span class="op">+</span><span class="st"> </span>z[<span class="op">-</span>nrz, <span class="op">-</span>ncz]
+facetcol &lt;-<span class="st"> </span><span class="kw">cut</span>(zfacet, nbcol)</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mfcol=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>),<span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">1</span>,<span class="dv">1</span>)<span class="op">+</span><span class="fl">0.1</span>,
+    <span class="dt">mgp=</span><span class="kw">c</span>(<span class="dv">3</span>,<span class="fl">0.6</span>,<span class="dv">0</span>),<span class="dt">las=</span><span class="dv">1</span>)
+<span class="kw">persp</span>(x,y,z, <span class="dt">expand=</span> <span class="fl">0.5</span>, <span class="dt">col=</span> color[facetcol],<span class="dt">xlab=</span> <span class="st">&quot;długość płatka&quot;</span>,
+      <span class="dt">ylab=</span> <span class="st">&quot;szerokość płatka&quot;</span>,<span class="dt">zlab=</span> <span class="st">&quot;gęstość&quot;</span>,<span class="dt">theta=</span> <span class="dv">210</span>, <span class="dt">phi=</span> <span class="dv">30</span>)
+<span class="kw">persp</span>(x,y,z, <span class="dt">expand=</span> <span class="fl">0.5</span>, <span class="dt">col=</span> color[facetcol],<span class="dt">xlab=</span> <span class="st">&quot;długość płatka&quot;</span>,
+      <span class="dt">ylab=</span> <span class="st">&quot;szerokość płatka&quot;</span>,<span class="dt">zlab=</span> <span class="st">&quot;gęstość&quot;</span>,<span class="dt">theta=</span> <span class="dv">120</span>, <span class="dt">phi=</span> <span class="dv">30</span>)</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:wy116"></span>
+<img src="NaPrzelajR_files/figure-html/wy116-1.png" alt="Gęstość empiryczna." width="100%" />
+<p class="caption">
+Rysunek 11.6: Gęstość empiryczna.
+</p>
+</div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># tzw. mapy ciepła - gęstość empiryczna:</span>
+<span class="kw">par</span>(<span class="dt">mfcol=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>),<span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">1</span>,<span class="dv">1</span>)<span class="op">+</span><span class="fl">0.1</span>,
+    <span class="dt">mgp=</span><span class="kw">c</span>(<span class="dv">3</span>,<span class="fl">0.6</span>,<span class="dv">0</span>),<span class="dt">las=</span><span class="dv">1</span>)
+<span class="kw">persp</span>(x,y,z, <span class="dt">expand =</span> <span class="fl">0.5</span>, <span class="dt">col =</span> color[facetcol],<span class="dt">xlab=</span> <span class="st">&quot;długość płatka&quot;</span>,
+      <span class="dt">ylab=</span> <span class="st">&quot;szerokość płatka&quot;</span>,<span class="dt">zlab=</span> <span class="st">&quot;gęstość&quot;</span>,<span class="dt">theta=</span> <span class="dv">90</span>, <span class="dt">phi=</span> <span class="dv">90</span>)
+<span class="kw">persp</span>(x,y,z, <span class="dt">expand =</span> <span class="fl">0.5</span>, <span class="dt">col =</span> color[facetcol],<span class="dt">xlab=</span> <span class="st">&quot;długość płatka&quot;</span>,
+      <span class="dt">ylab=</span> <span class="st">&quot;szerokość płatka&quot;</span>,<span class="dt">zlab=</span> <span class="st">&quot;gęstość&quot;</span>,<span class="dt">theta=</span> <span class="dv">180</span>, <span class="dt">phi=</span> <span class="dv">90</span>)</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:wy117"></span>
+<img src="NaPrzelajR_files/figure-html/wy117-1.png" alt="Gęstość empiryczna." width="100%" />
+<p class="caption">
+Rysunek 11.7: Gęstość empiryczna.
+</p>
+</div>
+<p>Możemy również przedstawić wykresy gęstości dwuwymiarowego rozkładu normalnego o określonych parametrach obliczonych na podstawie macierzy <code>X</code>.</p>
+<pre class="sourceCode r"><code class="sourceCode r">mu1 &lt;-<span class="st"> </span><span class="kw">mean</span>(X[,<span class="dv">1</span>])      <span class="co"># średnia dla X[,1]</span>
+mu2 &lt;-<span class="st"> </span><span class="kw">mean</span>(X[,<span class="dv">2</span>])      <span class="co"># średnia dla X[,2]</span>
+s11 &lt;-<span class="st"> </span><span class="kw">var</span>(X[,<span class="dv">1</span>])       <span class="co"># wariancja dla X[,1]</span>
+s12 &lt;-<span class="st"> </span><span class="kw">cov</span>(X[,<span class="dv">1</span>],X[,<span class="dv">2</span>]) <span class="co"># kowariancja dla X[,1] i X[,2]</span>
+s22 &lt;-<span class="st"> </span><span class="kw">var</span>(X[,<span class="dv">2</span>])       <span class="co"># wariancja dla X[,2]</span>
+rho &lt;-<span class="st"> </span><span class="kw">cor</span>(X)[<span class="dv">1</span>,<span class="dv">2</span>]      <span class="co"># korelacja między X[,1] i X[,2]</span>
+x1 &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dt">length=</span><span class="dv">41</span>)      <span class="co"># zakres osi x</span>
+x2 &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dt">length=</span><span class="dv">41</span>)      <span class="co"># zakres osi y</span>
+f &lt;-<span class="st"> </span><span class="cf">function</span>(x1,x2)
+  {
+  term1 &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">/</span>(<span class="dv">2</span><span class="op">*</span>pi<span class="op">*</span><span class="kw">sqrt</span>(s11<span class="op">*</span>s22<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>rho<span class="op">^</span><span class="dv">2</span>)))
+  term2 &lt;-<span class="st"> </span><span class="dv">-1</span><span class="op">/</span>(<span class="dv">2</span><span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>rho<span class="op">^</span><span class="dv">2</span>))
+  term3 &lt;-<span class="st"> </span>(x1<span class="op">-</span>mu1)<span class="op">^</span><span class="dv">2</span><span class="op">/</span>s11
+  term4 &lt;-<span class="st"> </span>(x2<span class="op">-</span>mu2)<span class="op">^</span><span class="dv">2</span><span class="op">/</span>s22
+  term5 &lt;-<span class="st"> </span><span class="dv">-2</span><span class="op">*</span>rho<span class="op">*</span>((x1<span class="op">-</span>mu1)<span class="op">*</span>(x2<span class="op">-</span>mu2))<span class="op">/</span>(<span class="kw">sqrt</span>(s11)<span class="op">*</span><span class="kw">sqrt</span>(s22))
+  term1<span class="op">*</span><span class="kw">exp</span>(term2<span class="op">*</span>(term3<span class="op">+</span>term4<span class="op">-</span>term5))
+  }
+z &lt;-<span class="st"> </span><span class="kw">outer</span>(x1,x2,f)
+<span class="co"># kolory:</span>
+jet.colors=<span class="st"> </span><span class="kw">colorRampPalette</span>(
+<span class="kw">c</span>(<span class="st">&quot;blue&quot;</span>, <span class="st">&quot;cyan&quot;</span>, <span class="st">&quot;green&quot;</span>, <span class="st">&quot;yellow&quot;</span>, <span class="st">&quot;orange&quot;</span>, <span class="st">&quot;red&quot;</span>) )
+nrz &lt;-<span class="st"> </span><span class="kw">nrow</span>(z); ncz=<span class="st"> </span><span class="kw">ncol</span>(z)
+nbcol &lt;-<span class="st"> </span><span class="dv">100</span>
+color &lt;-<span class="st"> </span><span class="kw">jet.colors</span>(nbcol)
+zfacet &lt;-<span class="st"> </span>z[<span class="op">-</span><span class="dv">1</span>, <span class="dv">-1</span>] <span class="op">+</span><span class="st"> </span>z[<span class="op">-</span><span class="dv">1</span>, <span class="op">-</span>ncz] <span class="op">+</span><span class="st"> </span>z[<span class="op">-</span>nrz, <span class="dv">-1</span>] <span class="op">+</span><span class="st"> </span>z[<span class="op">-</span>nrz, <span class="op">-</span>ncz]
+facetcol &lt;-<span class="st"> </span><span class="kw">cut</span>(zfacet, nbcol)</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mfcol=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>),<span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">1</span>,<span class="dv">1</span>)<span class="op">+</span><span class="fl">0.1</span>,
+    <span class="dt">mgp=</span><span class="kw">c</span>(<span class="dv">3</span>,<span class="fl">0.6</span>,<span class="dv">0</span>),<span class="dt">las=</span><span class="dv">1</span>)
+<span class="kw">persp</span>(x1,x2,z, <span class="dt">expand=</span> <span class="fl">0.5</span>, <span class="dt">col=</span> color[facetcol], <span class="dt">xlab=</span><span class="st">&quot;długość płatka&quot;</span>,
+      <span class="dt">ylab=</span> <span class="st">&quot;szerokość płatka&quot;</span>,<span class="dt">zlab=</span> <span class="st">&quot;gęstość&quot;</span>,<span class="dt">theta=</span> <span class="dv">120</span>, <span class="dt">phi=</span> <span class="dv">30</span>)
+<span class="kw">persp</span>(x1,x2,z, <span class="dt">expand=</span> <span class="fl">0.5</span>, <span class="dt">col=</span> color[facetcol], <span class="dt">xlab=</span><span class="st">&quot;długość płatka&quot;</span>,
+      <span class="dt">ylab=</span> <span class="st">&quot;szerokość płatka&quot;</span>,<span class="dt">zlab=</span> <span class="st">&quot;gęstość&quot;</span>,<span class="dt">theta=</span> <span class="dv">90</span>, <span class="dt">phi=</span> <span class="dv">90</span>)</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:wy118"></span>
+<img src="NaPrzelajR_files/figure-html/wy118-1.png" alt="Gęstość teoretyczna." width="100%" />
+<p class="caption">
+Rysunek 11.8: Gęstość teoretyczna.
+</p>
+</div>
+<p>W środowisku R dostępnych jest jeszcze wiele innych testów badających normalność zmiennych. Wymienimy niektóre z nich: wielowymiarowy test Doornika-
+Hansena - <a href="https://rdrr.io/cran/asbio/man/DH.test.html"><code>asbio::DH.test</code></a>,Energy test - <a href="https://rdrr.io/cran/energy/man/mvnorm-etest.html"><code>energy::mvnorm.etest</code></a>, Shapiro-Francia
+- <a href="https://rdrr.io/cran/mvsf/man/mvsf.html"><code>mvsf::mvsf</code></a>. Warto także wspomnieć o gładkim teście adaptacyjnym Neymana, za
+pomocą którego mamy możliwość zbadania czy wektor danych pochodzi z rozkładu
+normalnego - <a href="https://rdrr.io/cran/ddst/man/ddst.norm.test.html"><code>ddst::ddst.norm.test</code></a>, jednostajnego - <a href="https://rdrr.io/cran/ddst/man/ddst.uniform.test.html"><code>ddst::ddst.unifrom.test</code></a>,
+wykładniczego - <a href="https://rdrr.io/cran/ddst/man/ddst.exp.test.html"><code>ddst::ddst.exp.test</code></a> lub z rozkładu wartości ekstremalnych -
+<a href="https://rdrr.io/cran/ddst/man/ddst.extr.test.html"><code>ddst::ddst.extr.test</code></a>.</p>
+
+</div>
+<div id="part_11.2" class="section level2">
+<h2><span class="header-section-number">11.2</span> Testy asymptotyczne</h2>
+<p>W tym podrozdziale przedstawimy testy asymptotyczne <a href="https://rdrr.io/cran/asympTest/man/asymp.test.html"><code>asympTest::asymp.test</code></a>,
+które stanowią altenatywę dla takich testów jak: <a href="https://rdrr.io/cran/BSDA/man/z.test.html"><code>BSDA::z.test</code></a> oraz <a href="https://rdrr.io/r/stats/var.test.html"><code>var.test</code></a>.
+W celu przedstawienia tych testów skorzystamy ze zbioru danych, który dotyczy skuteczności leczenia niewydolności serca z rytmem zatokowym u 6800 pacjentów.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(asympTest)
+<span class="kw">data</span>(DIGdata)</code></pre>
+<p>Z całego zbioru danych <a href="https://rdrr.io/cran/asympTest/man/DIGdata.html"><code>DIGdata</code></a> wyodrębnimy dwie zmienne: <code>DIABP</code> - ciśnienie rozkurczliwe oraz zmienną grupującą <code>TRTMT</code> - leczenie (0 - placebo, 1 - lek).</p>
+<pre class="sourceCode r"><code class="sourceCode r">t &lt;-<span class="st"> </span>DIGdata[,<span class="kw">c</span>(<span class="st">&quot;DIABP&quot;</span>,<span class="st">&quot;TRTMT&quot;</span>)]
+<span class="kw">length</span>(<span class="kw">which</span>(<span class="kw">is.na</span>(t)))</code></pre>
+<pre><code>## [1] 5</code></pre>
+<p>Ponieważ nasz zbiór danych zawiera pięć obserwacji brakujących, zastąpimy je wartością mediany.</p>
+<pre class="sourceCode r"><code class="sourceCode r">t &lt;-<span class="st"> </span>e1071<span class="op">::</span><span class="kw">impute</span>(t,<span class="st">&quot;median&quot;</span>)
+t &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(t)
+x &lt;-<span class="st"> </span><span class="kw">subset</span>(t, TRTMT<span class="op">==</span><span class="dv">0</span>)<span class="op">$</span>DIABP <span class="co"># podano placebo</span>
+y &lt;-<span class="st"> </span><span class="kw">subset</span>(t, TRTMT<span class="op">==</span><span class="dv">1</span>)<span class="op">$</span>DIABP <span class="co"># podano lek</span></code></pre>
+<p><strong>Jedna średnia</strong>. Weryfikacja hipotezy dotyczącej wartości średniej dla grupy pacjentów którym podano placebo:
+<span class="math display">\[
+\begin{array}{ll}
+H_0:\,\mu = 75\quad\mbox{vs.}\quad H_1:\,\mu \neq 75
+\end{array}
+\]</span></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">asymp.test</span>(x,<span class="dt">par=</span><span class="st">&quot;mean&quot;</span>,<span class="dt">ref=</span><span class="dv">75</span>)</code></pre>
+<pre><code>## 
+##  One-sample asymptotic mean test
+## 
+## data:  x
+## statistic = -0.46221, p-value = 0.6439
+## alternative hypothesis: true mean is not equal to 75
+## 95 percent confidence interval:
+##  74.54110 75.28377
+## sample estimates:
+##     mean 
+## 74.91243</code></pre>
+<p>Brak podstaw do odrzucenia hipotezy zerowej - możemy przyjąć, że średnie ciśnienie krwi (u pacjentów którym podano placebo) wynosi 75 mmHg.</p>
+<p>Błąd standardowy średniej:</p>
+<p><span class="math display" id="eq:wz1139">\[\begin{equation}
+SE_{\bar{x}}=\sqrt{\frac{s^2}{n}}
+\tag{11.39}
+\end{equation}\]</span>
+gdzie: <span class="math inline">\(s^2=\frac{1}{n-1}\sum_{i=1}^{n}(x_i-\bar{x})^2\)</span> to nieobciążony estymator wariancji.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">seMean</span>(x)</code></pre>
+<pre><code>## [1] 0.18946</code></pre>
+<p><strong>Różnica dwóch średnich</strong>. Weryfikacja hipotezy o równości średnich dla dwóch grup pacjentów - pierwszej podano placebo a drugiej lek:
+<span class="math display">\[
+\begin{array}{ll}
+H_0:\,\mu_1-\mu_2 = 0\quad\mbox{vs.}\quad H_1:\,\mu_1-\mu_2 \neq 0
+\end{array}
+\]</span></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">asymp.test</span>(x,y,<span class="dt">par=</span><span class="st">&quot;dMean&quot;</span>,<span class="dt">ref=</span><span class="dv">0</span>)</code></pre>
+<pre><code>## 
+##  Two-sample asymptotic difference of means test
+## 
+## data:  x and y
+## statistic = 0.069549, p-value = 0.9446
+## alternative hypothesis: true difference of means is not equal to 0
+## 95 percent confidence interval:
+##  -0.5162964  0.5542861
+## sample estimates:
+## difference of means 
+##          0.01899482</code></pre>
+<p>Brak podstaw do odrzucenia hipotezy zerowej - możemy przyjąć, że brak jest istotnej różnicy w średnich ciśnienia krwi dla badanych grup pacjentów.</p>
+<p>Błąd standardowy różnicy dwóch średnich:</p>
+<p><span class="math display" id="eq:wz1142">\[\begin{equation}
+SE_{\bar{x}_1-\bar{x}_2}=\sqrt{
+SE^2_{\bar{x}(1)}+\rho^2\cdot SE^2_{\bar{x}(2)}
+}
+\tag{11.40}
+\end{equation}\]</span>
+gdzie: <span class="math inline">\(SE_{\bar{x}(1)}\)</span> i <span class="math inline">\(SE_{\bar{x}(2)}\)</span> to błędy standardowe średnich odpowiednio dla pierwszej i drugiej grupy oraz parametr <span class="math inline">\(\rho\)</span> to opcjonalny parametr do osłabienia/wzmocnienia udziału drugiej średniej.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">seDMean</span>(x,y)</code></pre>
+<pre><code>## [1] 0.2731128</code></pre>
+<p><strong>Iloraz dwóch średnich</strong>. Weryfikacja hipotezy o ilorazie średnich dla dwóch grup pacjentów - pierwszej podano placebo a drugiej lek:
+<span class="math display">\[
+\begin{array}{ll}
+H_0:\,\mu_1/\mu_2 = 1\quad\mbox{vs.}\quad H_1:\,\mu_1/\mu_2 \neq 1
+\end{array}
+\]</span></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">asymp.test</span>(x,y,<span class="dt">par=</span><span class="st">&quot;rMean&quot;</span>,<span class="dt">ref=</span><span class="dv">1</span>)</code></pre>
+<pre><code>## 
+##  Two-sample asymptotic ratio of means test
+## 
+## data:  x and y
+## statistic = 0.06954, p-value = 0.9446
+## alternative hypothesis: true ratio of means is not equal to 1
+## 95 percent confidence interval:
+##  0.9931053 1.0074019
+## sample estimates:
+## ratio of means 
+##       1.000254</code></pre>
+<p>Brak podstaw do odrzucenia hipotezy zerowej - możemy przyjąć, że brak jest istotnej różnicy w średnich ciśnienia krwi dla badanych grup pacjentów.</p>
+<p>Błąd standardowy ilorazu dwóch średnich:
+<span class="math display" id="eq:wz1144">\[\begin{equation}
+SE_{\bar{x}_1/\bar{x}_2}=\frac{1}{|\bar{x}_{(2)}|}
+\sqrt{
+SE^2_{\bar{x}(1)}+r_0^2\cdot SE^2_{\bar{x}(2)}
+}
+\tag{11.41}
+\end{equation}\]</span>
+gdzie: <span class="math inline">\(SE_{\bar{x}(1)}\)</span> i <span class="math inline">\(SE_{\bar{x}(2)}\)</span> to błędy standardowe średnich odpowiednio dla pierwszej i drugiej grupy oraz <span class="math inline">\(r0\)</span> to iloraz dwóch średnich.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">seRMean</span>(x,y)</code></pre>
+<pre><code>## [1] 0.003647165</code></pre>
+<p><strong>Jedna wariancja</strong>. Weryfikacja hipotezy dotyczącej wartości wariancji dla grupy pacjentów którym podano placebo:
+<span class="math display">\[
+\begin{array}{ll}
+H_0:\,\sigma^2 = 120\quad\mbox{vs.}\quad H_1:\,\sigma^2 \neq 120
+\end{array}
+\]</span></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">asymp.test</span>(x,<span class="dt">par=</span><span class="st">&quot;var&quot;</span>,<span class="dt">ref=</span><span class="dv">120</span>)</code></pre>
+<pre><code>## 
+##  One-sample asymptotic variance test
+## 
+## data:  x
+## statistic = 0.65419, p-value = 0.513
+## alternative hypothesis: true variance is not equal to 120
+## 95 percent confidence interval:
+##  115.7065 128.5957
+## sample estimates:
+## variance 
+## 122.1511</code></pre>
+<p>Brak podstaw do odrzucenia hipotezy zerowej - możemy przyjąć, że wariancja ciśnienia krwi dla pacjentów którym podano placebo wynosi 120 mmHg.</p>
+<p>Błąd standardowy wariancji:
+<span class="math display" id="eq:wz1146">\[\begin{equation}
+SE_{s^2}=\sqrt{\frac{\sum_{i=1}^{n}\big((x_i-\bar{x})^2-s^2_*\big)^2}{n\cdot(n-1)}}
+\tag{11.42}
+\end{equation}\]</span>
+gdzie: <span class="math inline">\(s^2_{*}=\frac{1}{n}\sum_{i=1}^{n}(x_i-\bar{x})^2\)</span> to obciążony estymator wariancji.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">seVar</span>(x)</code></pre>
+<pre><code>## [1] 3.288122</code></pre>
+<p><strong>Różnica dwóch wariancji</strong>. Weryfikacja hipotezy o równości wariancji dla dwóch grup pacjentów - pierwszej podano placebo a drugiej lek:
+<span class="math display">\[
+\begin{array}{ll}
+H_0:\,\sigma^2_1-\sigma^2_2 = 0\quad\mbox{vs.}\quad H_1:\,\sigma^2_1-\sigma^2_2 \neq 0
+\end{array}
+\]</span></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">asymp.test</span>(x,y,<span class="dt">par=</span><span class="st">&quot;dVar&quot;</span>,<span class="dt">ref=</span><span class="dv">0</span>)</code></pre>
+<pre><code>## 
+##  Two-sample asymptotic difference of variances test
+## 
+## data:  x and y
+## statistic = -1.5331, p-value = 0.1253
+## alternative hypothesis: true difference of variances is not equal to 0
+## 95 percent confidence interval:
+##  -21.183911   2.588843
+## sample estimates:
+## difference of variances 
+##               -9.297534</code></pre>
+<p>Brak podstaw do odrzucenia hipotezy zerowej - możemy przyjąć, że brak jest istotnej różnicy w wariancjach ciśnienia krwi dla badanych grup pacjentów.</p>
+<p>Błąd standardowy dwóch wariancji:
+<span class="math display" id="eq:wz1148">\[\begin{equation}
+SE_{s_1^2-s_2^2}=\sqrt{SE_{s^2(1)}^2 +\rho^2\cdot SE_{s^2(2)}^2}
+\tag{11.43}
+\end{equation}\]</span>
+gdzie: <span class="math inline">\(SE_{s^2(1)}\)</span> i <span class="math inline">\(SE_{s^2(2)}\)</span> to błędy standardowe wariancji odpowiednio dla pierwszej i drugiej grupy.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">seDVar</span>(x,y)</code></pre>
+<pre><code>## [1] 6.064589</code></pre>
+<p><strong>Iloraz dwóch wariancji</strong>. Weryfikacja hipotezy o równości wariancji dla dwóch grup pacjentów - pierwszej podano placebo a drugiej lek:
+<span class="math display">\[
+\begin{array}{ll}
+H_0:\,\sigma^2_1/\sigma^2_2 = 1\quad\mbox{vs.}\quad H_1:\,\sigma^2_1/\sigma^2_2 \neq 1
+\end{array}
+\]</span></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">asymp.test</span>(x,y,<span class="dt">par=</span><span class="st">&quot;rVar&quot;</span>,<span class="dt">ref=</span><span class="dv">1</span>)</code></pre>
+<pre><code>## 
+##  Two-sample asymptotic ratio of variances test
+## 
+## data:  x and y
+## statistic = -1.6127, p-value = 0.1068
+## alternative hypothesis: true ratio of variances is not equal to 1
+## 95 percent confidence interval:
+##  0.843309 1.015228
+## sample estimates:
+## ratio of variances 
+##          0.9292687</code></pre>
+<p>Brak podstaw do odrzucenia hipotezy zerowej - możemy przyjąć, że brak jest istotnej różnicy w wariancjach ciśnienia krwi dla badanych grup pacjentów.</p>
+<p>Błąd standardowy ilorazu wariancji:
+<span class="math display" id="eq:wz1150">\[\begin{equation}
+SE_{s_1^2/s_2^2}=\frac{1}{s^{2}_{(2)}}\sqrt{
+SE_{s^2(1)} +r_0^2\cdot
+SE_{s^2(2)}}
+\tag{11.44}
+\end{equation}\]</span>
+gdzie: <span class="math inline">\(SE_{s^2(1)}\)</span> i <span class="math inline">\(SE_{s^2(2)}\)</span> to błędy standardowe wariancji odpowiednio dla pierwszej i drugiej grupy oraz <span class="math inline">\(s^2_{(2)}\)</span> to nieobciążony estymator wariancji dla drugiej grupy.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">seRVar</span>(x,y)</code></pre>
+<pre><code>## [1] 0.04385778</code></pre>
+
+</div>
+<div id="part_11.3" class="section level2">
+<h2><span class="header-section-number">11.3</span> Testy dla proporcji</h2>
+<p>Do prezentacji testów proporcji zostaną wykorzystane dane które są dostępne na
+stronie internetowej GUS. Dotyczą one liczby ludności w województwie łódzkim w
+2009 r.
+Poniżej zostały przedstawione dane dotyczące liczby osób w województwie łódzkim
+w 2009 r. W tym podziale została uwzględniona również struktura wiekowa.</p>
+<pre class="sourceCode r"><code class="sourceCode r">K &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">58548</span>, <span class="dv">53251</span>, <span class="dv">61402</span>, <span class="dv">76522</span>, <span class="dv">89106</span>, <span class="dv">102074</span>, <span class="dv">96932</span>, <span class="dv">85084</span>, <span class="dv">76663</span>,
+       <span class="dv">81355</span>, <span class="dv">107911</span>, <span class="dv">107430</span>, <span class="dv">90269</span>, <span class="dv">57402</span>, <span class="dv">185898</span>)
+M &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">61951</span>, <span class="dv">56582</span>, <span class="dv">64722</span>, <span class="dv">80317</span>, <span class="dv">92346</span>, <span class="dv">106389</span>, <span class="dv">100261</span>, <span class="dv">87159</span>, <span class="dv">75991</span>,
+       <span class="dv">84553</span>, <span class="dv">99678</span>, <span class="dv">92989</span>, <span class="dv">72334</span>, <span class="dv">41261</span>, <span class="dv">95452</span>)
+w &lt;-<span class="st"> </span><span class="kw">data.frame</span>(K, M)
+<span class="kw">rownames</span>(w) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;0-4&#39;</span>,<span class="st">&#39;5-9&#39;</span>,<span class="st">&#39;10-14&#39;</span>,<span class="st">&#39;15-19&#39;</span>,<span class="st">&#39;20-24&#39;</span>,<span class="st">&#39;25-29&#39;</span>,<span class="st">&#39;30-34&#39;</span>,<span class="st">&#39;35-39&#39;</span>,<span class="st">&#39;40-44&#39;</span>,
+                 <span class="st">&#39;45-49&#39;</span>,<span class="st">&#39;50-54&#39;</span>,<span class="st">&#39;55-59&#39;</span>,<span class="st">&#39;60-64&#39;</span>,<span class="st">&#39;65-69&#39;</span>,<span class="st">&#39;70 i więcej&#39;</span>)</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mfcol=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>),<span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">1</span>,<span class="dv">1</span>)<span class="op">+</span><span class="fl">0.1</span>,
+    <span class="dt">mgp=</span><span class="kw">c</span>(<span class="dv">3</span>,<span class="fl">0.6</span>,<span class="dv">0</span>),<span class="dt">las=</span><span class="dv">1</span>)
+pyramid<span class="op">::</span><span class="kw">pyramid</span>(w, <span class="dt">Llab=</span><span class="st">&quot;kobiety&quot;</span>, <span class="dt">Rlab=</span><span class="st">&quot;mężczyźni&quot;, Clab=&quot;</span>wiek<span class="st">&quot;,</span>
+<span class="st">                 Laxis=seq(0,200000,len=5), AxisFM=&quot;</span>d<span class="st">&quot;, AxisBM=&quot;</span>.<span class="st">&quot;,</span>
+<span class="st">                 Lcol=&quot;</span>orange<span class="st">&quot;, Rcol=&quot;</span>red4<span class="st">&quot;, Csize=1, Cadj=-0.01)</span></code></pre>
+<div class="figure" style="text-align: center"><span id="fig:wy119"></span>
+<img src="NaPrzelajR_files/figure-html/wy119-1.png" alt="Liczebności w poszczególnych grupach wiekowych z podziałem na płeć." width="100%" />
+<p class="caption">
+Rysunek 11.9: Liczebności w poszczególnych grupach wiekowych z podziałem na płeć.
+</p>
+</div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mfcol=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>),<span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">1</span>,<span class="dv">1</span>)<span class="op">+</span><span class="fl">0.1</span>,
+    <span class="dt">mgp=</span><span class="kw">c</span>(<span class="dv">3</span>,<span class="fl">0.6</span>,<span class="dv">0</span>),<span class="dt">las=</span><span class="dv">1</span>)
+<span class="kw">barplot</span>(<span class="kw">t</span>(<span class="kw">prop.table</span>(<span class="kw">as.matrix</span>(w),<span class="dv">1</span>)),<span class="dt">horiz=</span>T,<span class="dt">las=</span><span class="dv">1</span>,
+<span class="dt">col=</span><span class="kw">c</span>(<span class="st">&quot;orange&quot;</span>,<span class="st">&quot;red4&quot;</span>))
+<span class="kw">legend</span>(<span class="st">&#39;right&#39;</span>,<span class="dt">bg=</span><span class="st">&quot;white&quot;</span>,<span class="dt">fill=</span><span class="kw">c</span>(<span class="st">&#39;orange&#39;</span>,<span class="st">&#39;red4&#39;</span>),<span class="kw">c</span>(<span class="st">&#39;k&#39;</span>,<span class="st">&#39;m&#39;</span>))</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:wy1110"></span>
+<img src="NaPrzelajR_files/figure-html/wy1110-1.png" alt="Prezentacja proporcji w poszczególnych grupach wiekowych." width="70%" />
+<p class="caption">
+Rysunek 11.10: Prezentacja proporcji w poszczególnych grupach wiekowych.
+</p>
+</div>
+<p>Na podstawie danych (rys. <a href="part-11.html#fig:wy119">11.9</a>) możemy sądzić, że odsetek kobiet i mężczyzn w grupie wiekowej 40-44 lat (rys. <a href="part-11.html#fig:wy1110">11.10</a>) może wynosić po 50%.
+A zatem sprawdźmy czy te proporcje są równe. Hipotezy testowe będą następującej postaci:
+<span class="math display">\[H_0:\,p=0,5\quad\mbox{vs.}\quad H_1:\,p \neq 0,5\]</span></p>
+<pre class="sourceCode r"><code class="sourceCode r">m &lt;-<span class="st"> </span><span class="dv">76663</span>; n &lt;-<span class="st"> </span><span class="dv">76663</span><span class="op">+</span><span class="dv">75991</span>
+<span class="kw">binom.test</span>(m, n, <span class="dt">p=</span><span class="fl">0.5</span>)</code></pre>
+<pre><code>## 
+##  Exact binomial test
+## 
+## data:  m and n
+## number of successes = 76663, number of trials = 152650, p-value =
+## 0.08591
+## alternative hypothesis: true probability of success is not equal to 0.5
+## 95 percent confidence interval:
+##  0.4996896 0.5047125
+## sample estimates:
+## probability of success 
+##              0.5022011</code></pre>
+<p>Na podstawie otrzymanego wyniku możemy stwierdzić, że brak jest podstaw do
+odrzucenia hipotezy zerowej. Tak więc na poziomie istotności <span class="math inline">\(\alpha = 0,05\)</span> przyjmujemy, że proporcje w grupie wiekowej 40-44 lat wynoszą po <span class="math inline">\(50\%\)</span>.</p>
+<p>P-wartość:
+<span class="math display" id="eq:wz1153">\[\begin{equation}
+\sum_{}^{}{n \choose m}p^m(1-p)^{n-m}
+\tag{11.45}
+\end{equation}\]</span></p>
+<pre class="sourceCode r"><code class="sourceCode r">(<span class="dv">1</span><span class="op">-</span><span class="kw">pbinom</span>(m<span class="dv">-1</span>,n,.<span class="dv">5</span>))<span class="op">*</span><span class="dv">2</span></code></pre>
+<pre><code>## [1] 0.08590797</code></pre>
+<p>Przedział ufności Cloppera-Pearsona:</p>
+<p>– z wykorzystaniem kwantyli rozkładu <span class="math inline">\(F\)</span>:</p>
+<p><span class="math display" id="eq:wz1154">\[\begin{equation}
+\left(1+\frac{n-m+1}{m\,F_{\alpha/2,\;2m,\;2(n-m+1)}}\right)^{-1},\;\left(1+\frac{n-m}{(m+1)\,F_{1-\alpha/2,\;2(m+1),\;2(n-m)}}\right)^{-1}
+\tag{11.46}
+\end{equation}\]</span></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">c</span>( <span class="dv">1</span><span class="op">/</span>(<span class="dv">1</span><span class="op">+</span>(n<span class="op">-</span>m<span class="op">+</span><span class="dv">1</span>)<span class="op">/</span>(m<span class="op">*</span><span class="kw">qf</span>(<span class="fl">0.05</span><span class="op">/</span><span class="dv">2</span>,<span class="dv">2</span><span class="op">*</span>m,<span class="dv">2</span><span class="op">*</span>(n<span class="op">-</span>m<span class="op">+</span><span class="dv">1</span>)))),
+   <span class="dv">1</span><span class="op">/</span>(<span class="dv">1</span><span class="op">+</span>(n<span class="op">-</span>m)<span class="op">/</span>((m<span class="op">+</span><span class="dv">1</span>)<span class="op">*</span><span class="kw">qf</span>(<span class="dv">1</span><span class="fl">-0.05</span><span class="op">/</span><span class="dv">2</span>,<span class="dv">2</span><span class="op">*</span>(m<span class="op">+</span><span class="dv">1</span>),<span class="dv">2</span><span class="op">*</span>(n<span class="op">-</span>m)))) )</code></pre>
+<pre><code>## [1] 0.4996896 0.5047125</code></pre>
+<p>– z wykorzystaniem kwantyli rozkładu Beta:</p>
+<p><span class="math display" id="eq:wz1155">\[\begin{equation}
+B_{[1-(1-\alpha)]/2,\;m,\;n-m+1},\quad B_{[1+(1-\alpha)]/2,m+1,\;n-m}
+\tag{11.47}
+\end{equation}\]</span></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">c</span>( <span class="kw">qbeta</span>((<span class="dv">1</span><span class="op">-</span>(<span class="dv">1</span><span class="fl">-0.05</span>))<span class="op">/</span><span class="dv">2</span>,m,n<span class="op">-</span>m<span class="op">+</span><span class="dv">1</span>), <span class="kw">qbeta</span>((<span class="dv">1</span><span class="op">+</span>(<span class="dv">1</span><span class="fl">-0.05</span>))<span class="op">/</span><span class="dv">2</span>,m<span class="op">+</span><span class="dv">1</span>,n<span class="op">-</span>m) )</code></pre>
+<pre><code>## [1] 0.4996896 0.5047125</code></pre>
+<p>Dokładny test dwumianowy warto stosować w przypadku gdy dysponujemy małymi liczebnościami. Natomiast gdy nasze liczebności są duże możemy wykorzystać inną procedurę z wykorzystaniem rozkładu normalnego lub <span class="math inline">\(\chi^2\)</span>.</p>
+<p>Błąd standardowy proporcji:
+<span class="math display" id="eq:wz1156">\[\begin{equation}
+SE_{\hat{p}}=\sqrt{\frac{\hat{p}(1-\hat{p})}{n}}
+\tag{11.48}
+\end{equation}\]</span>
+gdzie: <span class="math inline">\(\hat{p}\)</span> to estymacja proporcji na podstawie próby.</p>
+<p>Statystyka testu <span class="math inline">\(z=(\hat{p}-p_0)/SE_{\hat{p}}\)</span> ma rozkład normalny natomiast podniesiona do kwadratu czyli <span class="math inline">\(z^2\)</span> ma rozkład <span class="math inline">\(\chi^2\)</span>.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">prop.test</span>(m, n, <span class="dt">correct=</span>F)</code></pre>
+<pre><code>## 
+##  1-sample proportions test without continuity correction
+## 
+## data:  m out of n, null probability 0.5
+## X-squared = 2.9582, df = 1, p-value = 0.08544
+## alternative hypothesis: true p is not equal to 0.5
+## 95 percent confidence interval:
+##  0.4996928 0.5047092
+## sample estimates:
+##         p 
+## 0.5022011</code></pre>
+<p>Przedział ufności jest obliczany według formuły Wilsona:
+<span class="math display" id="eq:wz1157">\[\begin{equation}
+\frac{m+z^2}{n+z^2}-z\sqrt{p(1-p)+\frac{z^2}{4n}},\;\frac{m+z^2}{n+z^2}+z\sqrt{p(1-p)+\frac{z^2}{4n}}
+\tag{11.49}
+\end{equation}\]</span>
+gdzie: <span class="math inline">\(z=z_{1-\alpha/2}\)</span> to kwantyl z rozkładu normalnego.</p>
+<p>Gdy pominiemy argument <code>correct=F</code> to otrzymamy wyniki testu z korektą ponieważ opcja <code>correct=T</code> jest stosowana domyślnie. Jest to korekta na ciągłość a statystyka testu ma wtedy postać: <span class="math inline">\(z=\left(|\hat{p}-p_0|-0,5\,n^{-1}\right)/SE_{\hat{p}}\)</span>.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">prop.test</span>(m, n)</code></pre>
+<pre><code>## 
+##  1-sample proportions test with continuity correction
+## 
+## data:  m out of n, null probability 0.5
+## X-squared = 2.9494, df = 1, p-value = 0.08591
+## alternative hypothesis: true p is not equal to 0.5
+## 95 percent confidence interval:
+##  0.4996896 0.5047124
+## sample estimates:
+##         p 
+## 0.5022011</code></pre>
+<p>W środowisku R jest dostępnych jeszcze wiele innych przedziałow ufności dla
+jednej proporcji. Wymienimy niektóre z nich:</p>
+<ul>
+<li>przedział ufności Jeffreysa:</li>
+</ul>
+<p><span class="math display" id="eq:wz1159">\[\begin{equation}
+B_{\alpha/2,\;m+1/2,\;n-m+1/2},\;B_{1-\alpha/2,\;m+1,\;n-m+1/2}
+\tag{11.50}
+\end{equation}\]</span></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">c</span>(<span class="kw">qbeta</span>(<span class="fl">0.05</span><span class="op">/</span><span class="dv">2</span>,m<span class="op">+</span><span class="dv">1</span><span class="op">/</span><span class="dv">2</span>,n<span class="op">-</span>m<span class="fl">+0.5</span>), <span class="kw">qbeta</span>(<span class="dv">1</span><span class="fl">-0.05</span><span class="op">/</span><span class="dv">2</span>,m<span class="fl">+0.5</span>,n<span class="op">-</span>m<span class="fl">+0.5</span>) )</code></pre>
+<pre><code>## [1] 0.4996928 0.5047092</code></pre>
+<ul>
+<li>przedział ufności (asymptotyczny) Walda:</li>
+</ul>
+<p><span class="math display" id="eq:wz1160">\[\begin{equation}
+\hat{p}-z_{1-\alpha/2}\sqrt{\frac{\hat{p}(1-\hat{p})}{n}},\;\hat{p}+z_{1-\alpha/2}\sqrt{\frac{\hat{p}(1-\hat{p})}{n}}
+\tag{11.51}
+\end{equation}\]</span></p>
+<pre class="sourceCode r"><code class="sourceCode r">hp &lt;-<span class="st"> </span>m<span class="op">/</span>n
+<span class="kw">c</span>(hp<span class="op">-</span><span class="kw">qnorm</span>(<span class="dv">1</span><span class="fl">-0.05</span><span class="op">/</span><span class="dv">2</span>)<span class="op">*</span><span class="kw">sqrt</span>(hp<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>hp)<span class="op">/</span>n),
+  hp<span class="op">+</span><span class="kw">qnorm</span>(<span class="dv">1</span><span class="fl">-0.05</span><span class="op">/</span><span class="dv">2</span>)<span class="op">*</span><span class="kw">sqrt</span>(hp<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>hp)<span class="op">/</span>n))</code></pre>
+<pre><code>## [1] 0.4996929 0.5047092</code></pre>
+<ul>
+<li>przedział ufności Agresti-Coull:</li>
+</ul>
+<p><span class="math display" id="eq:wz1161">\[\begin{equation}
+\check{p}-z_{1-\alpha/2}\sqrt{\frac{\check{p}(1-\check{p})}{\check{n}}},\;
+\check{p}+z_{1-\alpha/2}\sqrt{\frac{\check{p}(1-\check{p})}{\check{n}}}
+\tag{11.52}
+\end{equation}\]</span>
+gdzie: <span class="math inline">\(\check{p}=\frac{m+z_{\alpha/2}/2}{n+(z_{\alpha/2})^2}\quad\mbox{oraz}\quad \check{n}=n+z_{1-\alpha/2}\)</span></p>
+<pre class="sourceCode r"><code class="sourceCode r">cp &lt;-<span class="st"> </span>(m<span class="op">+</span>(<span class="kw">qnorm</span>(<span class="dv">1</span><span class="fl">-0.05</span><span class="op">/</span><span class="dv">2</span>)<span class="op">^</span><span class="dv">2</span>)<span class="op">/</span><span class="dv">2</span>)<span class="op">/</span>(n<span class="op">+</span><span class="kw">qnorm</span>(<span class="dv">1</span><span class="fl">-0.05</span><span class="op">/</span><span class="dv">2</span>)<span class="op">^</span><span class="dv">2</span>)
+cn &lt;-<span class="st"> </span>n<span class="op">+</span><span class="kw">qnorm</span>(<span class="dv">1</span><span class="fl">-0.05</span><span class="op">/</span><span class="dv">2</span>)<span class="op">^</span><span class="dv">2</span>
+<span class="kw">c</span>(cp<span class="op">-</span><span class="kw">qnorm</span>(<span class="dv">1</span><span class="fl">-0.05</span><span class="op">/</span><span class="dv">2</span>)<span class="op">*</span><span class="kw">sqrt</span>((cp<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>cp))<span class="op">/</span>cn),
+  cp<span class="op">+</span><span class="kw">qnorm</span>(<span class="dv">1</span><span class="fl">-0.05</span><span class="op">/</span><span class="dv">2</span>)<span class="op">*</span><span class="kw">sqrt</span>((cp<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>cp))<span class="op">/</span>cn))</code></pre>
+<pre><code>## [1] 0.4996928 0.5047092</code></pre>
+<ul>
+<li>przedział ufności arcsine:</li>
+</ul>
+<p><span class="math display" id="eq:wz1162">\[\begin{equation}
+\sin\left(\arcsin\sqrt{\check{p}}-\frac{z_{1-\alpha/2}}{2\sqrt{n}}\right)^2,\quad\sin\left(\arcsin\sqrt{\check{p}}+\frac{z_{1-\alpha/2}}{2\sqrt{n}}\right)^2
+\tag{11.53}
+\end{equation}\]</span>
+gdzie: <span class="math inline">\(\check{p}=\frac{m+0,375}{n+0,75}\)</span>.</p>
+<pre class="sourceCode r"><code class="sourceCode r">cp &lt;-<span class="st"> </span>(m<span class="fl">+0.375</span>)<span class="op">/</span>(n<span class="fl">+0.75</span>)
+<span class="kw">c</span>(<span class="kw">sin</span>(<span class="kw">asin</span>(<span class="kw">sqrt</span>(cp))<span class="op">+</span><span class="kw">qnorm</span>(<span class="dv">1</span><span class="fl">-0.05</span><span class="op">/</span><span class="dv">2</span>)<span class="op">/</span>(<span class="dv">2</span><span class="op">*</span><span class="kw">sqrt</span>(n)))<span class="op">^</span><span class="dv">2</span>,
+  <span class="kw">sin</span>(<span class="kw">asin</span>(<span class="kw">sqrt</span>(cp))<span class="op">-</span><span class="kw">qnorm</span>(<span class="dv">1</span><span class="fl">-0.05</span><span class="op">/</span><span class="dv">2</span>)<span class="op">/</span>(<span class="dv">2</span><span class="op">*</span><span class="kw">sqrt</span>(n)))<span class="op">^</span><span class="dv">2</span>)</code></pre>
+<pre><code>## [1] 0.5047092 0.4996928</code></pre>
+<ul>
+<li>przedział ufności logit:</li>
+</ul>
+<p><span class="math display" id="eq:wz1163">\[\begin{equation}
+\frac{\exp\left(\lambda-z_{1-\alpha/2}\sqrt{\frac{n}{m(n-m)}}\right)}{1-\exp\left(\lambda-z_{1-\alpha/2}\sqrt{\frac{n}{m(n-m)}}\right)},\;
+\frac{\exp\left(\lambda-z_{1+\alpha/2}\sqrt{\frac{n}{m(n-m)}}\right)}{1-\exp\left(\lambda+z_{1-\alpha/2}\sqrt{\frac{n}{m(n-m)}}\right)}
+\tag{11.54}
+\end{equation}\]</span>
+gdzie: <span class="math inline">\(\lambda=\ln\frac{m}{n-m}\)</span>.</p>
+<pre class="sourceCode r"><code class="sourceCode r">l &lt;-<span class="st"> </span><span class="kw">log</span>(m<span class="op">/</span>(n<span class="op">-</span>m))
+<span class="kw">c</span>(<span class="kw">exp</span>(l<span class="op">-</span><span class="kw">qnorm</span>(<span class="dv">1</span><span class="fl">-0.05</span><span class="op">/</span><span class="dv">2</span>)<span class="op">*</span><span class="kw">sqrt</span>(n<span class="op">/</span>(m<span class="op">*</span>(n<span class="op">-</span>m))))<span class="op">/</span>
+<span class="st"> </span>(<span class="dv">1</span><span class="op">+</span><span class="kw">exp</span>(l<span class="op">-</span><span class="kw">qnorm</span>(<span class="dv">1</span><span class="fl">-0.05</span><span class="op">/</span><span class="dv">2</span>)<span class="op">*</span><span class="kw">sqrt</span>(n<span class="op">/</span>(m<span class="op">*</span>(n<span class="op">-</span>m))))),
+<span class="kw">exp</span>(l<span class="op">+</span><span class="kw">qnorm</span>(<span class="dv">1</span><span class="fl">-0.05</span><span class="op">/</span><span class="dv">2</span>)<span class="op">*</span><span class="kw">sqrt</span>(n<span class="op">/</span>(m<span class="op">*</span>(n<span class="op">-</span>m))))<span class="op">/</span>
+<span class="st"> </span>(<span class="dv">1</span><span class="op">+</span><span class="kw">exp</span>(l<span class="op">+</span><span class="kw">qnorm</span>(<span class="dv">1</span><span class="fl">-0.05</span><span class="op">/</span><span class="dv">2</span>)<span class="op">*</span><span class="kw">sqrt</span>(n<span class="op">/</span>(m<span class="op">*</span>(n<span class="op">-</span>m))))))</code></pre>
+<pre><code>## [1] 0.4996928 0.5047092</code></pre>
+<p>Wszystkie omówione powyżej przedziały ufności (oraz kilka innych przedziałów)
+możemy wyznaczyć dzięki funkcji <a href="https://rdrr.io/cran/MKmisc/man/binomCI.html"><code>MKmisc::binomCI</code></a>:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># przedział ufności Wittinga:</span>
+MKmisc<span class="op">::</span><span class="kw">binomCI</span>(m, n, <span class="dt">method=</span> <span class="st">&quot;witting&quot;</span>, <span class="dt">rand=</span><span class="dv">231</span>)</code></pre>
+<pre><code>## 
+##  witting confidence interval
+## 
+## 95 percent confidence interval:
+##          2.5 %    97.5 %
+## prob 0.5000651 0.5043002
+## 
+## sample estimates:
+##      prob 
+## 0.5022011</code></pre>
+<p>W tej części opracowania przedstawimy testy dla dwóch proporcji. Rozważane
+hipotezy oraz wzory dotyczące omawianego testu (bez korekty i z korektą) są przedstawione poniżej.
+<span class="math display">\[H_{0}:\,p_1-p_2=0\quad\mbox{vs.}\quad H_{1}:\,p_1-p_2\neq 0\]</span>
+Statystyka testu bez korekty:
+<span class="math display" id="eq:wz1164">\[\begin{equation}
+z=\frac{(\hat{p}_1-\hat{p}_2)-(p_1-p_2)}{SE_{p(1,2)}}
+\tag{11.55}
+\end{equation}\]</span>
+gdzie: <span class="math inline">\(SE_{p(1,2)}=\sqrt{\frac{m_1+m_2}{n_1+n_2}\left(1-\frac{m_1+m_2}{n_1+n_2}\right)\left(\frac{1}{n_1}+\frac{1}{n_2}\right)}\)</span>.</p>
+<p>Przedział ufności:
+<span class="math display" id="eq:wz1165">\[\begin{equation}
+(\hat{p}_1-\hat{p}_2)-z_{1-\alpha/2}SE_{p(1-2)},\;(\hat{p}_1-\hat{p}_2)+z_{1-\alpha/2}SE_{p(1-2)}
+\tag{11.56}
+\end{equation}\]</span>
+gdzie: <span class="math inline">\(SE_{p(1-2)}=\sqrt{\frac{\hat{p}_1(1-\hat{p}_1)}{n_1}+\frac{\hat{p}_2(1-\hat{p}_2)}{n_2}}\)</span>.</p>
+<p>Do przeprowadzenia testu wykorzystamy dane dotyczące odsetka kobiet mieszkających w dwóch powiatach: piotrkowskim i mieście na prawach powiatu Piotrkowie
+Trybunalskim w grupie wiekowej: 70 lat i więcej.</p>
+<pre class="sourceCode r"><code class="sourceCode r">k70 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">10951</span>,<span class="dv">5295</span>,<span class="dv">1970</span>,<span class="dv">7178</span>,<span class="dv">3464</span>,<span class="dv">3980</span>,<span class="dv">64883</span>,<span class="dv">4096</span>,<span class="dv">5887</span>,<span class="dv">5361</span>,<span class="dv">8865</span>,
+<span class="dv">3856</span>,<span class="dv">6262</span>,<span class="dv">4922</span>,<span class="dv">3024</span>,<span class="dv">8276</span>,<span class="dv">3200</span>,<span class="dv">7734</span>,<span class="dv">3081</span>,<span class="dv">2676</span>,<span class="dv">8679</span>,<span class="dv">5521</span>,<span class="dv">2557</span>,<span class="dv">4180</span>)
+<span class="co"># liczba kobiet i mężczyzn w grupie wiekowej: 70 lat i więcej:</span>
+k70o &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">16740</span>,<span class="dv">8196</span>,<span class="dv">3073</span>,<span class="dv">10922</span>,<span class="dv">5351</span>,<span class="dv">6282</span>,<span class="dv">94438</span>,<span class="dv">6296</span>,<span class="dv">9142</span>,<span class="dv">8291</span>,<span class="dv">13402</span>,
+<span class="dv">6061</span>,<span class="dv">9697</span>,<span class="dv">7556</span>,<span class="dv">4835</span>,<span class="dv">12883</span>,<span class="dv">5050</span>,<span class="dv">12129</span>,<span class="dv">4859</span>,<span class="dv">4140</span>,<span class="dv">13147</span>,<span class="dv">8345</span>,<span class="dv">3990</span>,<span class="dv">6525</span>)
+<span class="co"># tabela:</span>
+d &lt;-<span class="st"> </span><span class="kw">data.frame</span>(k70,k70o)
+<span class="co"># nazwy równań tabeli:</span>
+<span class="kw">rownames</span>(d) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;zgierski&#39;</span>,<span class="st">&#39;bełchatowski&#39;</span>,<span class="st">&#39;brzeziński&#39;</span>,<span class="st">&#39;kutnowski&#39;</span>,
+<span class="st">&#39;łaski&#39;</span>,<span class="st">&#39;łęczycki&#39;</span>,<span class="st">&#39;ŁÓDŹ&#39;,&#39;</span>łódzki wsch.<span class="st">&#39;,&#39;</span>łowicki<span class="st">&#39;,&#39;</span>opoczyński<span class="st">&#39;,</span>
+<span class="st">&#39;</span>pabianicki<span class="st">&#39;,&#39;</span>pajęczański<span class="st">&#39;,&#39;</span>piotrkowski<span class="st">&#39;,&#39;</span>PIOTRKÓW TRYB.<span class="st">&#39;,&#39;</span>poddębicki<span class="st">&#39;,</span>
+<span class="st">&#39;</span>radomszczański<span class="st">&#39;,&#39;</span>rawski<span class="st">&#39;,&#39;</span>sieradzki<span class="st">&#39;,&#39;</span>skierniewicki<span class="st">&#39;,&#39;</span>SKIERNIEWICE<span class="st">&#39;,</span>
+<span class="st">&#39;</span>tomaszowski<span class="st">&#39;,&#39;</span>wieluński<span class="st">&#39;,&#39;</span>wieruszowski<span class="st">&#39;,&#39;</span>zduńskowolski<span class="st">&#39;)</span>
+<span class="st"># wybór dwóch badanych powiatów:</span>
+<span class="st">d2 &lt;- d[13:14,]; d2</span></code></pre>
+<pre><code>##                 k70 k70o
+## piotrkowski    6262 9697
+## PIOTRKÓW TRYB. 4922 7556</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># test dla dwóch proporcji:</span>
+<span class="kw">prop.test</span>(d2[,<span class="dv">1</span>],d2[,<span class="dv">2</span>],<span class="dt">correct=</span>F)</code></pre>
+<pre><code>## 
+##  2-sample test for equality of proportions without continuity
+##  correction
+## 
+## data:  d2[, 1] out of d2[, 2]
+## X-squared = 0.59162, df = 1, p-value = 0.4418
+## alternative hypothesis: two.sided
+## 95 percent confidence interval:
+##  -0.01999111  0.00871886
+## sample estimates:
+##    prop 1    prop 2 
+## 0.6457667 0.6514029</code></pre>
+<p>Statystyka testu z korektą:
+<span class="math display" id="eq:wz1166">\[\begin{equation}
+z=\frac{|\hat{p}_1-\hat{p}_2|-\frac{1}{2}\left(\frac{1}{n_1}+\frac{1}{n_2}\right)-(p_1-p_2)}{SE_{p(1,2)}}
+\tag{11.57}
+\end{equation}\]</span></p>
+<p>Przedział ufności:
+<span class="math display" id="eq:wz1167">\[\begin{equation}
+|\hat{p}_1-\hat{p}_2|-\frac{1}{2}\left(\frac{1}{n_1}+\frac{1}{n_2}\right)z_{1-\alpha/2}SE_{p(1,2)},\;|\hat{p}_1-\hat{p}_2|+\frac{1}{2}\left(\frac{1}{n_1}+\frac{1}{n_2}\right)z_{1-\alpha/2}SE_{p(1,2)}
+\tag{11.58}
+\end{equation}\]</span></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">prop.test</span>(d2[,<span class="dv">1</span>],d2[,<span class="dv">2</span>])</code></pre>
+<pre><code>## 
+##  2-sample test for equality of proportions with continuity
+##  correction
+## 
+## data:  d2[, 1] out of d2[, 2]
+## X-squared = 0.56716, df = 1, p-value = 0.4514
+## alternative hypothesis: two.sided
+## 95 percent confidence interval:
+##  -0.020108848  0.008836595
+## sample estimates:
+##    prop 1    prop 2 
+## 0.6457667 0.6514029</code></pre>
+<p>Na poziomie istotności <span class="math inline">\(\alpha = 0,05\)</span> brak jest podstaw do odrzucenia hipotezy zerowej. Zatem należy stwierdzić, że proporcje są równe.</p>
+<p>Za pomocą funkcji <a href="https://rdrr.io/r/stats/prop.test.html"><code>prop.test</code></a> mamy także możliwość przeprowadzać
+testy dla kilku proporcji. Tym razem sprawdzimy czy odsetki kobiet (w grupie wiekowej 70 lat i więcej, mieszkających w powiatach: wieluńskim, pabianickim oraz
+tomaszowskim są takie same.
+<span class="math display">\[
+H_{0}:\;p_1=p_2=\;\dots\,=p_k\quad\mbox{vs.}\quad H_{1}:\,\mbox{nie wszystkie proporcje są równe}
+\]</span>
+Statystyka testu:
+<span class="math display" id="eq:wz1168">\[\begin{equation}
+c=\sum_{i=1}^{k}\left(\frac{\hat{p}_i-\hat{p}}{SE_{p(i)}}\right)^2
+\tag{11.59}
+\end{equation}\]</span>
+gdzie: <span class="math inline">\(\hat{p}_i=\frac{m_i}{n_i},\;\hat{p}=\sqrt{\frac{\sum_{i=1}^{k}m_i}{\sum_{i=1}^{k}n_i}},\;SE_{p(i)}=\sqrt{\frac{\hat{p}(1-\hat{p})}{n_i}} \quad\mbox{dla}\quad i=1,2,\dots k\)</span>.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># wybór trzech badanych powiatów:</span>
+d3 &lt;-<span class="st"> </span>d[<span class="kw">c</span>(<span class="dv">11</span>, <span class="dv">21</span>, <span class="dv">22</span>),]; d3</code></pre>
+<pre><code>##              k70  k70o
+## pabianicki  8865 13402
+## tomaszowski 8679 13147
+## wieluński   5521  8345</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># test dla trzech proporcji:</span>
+<span class="kw">prop.test</span>(d3[,<span class="dv">1</span>],d3[,<span class="dv">2</span>])</code></pre>
+<pre><code>## 
+##  3-sample test for equality of proportions without continuity
+##  correction
+## 
+## data:  d3[, 1] out of d3[, 2]
+## X-squared = 0.068583, df = 2, p-value = 0.9663
+## alternative hypothesis: two.sided
+## sample estimates:
+##    prop 1    prop 2    prop 3 
+## 0.6614684 0.6601506 0.6615938</code></pre>
+<p>Także i w tym przypadku brak jest podstaw do odrzucenia hipotezy zerowej. A
+zatem (na poziomie istotności <span class="math inline">\(\alpha = 0,05\)</span>) można przyjąć, że odsetki są równe.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="part-10.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="part-12.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": ["NaPrzelajR.pdf", "NaPrzelajR.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

@@ -1,0 +1,21 @@
+bookdown::gitbook:
+  split_by: chapter
+  css: style.css
+  config:
+    toc:
+      before: |
+        <li><a href="./">Na przełaj przez Data Mining<br/> z pakietem R</a></li>
+      after: |
+        <li><a href="http://www.biecek.pl/NaPrzelajPrzezDataMining/" target="blank">strona projektu</a></li>
+        <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+    download: ["pdf", "epub"]
+  fig_caption: yes
+bookdown::pdf_book:
+  includes:
+    in_header: preamble.tex
+  #latex_engine: xelatex
+  toc_bib: TRUE
+  citation_package: natbib
+  toc_depth: 3
+  keep_tex: yes
+bookdown::epub_book: default

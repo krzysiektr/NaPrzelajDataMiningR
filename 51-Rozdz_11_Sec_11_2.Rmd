@@ -1,0 +1,157 @@
+## Testy asymptotyczne {#part_11.2}
+
+W tym podrozdziale przedstawimy testy asymptotyczne [`asympTest::asymp.test`](https://rdrr.io/cran/asympTest/man/asymp.test.html),
+które stanowią altenatywę dla takich testów jak: [`BSDA::z.test`](https://rdrr.io/cran/BSDA/man/z.test.html) oraz [`var.test`](https://rdrr.io/r/stats/var.test.html).
+W celu przedstawienia tych testów skorzystamy ze zbioru danych, który dotyczy skuteczności leczenia niewydolności serca z rytmem zatokowym u 6800 pacjentów.
+```{r}
+library(asympTest)
+data(DIGdata)
+```
+Z całego zbioru danych [`DIGdata`](https://rdrr.io/cran/asympTest/man/DIGdata.html) wyodrębnimy dwie zmienne: `DIABP` - ciśnienie rozkurczliwe oraz zmienną grupującą `TRTMT` - leczenie (0 - placebo, 1 - lek).
+```{r}
+t <- DIGdata[,c("DIABP","TRTMT")]
+length(which(is.na(t)))
+```
+Ponieważ nasz zbiór danych zawiera pięć obserwacji brakujących, zastąpimy je wartością mediany.
+```{r}
+t <- e1071::impute(t,"median")
+t <- as.data.frame(t)
+x <- subset(t, TRTMT==0)$DIABP # podano placebo
+y <- subset(t, TRTMT==1)$DIABP # podano lek
+```
+
+**Jedna średnia**. Weryfikacja hipotezy dotyczącej wartości średniej dla grupy pacjentów którym podano placebo:
+$$
+\begin{array}{ll}
+H_0:\,\mu = 75\quad\mbox{vs.}\quad H_1:\,\mu \neq 75
+\end{array}
+$$
+```{r}
+asymp.test(x,par="mean",ref=75)
+```
+Brak podstaw do odrzucenia hipotezy zerowej - możemy przyjąć, że średnie ciśnienie krwi (u pacjentów którym podano placebo) wynosi 75 mmHg.
+
+Błąd standardowy średniej:
+
+\begin{equation}
+SE_{\bar{x}}=\sqrt{\frac{s^2}{n}}
+(\#eq:wz1139)
+\end{equation}
+gdzie: $s^2=\frac{1}{n-1}\sum_{i=1}^{n}(x_i-\bar{x})^2$ to nieobciążony estymator wariancji.
+```{r}
+seMean(x)
+```
+
+**Różnica dwóch średnich**. Weryfikacja hipotezy o równości średnich dla dwóch grup pacjentów - pierwszej podano placebo a drugiej lek:
+$$
+\begin{array}{ll}
+H_0:\,\mu_1-\mu_2 = 0\quad\mbox{vs.}\quad H_1:\,\mu_1-\mu_2 \neq 0
+\end{array}
+$$
+```{r}
+asymp.test(x,y,par="dMean",ref=0)
+```
+Brak podstaw do odrzucenia hipotezy zerowej - możemy przyjąć, że brak jest istotnej różnicy w średnich ciśnienia krwi dla badanych grup pacjentów.
+
+Błąd standardowy różnicy dwóch średnich:
+
+\begin{equation}
+SE_{\bar{x}_1-\bar{x}_2}=\sqrt{
+SE^2_{\bar{x}(1)}+\rho^2\cdot SE^2_{\bar{x}(2)}
+}
+(\#eq:wz1142)
+\end{equation}
+gdzie: $SE_{\bar{x}(1)}$ i $SE_{\bar{x}(2)}$ to błędy standardowe średnich odpowiednio dla pierwszej i drugiej grupy oraz parametr $\rho$ to opcjonalny parametr do osłabienia/wzmocnienia udziału drugiej średniej.
+
+```{r}
+seDMean(x,y)
+```
+
+**Iloraz dwóch średnich**. Weryfikacja hipotezy o ilorazie średnich dla dwóch grup pacjentów - pierwszej podano placebo a drugiej lek:
+$$
+\begin{array}{ll}
+H_0:\,\mu_1/\mu_2 = 1\quad\mbox{vs.}\quad H_1:\,\mu_1/\mu_2 \neq 1
+\end{array}
+$$
+```{r}
+asymp.test(x,y,par="rMean",ref=1)
+```
+Brak podstaw do odrzucenia hipotezy zerowej - możemy przyjąć, że brak jest istotnej różnicy w średnich ciśnienia krwi dla badanych grup pacjentów.
+
+Błąd standardowy ilorazu dwóch średnich:
+\begin{equation}
+SE_{\bar{x}_1/\bar{x}_2}=\frac{1}{|\bar{x}_{(2)}|}
+\sqrt{
+SE^2_{\bar{x}(1)}+r_0^2\cdot SE^2_{\bar{x}(2)}
+}
+(\#eq:wz1144)
+\end{equation}
+gdzie: $SE_{\bar{x}(1)}$ i $SE_{\bar{x}(2)}$ to błędy standardowe średnich odpowiednio dla pierwszej i drugiej grupy oraz $r0$ to iloraz dwóch średnich.
+```{r}
+seRMean(x,y)
+```
+
+**Jedna wariancja**. Weryfikacja hipotezy dotyczącej wartości wariancji dla grupy pacjentów którym podano placebo:
+$$
+\begin{array}{ll}
+H_0:\,\sigma^2 = 120\quad\mbox{vs.}\quad H_1:\,\sigma^2 \neq 120
+\end{array}
+$$
+```{r}
+asymp.test(x,par="var",ref=120)
+```
+Brak podstaw do odrzucenia hipotezy zerowej - możemy przyjąć, że wariancja ciśnienia krwi dla pacjentów którym podano placebo wynosi 120 mmHg.
+
+Błąd standardowy wariancji:
+\begin{equation}
+SE_{s^2}=\sqrt{\frac{\sum_{i=1}^{n}\big((x_i-\bar{x})^2-s^2_*\big)^2}{n\cdot(n-1)}}
+(\#eq:wz1146)
+\end{equation}
+gdzie: $s^2_{*}=\frac{1}{n}\sum_{i=1}^{n}(x_i-\bar{x})^2$ to obciążony estymator wariancji.
+```{r}
+seVar(x)
+```
+
+**Różnica dwóch wariancji**. Weryfikacja hipotezy o równości wariancji dla dwóch grup pacjentów - pierwszej podano placebo a drugiej lek:
+$$
+\begin{array}{ll}
+H_0:\,\sigma^2_1-\sigma^2_2 = 0\quad\mbox{vs.}\quad H_1:\,\sigma^2_1-\sigma^2_2 \neq 0
+\end{array}
+$$
+```{r}
+asymp.test(x,y,par="dVar",ref=0)
+```
+Brak podstaw do odrzucenia hipotezy zerowej - możemy przyjąć, że brak jest istotnej różnicy w wariancjach ciśnienia krwi dla badanych grup pacjentów.
+
+Błąd standardowy dwóch wariancji:
+\begin{equation}
+SE_{s_1^2-s_2^2}=\sqrt{SE_{s^2(1)}^2 +\rho^2\cdot SE_{s^2(2)}^2}
+(\#eq:wz1148)
+\end{equation}
+gdzie: $SE_{s^2(1)}$ i $SE_{s^2(2)}$ to błędy standardowe wariancji odpowiednio dla pierwszej i drugiej grupy.
+```{r}
+seDVar(x,y)
+```
+
+**Iloraz dwóch wariancji**. Weryfikacja hipotezy o równości wariancji dla dwóch grup pacjentów - pierwszej podano placebo a drugiej lek:
+$$
+\begin{array}{ll}
+H_0:\,\sigma^2_1/\sigma^2_2 = 1\quad\mbox{vs.}\quad H_1:\,\sigma^2_1/\sigma^2_2 \neq 1
+\end{array}
+$$
+```{r}
+asymp.test(x,y,par="rVar",ref=1)
+```
+Brak podstaw do odrzucenia hipotezy zerowej - możemy przyjąć, że brak jest istotnej różnicy w wariancjach ciśnienia krwi dla badanych grup pacjentów.
+
+Błąd standardowy ilorazu wariancji:
+\begin{equation}
+SE_{s_1^2/s_2^2}=\frac{1}{s^{2}_{(2)}}\sqrt{
+SE_{s^2(1)} +r_0^2\cdot
+SE_{s^2(2)}}
+(\#eq:wz1150)
+\end{equation}
+gdzie: $SE_{s^2(1)}$ i $SE_{s^2(2)}$ to błędy standardowe wariancji odpowiednio dla pierwszej i drugiej grupy oraz $s^2_{(2)}$ to nieobciążony estymator wariancji dla drugiej grupy.
+```{r}
+seRVar(x,y)
+```

@@ -1,0 +1,45 @@
+## Analiza wariancji {#part_12.3}
+
+Analiza wariancji to kolejna metoda którą wykorzystamy w naszych badaniach.
+Za pomocą komendy [`anova`](https://rdrr.io/r/stats/anova.html) porównamy wartości średnie dla poszczególnych województw oraz kategorii przestępstw.
+```{r}
+y <- c(g[,1],g[,2],g[,3],g[,4],g[,5],g[,6],g[,7])
+woj <- rep(rownames(g),7); woj=factor(woj)
+przest <- rep(colnames(g),each=16); przest=factor(przest)
+anova(lm(y~woj+przest))
+```
+Analiza wariancji wskazuje, że śrenie liczebości czynów zabronionych dla województw (p-value = 1,18e-05) oraz ich charakteru (p-value = 2,2e-16) różnią się na poziomie istotności $\alpha = 0,05$ (rys. \@ref(fig:wy125)).
+```{r wy125, fig.cap='Średnie i mediany.', fig.show='hold',fig.pos= 'h', fig.align='center', fig.width=12, fig.height=5,out.width='100%'}
+# średnie i mediany:
+par(mfcol=c(1,2),mar=c(4,4,1,1)+0.1, mgp=c(3,0.6,0),las=1)
+plot.design(data.frame(woj,przest,y),fun=mean,col='darkred',lwd=2)
+plot.design(data.frame(woj,przest,y),fun=median,col='darkred',lwd=2)
+```
+Wartości średnie dla województw są następujące:
+```{r}
+tapply(y,woj,mean)
+```
+Natomiast dla rodzaju przestępstwa:
+```{r}
+tapply(y,przest,mean)
+```
+Ponieważ średnie różnią się na poziomie istotności $\alpha = 0,05$, możemy być zainteresowani odpowiedzią na następujące pytanie: Jak duże są różnice między badanymi wartościami w porównaiu z województwem ślaskim oraz przestępczością kryminalną. Odpowiedź na tak postawione pytanie otrzymamy wykonyjąc odpowiednią komendę:
+```{r}
+# punkt odniesienia: województwo śląskie:
+woj <- relevel(woj, ref="śląskie")
+# punkt odniesienia: przestępstwa kryminalne:
+przest <- relevel(przest, ref="krym")
+lmtest::coeftest(lm(y~woj+przest))
+```
+Na podstawie powyższych obliczeń możemy sformułować kilka wniosków. Największa
+różnica w średnich występuje między województwem śląskim a podlaskim (rys. \@ref(fig:wy125) i wynosi $-32184,4$. Natomiast najmniejsza różnica jest między województwem
+śląskim a mazowieckim i jest równa $-4314,3$. Jeśli porównamy wartość średnią przestępstw kryminalnych z pozostałymi to dojdziemy do wniosku, że największ różnica
+występuje między przestępstwami kryminalnymi i przeciwko zdrowiu i życiu a najmniejsza wynosi $-10771$ i dotyczy przestępstw kryminalnych oraz przeciwko mieniu.
+Na wykresach (\@ref(fig:wy127) i \@ref(fig:wy128)) zostały zaprezentowane różnice w liczebnościach zachowań niezgodnych z prawem.
+```{r wy127, fig.cap='Rozkład liczebności.', fig.show='hold',fig.pos= 'h', fig.align='center', fig.width=8, fig.height=5.5,out.width='70%'}
+interaction.plot(woj,przest,y,col=1:7,las=1,lwd=2)
+```
+```{r wy128, fig.cap='Rozkład liczebności.', fig.show='hold',fig.pos= 'h', fig.align='center', fig.width=8, fig.height=5.5,out.width='70%'}
+interaction.plot(przest,woj,y,col=1:16,las=1,lwd=2)
+```
+

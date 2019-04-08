@@ -1,0 +1,11 @@
+book_filename: "NaPrzelajR"
+delete_merged_file: true
+output_dir: docs
+#rmd_files: ["index.Rmd", "01-Rozdz_1_Wstep.Rmd","99-references.Rmd"]
+language:
+  label:
+    fig: 'Rysunek '
+    tab: 'Tabela '
+    eq: 'Równanie '
+  ui:
+    chapter_name: "Rozdział "

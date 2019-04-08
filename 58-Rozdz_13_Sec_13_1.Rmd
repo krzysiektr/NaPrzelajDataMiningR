@@ -1,0 +1,29 @@
+# Modele regresji {#part_13}
+
+---
+
+## Wprowadzenie {#part_13.1}
+
+W tym opracowaniu zostanie przedstawionych kilka modeli regresji oraz metody za
+pomocą których można oszacować ich parametry. Dane jakie zostaną wykorzystane
+do budowy modeli regresji dotyczą przeciętnych miesięcznych wydatków i dochodów
+przypadających na jedną osobę w danym województwie. Informacje zostały zebrane
+i opublikowane przez GUS od 37302 gospodarstw domowych w 2009 roku.
+```{r}
+wyd <- c(997.73, 1233.28, 900.35, 959.51, 826.98, 783.78, 823.56, 792.07, 937.9, 879.57,
+         940.2, 1013.17, 1016.33, 875.59, 977.11, 872.5) # wydatki
+doch <- c(1115.1, 1438.73, 1041.73, 1114.05, 908.99, 834.59, 1018.77, 937.89, 1103.32,
+          1097.33, 1139.67, 1174.26, 1082.27, 1014.99, 1164.50, 1084.28) # dochody
+# liczba gospodarstw domowych objętych badaniem:
+gd <- c(2735,5366,3104,4381,2205,1932,1208,1258,989,3143,1627,2939,1017,1965,2039,1394)
+t <- data.frame(doch,wyd)
+```
+```{r wy131, fig.cap='Wykres korelacyjny: dochód vs. wydatki.', fig.show='hold',fig.pos= 'h', fig.align='center', fig.width=8, fig.height=4,out.width='70%'}
+par(mar=c(4,4,1,1)+0.1, mgp=c(3,0.6,0),las=1)
+plot(doch,wyd,cex=1.2,pch=20,xlim=c(800,1550))
+lines(lowess(t),lwd=2,lty=2,col="red"); grid(col="black")
+legend("topleft",c("regresja lokalnie wygładzana - lowess"),lty=2,lwd=2, col="red",bg="white")
+```
+
+
+

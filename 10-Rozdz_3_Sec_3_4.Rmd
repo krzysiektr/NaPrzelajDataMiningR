@@ -1,0 +1,26 @@
+## Ile skupień wybrać? {#part_34}
+
+Krótka odpowiedź na to pytanie brzmi 5. Długa wymaga odpowiedzi na dodatkowe
+pytanie, na czym nam zależy wybierając liczbę skupień? Co chcemy z tymi skupieniami robić i po co je wyznaczmy.
+
+Popularną techniką wyboru liczby skupień jest rysowanie pewnej statystyki jako
+funkcji liczby skupień i wybór takiej liczby skupień dla której dana statystyka spełnia
+nasze oczekiwania (np. osiąga maksimum lub najszybciej maleje). Wiele przydatnych
+statystyk opisujących jakość podziału na grupy znajduje się w pakiecie `clusterSim`.
+
+Popularne indeksy służące do wyboru liczby klastrów to:
+
+* $tr(B)/tr(W)$ gdzie $B$ to macierz kowariancji wewnątrzklasowej a $W$ to macierz
+kowariancji miedzyklasowej,
+
+* $B_u/(u-1)/W_u(n-u)$ czyli miara zaproponowana przez Calińskiego i Harabasza (viva Poznań),
+
+* sylwetka (silhouette) $S(u)=1/n\sum_{i=1}^{n}(b(i)-a(i))/max(a(i),b(i))$ średnie podobieństwo obiektów do klastrów w których się znajdują, $a(i)$ to średnia odległość pomiędzy obiektem $i$ a pozostałymi w tym samym klastrze, $b(i)$ to średnia odległość obiektu $i$ od obiektów z najbliższego skupiska do $i$ (do którego $i$ nie należy).
+
+Wiele indeksów wyznaczyć można korzystając z funkcji `index.G1(clusterSim)`,
+`index.G2(clusterSim)`, `index.G3(clusterSim)`, `index.S(clusterSim)`, `index.KL(clusterSim)`,
+`index.H(clusterSim)`, `index.Gap(clusterSim)`, `index.DB(clusterSim)`.
+
+Funkcja `index.G1(clusterSim)` wyznacza indeks Calińskiego i Harabasza, funkcja `index.S(clusterSim)` wyznacza średnią sylwetkę (silhouette).
+
+TODO: opisać funkcję `cluster.Description(clusterSim)` pozwalającą na opisywanie znalezionych klas.

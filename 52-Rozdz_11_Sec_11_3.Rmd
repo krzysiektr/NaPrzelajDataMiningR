@@ -1,0 +1,247 @@
+## Testy dla proporcji {#part_11.3}
+
+Do prezentacji testów proporcji zostaną wykorzystane dane które są dostępne na
+stronie internetowej GUS. Dotyczą one liczby ludności w województwie łódzkim w
+2009 r.
+Poniżej zostały przedstawione dane dotyczące liczby osób w województwie łódzkim
+w 2009 r. W tym podziale została uwzględniona również struktura wiekowa.
+```{r}
+K <- c(58548, 53251, 61402, 76522, 89106, 102074, 96932, 85084, 76663,
+       81355, 107911, 107430, 90269, 57402, 185898)
+M <- c(61951, 56582, 64722, 80317, 92346, 106389, 100261, 87159, 75991,
+       84553, 99678, 92989, 72334, 41261, 95452)
+w <- data.frame(K, M)
+rownames(w) <- c('0-4','5-9','10-14','15-19','20-24','25-29','30-34','35-39','40-44',
+                 '45-49','50-54','55-59','60-64','65-69','70 i więcej')
+```
+```{r wy119, fig.cap='Liczebności w poszczególnych grupach wiekowych z podziałem na płeć.', fig.show='hold',fig.pos= 'h', fig.align='center', fig.width=12, fig.height=5,out.width='100%',message=FALSE,warning=FALSE}
+par(mfcol=c(1,1),mar=c(4,4,1,1)+0.1,
+    mgp=c(3,0.6,0),las=1)
+pyramid::pyramid(w, Llab="kobiety", Rlab="mężczyźni", Clab="wiek",
+                 Laxis=seq(0,200000,len=5), AxisFM="d", AxisBM=".",
+                 Lcol="orange", Rcol="red4", Csize=1, Cadj=-0.01)
+```
+
+```{r wy1110, fig.cap='Prezentacja proporcji w poszczególnych grupach wiekowych.', fig.show='hold',fig.pos= 'h', fig.align='center', fig.width=8, fig.height=5,out.width='70%',message=FALSE,warning=FALSE}
+par(mfcol=c(1,1),mar=c(4,4,1,1)+0.1,
+    mgp=c(3,0.6,0),las=1)
+barplot(t(prop.table(as.matrix(w),1)),horiz=T,las=1,
+col=c("orange","red4"))
+legend('right',bg="white",fill=c('orange','red4'),c('k','m'))
+```
+Na podstawie danych (rys. \@ref(fig:wy119)) możemy sądzić, że odsetek kobiet i mężczyzn w grupie wiekowej 40-44 lat (rys. \@ref(fig:wy1110)) może wynosić po 50%.
+A zatem sprawdźmy czy te proporcje są równe. Hipotezy testowe będą następującej postaci:
+$$H_0:\,p=0,5\quad\mbox{vs.}\quad H_1:\,p \neq 0,5$$
+```{r}
+m <- 76663; n <- 76663+75991
+binom.test(m, n, p=0.5)
+```
+Na podstawie otrzymanego wyniku możemy stwierdzić, że brak jest podstaw do
+odrzucenia hipotezy zerowej. Tak więc na poziomie istotności $\alpha = 0,05$ przyjmujemy, że proporcje w grupie wiekowej 40-44 lat wynoszą po $50\%$.
+
+P-wartość:
+\begin{equation}
+\sum_{}^{}{n \choose m}p^m(1-p)^{n-m}
+(\#eq:wz1153)
+\end{equation}
+
+```{r}
+(1-pbinom(m-1,n,.5))*2
+```
+Przedział ufności Cloppera-Pearsona:
+
+-- z wykorzystaniem kwantyli rozkładu $F$:
+
+\begin{equation}
+\left(1+\frac{n-m+1}{m\,F_{\alpha/2,\;2m,\;2(n-m+1)}}\right)^{-1},\;\left(1+\frac{n-m}{(m+1)\,F_{1-\alpha/2,\;2(m+1),\;2(n-m)}}\right)^{-1}
+(\#eq:wz1154)
+\end{equation}
+```{r}
+c( 1/(1+(n-m+1)/(m*qf(0.05/2,2*m,2*(n-m+1)))),
+   1/(1+(n-m)/((m+1)*qf(1-0.05/2,2*(m+1),2*(n-m)))) )
+```
+
+-- z wykorzystaniem kwantyli rozkładu Beta:
+
+\begin{equation}
+B_{[1-(1-\alpha)]/2,\;m,\;n-m+1},\quad B_{[1+(1-\alpha)]/2,m+1,\;n-m}
+(\#eq:wz1155)
+\end{equation}
+```{r}
+c( qbeta((1-(1-0.05))/2,m,n-m+1), qbeta((1+(1-0.05))/2,m+1,n-m) )
+```
+
+Dokładny test dwumianowy warto stosować w przypadku gdy dysponujemy małymi liczebnościami. Natomiast gdy nasze liczebności są duże możemy wykorzystać inną procedurę z wykorzystaniem rozkładu normalnego lub $\chi^2$.
+
+Błąd standardowy proporcji:
+\begin{equation}
+SE_{\hat{p}}=\sqrt{\frac{\hat{p}(1-\hat{p})}{n}}
+(\#eq:wz1156)
+\end{equation}
+gdzie: $\hat{p}$ to estymacja proporcji na podstawie próby.
+
+Statystyka testu $z=(\hat{p}-p_0)/SE_{\hat{p}}$ ma rozkład normalny natomiast podniesiona do kwadratu czyli $z^2$ ma rozkład $\chi^2$. 
+```{r}
+prop.test(m, n, correct=F)
+```
+Przedział ufności jest obliczany według formuły Wilsona:
+\begin{equation}
+\frac{m+z^2}{n+z^2}-z\sqrt{p(1-p)+\frac{z^2}{4n}},\;\frac{m+z^2}{n+z^2}+z\sqrt{p(1-p)+\frac{z^2}{4n}}
+(\#eq:wz1157)
+\end{equation}
+gdzie: $z=z_{1-\alpha/2}$ to kwantyl z rozkładu normalnego.
+
+Gdy pominiemy argument `correct=F` to otrzymamy wyniki testu z korektą ponieważ opcja `correct=T` jest stosowana domyślnie. Jest to korekta na ciągłość a statystyka testu ma wtedy postać: $z=\left(|\hat{p}-p_0|-0,5\,n^{-1}\right)/SE_{\hat{p}}$.
+```{r}
+prop.test(m, n)
+```
+W środowisku R jest dostępnych jeszcze wiele innych przedziałow ufności dla
+jednej proporcji. Wymienimy niektóre z nich:
+
+* przedział ufności Jeffreysa:
+
+\begin{equation}
+B_{\alpha/2,\;m+1/2,\;n-m+1/2},\;B_{1-\alpha/2,\;m+1,\;n-m+1/2}
+(\#eq:wz1159)
+\end{equation}
+```{r}
+c(qbeta(0.05/2,m+1/2,n-m+0.5), qbeta(1-0.05/2,m+0.5,n-m+0.5) )
+```
+
+* przedział ufności (asymptotyczny) Walda:
+
+\begin{equation}
+\hat{p}-z_{1-\alpha/2}\sqrt{\frac{\hat{p}(1-\hat{p})}{n}},\;\hat{p}+z_{1-\alpha/2}\sqrt{\frac{\hat{p}(1-\hat{p})}{n}}
+(\#eq:wz1160)
+\end{equation}
+```{r}
+hp <- m/n
+c(hp-qnorm(1-0.05/2)*sqrt(hp*(1-hp)/n),
+  hp+qnorm(1-0.05/2)*sqrt(hp*(1-hp)/n))
+```
+
+* przedział ufności Agresti-Coull:
+
+\begin{equation}
+\check{p}-z_{1-\alpha/2}\sqrt{\frac{\check{p}(1-\check{p})}{\check{n}}},\;
+\check{p}+z_{1-\alpha/2}\sqrt{\frac{\check{p}(1-\check{p})}{\check{n}}}
+(\#eq:wz1161)
+\end{equation}
+gdzie: $\check{p}=\frac{m+z_{\alpha/2}/2}{n+(z_{\alpha/2})^2}\quad\mbox{oraz}\quad \check{n}=n+z_{1-\alpha/2}$
+```{r}
+cp <- (m+(qnorm(1-0.05/2)^2)/2)/(n+qnorm(1-0.05/2)^2)
+cn <- n+qnorm(1-0.05/2)^2
+c(cp-qnorm(1-0.05/2)*sqrt((cp*(1-cp))/cn),
+  cp+qnorm(1-0.05/2)*sqrt((cp*(1-cp))/cn))
+```
+
+* przedział ufności arcsine:
+
+\begin{equation}
+\sin\left(\arcsin\sqrt{\check{p}}-\frac{z_{1-\alpha/2}}{2\sqrt{n}}\right)^2,\quad\sin\left(\arcsin\sqrt{\check{p}}+\frac{z_{1-\alpha/2}}{2\sqrt{n}}\right)^2
+(\#eq:wz1162)
+\end{equation}
+gdzie: $\check{p}=\frac{m+0,375}{n+0,75}$.
+```{r}
+cp <- (m+0.375)/(n+0.75)
+c(sin(asin(sqrt(cp))+qnorm(1-0.05/2)/(2*sqrt(n)))^2,
+  sin(asin(sqrt(cp))-qnorm(1-0.05/2)/(2*sqrt(n)))^2)
+```
+
+* przedział ufności logit:
+
+\begin{equation}
+\frac{\exp\left(\lambda-z_{1-\alpha/2}\sqrt{\frac{n}{m(n-m)}}\right)}{1-\exp\left(\lambda-z_{1-\alpha/2}\sqrt{\frac{n}{m(n-m)}}\right)},\;
+\frac{\exp\left(\lambda-z_{1+\alpha/2}\sqrt{\frac{n}{m(n-m)}}\right)}{1-\exp\left(\lambda+z_{1-\alpha/2}\sqrt{\frac{n}{m(n-m)}}\right)}
+(\#eq:wz1163)
+\end{equation}
+gdzie: $\lambda=\ln\frac{m}{n-m}$.
+```{r}
+l <- log(m/(n-m))
+c(exp(l-qnorm(1-0.05/2)*sqrt(n/(m*(n-m))))/
+ (1+exp(l-qnorm(1-0.05/2)*sqrt(n/(m*(n-m))))),
+exp(l+qnorm(1-0.05/2)*sqrt(n/(m*(n-m))))/
+ (1+exp(l+qnorm(1-0.05/2)*sqrt(n/(m*(n-m))))))
+```
+Wszystkie omówione powyżej przedziały ufności (oraz kilka innych przedziałów)
+możemy wyznaczyć dzięki funkcji [`MKmisc::binomCI`](https://rdrr.io/cran/MKmisc/man/binomCI.html):
+```{r}
+# przedział ufności Wittinga:
+MKmisc::binomCI(m, n, method= "witting", rand=231)
+```
+W tej części opracowania przedstawimy testy dla dwóch proporcji. Rozważane
+hipotezy oraz wzory dotyczące omawianego testu (bez korekty i z korektą) są przedstawione poniżej.
+$$H_{0}:\,p_1-p_2=0\quad\mbox{vs.}\quad H_{1}:\,p_1-p_2\neq 0$$
+Statystyka testu bez korekty:
+\begin{equation}
+z=\frac{(\hat{p}_1-\hat{p}_2)-(p_1-p_2)}{SE_{p(1,2)}}
+(\#eq:wz1164)
+\end{equation}
+gdzie: $SE_{p(1,2)}=\sqrt{\frac{m_1+m_2}{n_1+n_2}\left(1-\frac{m_1+m_2}{n_1+n_2}\right)\left(\frac{1}{n_1}+\frac{1}{n_2}\right)}$.
+
+Przedział ufności:
+\begin{equation}
+(\hat{p}_1-\hat{p}_2)-z_{1-\alpha/2}SE_{p(1-2)},\;(\hat{p}_1-\hat{p}_2)+z_{1-\alpha/2}SE_{p(1-2)}
+(\#eq:wz1165)
+\end{equation}
+gdzie: $SE_{p(1-2)}=\sqrt{\frac{\hat{p}_1(1-\hat{p}_1)}{n_1}+\frac{\hat{p}_2(1-\hat{p}_2)}{n_2}}$.
+
+Do przeprowadzenia testu wykorzystamy dane dotyczące odsetka kobiet mieszkających w dwóch powiatach: piotrkowskim i mieście na prawach powiatu Piotrkowie
+Trybunalskim w grupie wiekowej: 70 lat i więcej.
+```{r}
+k70 <- c(10951,5295,1970,7178,3464,3980,64883,4096,5887,5361,8865,
+3856,6262,4922,3024,8276,3200,7734,3081,2676,8679,5521,2557,4180)
+# liczba kobiet i mężczyzn w grupie wiekowej: 70 lat i więcej:
+k70o <- c(16740,8196,3073,10922,5351,6282,94438,6296,9142,8291,13402,
+6061,9697,7556,4835,12883,5050,12129,4859,4140,13147,8345,3990,6525)
+# tabela:
+d <- data.frame(k70,k70o)
+# nazwy równań tabeli:
+rownames(d) <- c('zgierski','bełchatowski','brzeziński','kutnowski',
+'łaski','łęczycki','ŁÓDŹ','łódzki wsch.','łowicki','opoczyński',
+'pabianicki','pajęczański','piotrkowski','PIOTRKÓW TRYB.','poddębicki',
+'radomszczański','rawski','sieradzki','skierniewicki','SKIERNIEWICE',
+'tomaszowski','wieluński','wieruszowski','zduńskowolski')
+# wybór dwóch badanych powiatów:
+d2 <- d[13:14,]; d2
+# test dla dwóch proporcji:
+prop.test(d2[,1],d2[,2],correct=F)
+```
+Statystyka testu z korektą:
+\begin{equation}
+z=\frac{|\hat{p}_1-\hat{p}_2|-\frac{1}{2}\left(\frac{1}{n_1}+\frac{1}{n_2}\right)-(p_1-p_2)}{SE_{p(1,2)}}
+(\#eq:wz1166)
+\end{equation}
+
+Przedział ufności:
+\begin{equation}
+|\hat{p}_1-\hat{p}_2|-\frac{1}{2}\left(\frac{1}{n_1}+\frac{1}{n_2}\right)z_{1-\alpha/2}SE_{p(1,2)},\;|\hat{p}_1-\hat{p}_2|+\frac{1}{2}\left(\frac{1}{n_1}+\frac{1}{n_2}\right)z_{1-\alpha/2}SE_{p(1,2)}
+(\#eq:wz1167)
+\end{equation}
+```{r}
+prop.test(d2[,1],d2[,2])
+```
+Na poziomie istotności $\alpha = 0,05$ brak jest podstaw do odrzucenia hipotezy zerowej. Zatem należy stwierdzić, że proporcje są równe.
+
+Za pomocą funkcji [`prop.test`](https://rdrr.io/r/stats/prop.test.html) mamy także możliwość przeprowadzać
+testy dla kilku proporcji. Tym razem sprawdzimy czy odsetki kobiet (w grupie wiekowej 70 lat i więcej, mieszkających w powiatach: wieluńskim, pabianickim oraz
+tomaszowskim są takie same.
+$$
+H_{0}:\;p_1=p_2=\;\dots\,=p_k\quad\mbox{vs.}\quad H_{1}:\,\mbox{nie wszystkie proporcje są równe}
+$$
+Statystyka testu:
+\begin{equation}
+c=\sum_{i=1}^{k}\left(\frac{\hat{p}_i-\hat{p}}{SE_{p(i)}}\right)^2
+(\#eq:wz1168)
+\end{equation}
+gdzie: $\hat{p}_i=\frac{m_i}{n_i},\;\hat{p}=\sqrt{\frac{\sum_{i=1}^{k}m_i}{\sum_{i=1}^{k}n_i}},\;SE_{p(i)}=\sqrt{\frac{\hat{p}(1-\hat{p})}{n_i}} \quad\mbox{dla}\quad i=1,2,\dots k$.
+```{r}
+# wybór trzech badanych powiatów:
+d3 <- d[c(11, 21, 22),]; d3
+# test dla trzech proporcji:
+prop.test(d3[,1],d3[,2])
+```
+Także i w tym przypadku brak jest podstaw do odrzucenia hipotezy zerowej. A
+zatem (na poziomie istotności $\alpha = 0,05$) można przyjąć, że odsetki są równe.
+
+

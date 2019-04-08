@@ -1,0 +1,1 @@
+Na przełaj przez data mining z pakietem R.

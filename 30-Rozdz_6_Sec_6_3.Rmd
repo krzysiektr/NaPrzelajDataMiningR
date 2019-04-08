@@ -1,0 +1,6 @@
+## Jak to zrobić w R? {#part_63}
+
+Przedstawimy funkcje `ca(ca)` oraz `corresp(MASS)`. Obie służą do wykonania analizy
+korespondencji. Wykonują ją jednak w odrobinę odmienny sposób przez co wyniki
+końcowe też są inne.
+

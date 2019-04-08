@@ -1,0 +1,93 @@
+## Identyfikacja trendu i sezonowości {#part_72}
+
+### Analiza wariancji - ANOVA {#part_721}
+
+Ocena występowania trendu oraz wahań periodycznych zostanie dokonana na przykładzie miesięcznej stopy bezrobocia w Polsce w okresie od 01-2004 do 10-2010 roku.
+
+```{r}
+b <- c(20.6, 20.6, 20.4, 19.9, 19.5, 19.4, 19.3, 19.1, 18.9, 18.7, 18.7, 19.0, 19.4, 19.4, 
+       19.2, 18.7, 18.2, 18.0, 17.9, 17.7, 17.6, 17.3, 17.3, 17.6, 18.0, 18.0, 17.8, 17.2,
+       16.5, 16.0, 15.7, 15.5, 15.2, 14.9, 14.8, 14.9, 15.1, 14.9, 14.4, 13.7, 13.0, 12.4,
+       12.2, 11.9, 11.6, 11.3, 11.3, 11.4, 11.7, 11.5, 11.1, 10.5, 10.0, 9.6,  9.40, 9.10,
+       8.90, 8.80, 9.10, 9.50, 10.5, 10.9, 11.2, 11.0, 10.8, 10.7, 10.8, 10.8, 10.9, 11.1,
+       11.4, 11.9, 12.7, 13.0, 12.9, 12.3, 11.9, 10.6, 10.7, 11.4, 11.5)
+b <- ts(b, frequency = 12, start = c(2004, 1))
+```
+```{r wy74, fig.cap='Stopa bezrobocia w Polsce od 01-2004 do 10-2010 roku.', fig.show='hold',fig.pos= 'h', fig.align='center', fig.width=16, fig.height=2.5,out.width='70%'}
+par(mar=c(4,4,1,1)+0.1, mgp=c(3,0.6,0),las=1)
+plot(b,type="l",col="SteelBlue")
+```
+
+```{r}
+T <- rep(c(2004,2005,2006,2007,2008,2009,2010),c(12,12,12,12,12,12,9))
+T <- factor(T)
+S <- rep(1:12,7);S=S[-c(82:84)]
+S <- factor(S)
+```
+
+Identyfikację szeregu czasowego można przeprowadzić na kilka sposobów. Jednym z
+nich jest analiza wariancji ANOVA.
+```{r}
+anova(lm(b~T+S))
+```
+Na podstawie przeprowadzonej analizie wariancji, należy stwierdzić, że w omawianym szeregu czasowym występuje trend (p-value = 2.2e-16). W celu dokonania
+dalszej identyfikacji szeregu (oceny występowania sezonowości) należy wyeliminować
+tendencję rozwojową (np. poprzez różnicowanie).
+
+```{r}
+anova(lm(diff(b)~T[-1]+S[-1]))
+```
+Jednokrotne różnicowanie szeregu nie przyniosło porządanego efektu (p-value =
+1.617e-06). Zatem powinniśmy badany szereg poddać dwukrotnemu różnicowaniu. Należy tę procedurę powtarzać, aż do skutku czyli wyeliminowamia trendu.
+
+```{r}
+anova(lm(diff(b,1,2)~T[-c(1,2)]+S[-c(1,2)]))
+```
+Dopiero dwukrotne różnicowanie przyniosło porządany efekt (p-value = 0.9958). Tak
+więc teraz możemy stwierdzić, że w badanym szeregu czasowym występuje sezonowość (p-value = 6.621e-07).
+```{r}
+summary(lm(b~T+S))
+```
+Oszacowane współczynniki regresji liniowej wskazują jakie są różnice między średnimi stapami bezrobocia w poszczególnych latach oraz miesiącach. Punktem referencyjnym dla czynnika `T` jest 2004 rok, dla `S` styczeń. Aby zmienić punkt odniesienia np. na rok 2005 wystarczy wykonać komendę:
+```{r}
+T = relevel(T, ref="2005")
+```
+a następnie przeprowadzić regresję. Jeśli chcemy wyznaczyć średnie stopy bezrobocia
+w poszczególnych latach trzeba skorzystać z funkcji [tapply](https://rdrr.io/r/base/tapply.html):
+```{r}
+tapply(b,T,mean)
+```
+Prezentację graficzną kształtowania się średnich możemy wykonać w następujący
+sposób:
+```{r wy75, fig.cap='Średnie dla miesięcy i lat.',fig.pos= 'h', fig.show='hold', fig.align='center', fig.width=12, fig.height=4,out.width='100%'}
+par(mfcol=c(1,2),mar=c(4,4,1,1)+0.1, mgp=c(3,0.6,0),las=1)
+interaction.plot(T,S,b,col=1:12,lwd=2)
+interaction.plot(S,T,b,col=1:7,lwd=2)
+```
+
+### Funkcja autokorelacji - ACF {#part_722}
+
+Do identyfikacji składowych szeregu czasowego (trendu oraz sezonowości) można
+również wykorzystać funkcję autokorelacji - ACF. W środowisku R jest dostępna
+funkcja graficzna [`forecast::tsdisplay`](https://rdrr.io/github/robjhyndman/forecast/man/tsdisplay.html), za pomocą której zostają wygenerowane
+trzy wykresy: krzywa badanego zjawiska, funkcja autokorelacji ACF oraz funkcja
+częściowej autokorelacji PACF.
+
+```{r wy76, fig.cap='Funkcja ACF oraz PACF.',fig.pos= 'h', fig.show='hold', fig.align='center', fig.width=8, fig.height=6,out.width='70%'}
+forecast::tsdisplay(b,col=2,lwd=2,las=1)
+```
+Ponieważ funkcja autokorelacji ACF maleje wykładniczo wraz ze wzrostem parametru $p$ (rys. \@ref(fig:wy76)) należy sądzić, że w badanym procesie występuje trend.
+```{r wy77, fig.cap='Funkcja ACF oraz PACF dla pierwszych różnic.',fig.pos= 'h', fig.show='hold', fig.align='center', fig.width=8, fig.height=6,out.width='70%'}
+forecast::tsdisplay(diff(b),col=2,lwd=2,las=1)
+```
+Po zastosowaniu funkcji różnicowania szeregu czasowego trend został wyeliminowany a funkcja ACF wskazuje na występowanie miesięcznych wahań sezonowych
+(rys. \@ref(fig:wy77)).
+
+Zatem na podstawie analizy ANOVA oraz funkcji ACF doszliśmy do wniosku,
+że badany szereg czasowy charakteryzuje się trendem oraz sezonowością. Również
+dzięki funkcji [`stl`](https://rdrr.io/r/stats/stl.html) za pomocą której dokonaliśmy dekompozycji badanego
+procesu (rys. \@ref(fig:wy78)) możemy potwierdzić występowanie tendencji rozwojowej oraz
+wahań periodycznych.
+```{r wy78, fig.cap='Dekompozycja szeregu czasowego.',fig.pos= 'h', fig.show='hold', fig.align='center', fig.width=8, fig.height=4,out.width='70%'}
+plot(stl(b,s.window="periodic"),col=2,lwd=2)
+```

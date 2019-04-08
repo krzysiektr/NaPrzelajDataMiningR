@@ -1,0 +1,61 @@
+## Modele dla częstości {#part_12.5}
+
+Do modelowania częstości wystąpień określonego zjawiska (liczba przestępstw na jednego mieszkańca) wykorzystamy modele Poisona oraz modele logitowe. W pierwszej
+kolejności zostanie przedstawiony model Poissona w którym zostanie wykorzystana
+funkcja [`offset`](https://rdrr.io/r/stats/offset.html).
+```{r}
+L <- rep(lud,7) # liczebności
+W <- y/L      # częstości
+pois1 <- glm(y~woj+przest, family=poisson,offset=log(L)) # model pois1
+summary(pois1)
+```
+W celu poprawnego oszacowania istotności poszczególnych zmiennych (występuje
+problem nadmiernego rozproszenia) skorzystamy z takiego modelu który uwzględni
+to zjawisko.
+```{r}
+# model rpois1 z odpornymi błędami standardowymi:
+rpois1 <- glm(y~woj+przest, family=quasipoisson,offset=log(L))
+lmtest::coeftest(rpois1)
+```
+Możemy także zastosować odporne błędy standardowe [`sandwich`](https://rdrr.io/cran/sandwich/man/sandwich.html) w modelu `pois1`
+które są dostępne w bibliotece [`sandwich`](https://rdrr.io/cran/sandwich/man/).
+```{r}
+# model pois1 z odpornymi błędami standardowymi sandwich:
+lmtest::coeftest(pois1,vcov=sandwich::sandwich)
+```
+Jak można zauważyć model pois1 nie oszacował poprawnie wszystkich błędów standardowych poszczególnych zmiennych. Natomiast model `rpois1` (który uwzględnił
+problem nadmiernego rozproszenia) wykazał kilka zmiennych które nie są statystycznie istotne.
+
+Kolejną grupą modeli które przedstawimy to modele logitowe.
+```{r}
+# model logit1:
+logit1 <- glm(cbind(y,L-y)~woj+przest, family=binomial)
+summary(logit1)
+```
+Podobnie jak w przypadku modelu pois1 model logit1 wskazuje, że wszystkie
+zmienne są istotne. Jednak gdy wykorzystamy odporne błędy standardowe (`logit2`)
+jak w przypadku modelu `rpois1` niektóre z nich okażą się nieistotne statystycznie.
+```{r}
+# model logit2:
+logit2 <- glm(W~woj+przest, family=quasibinomial)
+summary(logit2)
+```
+Tak samo jak w przypadku modelu pois1 wykorzystamy odporne błędy standardowe
+sandwich w modelu `logit1`.
+```{r}
+# model logit1 z odpornymi błędami standardowymi sandwich:
+lmtest::coeftest(logit1, vcov=sandwich::sandwich)
+```
+Wyznaczymy teraz ilorazy wiarygodności dla modeli `pois1`, `logit1` i `logit2`.
+```{r}
+ORpois1 <- round((exp(coef(pois1))-1)*100,4)
+ORlogit1 <- round((exp(coef(logit1))-1)*100,4)
+ORlogit2 <- round((exp(coef(logit2))-1)*100,4)
+cbind(ORpois1,ORlogit1,ORlogit2)
+```
+Wnioski (na podstawie modelu `logit2`) dotyczące ilości przestępstw przypadających
+na jednego mieszkańca są następujące:
+
+* Liczba przestępstw przypadająca na jednego mieszkańca województwa pomorskiego była większa o $12,4\%$ niż w województwie śląskim. Natomiast najmniejsza ($-51,7\%$) w województwie podkarpackim.
+
+* Liczba przestępstw przeciwko mieniu przypadająca na jednego mieszkańca była o $22,9\%$ mniejsza niż liczba przestępstw kryminalnych. Z kolei liczba przestępstw przeciwko życiu i zdrowiu była aż o $95,7\%$ mniejsza niż liczba przestępstw kryminalnych w przeliczeniu na jednego mieszkańca.

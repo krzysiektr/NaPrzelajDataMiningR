@@ -1,0 +1,10 @@
+## Problem {#part_61}
+
+Obserwujemy dwie zmienne jakościowe. Pierwsza zmienna przyjmuje wartości z $n_1$
+poziomów, druga z $n_2$ poziomów.
+
+Interesuje nas, czy zmienne te są od siebie niezależne, a jeżeli nie są niezależne
+to które kombinacje poziomów występują ze sobą znacznie częściej.
+Dane z którymi mamy do czynienia to macierz kontyngencji (tabela wielodziel-
+cza) o wymiarach k × l wyznaczona dla dwóch zmiennych o odpowiednio $k$ i $l$ poziomach. Jeżeli $k$ i $l$ są małe, to taką macierz można ogarnąć rzutem oka. Jednak dla zmiennych występujących na wielu poziomach potrzebne są już dodatkowe narzędzia.
+

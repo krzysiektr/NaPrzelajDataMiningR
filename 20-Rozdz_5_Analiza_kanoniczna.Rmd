@@ -1,0 +1,7 @@
+# Analiza kanoniczna {#part_5}
+
+Podstawowe problemy i wyniki analizy kanonicznej zostały sformułowane przez Harolda Hotellinga (wybitny ekonomista, matematyk, statystyk) w latach 1935-36.
+Powstała jako metoda do badania zależności pomiędzy dwoma zbiorami zmiennych.
+Do dziś doczekała się wielu uogólnień i rozszerzeń, np. na badanie relacji pomiędzy wieloma zbiorami zmiennych, na badane relacji w obecności współliniowych
+zmiennych (przez regularyzację) itp.
+

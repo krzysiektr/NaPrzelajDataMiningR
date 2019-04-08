@@ -1,0 +1,37 @@
+## Nieliniowe skalowanie wielowymiarowe (Sammon Mapping) {#part_22}
+
+W przypadku metody PCA nowe współrzędne konstruowano tak, by były one kombinacjami liniowymi oryginalnych danych. To oczywiście nie jest jedyna możliwość konstrukcji nowych zmiennych. Postawmy zagadnienie skalowania następująco.
+
+Dane: mamy $n$ obiektów oraz macierz odległości pomiędzy każdą parą obiektów.
+Oznaczmy przez $d_ij$ odległość pomiędzy obiektem $i$-tym i $j$-tym.
+Szukane: reprezentacja obiektów w przestrzeni $k$ wymiarowej, tak by zminimalizować
+$$
+stress=\frac{\sum_{ij}(d_{ij}-\bar{d}_{ij})^2/d_{ij}}{\sum_{ij}d_{ij}}
+$$
+gdzie $\tilde{d}_{ij}$ to odległość pomiędzy obiektami $i$ i $j$ w nowej $k$-wymiarowej przestrzeni.
+
+Innymi słowy, szukamy (niekoniecznie liniowego) przekształcenia, które możliwie
+najwierniej (w sensie ważonego błędu kwadratowego) zachowa odległości pomiędzy
+obiektami. Takie przekształcenie poszukiwane jest iteracyjnie.
+
+Jak to zrobić w R? Można np. używając funkcji `sammon(MASS)`. Pierwszym argumentem tej funkcji powinna być macierz odległości pomiędzy obiektami (np. wynik
+funkcji `dist()`) a argument `k` określa na iluwymiarową przestrzeń chcemy skalować dane (domyślnie $k = 2$).
+```{r}
+# wyznaczamy macierz odległości
+odleglosci = dist(dane)
+# wyznaczamy nowe współrzędne w przestrzeni dwuwymiarowej
+noweSammon = MASS::sammon(odleglosci, k=2, trace=FALSE)
+# jak wyglądają nowe współrzędne
+head(noweSammon$points)
+```
+```{r tab22, echo=FALSE,message=FALSE,warning=FALSE}
+text_tbl <- data.frame(
+  .=c("$\\texttt{\\$points}$",
+      "$\\texttt{\\$stress}$"),
+  opis=c("Macierz współrzędnych obiektów w nowej $k$-wymiarowej przestrzeni.",
+         "Uzyskana wartość optymalizowanego parametru stresu."))
+knitr::kable(text_tbl, caption="Pola obiektu będącego wynikiem funkcji sammon().",escape = F) %>%
+  kable_styling(full_width = F) %>%
+  column_spec(1, bold = F, border_right = T) %>%
+  column_spec(2, width = "35em")
+```

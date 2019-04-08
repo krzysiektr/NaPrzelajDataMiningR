@@ -1,0 +1,141 @@
+## Modele autoregresyjne ARIMA {#part_73}
+
+Modele $ARIMA$ służą do analizy stacjonarnych szeregów czasowych. W przypadku
+gdy szereg jest niestacjonarny należy sprowadzić go do stacjonarności np. poprzez
+różnicowanie. W skład modelu $ARIMA(p, d, q)$ mogą wchodzić następujące elementy:
+
+* $AR(p)$ -- autoregresja (rząd opóźnienia $p$)
+
+* $I(d)$ -- stopień integracji szeregu (krotność różnicowania $d$)
+
+* $MA(q)$ -- średnia ruchoma (rząd opóźnienia $q$)
+
+Z kolei gdy w badanym procesie występuje sezonowość należy estymować model o
+postaci $SARIMA(p, d, q)(P, D, Q)_m$ gdzie:
+
+* $m$ -- sezonowość (np. dla $m = 4$ sezonowość kwartalna)
+
+* $P$ -- autoregresja sezonowa
+
+* $D$ -- integracja sezonowa
+
+* $Q$ -- średnia ruchoma sezonowa
+
+Prawie każdy model $ARIMA$ można zapisać w dwojaki sposób np dla procesu $y_t$:
+
+* $ARIMA(2,0,0)$ czyli $AR(2)$:
+
+\begin{equation}
+y_t= \alpha_1 y_{t-1}+\alpha_2 y_{t-2}+\epsilon_t
+(\#eq:ar01)
+\end{equation}
+
+* $ARIMA(2,0,1)$ czyli $ARMA(2,1)$:
+
+\begin{equation}
+y_t= \alpha_1 y_{t-1}+\alpha_2 y_{t-2}-\beta_1 \epsilon_{t-1}+\epsilon_t
+(\#eq:ar02)
+\end{equation}
+
+* $ARIMA(2,1,0)$ czyli $ARI(2,1)$:
+
+\begin{equation}
+\Delta y_t= \alpha_1\Delta y_{t-1}+\alpha_2\Delta y_{t-2} +\epsilon_t
+(\#eq:ar03)
+\end{equation}
+
+* $SARIMA(1,0,0)(2,0,0)_4$ czyli $SARI(1)(2)_4$:
+
+\begin{equation}
+y_t= \alpha_1 y_{t-1}+\alpha_2 y_{t-4}+\alpha_3 y_{t-8} +\epsilon_t
+(\#eq:ar04)
+\end{equation}
+
+Środowisko R dostarcza wiele funkcji za pomocą których możemy estymować
+modele typu $ARIMA$. Przykładowo komenda [ar](https://rdrr.io/r/stats/ar.html) daje możliwość estymacji modeli autoregresyjnych $AR(p)$. Opcja method oferuje kilka sposobów szacowania
+parametrów modelu: `burg`, `ols`, `mle`, `yule-walker`, `yw`. Z kolei funkcja [`arima`](https://rdrr.io/r/stats/arima.html) służy do estymacji modeli $ARIMA$ lub $SARIMA$. Warto także
+zwrócić uwagę na pakiet [`forecast`](https://rdrr.io/cran/forecast/) który dostarcza szereg funkcji do analizy szeregów czasowych.
+
+### Estymacja {#part_731}
+
+Wykorzystując funkcje [`forecast::auto.arima`](https://rdrr.io/cran/forecast/man/auto.arima.html) proces estymacji modelu `ARIMA`
+przebiega w sposób całkowicie automatyczny. Spośród wielu estymowanych modeli zostaje wybrany ten, który charakteryzuje się najmniejszą wartością kryterium
+informacyjnego AIC -- opcja domyślna. W poniższym przykładzie założymy stałą wartość parametru różnicowania $d=1$.
+```{r}
+m <- forecast::auto.arima(b,d=1)
+summary(m)
+```
+
+Oczywiście można samemu założyć liczbę wszystkich parametrów $p$, $d$, $q$, $P$ , $D$, $Q$.
+```{r}
+m <- arima(b,order=c(1,1,0),seasonal=list(order=c(1,0,0),period=12))
+summary(m)
+```
+Warto również zaznaczyć, że w programie R mamy możliwość symulowania procesów autoregresji.
+```{r}
+y <- arima.sim( n=1000,
+                innov=rnorm(1000,0,2), # składnik losowy ma rozkład N(0,2)
+                model=list(
+                  order = c(2,1,1), # ilość parametrów
+                  ar = c(0.3, 0.6), # wartości parametrów p
+                  ma = c( 0.2),     # wartości parametrów q
+                  sd = sqrt(0.1)))
+```
+```{r wy79, fig.cap='Prezentacja graficzna symulowanego procesu.', fig.show='hold',fig.pos= 'h', fig.align='center', fig.width=8, fig.height=4,out.width='70%'}
+par(mar=c(4,4,1,1)+0.1, mgp=c(3,0.6,0),las=1)
+plot(ts(y),type="l",col="SteelBlue")
+```
+```{r}
+s <- arima(y,order=c(2,1,1))
+s
+```
+Dzięki zastosowaniu funkcji [`forecast::ndiffs`](https://rdrr.io/cran/forecast/man/ndiffs.html) mamy możliwość sprawdzenia czy rzeczywiście proces y jest zintegrowany w stopniu pierwszym tzn. $I(1)$. Za pomocą opcji test możemy wybrać procedurę z jakiej chcemy skorzystać: `pp` -- test Phillipsa-Perrona, `adf` -- test Dickeya-Fullera lub `kpss` -- test Kwiatkowski-Phillips-Schmidt-Shin. Poziom istotności `alpha` także możemy zmieniać.
+```{r}
+forecast::ndiffs(y,test="pp",alpha=0.05)
+```
+Wynikiem funkcji [`forecast::ndiffs`](https://rdrr.io/cran/forecast/man/ndiffs.html) zawsze jest stopień zintegrowania badanego
+procesu. Zatem należy stwierdzić, że w zmiennej $y$ występuje pierwiastek jednostkowy $d = 1$.
+
+### Weryfikacja {#part_732}
+
+Etap weryfikacji oszacowanego modelu $ARIMA$ polega na sprawdzeniu hipotezy zerowej o braku zjawiska autokorelacji w procesie reszt. Do tego celu możemy wykorzystać test Ljunga-Boxa.
+```{r}
+r <- resid(m)
+p <- sapply(1:10,function(i) Box.test(r, i, type = "Ljung-Box")$p.value)
+p
+```
+
+Tak więc na podstawie testu Ljunga-Boxa brak jest podstaw do odrzucenia hipotezy
+zerowej zakładającej brak autokorelacji. Wniosek ten potwierdzają również wykresy
+wykonane za pomocą komendy [`tsdiag`](https://rdrr.io/r/stats/tsdiag.html) (rys. \@ref(fig:wy80)).
+```{r wy80, fig.cap='Diagnostyka reszt modelu.',fig.pos= 'h', fig.show='hold', fig.align='center', fig.width=8, fig.height=6,out.width='70%'}
+par(mar=c(4,4,1,1)+0.1, mgp=c(3,0.6,0),las=1)
+tsdiag(m)
+```
+
+
+### Prognozowanie {#part_733}
+
+Funkcja [`forecast::forecast`](https://rdrr.io/cran/forecast/man/forecast.html) służy do obliczania prognoz na podstawie danego
+modelu. W naszym przykładzie liczbę okresów do prognozowania została ustalona
+na $12$ miesięcy. Natomiast przedziały predykcji zostały ustalone na poziomie 80%
+i $95\%$ -- są to wartości domyślne. Gdybyśmy chcieli je zmienić na $99\%$ wystarczy użyć polecenia `level=99`.
+```{r}
+forecast::forecast(m,h=12)
+```
+```{r wy81, fig.cap='Prognoza stopy bezrobocia od 10.2010–09.2011.',fig.pos= 'h', fig.show='hold', fig.align='center', fig.width=8, fig.height=4,out.width='70%'}
+par(mar=c(4,4,1,1)+0.1, mgp=c(3,0.6,0),las=1)
+plot(forecast::forecast(m,h=12))
+```
+Dodatkowo możemy wyznaczyć błędy prognoz za pomocą funkcji [`predict`](https://rdrr.io/r/stats/predict.lm.html):
+```{r}
+p <- predict(m,n.ahead=12)
+ts( cbind(pred=p$pred, se=p$se, error=p$se/p$pred), start=c(2010,10),freq=12)
+```
+Otrzymane wartości prognostyczne wskazują, iż należy się spodziewać wzrostu stopy
+bezrobocia od października $2010$--$11,66\%$ do lutego 2011--$13,07\%$. Od marca
+należy się spodziewać spadku tego wskaźnika do poziomu $11,31\%$ w czerwcu $2011$
+roku. Następnie będzie on znów powoli wzrastał i w miesiącu wrześniu osiągnie
+wartość $11,97\%$. Należy także zwrócic uwagę na oszacowane błędy otrzymanych
+prognoz. Dla października 2010 wyniósł on $1,9\%$ i cały czas wzrastał, aż do poziomu $13,04\%$ dla września $2011$ roku.
+

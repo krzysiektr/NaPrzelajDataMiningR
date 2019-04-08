@@ -1,0 +1,68 @@
+# Przykład analizy liczby przestępstw w Polsce w 2009 r. {#part_12}
+
+---
+
+## Wprowadzenie {#part_12.1}
+
+Do analizy liczby przestępstw w Polsce wykorzystamy dane które są dostępne w bazie
+danych GUS. Tabela przedstawia liczbę przestępstw stwierdzonych w zakończonych
+postępowaniach przygotowawczych w 2009 roku.
+
+```{r}
+krym <- c(77967, 36815, 49457, 31104, 22182, 62488, 103680, 18582, 23852, 16086,
+          53998, 117557, 18725, 25482, 66610, 39012)
+gosp <- c(11169, 10337, 5870, 4854, 5506, 11824, 14045, 2648, 4551, 2561,
+          26185, 19481, 9108, 4943, 12425, 5758)
+zyc_zdr <- c(2705, 1396, 1957, 1604, 1073, 2496, 3496, 923, 1326, 1015, 2437,
+             5050, 879, 1506, 2410, 1435)
+wol <- c(4498, 1883, 2765, 1849, 1628, 4009, 4225, 1421, 1597, 921, 3511,
+         6670, 921, 1498, 3818, 2160)
+rodz_opie <- c(3430, 1669, 3191, 3086, 1109, 2751, 5041, 1210, 1486, 923,
+               1723, 6853, 1267, 1805, 3123, 1099)
+mien <- c(60385, 33400, 34622, 22119, 16262, 47333, 81870, 13896, 17535, 11940,
+          46273, 93888, 16267, 19794, 45119, 30558)
+drog <- c(15936, 8931, 12362, 10011, 7403, 10330, 21876, 5578, 7961, 5696,
+          8341, 14934, 6180, 6575, 15134, 10900)
+woj <- c("dolnośląskie", "kuj_pom", "łódzkie", "lubelskie", "lubuskie", "małopolskie",
+         "mazowieckie", "opolskie", "podkarpackie", "podlaskie", "pomorskie", "śląskie",
+         "świętokrzyskie", "war_mazur", "wielkopolskie", "zach_pomorskie")
+G <-data.frame(krym,gosp,zyc_zdr,wol,rodz_opie,mien,drog,
+               row.names = woj) 
+```
+gdzie:
+
+* `krym` -- przestępstwa o charakterze kryminalnym,
+
+* `gosp` -- przestępstwa o charakterze gospodarczym,
+
+* `zyc_zdr` -- przestępstwa przeciwko życiu i zdrowiu,
+
+* `wol` -- przestępstwa przeciwko wolności, wolności sumienia i wyznania, wolności
+seksualnej i obyczjności,
+
+* `rodz_opie` -- przestępstwa przeciwko rodzinie i opiece,
+
+* `mien` -- przestępstwa przeciwko mieniu,
+
+* `drog` -- przestępstwa drogowe.
+
+Zanim przystąpimy do analiz warto przekształcić tabelę `g` w tabelę kontyngencji.
+Można to zrobić w następujący sposób:
+
+```{r}
+g <- G[,-8]
+m <- array(
+  c(g[,1],g[,2],g[,3],g[,4],g[,5],g[,6],g[,7]), # kolumny tabeli
+  dim=c(length(g[,1]),length(g[1,])),           # liczba wierszy, kolumn
+  dimnames = list(
+    województwo=c(rownames(g)),    # nazwy wierszy
+    przestępczość=c(colnames(g)))) # nazwy kolumn
+```
+W pierwszej kolejności zbadamy czy występuje zależność między województwami a
+rodzajem przestępstwa. Zrobimy to za pomocą testu niezależności $\chi^2$.
+```{r}
+vcd::assocstats(m)
+```
+Wartość p-value jest równa 0. Zatem występuje pewna zależność między zmiennymi.
+Do oceny siły tego związku wykorzystamy współczynniki kontyngencji oraz Cramera.
+Wynoszą one odpowiednio: $0,166$ i $0,069$ czyli badana zależność nie jest zbyt wysoka.

@@ -1,0 +1,9 @@
+## Założenia {#part_53}
+
+* wielowymiarowa normalność,
+
+* brak obserwacji odstających (miara Cooka, Leverage, test Grubbsa, test Dixona)
+
+* brak współliniowości (reguła kciuka, wyznacznik $>10^{-5}$ )
+
+Liczba obserwacji powinna być większa od około 20*liczba zmiennych.

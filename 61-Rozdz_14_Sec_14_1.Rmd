@@ -1,0 +1,73 @@
+# Zbiory danych {#part_14}
+
+W tym miejscu przedstawimy zbiory danych wykorzystywane w poprzednich rozdziałach. Są one umieszczone w Internecie i można je ściągnąć podanymi poniżej
+poleceniami. Jeżeli nie mamy własnych danych, to warto na tych przećwiczyć omawiane w tej książce funkcje.
+
+## Zbiór danych GUSowskich {#part_14.1}
+
+Korzystając z danych dostępnych na stronach GUSu [http://www.stat.gov.pl/](http://www.stat.gov.pl/)
+przygotowałem poniższy wybranych wskaźników w rozbiciu na województwa. Są to
+prawdziwe dane dotyczące roku 2007.
+```
+daneGUS <- read. table(”http ://www. biecek . pl/R/dane/Dane2007GUS. csv” , sep=”; ” ,
+h=T, dec=” ,”)
+```
+
+W tej ramce danych dla 16 województw zebrane są następujące dane:
+
+1. ludnosc.do.15.lat - liczba mieszkańców w wieku do 15 lat
+
+2. ludnosc.15.60.lat - liczba mieszkańców w wieku od 15 do 60 lat
+
+3. ludnosc..60.lat + - liczba mieszkańców w wieku od 60 lat
+
+4. mieszkan.wyprodukowanych - liczba mieszkań wyprodukowanych w 2007 roku
+
+5. studenci.artystyczne - liczba studentów kierunków artystycznych
+
+6. studenci.spoleczne - liczba studentów kierunków społecznych
+
+7. studenci.ekonomia - liczba studentów kierunków ekonomicznych
+
+8. studenci.prawne - liczba studentów kierunków prawniczych
+
+9. studenci.dziennikarstwo - liczba studentów kierunku dziennikarstwo
+
+10. studenci.biologiczne - liczba studentów kierunków biologicznych
+
+11. studenci.fizyczne - liczba studentów kierunków fizycznych
+
+12. studenci.matematyczno.statystyczne - liczba studentów kierunków matematycznych
+
+13. studenci.informatyczne - liczba studentów kierunków informatycznych
+
+14. studenci.medyczne - liczba studentów kierunków medycznych
+
+15. studenci.inzynieryjno.techniczne - liczba studentów kierunków inżynieryjno technicznych
+
+16. studenci.produkcja.i.przetworstwo - liczba studentów kierunków produkcja i
+przetwórstwo
+
+17. studenci.architektura.i.budownictwo - liczba studentów kierunków architektura i budownictwo
+
+18. studenci.na.ochrona.srodowiska - liczba studentów kierunku ochrona środowiska
+19. studenci.na.ochrona.i.bezpieczenstwo - liczba studentów kierunków ochrona i
+bezpieczeństwo
+
+20. nauczycieli.akademickich - liczba nauczycieli akademickich
+
+21. dochod.budzetu.na.mieszkanca - średni dochód do budżetu na jednego mieszkańca
+
+22. pracujacy.rolnictwo - liczba (w tysiącach) osób pracujących w sekorze rolniczym
+
+23. pracujacy.przemysl - liczba (w tysiącach) osób pracujących w przemyśle
+
+24. pracujacy.uslugi - liczba (w tysiącach) osób pracujących w sekorze usługowym
+
+25. bezrobotni - liczba (w tysiącach) bezrobotnych
+
+26. powierzchnia.na.mieszkanie - średnia powierzchnia mieszkania
+
+27. powierzchnia.na.osobe - średnia powierzchnia mieszkania na osobe
+
+28. mieszkancow.na.sklep - średnia liczba mieszkańsców na sklep

@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html  lang="pl">
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Rozdział 13 Modele regresji | Na przełaj przez Data Mining z pakietem R</title>
+  <meta name="description" content="Zbiór przykładów użycia wybranych funkcji statystycznych i Data Mining dostępnych w programie R.">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
+
+  <meta property="og:title" content="Rozdział 13 Modele regresji | Na przełaj przez Data Mining z pakietem R" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Zbiór przykładów użycia wybranych funkcji statystycznych i Data Mining dostępnych w programie R." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Rozdział 13 Modele regresji | Na przełaj przez Data Mining z pakietem R" />
+  
+  <meta name="twitter:description" content="Zbiór przykładów użycia wybranych funkcji statystycznych i Data Mining dostępnych w programie R." />
+  
+
+<meta name="author" content="Przemysław Biecek, Krzysztof Trajkowski">
+
+
+<meta name="date" content="2019-04-08">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="part-12.html">
+<link rel="next" href="part-14.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; position: absolute; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; }
+pre.numberSource a.sourceLine:empty
+  { position: absolute; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Na przełaj przez Data Mining<br/> z pakietem R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Kilka słów zamiast wstępu</a></li>
+<li class="chapter" data-level="2" data-path="part-2.html"><a href="part-2.html"><i class="fa fa-check"></i><b>2</b> Redukcja wymiaru</a><ul>
+<li class="chapter" data-level="2.1" data-path="part-2.html"><a href="part-2.html#part_21"><i class="fa fa-check"></i><b>2.1</b> Analiza składowych głównych (PCA, ang. Principal Components Analysis)</a></li>
+<li class="chapter" data-level="2.2" data-path="part-2.html"><a href="part-2.html#part_22"><i class="fa fa-check"></i><b>2.2</b> Nieliniowe skalowanie wielowymiarowe (Sammon Mapping)</a></li>
+<li class="chapter" data-level="2.3" data-path="part-2.html"><a href="part-2.html#part_23"><i class="fa fa-check"></i><b>2.3</b> Skalowanie wielowymiarowe Kruskalla (MDS, ang. Multidimensional Scaling)</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="part-3.html"><a href="part-3.html"><i class="fa fa-check"></i><b>3</b> Analiza skupień</a><ul>
+<li class="chapter" data-level="3.1" data-path="part-3.html"><a href="part-3.html#part_31"><i class="fa fa-check"></i><b>3.1</b> Metoda k-średnich</a></li>
+<li class="chapter" data-level="3.2" data-path="part-3.html"><a href="part-3.html#part_32"><i class="fa fa-check"></i><b>3.2</b> Metoda grupowania wokół centroidów (PAM, ang. Partitioning Around Medoids)</a></li>
+<li class="chapter" data-level="3.3" data-path="part-3.html"><a href="part-3.html#part_33"><i class="fa fa-check"></i><b>3.3</b> Metoda aglomeracyjnego klastrowania hierarchicznego</a></li>
+<li class="chapter" data-level="3.4" data-path="part-3.html"><a href="part-3.html#part_34"><i class="fa fa-check"></i><b>3.4</b> Ile skupień wybrać?</a></li>
+<li class="chapter" data-level="3.5" data-path="part-3.html"><a href="part-3.html#part_35"><i class="fa fa-check"></i><b>3.5</b> Inne metody analizy skupień</a></li>
+<li class="chapter" data-level="3.6" data-path="part-3.html"><a href="part-3.html#part_36"><i class="fa fa-check"></i><b>3.6</b> Case study</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="part-4.html"><a href="part-4.html"><i class="fa fa-check"></i><b>4</b> Analiza dyskryminacji</a><ul>
+<li class="chapter" data-level="4.1" data-path="part-4.html"><a href="part-4.html#part_41"><i class="fa fa-check"></i><b>4.1</b> Dyskryminacja liniowa i kwadratowa</a></li>
+<li class="chapter" data-level="4.2" data-path="part-4.html"><a href="part-4.html#part_42"><i class="fa fa-check"></i><b>4.2</b> Metoda najbliższych sąsiadów</a></li>
+<li class="chapter" data-level="4.3" data-path="part-4.html"><a href="part-4.html#part_43"><i class="fa fa-check"></i><b>4.3</b> Naiwny klasyfikator Bayesowski</a></li>
+<li class="chapter" data-level="4.4" data-path="part-4.html"><a href="part-4.html#part_44"><i class="fa fa-check"></i><b>4.4</b> Drzewa decyzyjne</a></li>
+<li class="chapter" data-level="4.5" data-path="part-4.html"><a href="part-4.html#part_45"><i class="fa fa-check"></i><b>4.5</b> Lasy losowe</a></li>
+<li class="chapter" data-level="4.6" data-path="part-4.html"><a href="part-4.html#part_46"><i class="fa fa-check"></i><b>4.6</b> Inne klasyfikatory</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="part-5.html"><a href="part-5.html"><i class="fa fa-check"></i><b>5</b> Analiza kanoniczna</a><ul>
+<li class="chapter" data-level="5.1" data-path="part-5.html"><a href="part-5.html#part_51"><i class="fa fa-check"></i><b>5.1</b> Problem</a></li>
+<li class="chapter" data-level="5.2" data-path="part-5.html"><a href="part-5.html#part_52"><i class="fa fa-check"></i><b>5.2</b> Rozwiązanie</a></li>
+<li class="chapter" data-level="5.3" data-path="part-5.html"><a href="part-5.html#part_53"><i class="fa fa-check"></i><b>5.3</b> Założenia</a></li>
+<li class="chapter" data-level="5.4" data-path="part-5.html"><a href="part-5.html#part_54"><i class="fa fa-check"></i><b>5.4</b> Jak to zrobić w R</a></li>
+<li class="chapter" data-level="5.5" data-path="part-5.html"><a href="part-5.html#part_55"><i class="fa fa-check"></i><b>5.5</b> Przykładowe wyniki</a></li>
+<li class="chapter" data-level="5.6" data-path="part-5.html"><a href="part-5.html#part_56"><i class="fa fa-check"></i><b>5.6</b> Studium przypadku</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="part-6.html"><a href="part-6.html"><i class="fa fa-check"></i><b>6</b> Analiza korespondencji (odpowiedniości)</a><ul>
+<li class="chapter" data-level="6.1" data-path="part-6.html"><a href="part-6.html#part_61"><i class="fa fa-check"></i><b>6.1</b> Problem</a></li>
+<li class="chapter" data-level="6.2" data-path="part-6.html"><a href="part-6.html#part_62"><i class="fa fa-check"></i><b>6.2</b> Rozwiązanie</a></li>
+<li class="chapter" data-level="6.3" data-path="part-6.html"><a href="part-6.html#part_63"><i class="fa fa-check"></i><b>6.3</b> Jak to zrobić w R?</a></li>
+<li class="chapter" data-level="6.4" data-path="part-6.html"><a href="part-6.html#part_64"><i class="fa fa-check"></i><b>6.4</b> Studium przypadku</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="part-7.html"><a href="part-7.html"><i class="fa fa-check"></i><b>7</b> Przykład analizy szeregów czasowych</a><ul>
+<li class="chapter" data-level="7.1" data-path="part-7.html"><a href="part-7.html#part_71"><i class="fa fa-check"></i><b>7.1</b> Wprowadzenie</a></li>
+<li class="chapter" data-level="7.2" data-path="part-7.html"><a href="part-7.html#part_72"><i class="fa fa-check"></i><b>7.2</b> Identyfikacja trendu i sezonowości</a><ul>
+<li class="chapter" data-level="7.2.1" data-path="part-7.html"><a href="part-7.html#part_721"><i class="fa fa-check"></i><b>7.2.1</b> Analiza wariancji - ANOVA</a></li>
+<li class="chapter" data-level="7.2.2" data-path="part-7.html"><a href="part-7.html#part_722"><i class="fa fa-check"></i><b>7.2.2</b> Funkcja autokorelacji - ACF</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="part-7.html"><a href="part-7.html#part_73"><i class="fa fa-check"></i><b>7.3</b> Modele autoregresyjne ARIMA</a><ul>
+<li class="chapter" data-level="7.3.1" data-path="part-7.html"><a href="part-7.html#part_731"><i class="fa fa-check"></i><b>7.3.1</b> Estymacja</a></li>
+<li class="chapter" data-level="7.3.2" data-path="part-7.html"><a href="part-7.html#part_732"><i class="fa fa-check"></i><b>7.3.2</b> Weryfikacja</a></li>
+<li class="chapter" data-level="7.3.3" data-path="part-7.html"><a href="part-7.html#part_733"><i class="fa fa-check"></i><b>7.3.3</b> Prognozowanie</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="part-7.html"><a href="part-7.html#part_74"><i class="fa fa-check"></i><b>7.4</b> Modele adaptacyjne</a><ul>
+<li class="chapter" data-level="7.4.1" data-path="part-7.html"><a href="part-7.html#part_741"><i class="fa fa-check"></i><b>7.4.1</b> Estymacja</a></li>
+<li class="chapter" data-level="7.4.2" data-path="part-7.html"><a href="part-7.html#part_742"><i class="fa fa-check"></i><b>7.4.2</b> Prognozowanie</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="part-8.html"><a href="part-8.html"><i class="fa fa-check"></i><b>8</b> Przykład analizy tabel wielodzielczych</a><ul>
+<li class="chapter" data-level="8.1" data-path="part-8.html"><a href="part-8.html#part_81"><i class="fa fa-check"></i><b>8.1</b> Wprowadzenie</a></li>
+<li class="chapter" data-level="8.2" data-path="part-8.html"><a href="part-8.html#part_82"><i class="fa fa-check"></i><b>8.2</b> Test chi-kwadrat</a></li>
+<li class="chapter" data-level="8.3" data-path="part-8.html"><a href="part-8.html#part_83"><i class="fa fa-check"></i><b>8.3</b> Model logitowy</a></li>
+<li class="chapter" data-level="8.4" data-path="part-8.html"><a href="part-8.html#part_84"><i class="fa fa-check"></i><b>8.4</b> Model logitowy</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="part-9.html"><a href="part-9.html"><i class="fa fa-check"></i><b>9</b> Przykład badania rozkładu stopy zwrotu z akcji</a><ul>
+<li class="chapter" data-level="9.1" data-path="part-9.html"><a href="part-9.html#part_9.1"><i class="fa fa-check"></i><b>9.1</b> Wprowadzenie</a></li>
+<li class="chapter" data-level="9.2" data-path="part-9.html"><a href="part-9.html#part_9.2"><i class="fa fa-check"></i><b>9.2</b> Statystyki opisowe</a></li>
+<li class="chapter" data-level="9.3" data-path="part-9.html"><a href="part-9.html#part_9.3"><i class="fa fa-check"></i><b>9.3</b> Rozkład normalny</a></li>
+<li class="chapter" data-level="9.4" data-path="part-9.html"><a href="part-9.html#part_9.4"><i class="fa fa-check"></i><b>9.4</b> Rozkład Cauchy’ego</a></li>
+<li class="chapter" data-level="9.5" data-path="part-9.html"><a href="part-9.html#part_9.5"><i class="fa fa-check"></i><b>9.5</b> Rozkład Laplace’a</a></li>
+<li class="chapter" data-level="9.6" data-path="part-9.html"><a href="part-9.html#part_9.6"><i class="fa fa-check"></i><b>9.6</b> Rozkład Stabilny</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="part-10.html"><a href="part-10.html"><i class="fa fa-check"></i><b>10</b> Przykład budowy dynamicznego modelu liniowego</a><ul>
+<li class="chapter" data-level="10.1" data-path="part-10.html"><a href="part-10.html#part_10.1"><i class="fa fa-check"></i><b>10.1</b> Wprowadzenie</a></li>
+<li class="chapter" data-level="10.2" data-path="part-10.html"><a href="part-10.html#part_10.2"><i class="fa fa-check"></i><b>10.2</b> Badanie wewnętrznej struktury procesu</a><ul>
+<li class="chapter" data-level="10.2.1" data-path="part-10.html"><a href="part-10.html#part_10.2.1"><i class="fa fa-check"></i><b>10.2.1</b> Trend</a></li>
+<li class="chapter" data-level="10.2.2" data-path="part-10.html"><a href="part-10.html#part_10.2.2"><i class="fa fa-check"></i><b>10.2.2</b> Sezonowość</a></li>
+<li class="chapter" data-level="10.2.3" data-path="part-10.html"><a href="part-10.html#part_10.2.3"><i class="fa fa-check"></i><b>10.2.3</b> Stopień autoregresji – funkcja PACF</a></li>
+<li class="chapter" data-level="10.2.4" data-path="part-10.html"><a href="part-10.html#part_10.2.4"><i class="fa fa-check"></i><b>10.2.4</b> Stopień integracji – test ADF/PP</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="part-10.html"><a href="part-10.html#part_10.3"><i class="fa fa-check"></i><b>10.3</b> Weryfikacja modelu</a><ul>
+<li class="chapter" data-level="10.3.1" data-path="part-10.html"><a href="part-10.html#part_10.3.1"><i class="fa fa-check"></i><b>10.3.1</b> Estymacja dynamicznego modelu liniowego</a></li>
+<li class="chapter" data-level="10.3.2" data-path="part-10.html"><a href="part-10.html#part_10.3.2"><i class="fa fa-check"></i><b>10.3.2</b> Ocena jakości modelu</a></li>
+</ul></li>
+<li class="chapter" data-level="10.4" data-path="part-10.html"><a href="part-10.html#part_10.4"><i class="fa fa-check"></i><b>10.4</b> Diagnostyka modelu</a><ul>
+<li class="chapter" data-level="10.4.1" data-path="part-10.html"><a href="part-10.html#part_10.4.1"><i class="fa fa-check"></i><b>10.4.1</b> Normalność procesu resztowego</a></li>
+<li class="chapter" data-level="10.4.2" data-path="part-10.html"><a href="part-10.html#part_10.4.2"><i class="fa fa-check"></i><b>10.4.2</b> Autokorelacja procesu resztowego</a></li>
+<li class="chapter" data-level="10.4.3" data-path="part-10.html"><a href="part-10.html#part_10.4.3"><i class="fa fa-check"></i><b>10.4.3</b> Heteroskedastyczność procesu resztowego</a></li>
+<li class="chapter" data-level="10.4.4" data-path="part-10.html"><a href="part-10.html#part_10.4.4"><i class="fa fa-check"></i><b>10.4.4</b> Stabilność parametrów modelu</a></li>
+<li class="chapter" data-level="10.4.5" data-path="part-10.html"><a href="part-10.html#part_10.4.5"><i class="fa fa-check"></i><b>10.4.5</b> Postać analityczna modelu</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="part-11.html"><a href="part-11.html"><i class="fa fa-check"></i><b>11</b> Przegląd wybranych testów statystycznych</a><ul>
+<li class="chapter" data-level="11.1" data-path="part-11.html"><a href="part-11.html#part_11.1"><i class="fa fa-check"></i><b>11.1</b> Testy normalności</a></li>
+<li class="chapter" data-level="11.2" data-path="part-11.html"><a href="part-11.html#part_11.2"><i class="fa fa-check"></i><b>11.2</b> Testy asymptotyczne</a></li>
+<li class="chapter" data-level="11.3" data-path="part-11.html"><a href="part-11.html#part_11.3"><i class="fa fa-check"></i><b>11.3</b> Testy dla proporcji</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="part-12.html"><a href="part-12.html"><i class="fa fa-check"></i><b>12</b> Przykład analizy liczby przestępstw w Polsce w 2009 r.</a><ul>
+<li class="chapter" data-level="12.1" data-path="part-12.html"><a href="part-12.html#part_12.1"><i class="fa fa-check"></i><b>12.1</b> Wprowadzenie</a></li>
+<li class="chapter" data-level="12.2" data-path="part-12.html"><a href="part-12.html#part_12.2"><i class="fa fa-check"></i><b>12.2</b> Mapy</a></li>
+<li class="chapter" data-level="12.3" data-path="part-12.html"><a href="part-12.html#part_12.3"><i class="fa fa-check"></i><b>12.3</b> Analiza wariancji</a></li>
+<li class="chapter" data-level="12.4" data-path="part-12.html"><a href="part-12.html#part_12.4"><i class="fa fa-check"></i><b>12.4</b> Modele dla liczebności</a></li>
+<li class="chapter" data-level="12.5" data-path="part-12.html"><a href="part-12.html#part_12.5"><i class="fa fa-check"></i><b>12.5</b> Modele dla częstości</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="part-13.html"><a href="part-13.html"><i class="fa fa-check"></i><b>13</b> Modele regresji</a><ul>
+<li class="chapter" data-level="13.1" data-path="part-13.html"><a href="part-13.html#part_13.1"><i class="fa fa-check"></i><b>13.1</b> Wprowadzenie</a></li>
+<li class="chapter" data-level="13.2" data-path="part-13.html"><a href="part-13.html#part_13.2"><i class="fa fa-check"></i><b>13.2</b> Estymacja modelu liniowego</a><ul>
+<li class="chapter" data-level="13.2.1" data-path="part-13.html"><a href="part-13.html#part_13.2.1"><i class="fa fa-check"></i><b>13.2.1</b> Metoda najmniejszych kwadratów</a></li>
+<li class="chapter" data-level="13.2.2" data-path="part-13.html"><a href="part-13.html#part_13.2.2"><i class="fa fa-check"></i><b>13.2.2</b> Poprawność specyfikacji modelu</a></li>
+<li class="chapter" data-level="13.2.3" data-path="part-13.html"><a href="part-13.html#part_13.2.3"><i class="fa fa-check"></i><b>13.2.3</b> Normalność</a></li>
+<li class="chapter" data-level="13.2.4" data-path="part-13.html"><a href="part-13.html#part_13.2.4"><i class="fa fa-check"></i><b>13.2.4</b> Heteroskedastyczność</a></li>
+<li class="chapter" data-level="13.2.5" data-path="part-13.html"><a href="part-13.html#part_13.2.5"><i class="fa fa-check"></i><b>13.2.5</b> Obserwacje odstające</a></li>
+<li class="chapter" data-level="13.2.6" data-path="part-13.html"><a href="part-13.html#part_13.2.6"><i class="fa fa-check"></i><b>13.2.6</b> Metoda najmniejszych wartości bezwzględnych</a></li>
+</ul></li>
+<li class="chapter" data-level="13.3" data-path="part-13.html"><a href="part-13.html#part_13.3"><i class="fa fa-check"></i><b>13.3</b> Estymacja modelu nieliniowego</a><ul>
+<li class="chapter" data-level="13.3.1" data-path="part-13.html"><a href="part-13.html#part_13.3.1"><i class="fa fa-check"></i><b>13.3.1</b> Model kwadratowy</a></li>
+<li class="chapter" data-level="13.3.2" data-path="part-13.html"><a href="part-13.html#part_13.3.2"><i class="fa fa-check"></i><b>13.3.2</b> Model wykładniczy</a></li>
+<li class="chapter" data-level="13.3.3" data-path="part-13.html"><a href="part-13.html#part_13.3.3"><i class="fa fa-check"></i><b>13.3.3</b> Model hiperboliczny</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="part-14.html"><a href="part-14.html"><i class="fa fa-check"></i><b>14</b> Zbiory danych</a><ul>
+<li class="chapter" data-level="14.1" data-path="part-14.html"><a href="part-14.html#part_14.1"><i class="fa fa-check"></i><b>14.1</b> Zbiór danych GUSowskich</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="bibliografia.html"><a href="bibliografia.html"><i class="fa fa-check"></i>Bibliografia</a></li>
+<li class="divider"></li>
+<li><a href="http://www.biecek.pl/NaPrzelajPrzezDataMining/" target="blank">strona projektu</a></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Na przełaj przez Data Mining z pakietem R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="part_13" class="section level1">
+<h1><span class="header-section-number">Rozdział 13</span> Modele regresji</h1>
+<hr />
+<div id="part_13.1" class="section level2">
+<h2><span class="header-section-number">13.1</span> Wprowadzenie</h2>
+<p>W tym opracowaniu zostanie przedstawionych kilka modeli regresji oraz metody za
+pomocą których można oszacować ich parametry. Dane jakie zostaną wykorzystane
+do budowy modeli regresji dotyczą przeciętnych miesięcznych wydatków i dochodów
+przypadających na jedną osobę w danym województwie. Informacje zostały zebrane
+i opublikowane przez GUS od 37302 gospodarstw domowych w 2009 roku.</p>
+<pre class="sourceCode r"><code class="sourceCode r">wyd &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">997.73</span>, <span class="fl">1233.28</span>, <span class="fl">900.35</span>, <span class="fl">959.51</span>, <span class="fl">826.98</span>, <span class="fl">783.78</span>, <span class="fl">823.56</span>, <span class="fl">792.07</span>, <span class="fl">937.9</span>, <span class="fl">879.57</span>,
+         <span class="fl">940.2</span>, <span class="fl">1013.17</span>, <span class="fl">1016.33</span>, <span class="fl">875.59</span>, <span class="fl">977.11</span>, <span class="fl">872.5</span>) <span class="co"># wydatki</span>
+doch &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">1115.1</span>, <span class="fl">1438.73</span>, <span class="fl">1041.73</span>, <span class="fl">1114.05</span>, <span class="fl">908.99</span>, <span class="fl">834.59</span>, <span class="fl">1018.77</span>, <span class="fl">937.89</span>, <span class="fl">1103.32</span>,
+          <span class="fl">1097.33</span>, <span class="fl">1139.67</span>, <span class="fl">1174.26</span>, <span class="fl">1082.27</span>, <span class="fl">1014.99</span>, <span class="fl">1164.50</span>, <span class="fl">1084.28</span>) <span class="co"># dochody</span>
+<span class="co"># liczba gospodarstw domowych objętych badaniem:</span>
+gd &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">2735</span>,<span class="dv">5366</span>,<span class="dv">3104</span>,<span class="dv">4381</span>,<span class="dv">2205</span>,<span class="dv">1932</span>,<span class="dv">1208</span>,<span class="dv">1258</span>,<span class="dv">989</span>,<span class="dv">3143</span>,<span class="dv">1627</span>,<span class="dv">2939</span>,<span class="dv">1017</span>,<span class="dv">1965</span>,<span class="dv">2039</span>,<span class="dv">1394</span>)
+t &lt;-<span class="st"> </span><span class="kw">data.frame</span>(doch,wyd)</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">1</span>,<span class="dv">1</span>)<span class="op">+</span><span class="fl">0.1</span>, <span class="dt">mgp=</span><span class="kw">c</span>(<span class="dv">3</span>,<span class="fl">0.6</span>,<span class="dv">0</span>),<span class="dt">las=</span><span class="dv">1</span>)
+<span class="kw">plot</span>(doch,wyd,<span class="dt">cex=</span><span class="fl">1.2</span>,<span class="dt">pch=</span><span class="dv">20</span>,<span class="dt">xlim=</span><span class="kw">c</span>(<span class="dv">800</span>,<span class="dv">1550</span>))
+<span class="kw">lines</span>(<span class="kw">lowess</span>(t),<span class="dt">lwd=</span><span class="dv">2</span>,<span class="dt">lty=</span><span class="dv">2</span>,<span class="dt">col=</span><span class="st">&quot;red&quot;</span>); <span class="kw">grid</span>(<span class="dt">col=</span><span class="st">&quot;black&quot;</span>)
+<span class="kw">legend</span>(<span class="st">&quot;topleft&quot;</span>,<span class="kw">c</span>(<span class="st">&quot;regresja lokalnie wygładzana - lowess&quot;</span>),<span class="dt">lty=</span><span class="dv">2</span>,<span class="dt">lwd=</span><span class="dv">2</span>, <span class="dt">col=</span><span class="st">&quot;red&quot;</span>,<span class="dt">bg=</span><span class="st">&quot;white&quot;</span>)</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:wy131"></span>
+<img src="NaPrzelajR_files/figure-html/wy131-1.png" alt="Wykres korelacyjny: dochód vs. wydatki." width="70%" />
+<p class="caption">
+Rysunek 13.1: Wykres korelacyjny: dochód vs. wydatki.
+</p>
+</div>
+
+</div>
+<div id="part_13.2" class="section level2">
+<h2><span class="header-section-number">13.2</span> Estymacja modelu liniowego</h2>
+<div id="part_13.2.1" class="section level3">
+<h3><span class="header-section-number">13.2.1</span> Metoda najmniejszych kwadratów</h3>
+<p>W programie R do estymacji modeli liniowych służy funkcja lm(stats). Kryterium
+optymalizacji dla metody najmniejszych kwadratów jest przedstawione poniżej (wzory <a href="part-13.html#eq:wz131a">(13.1)</a> oraz <a href="part-13.html#eq:wz131b">(13.2)</a>).</p>
+<p><span class="math display" id="eq:wz131a">\[\begin{equation}
+\sum_{i=1}^{n}e_i^2 \longrightarrow\quad\mbox{min}
+\tag{13.1}
+\end{equation}\]</span>
+<span class="math display" id="eq:wz131b">\[\begin{equation}
+\sum_{i=1}^{n}(y_i-\alpha_0-\alpha_1x_{1i})^2 \longrightarrow\quad\mbox{min}
+\tag{13.2}
+\end{equation}\]</span></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># model z wyrazem wolnym:</span>
+mnk &lt;-<span class="st"> </span><span class="kw">lm</span>(wyd<span class="op">~</span>doch,<span class="dt">data=</span>t)
+<span class="kw">summary</span>(mnk)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = wyd ~ doch, data = t)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -61.068 -27.713   0.374  30.364  87.274 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 96.73935   90.08070   1.074    0.301    
+## doch         0.76905    0.08285   9.282 2.33e-07 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 43.1 on 14 degrees of freedom
+## Multiple R-squared:  0.8602, Adjusted R-squared:  0.8502 
+## F-statistic: 86.15 on 1 and 14 DF,  p-value: 2.332e-07</code></pre>
+<p>Ponieważ wyraz wolny nie jest istotny statystycznie (p-value = <span class="math inline">\(0,301\)</span>) zostanie on usunięty z modelu.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># model bez wyrazu wolnego:</span>
+mnk0 &lt;-<span class="st"> </span><span class="kw">lm</span>(wyd<span class="op">~</span>doch<span class="op">+</span><span class="dv">0</span>, <span class="dt">data=</span>t)
+<span class="kw">summary</span>(mnk0)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = wyd ~ doch + 0, data = t)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -61.267 -25.223   2.034  15.802  88.405 
+## 
+## Coefficients:
+##      Estimate Std. Error t value Pr(&gt;|t|)    
+## doch 0.857387   0.009962   86.07   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 43.32 on 15 degrees of freedom
+## Multiple R-squared:  0.998,  Adjusted R-squared:  0.9978 
+## F-statistic:  7407 on 1 and 15 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>Usunięcie wyrazu wolnego spowodowało podwyższenie skorygowanego współczynnika determinacji który teraz jest równy <span class="math inline">\(0,998\)</span>. A więc model jest lepiej dopasowany.
+Potwierdza to także kryterium informacyjne <span class="math inline">\(AIC\)</span> oraz <span class="math inline">\(BIC\)</span>.
+<span class="math display" id="eq:wz132">\[\begin{equation}
+AIC=n+n\ln(2\pi)+n\ln\left(\frac{RSS}{n}\right)+3k
+\tag{13.3}
+\end{equation}\]</span></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># kryterium AIC dla modelu z wyrazem wolnym:</span>
+k &lt;-<span class="st"> </span><span class="dv">2</span>; n &lt;-<span class="st"> </span><span class="kw">length</span>(doch)
+aic &lt;-<span class="st"> </span>n <span class="op">+</span><span class="st"> </span>n<span class="op">*</span><span class="kw">log</span>(<span class="dv">2</span><span class="op">*</span>pi) <span class="op">+</span><span class="st"> </span>n <span class="op">*</span><span class="st"> </span><span class="kw">log</span>(<span class="kw">sum</span>(<span class="kw">resid</span>(mnk)<span class="op">^</span><span class="dv">2</span>) <span class="op">/</span><span class="st"> </span>n) <span class="op">+</span><span class="st"> </span><span class="dv">3</span> <span class="op">*</span><span class="st"> </span>k
+aic</code></pre>
+<pre><code>## [1] 169.7045</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># kryterium AIC dla modelu bez wyrazu wolnego:</span>
+aic0 &lt;-<span class="st"> </span>n <span class="op">+</span><span class="st"> </span>n<span class="op">*</span><span class="kw">log</span>(<span class="dv">2</span><span class="op">*</span>pi) <span class="op">+</span><span class="st"> </span>n <span class="op">*</span><span class="st"> </span><span class="kw">log</span>(<span class="kw">sum</span>(<span class="kw">resid</span>(mnk0)<span class="op">^</span><span class="dv">2</span>) <span class="op">/</span><span class="st"> </span>n) <span class="op">+</span><span class="st"> </span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span>k
+aic0</code></pre>
+<pre><code>## [1] 168.9711</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># z wykorzystaniem funkcji AIC oraz parametru k:</span>
+<span class="kw">AIC</span>(mnk,mnk0,<span class="dt">k=</span><span class="dv">2</span>)</code></pre>
+<pre><code>##      df      AIC
+## mnk   3 169.7045
+## mnk0  2 168.9711</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># kryterium BIC dla modelu z wyrazem wolnym:</span>
+k &lt;-<span class="st"> </span><span class="kw">log</span>(n)
+bic &lt;-<span class="st"> </span>n <span class="op">+</span><span class="st"> </span>n<span class="op">*</span><span class="kw">log</span>(<span class="dv">2</span><span class="op">*</span>pi) <span class="op">+</span><span class="st"> </span>n <span class="op">*</span><span class="st"> </span><span class="kw">log</span>(<span class="kw">sum</span>(<span class="kw">resid</span>(mnk)<span class="op">^</span><span class="dv">2</span>) <span class="op">/</span><span class="st"> </span>n) <span class="op">+</span><span class="st"> </span><span class="dv">3</span> <span class="op">*</span><span class="st"> </span>k
+bic</code></pre>
+<pre><code>## [1] 172.0223</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># kryterium BIC dla modelu bez wyrazu wolnego:</span>
+bic0 &lt;-<span class="st"> </span>n <span class="op">+</span><span class="st"> </span>n<span class="op">*</span><span class="kw">log</span>(<span class="dv">2</span><span class="op">*</span>pi) <span class="op">+</span><span class="st"> </span>n <span class="op">*</span><span class="st"> </span><span class="kw">log</span>(<span class="kw">sum</span>(<span class="kw">resid</span>(mnk0)<span class="op">^</span><span class="dv">2</span>) <span class="op">/</span><span class="st"> </span>n) <span class="op">+</span><span class="st"> </span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span>k
+bic0</code></pre>
+<pre><code>## [1] 170.5162</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">AIC</span>(mnk,mnk0,<span class="dt">k=</span><span class="kw">log</span>(n))</code></pre>
+<pre><code>##      df      AIC
+## mnk   3 172.0223
+## mnk0  2 170.5162</code></pre>
+<p>Porównamy teraz modele za pomocą funkcji <a href="https://rdrr.io/r/stats/anova.html"><code>anova</code></a>. Badane hipotezy mają
+następującą postać:
+<span class="math display">\[\begin{equation*}
+\begin{array}{r@{}l}
+H_0:&amp;\;y_i=0,857387x_{1i}\\
+H_1:&amp;\;y_i=0,76905x_{1i}+96,73935
+\end{array}
+\end{equation*}\]</span></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># test oparty na statystyce F:</span>
+<span class="kw">anova</span>(mnk0,mnk)</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Model 1: wyd ~ doch + 0
+## Model 2: wyd ~ doch
+##   Res.Df   RSS Df Sum of Sq      F Pr(&gt;F)
+## 1     15 28153                           
+## 2     14 26010  1    2142.7 1.1533  0.301</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># test oparty na statystyce chi-kwadrat:</span>
+<span class="kw">anova</span>(mnk0,mnk, <span class="dt">test=</span><span class="st">&quot;Chisq&quot;</span>)</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Model 1: wyd ~ doch + 0
+## Model 2: wyd ~ doch
+##   Res.Df   RSS Df Sum of Sq Pr(&gt;Chi)
+## 1     15 28153                      
+## 2     14 26010  1    2142.7   0.2829</code></pre>
+<p>Takie same wyniki otrzymamy wykorzystując funkcję badającą restrykcje nałożone
+na parametry modelu liniowego. Czyli zweryfikujemy hipotezę zerową o
+nieistotności wyrazu wolnego.
+<span class="math display">\[
+H_0:\;\alpha_0=0\quad\mbox{vs.}\quad H_1:\;\alpha_0=0
+\]</span></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># test oparty na statystyce F:</span>
+car<span class="op">::</span><span class="kw">linearHypothesis</span>(mnk, <span class="kw">c</span>(<span class="st">&quot;(Intercept) = 0&quot;</span>))</code></pre>
+<pre><code>## Linear hypothesis test
+## 
+## Hypothesis:
+## (Intercept) = 0
+## 
+## Model 1: restricted model
+## Model 2: wyd ~ doch
+## 
+##   Res.Df   RSS Df Sum of Sq      F Pr(&gt;F)
+## 1     15 28153                           
+## 2     14 26010  1    2142.7 1.1533  0.301</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># test oparty na statystyce chi-kwadrat:</span>
+car<span class="op">::</span><span class="kw">linearHypothesis</span>(mnk, <span class="kw">c</span>(<span class="st">&quot;(Intercept) = 0&quot;</span>),<span class="dt">test=</span><span class="st">&quot;Chisq&quot;</span>)</code></pre>
+<pre><code>## Linear hypothesis test
+## 
+## Hypothesis:
+## (Intercept) = 0
+## 
+## Model 1: restricted model
+## Model 2: wyd ~ doch
+## 
+##   Res.Df   RSS Df Sum of Sq  Chisq Pr(&gt;Chisq)
+## 1     15 28153                               
+## 2     14 26010  1    2142.7 1.1533     0.2829</code></pre>
+<p>Tak więc powyższe testy potwierdziły nasz wniosek, że lepszym modelem jest regresja liniowa bez wyrazu wolnego.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(doch,wyd,<span class="dt">cex=</span><span class="fl">1.2</span>,<span class="dt">pch=</span><span class="dv">20</span>)
+<span class="kw">abline</span>(mnk,<span class="dt">col=</span><span class="st">&#39;red&#39;</span>,<span class="dt">lwd=</span><span class="dv">2</span>,<span class="dt">lty=</span><span class="dv">2</span>); <span class="kw">abline</span>(mnk0,<span class="dt">col=</span><span class="st">&#39;blue&#39;</span>,<span class="dt">lwd=</span><span class="dv">2</span>)
+<span class="kw">legend</span>(<span class="st">&quot;topleft&quot;</span>,<span class="kw">c</span>(<span class="st">&quot;mnk&quot;</span>,<span class="st">&quot;mnk0&quot;</span>),<span class="dt">col=</span><span class="kw">c</span>(<span class="st">&quot;red&quot;</span>,<span class="st">&quot;blue&quot;</span>),<span class="dt">lty=</span><span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">1</span>),<span class="dt">lwd=</span><span class="dv">2</span>)</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:wy132"></span>
+<img src="NaPrzelajR_files/figure-html/wy132-1.png" alt="Regresja liniowa." width="70%" />
+<p class="caption">
+Rysunek 13.2: Regresja liniowa.
+</p>
+</div>
+</div>
+<div id="part_13.2.2" class="section level3">
+<h3><span class="header-section-number">13.2.2</span> Poprawność specyfikacji modelu</h3>
+<p>W tym podrozdziale omówimy dwa testy badające poprawną postać analityczną
+modelu: test RESET oraz test Rainbow. W programie R są one dostępne w paczce
+lmtest. W teście RESET należy oszacować model pomocniczy o równaniu:
+<span class="math display" id="eq:wz135">\[\begin{equation}
+y_i=\alpha_1x_{1i}+\alpha_2\hat{y}_i^2+\alpha_3\hat{y}_i^3
+\tag{13.4}
+\end{equation}\]</span></p>
+<pre class="sourceCode r"><code class="sourceCode r">reset23 &lt;-<span class="st"> </span><span class="kw">lm</span>(wyd<span class="op">~</span>doch<span class="op">+</span><span class="kw">I</span>(<span class="kw">fitted</span>(mnk0)<span class="op">^</span><span class="dv">2</span>)<span class="op">+</span><span class="kw">I</span>(<span class="kw">fitted</span>(mnk0)<span class="op">^</span><span class="dv">3</span>)<span class="op">+</span><span class="dv">0</span>)</code></pre>
+<p>a następnie zweryfikować hipotezę zerową o postaci:
+<span class="math display">\[\begin{equation*}
+H_{0}:
+\left[
+\begin{array}{c}
+\alpha_{2} \\[1mm]
+\alpha_{3}
+\end{array}
+\right]
+=
+\left[
+\begin{array}{c}
+0 \\[1mm]
+0
+\end{array}
+\right]
+\qquad
+H_1:
+\left[
+\begin{array}{c}
+\alpha_{2} \\[1mm]
+\alpha_{3}
+\end{array}
+\right]
+\neq
+\left[
+\begin{array}{c}
+0 \\[1mm]
+0
+\end{array}
+\right]
+\end{equation*}\]</span></p>
+<p>Do weryfikacji powyższej hipotezy statystycznej wykorzystamy funkcję <a href="https://rdrr.io/cran/car/man/linearHypothesis.html"><code>car::linearHypothesis</code></a>. Umożliwia ona testowanie restrykcji nałożonych na
+parametry modelu liniowego.</p>
+<pre class="sourceCode r"><code class="sourceCode r">car<span class="op">::</span><span class="kw">linearHypothesis</span>(reset23,
+                 <span class="kw">c</span>(<span class="st">&quot;I(fitted(mnk0)^2)= 0&quot;</span>,<span class="st">&quot;I(fitted(mnk0)^3)= 0&quot;</span>), <span class="dt">test=</span><span class="st">&quot;F&quot;</span>)</code></pre>
+<pre><code>## Linear hypothesis test
+## 
+## Hypothesis:
+## I(fitted(mnk0)^2) = 0
+## I(fitted(mnk0)^3) = 0
+## 
+## Model 1: restricted model
+## Model 2: wyd ~ doch + I(fitted(mnk0)^2) + I(fitted(mnk0)^3) + 0
+## 
+##   Res.Df   RSS Df Sum of Sq      F Pr(&gt;F)
+## 1     15 28153                           
+## 2     13 23446  2    4706.7 1.3049 0.3045</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">lmtest<span class="op">::</span><span class="kw">resettest</span>(mnk0, <span class="dt">power=</span><span class="dv">2</span><span class="op">:</span><span class="dv">3</span>, <span class="dt">type=</span> <span class="st">&quot;fitted&quot;</span>)</code></pre>
+<pre><code>## 
+##  RESET test
+## 
+## data:  mnk0
+## RESET = 1.3049, df1 = 2, df2 = 13, p-value = 0.3045</code></pre>
+<p>Na podstawie testu RESET stwierdzamy, że brak jest podstaw do odrzucenia hipotezy zerowej zakładającej liniowość modelu. Poniżej zostaną przedstawione także
+inne rodzaje tego testu.
+<span class="math display" id="eq:wz137">\[\begin{equation}
+y_i=\alpha_1x_{1i}+\alpha_2\hat{y}^2_i
+\tag{13.5}
+\end{equation}\]</span></p>
+<pre class="sourceCode r"><code class="sourceCode r">lmtest<span class="op">::</span><span class="kw">resettest</span>(mnk0, <span class="dt">power=</span><span class="dv">2</span>, <span class="dt">type=</span> <span class="st">&quot;fitted&quot;</span>)</code></pre>
+<pre><code>## 
+##  RESET test
+## 
+## data:  mnk0
+## RESET = 0.61343, df1 = 1, df2 = 14, p-value = 0.4465</code></pre>
+<p><span class="math display" id="eq:wz137">\[\begin{equation}
+y_i=\alpha_1x_{1i}+\alpha_2x^3_i
+\tag{13.5}
+\end{equation}\]</span></p>
+<pre class="sourceCode r"><code class="sourceCode r">lmtest<span class="op">::</span><span class="kw">resettest</span>(mnk0, <span class="dt">power=</span><span class="dv">3</span>, <span class="dt">type=</span> <span class="st">&quot;fitted&quot;</span>)</code></pre>
+<pre><code>## 
+##  RESET test
+## 
+## data:  mnk0
+## RESET = 0.42325, df1 = 1, df2 = 14, p-value = 0.5259</code></pre>
+<p>Kolejnym testem który przedstawimy to test Rainbow. Służy on także do badania postaci analitycznej modelu. Poniżej zostanie zaprezentowana jego procedura
+obliczeniowa.</p>
+<pre class="sourceCode r"><code class="sourceCode r">k &lt;-<span class="st"> </span><span class="dv">1</span> <span class="co"># liczba parametrów modelu razem z wyrazem wolnym</span>
+n &lt;-<span class="st"> </span><span class="kw">length</span>(doch)
+doch1 &lt;-<span class="st"> </span>doch[<span class="kw">order</span>(doch)] <span class="co"># sortowanie niemalejąco doch</span>
+wyd1 &lt;-<span class="st"> </span>wyd[<span class="kw">order</span>(doch)]  <span class="co"># sortowanie niemalejąco wyd względem doch</span></code></pre>
+<p>Z tak posortowanych danych wybieramy <span class="math inline">\(50\%\)</span> (frakcja) środkowych (centrum) obserwacji:</p>
+<pre class="sourceCode r"><code class="sourceCode r">fraction &lt;-<span class="st"> </span><span class="fl">0.5</span> <span class="co"># frakcja: 50 procent obserwacji czyli 8</span>
+center &lt;-<span class="st"> </span><span class="fl">0.5</span>   <span class="co"># centrum podziału: 50 procent</span>
+i &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">:</span>n        <span class="co"># indeksy zmiennych</span>
+<span class="co"># początkowy indeks dla zmiennych doch1 i wyd1:</span>
+from &lt;-<span class="st"> </span><span class="kw">ceiling</span>(<span class="kw">quantile</span>(i, <span class="dt">probs =</span> (center <span class="op">-</span><span class="st"> </span>fraction<span class="op">/</span><span class="dv">2</span>)))
+from</code></pre>
+<pre><code>## 25% 
+##   5</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># ostatni indeks dla zmiennych doch1 i wyd1:</span>
+to &lt;-<span class="st"> </span>from <span class="op">+</span><span class="st"> </span><span class="kw">floor</span>(fraction <span class="op">*</span><span class="st"> </span>n) <span class="op">-</span><span class="st"> </span><span class="dv">1</span>; to</code></pre>
+<pre><code>## 25% 
+##  12</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">sy &lt;-<span class="st"> </span>wyd1[from<span class="op">:</span>to]    <span class="co"># podpróba dla wyd1 o indeksach od 5 do 12</span>
+sx &lt;-<span class="st"> </span>doch1[from<span class="op">:</span>to]   <span class="co"># podpróba dla doch1 o indeksach od 5 do 12</span>
+n1 &lt;-<span class="st"> </span><span class="kw">length</span>(sy)     <span class="co"># liczebność podpróby</span>
+e &lt;-<span class="st"> </span><span class="kw">resid</span>(mnk0)     <span class="co"># reszty dla badanego modelu mnk0</span>
+r &lt;-<span class="st"> </span><span class="kw">resid</span>(<span class="kw">lm</span>(sy<span class="op">~</span>sx<span class="op">+</span><span class="dv">0</span>)) <span class="co"># reszty dla modelu z podpróby</span>
+ssr &lt;-<span class="st"> </span><span class="kw">sum</span>(e<span class="op">^</span><span class="dv">2</span>)      <span class="co"># suma kwadratów reszt dla mnk0</span>
+ssr1 &lt;-<span class="st"> </span><span class="kw">sum</span>(r<span class="op">^</span><span class="dv">2</span>)     <span class="co"># suma kwadratów reszt dla modelu z podpróby</span></code></pre>
+<p>Statystyka testu:
+<span class="math display" id="eq:wz139">\[\begin{equation}
+RAIN=\frac{(\sum_{i=1}^{n}e_i^2-\sum_{i=1}^{n_1}r_i^2)/(n-n_1)}{\sum_{i=1}^{n_1}r_i^2/(n_1-k)}
+\tag{13.6}
+\end{equation}\]</span></p>
+<pre class="sourceCode r"><code class="sourceCode r">rain &lt;-<span class="st"> </span>((ssr <span class="op">-</span><span class="st"> </span>ssr1)<span class="op">/</span>(n <span class="op">-</span><span class="st"> </span>n1))<span class="op">/</span>(ssr1<span class="op">/</span>(n1 <span class="op">-</span><span class="st"> </span>k)); rain</code></pre>
+<pre><code>## [1] 0.4166865</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">df &lt;-<span class="st"> </span><span class="kw">c</span>((n <span class="op">-</span><span class="st"> </span>n1), (n1 <span class="op">-</span><span class="st"> </span>k))
+<span class="dv">1</span><span class="op">-</span><span class="kw">pf</span>(rain, df[<span class="dv">1</span>], df[<span class="dv">2</span>])</code></pre>
+<pre><code>## [1] 0.8783834</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">lmtest<span class="op">::</span><span class="kw">raintest</span>(mnk0,<span class="dt">order.by=</span><span class="op">~</span>doch,<span class="dt">fraction=</span>.<span class="dv">5</span>,<span class="dt">center=</span>.<span class="dv">5</span>)</code></pre>
+<pre><code>## 
+##  Rainbow test
+## 
+## data:  mnk0
+## Rain = 0.41669, df1 = 8, df2 = 7, p-value = 0.8784</code></pre>
+</div>
+<div id="part_13.2.3" class="section level3">
+<h3><span class="header-section-number">13.2.3</span> Normalność</h3>
+<p>W R jest dostępnych wiele testów badających normalność rozkładu reszt. W tym
+opracowaniu zostanie przedstawiony jeden z nich. Test Andersona-Darlinga oraz
+szereg innych testów normalności możemy znaleźć w bibliotece <a href="https://rdrr.io/cran/nortest/"><code>nortest</code></a>. Wzór na obliczenie statystyki tego testu jest przdstawiony poniżej.
+<span class="math display" id="eq:wz1310">\[\begin{equation}
+A=-n-\frac{1}{n}\sum_{i=1}^n(2i-1)\left(\ln(z_i)+\ln(1-z_{n+1-i})\right)
+\tag{13.7}
+\end{equation}\]</span></p>
+<pre class="sourceCode r"><code class="sourceCode r">z &lt;-<span class="st"> </span><span class="kw">pnorm</span>(<span class="kw">sort</span>(e),<span class="kw">mean</span>(e),<span class="kw">sd</span>(e))
+n &lt;-<span class="st"> </span><span class="kw">length</span>(e)
+i &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">:</span>n
+A &lt;-<span class="st"> </span><span class="op">-</span>n<span class="op">-</span>( (<span class="kw">sum</span>((<span class="dv">2</span><span class="op">*</span>i<span class="dv">-1</span>)<span class="op">*</span>(<span class="kw">log</span>(z)<span class="op">+</span><span class="kw">log</span>(<span class="dv">1</span><span class="op">-</span>z[n<span class="op">+</span><span class="dv">1</span><span class="op">-</span>i]))))<span class="op">/</span>n ); A</code></pre>
+<pre><code>## [1] 0.3253687</code></pre>
+<p>Wzór poprawki na wielkość póby dla rozkładu normalnego jest podany poniżej:
+<span class="math display" id="eq:wz1311">\[\begin{equation}
+A1=\left(1+\frac{0,75}{n}+\frac{2,25}{n^2}\right)A
+\tag{13.8}
+\end{equation}\]</span></p>
+<pre class="sourceCode r"><code class="sourceCode r">A1 &lt;-<span class="st"> </span>(<span class="dv">1</span><span class="op">+</span>(<span class="fl">0.75</span><span class="op">/</span>n)<span class="op">+</span>(<span class="fl">2.25</span><span class="op">/</span>n<span class="op">^</span><span class="dv">2</span>))<span class="op">*</span>A
+A1</code></pre>
+<pre><code>## [1] 0.34348</code></pre>
+<p>Wartości krytyczne są podawane w tablicach statystycznych np. <a href="https://en.wikipedia.org/wiki/Anderson%E2%80%93Darling_test">tutaj</a>. Można je też wyznaczyć symulacyjnie (np. <span class="math inline">\(100000\)</span> replikacji) za pomocą funkcji <a href="https://rdrr.io/cran/PoweR/man/many.crit.html"><code>PoweR::many.crit</code></a> dla dowolnego poziomu istotności <span class="math inline">\(\alpha\)</span> z uwzględnieniem liczebności próby.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">2305</span>)
+table_AD &lt;-<span class="st"> </span>PoweR<span class="op">::</span><span class="kw">many.crit</span>(<span class="dt">law.index=</span> <span class="dv">2</span>, <span class="dt">stat.indices=</span><span class="kw">c</span>(<span class="dv">2</span>), <span class="dt">M=</span><span class="dv">10</span><span class="op">^</span><span class="dv">5</span>,
+                             <span class="dt">vectn=</span><span class="kw">c</span>(<span class="dv">10</span>,<span class="dv">16</span>,<span class="dv">40</span>,<span class="dv">80</span>,<span class="dv">100</span>),
+                             <span class="dt">level=</span><span class="kw">c</span>(<span class="fl">0.05</span>),
+                             <span class="dt">alter=</span><span class="kw">list</span>(<span class="dt">stat2=</span><span class="dv">3</span>), <span class="dt">law.pars=</span><span class="ot">NULL</span>, <span class="dt">parstats=</span><span class="ot">NULL</span>)
+table_AD</code></pre>
+<pre><code>##        n  0.05
+## [1,]  10 0.685
+## [2,]  16 0.711
+## [3,]  40 0.737
+## [4,]  80 0.743
+## [5,] 100 0.743</code></pre>
+<p>Ponieważ wartość krytyczna (dla poziomu istotności <span class="math inline">\(\alpha = 0,05\)</span> oraz liczebności próby <span class="math inline">\(n=16\)</span>) wynosi <span class="math inline">\(A^* = 0,711\)</span> i jest większa od <span class="math inline">\(A1 = 0,34348\)</span> to należy stwierdzić, że jest brak
+podstaw do odrzucenia hipotezy zerowej zakładającej normalny rozkład reszt.</p>
+<p>Dodatkowo w zależności od otrzymanej wartości <span class="math inline">\(A1\)</span> (wzór <a href="part-13.html#eq:wz1311">(13.8)</a>) należy użyć jednego z poniższych algorytmów w celu wyznaczenia wartości p-value:</p>
+<ul>
+<li>jeżeli <span class="math inline">\(A1 &lt; 0,2\)</span> to:</li>
+</ul>
+<p><span class="math display" id="eq:wz1312a">\[\begin{equation}
+p-value=1-\exp(-13,436+101,14\,A1-223,73\,A1^2)
+\tag{13.9}
+\end{equation}\]</span></p>
+<ul>
+<li>jeżeli <span class="math inline">\(0,2\leq A1&lt;0,34\)</span> to:</li>
+</ul>
+<p><span class="math display" id="eq:wz1312b">\[\begin{equation}
+p-value=1-\exp(-8,318+42,796\,A1-59,938\,A1^2)
+\tag{13.10}
+\end{equation}\]</span></p>
+<ul>
+<li>jeżeli <span class="math inline">\(0,34\leq A1 &lt; 0,6\)</span> to:</li>
+</ul>
+<p><span class="math display" id="eq:wz1312c">\[\begin{equation}
+p-value=\exp(0,9177-4,279\,A1-1,38\,A1^2)
+\tag{13.11}
+\end{equation}\]</span></p>
+<ul>
+<li>jeżeli <span class="math inline">\(A1\geq 0,6\)</span> to:</li>
+</ul>
+<p><span class="math display" id="eq:wz1312d">\[\begin{equation}
+p-value= \exp(1,2937-5,709\,A1+0,0186\,A1^2)
+\tag{13.12}
+\end{equation}\]</span></p>
+<p>W omawianym przykładzie wartość statystyki <span class="math inline">\(A1\)</span> jest równa <span class="math inline">\(0,34348\)</span> a zatem należy skorzystać ze wzoru <a href="part-13.html#eq:wz1312c">(13.11)</a>.</p>
+<pre class="sourceCode r"><code class="sourceCode r">p.value &lt;-<span class="st"> </span><span class="kw">exp</span>(<span class="fl">0.9177</span> <span class="op">-</span><span class="st"> </span><span class="fl">4.279</span> <span class="op">*</span><span class="st"> </span>A1 <span class="op">-</span><span class="st"> </span><span class="fl">1.38</span> <span class="op">*</span><span class="st"> </span>A1<span class="op">^</span><span class="dv">2</span> )
+p.value</code></pre>
+<pre><code>## [1] 0.48926</code></pre>
+<p>Teraz wykorzystamy gotową funkcje ad.<a href="https://rdrr.io/cran/nortest/man/ad.test.html"><code>ad.test</code></a>:</p>
+<pre class="sourceCode r"><code class="sourceCode r">nortest<span class="op">::</span><span class="kw">ad.test</span>(e)</code></pre>
+<pre><code>## 
+##  Anderson-Darling normality test
+## 
+## data:  e
+## A = 0.32537, p-value = 0.4893</code></pre>
+<p>Także na podstawie adaptacyjnego testu Neymana możemy sądzić, że reszty mają
+rozkład normalny. Ten test jest dostępny w paczce <a href="https://rdrr.io/cran/ddst/"><code>ddst</code></a>.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">2305</span>)
+ddst<span class="op">::</span><span class="kw">ddst.norm.test</span>(e, <span class="dt">compute.p=</span><span class="ot">TRUE</span>, <span class="dt">B=</span><span class="dv">1000</span>)</code></pre>
+<pre><code>## 
+##  Data Driven Smooth Test for Normality
+## 
+## data:  e,   base: ddst.base.legendre,   c: 100
+## WT* = 0.58469, n. coord = 1, p-value = 0.4416</code></pre>
+</div>
+<div id="part_13.2.4" class="section level3">
+<h3><span class="header-section-number">13.2.4</span> Heteroskedastyczność</h3>
+<p>Badanie niejednorodności wariancji w procesie resztowym zostanie zaprezentowa-
+ne za pomocą dwóch testów: Goldfelda-Quandta oraz Harrisona-McCabe’a. W obu
+przypadkach rozważane są następujące hipotezy:
+<span class="math display">\[
+H_0:\;\sigma^2_1=\sigma^2_2\quad\quad H_1:\;\sigma^2_1\neq \sigma^2_2
+\]</span>
+gdzie: <span class="math inline">\(\sigma^2_1\)</span> i <span class="math inline">\(\sigma^2_2\)</span> to wariancja odpowiednio w pierwszej i drugiej podpróbie. Wariancje resztowe wyznaczamy według następujących wzorów:
+<span class="math display" id="eq:wz1314a">\[\begin{equation}
+s_1^2=\frac{1}{(n_1-k-1)\sum_{i=1}^{n_1}e_i^2}
+\tag{13.13}
+\end{equation}\]</span>
+<span class="math display" id="eq:wz1314b">\[\begin{equation}
+s_2^2=\frac{1}{(n_2-k-1)\sum_{i=1}^{n_2}e_i^2}
+\tag{13.14}
+\end{equation}\]</span></p>
+<p>W pierwszej kolejności należy posortować niemalejąco zmienne względem zmiennej niezależnej <code>doch</code>. Należy zaznaczyć, że w przypadku zmiennych przekrojowoczasowych takie porządkowanie nie jest wymagane.</p>
+<pre class="sourceCode r"><code class="sourceCode r">doch1 &lt;-<span class="st"> </span><span class="kw">sort</span>(doch)      <span class="co"># sortowanie danych - niemalejąco</span>
+wyd1 &lt;-<span class="st"> </span>wyd[<span class="kw">order</span>(doch)] <span class="co"># sortowanie danych - niemalejąco względem doch</span>
+t1 &lt;-<span class="st"> </span><span class="kw">data.frame</span>(wyd1,doch1)
+m1 &lt;-<span class="st"> </span><span class="kw">lm</span>(wyd1<span class="op">~</span>doch1<span class="op">+</span><span class="dv">0</span>,<span class="dt">data=</span>t1[<span class="dv">1</span><span class="op">:</span><span class="dv">8</span>,])  <span class="co"># regresja dla 1 podpróby</span>
+m2 &lt;-<span class="st"> </span><span class="kw">lm</span>(wyd1<span class="op">~</span>doch1<span class="op">+</span><span class="dv">0</span>,<span class="dt">data=</span>t1[<span class="dv">9</span><span class="op">:</span><span class="dv">16</span>,]) <span class="co"># regresja dla 2 podpróby</span>
+S1 &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">/</span>(<span class="dv">8-1-1</span>)<span class="op">*</span><span class="kw">sum</span>(<span class="kw">resid</span>(m1)<span class="op">^</span><span class="dv">2</span>) <span class="co"># wariancja dla 1 podpróby</span>
+S2 &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">/</span>(<span class="dv">8-1-1</span>)<span class="op">*</span><span class="kw">sum</span>(<span class="kw">resid</span>(m2)<span class="op">^</span><span class="dv">2</span>) <span class="co"># wariancja dla 2 podpróby</span></code></pre>
+<p>Statystyka testowa w teście Goldfelda-Quandta jest następująca:
+<span class="math display" id="eq:wz1315">\[\begin{equation}
+F=\frac{s_2^2}{s_1^2}
+\tag{13.15}
+\end{equation}\]</span></p>
+<pre class="sourceCode r"><code class="sourceCode r">F=<span class="st"> </span>S2<span class="op">/</span>S1; F</code></pre>
+<pre><code>## [1] 0.3422651</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">lmtest<span class="op">::</span><span class="kw">gqtest</span>(mnk0,<span class="dt">order.by=</span>doch,<span class="dt">fraction=</span><span class="dv">0</span>)</code></pre>
+<pre><code>## 
+##  Goldfeld-Quandt test
+## 
+## data:  mnk0
+## GQ = 0.34227, df1 = 7, df2 = 7, p-value = 0.9097
+## alternative hypothesis: variance increases from segment 1 to 2</code></pre>
+<p>Z kolei w teście Harrisona-McCabe’a statystyka będzie miała postać:
+<span class="math display" id="eq:wz1316">\[\begin{equation}
+HMC=\frac{\sum_{i=1}^{s}e_i^2}{\sum_{i=1}^{n}e_i^2}
+\tag{13.16}
+\end{equation}\]</span></p>
+<pre class="sourceCode r"><code class="sourceCode r">s &lt;-<span class="st"> </span><span class="dv">8</span> <span class="co"># liczba (odsetek) obserwacji w podpróbie</span>
+m &lt;-<span class="st"> </span><span class="kw">lm</span>(wyd1<span class="op">~</span>doch1<span class="op">+</span><span class="dv">0</span>,<span class="dt">data=</span>t1)
+rm &lt;-<span class="st"> </span><span class="kw">resid</span>(m)
+hmc &lt;-<span class="st"> </span><span class="kw">sum</span>(rm[<span class="dv">1</span><span class="op">:</span>s]<span class="op">^</span><span class="dv">2</span>)<span class="op">/</span><span class="kw">sum</span>(rm<span class="op">^</span><span class="dv">2</span>)
+hmc</code></pre>
+<pre><code>## [1] 0.7359933</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">lmtest<span class="op">::</span><span class="kw">hmctest</span>(mnk0,<span class="dt">order.by=</span>doch,<span class="dt">point=</span><span class="fl">0.5</span>)</code></pre>
+<pre><code>## 
+##  Harrison-McCabe test
+## 
+## data:  mnk0
+## HMC = 0.73599, p-value = 0.909</code></pre>
+<p>Otrzymane wyniki na podstawie omawianych testów wskazują, że brak jest podstaw
+do odrzucenia <span class="math inline">\(H_0\)</span> zakładającej homoskedastyczność reszt.</p>
+</div>
+<div id="part_13.2.5" class="section level3">
+<h3><span class="header-section-number">13.2.5</span> Obserwacje odstające</h3>
+<p>Obserwacje odstające dzielimy na: wpływowe (influential) oraz nietypowe (outliers).
+Pierwsze z nich wpływają na wartości ocen parametrów modelu (czyli na kąt na-
+chylenia linii regresji) a drugie na wielkości reszt (czyli na dopasowanie modelu). W
+programie R dzięki funkcjom <a href="https://rdrr.io/r/stats/influence.measures.html"><code>influence.measures</code></a> i <a href="https://rdrr.io/cran/car/man/outlierTest.html"><code>car::outlierTest</code></a>
+możemy zidentyfikować obserwacje odstające. W celu wykrycia obserwacji wpływo-
+wych zostaną wykorzystane następujące wartości:</p>
+<ul>
+<li>wartości wpływu:</li>
+</ul>
+<p><span class="math display" id="eq:wz1317">\[\begin{equation}
+h_i=\mbox{diag}\left(X(X^{T}X)^{-1}X^{T}\right)
+\tag{13.17}
+\end{equation}\]</span>
+gdzie: dla <span class="math inline">\(h_i&gt;\frac{3k}{n}\)</span> <span class="math inline">\(i\)</span>-tą obserwację uważa się za wpływową.</p>
+<pre class="sourceCode r"><code class="sourceCode r">X &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(doch)
+hi &lt;-<span class="st"> </span><span class="kw">diag</span>((X <span class="op">%*%</span><span class="st"> </span><span class="kw">solve</span>(<span class="kw">t</span>(X) <span class="op">%*%</span><span class="st"> </span>X) <span class="op">%*%</span><span class="st"> </span><span class="kw">t</span>(X)))
+<span class="co"># z wykorzystaniem gotowej funkcji:</span>
+hi &lt;-<span class="st"> </span><span class="kw">hatvalues</span>(mnk0) <span class="co"># wartości hat values</span></code></pre>
+<ul>
+<li>odległości Cooka:</li>
+</ul>
+<p><span class="math display" id="eq:wz1318">\[\begin{equation}
+CD_i=\frac{e_i\, h_i}{k\,s^2(1-h_i)^2}
+\tag{13.18}
+\end{equation}\]</span>
+gdzie: dla <span class="math inline">\(CD_i&gt;F(0,05,k,n-k)\)</span> <span class="math inline">\(i\)</span>-tą obserwację uważa się za wpływową.</p>
+<pre class="sourceCode r"><code class="sourceCode r">i &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">16</span> <span class="co"># indeksy obserwacji</span>
+k &lt;-<span class="st"> </span><span class="dv">1</span>    <span class="co"># liczba parametrów łącznie z wyrazem wolnym</span>
+s &lt;-<span class="st"> </span><span class="kw">summary</span>(mnk0)<span class="op">$</span>sigma      <span class="co"># błąd standardowy reszt</span>
+s2 &lt;-<span class="st"> </span>(<span class="kw">summary</span>(mnk0)<span class="op">$</span>sigma)<span class="op">^</span><span class="dv">2</span> <span class="co"># wariancja reszt</span>
+CDi &lt;-<span class="st"> </span>(e[i]<span class="op">^</span><span class="dv">2</span><span class="op">*</span>hi[i])<span class="op">/</span>(k<span class="op">*</span>s2<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>hi[i])<span class="op">^</span><span class="dv">2</span>) <span class="co"># odległości Cooka.</span>
+<span class="co">#z wykorzystaniem gotowej funkcji:</span>
+cook &lt;-<span class="st"> </span><span class="kw">cooks.distance</span>(mnk0) <span class="co"># wartości Cook’s distance</span></code></pre>
+<ul>
+<li>ilorazy kowariancji:</li>
+</ul>
+<p><span class="math display" id="eq:wz1319">\[\begin{equation}
+COVRIATO_i=\left(\frac{s_{(-i)}}{s}\right)^{2k}\,\frac{1}{1-h_i}
+\tag{13.19}
+\end{equation}\]</span>
+gdzie: dla <span class="math inline">\(|1-COVRATIO|&gt;\frac{3k}{n-k}\)</span> <span class="math inline">\(i\)</span>-tą obserwację uważa się za wpływową.</p>
+<pre class="sourceCode r"><code class="sourceCode r">covr &lt;-<span class="st"> </span><span class="kw">covratio</span>(mnk0)  <span class="co"># wartości COVRATIO</span></code></pre>
+<ul>
+<li>miary <span class="math inline">\(DFFITS\)</span>:</li>
+</ul>
+<p><span class="math display" id="eq:wz1320">\[\begin{equation}
+DFFITS_i=e_i\frac{\sqrt{h_i}}{s_{(-i)}(1-h_i)}
+\tag{13.20}
+\end{equation}\]</span>
+gdzie: <span class="math inline">\(s_{(-i)}\)</span> oznacza błąd standardowy reszt po usunięciu i-tej obserwacji ze zbioru danych:</p>
+<pre class="sourceCode r"><code class="sourceCode r">si &lt;-<span class="st"> </span><span class="kw">influence</span>(mnk0)<span class="op">$</span>sigma</code></pre>
+<p>natomiast dla <span class="math inline">\(|DFFITS_i|&gt;3\sqrt{\frac{k}{n-k}}\)</span> <span class="math inline">\(i\)</span>-tą obserwację uważa się za wpływową.</p>
+<pre class="sourceCode r"><code class="sourceCode r">dff &lt;-<span class="st"> </span><span class="kw">dffits</span>(mnk0)  <span class="co"># wartości DFFITS</span></code></pre>
+<ul>
+<li>miary <span class="math inline">\(DFBETAS\)</span>:</li>
+</ul>
+<p><span class="math display" id="eq:wz1321">\[\begin{equation}
+DFBETAS_i=\frac{\beta-\beta_{(-i)}}{s_{(-i)}\sqrt{(X^{T}X)^{-1}}}
+\tag{13.21}
+\end{equation}\]</span>
+gdzie: <span class="math inline">\(\beta\)</span> to oszacowany współczynnik z wykorzystaniem pełnego zbioru danych oraz <span class="math inline">\(\beta_{(-i)}\)</span> to oszacowany współczynnik po usunięciu <span class="math inline">\(i\)</span>-tej obserwacji ze zbioru danych:</p>
+<pre class="sourceCode r"><code class="sourceCode r">dbetai &lt;-<span class="st"> </span><span class="kw">influence</span>(mnk0)<span class="op">$</span>coefficients</code></pre>
+<p>natomiast dla <span class="math inline">\(|DFBETAS_i|&gt;1\)</span> <span class="math inline">\(i\)</span>-tą obserwację uważa się za wpływową.</p>
+<pre class="sourceCode r"><code class="sourceCode r">dfb &lt;-<span class="st"> </span><span class="kw">dfbetas</span>(mnk0) <span class="co"># wartości DFBETAS</span></code></pre>
+<p>Wykorzystamy teraz gotową funkcję do wyznczenia obserwacji wpływowych.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">influence.measures</span>(mnk0))</code></pre>
+<pre><code>## Potentially influential observations of
+##   lm(formula = wyd ~ doch + 0, data = t) :
+## 
+##   dfb.doch dffit cov.r  cook.d hat 
+## 2 0.00     0.00  1.20_* 0.00   0.11</code></pre>
+<p>Zatem obserwacja dotycząca województwa mazowieckiego okazała się wpływowa na
+podstawie ilorazu kowariancji. Poniżej zostały przedstawione obliczenia dla wszystkich obserwacji.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">influence.measures</span>(mnk0)</code></pre>
+<pre><code>## Influence measures of
+##   lm(formula = wyd ~ doch + 0, data = t) :
+## 
+##    dfb.doch    dffit cov.r   cook.d    hat inf
+## 1   0.26381  0.26381 1.071 6.96e-02 0.0657    
+## 2  -0.00223 -0.00223 1.203 5.31e-06 0.1094   *
+## 3   0.04075  0.04075 1.134 1.78e-03 0.0574    
+## 4   0.02653  0.02653 1.146 7.54e-04 0.0656    
+## 5   0.24256  0.24256 1.026 5.77e-02 0.0437    
+## 6   0.33300  0.33300 0.922 9.84e-02 0.0368    
+## 7  -0.28983 -0.28983 1.027 8.16e-02 0.0549    
+## 8  -0.06102 -0.06102 1.118 3.97e-03 0.0465    
+## 9  -0.04887 -0.04887 1.142 2.55e-03 0.0644    
+## 10 -0.39757 -0.39757 0.981 1.45e-01 0.0637    
+## 11 -0.23806 -0.23806 1.091 5.76e-02 0.0687    
+## 12  0.04143  0.04143 1.154 1.84e-03 0.0729    
+## 13  0.62331  0.62331 0.804 2.93e-01 0.0619    
+## 14  0.02947  0.02947 1.132 9.29e-04 0.0545    
+## 15 -0.13833 -0.13833 1.134 2.01e-02 0.0717    
+## 16 -0.36192 -0.36192 1.001 1.23e-01 0.0622</code></pre>
+<p>Do identyfikacji obserwacji nietypowych możemy wykorzystać reszty standaryzowane:
+<span class="math display" id="eq:wz1322">\[\begin{equation}
+e_{i(stand)}=\frac{e_i}{s\sqrt{1-h_i}}
+\tag{13.22}
+\end{equation}\]</span>
+gdzie: dla <span class="math inline">\(|e_{i(stand)}|&gt;2\)</span> <span class="math inline">\(i\)</span>-tą obserwację można podejrzewać o nietypowość.</p>
+<pre class="sourceCode r"><code class="sourceCode r">es &lt;-<span class="st"> </span><span class="kw">rstandard</span>(mnk0)  <span class="co"># reszty standaryzowane</span></code></pre>
+<p>lub reszty studentyzowane:
+<span class="math display" id="eq:wz1323">\[\begin{equation}
+e_{i(stud)}=\frac{e_{-i}}{s_{(-i)}\sqrt{1-h_i}}
+\tag{13.23}
+\end{equation}\]</span>
+gdzie: dla <span class="math inline">\(|e_{i(stud)}|&gt;2\)</span> <span class="math inline">\(i\)</span>-tą obserwację można podejrzewać o nietypowość.</p>
+<pre class="sourceCode r"><code class="sourceCode r">et &lt;-<span class="st"> </span><span class="kw">rstudent</span>(mnk0)  <span class="co"># reszty studentyzowane</span></code></pre>
+<p>Reszty et mają rozkład t-Studenta o stopniach swobody: <span class="math inline">\(n-p-2\)</span> (model z wyrazem
+wolnym) lub <span class="math inline">\(n-p-1\)</span> (model bez wyrazy wolnego). Zatem do identyfikacji obserwacji
+odstających wykorzystamy p-value tego rozkładu weryfikując następukące hipotezy
+statystyczne:
+<span class="math display">\[
+H_{0}:\,i\mbox{-ta obserwacja jest typowa}\quad H_{1}:\,i\mbox{-ta obserwacja jest nietypowa}
+\]</span>
+Dla obserwacji o największej wartości bezwzględnej <code>et</code> statystyka testu będzie miała postać:
+<span class="math display" id="eq:wz1325">\[\begin{equation}
+\mbox{max}|e_{i(stud)}|
+\tag{13.24}
+\end{equation}\]</span></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># p-value z rozkładu t-Studenta:</span>
+p.value &lt;-<span class="st"> </span><span class="dv">2</span><span class="op">*</span>(<span class="dv">1</span><span class="op">-</span><span class="kw">pt</span>( <span class="kw">max</span>(<span class="kw">abs</span>(et)) ,<span class="dv">16-1-1</span>))
+p.value</code></pre>
+<pre><code>## [1] 0.02937727</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># poprawka Bonferonniego:</span>
+Bp.value=<span class="st"> </span><span class="dv">16</span><span class="op">*</span>p.value
+Bp.value</code></pre>
+<pre><code>## [1] 0.4700364</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># wykorzystanie funkcji outlierTest:</span>
+car<span class="op">::</span><span class="kw">outlierTest</span>(mnk0)</code></pre>
+<pre><code>## No Studentized residuals with Bonferonni p &lt; 0.05
+## Largest |rstudent|:
+##    rstudent unadjusted p-value Bonferonni p
+## 13 2.425829           0.029377      0.47004</code></pre>
+<p>Ponieważ p-value = <span class="math inline">\(0,47004\)</span> to na poziomie istotności <span class="math inline">\(\alpha = 0,05\)</span> brak jest podstaw do odrzucenia <span class="math inline">\(H_0\)</span> . Gdy dodamy odpowiednie argumenty do funkcji <a href="https://rdrr.io/cran/car/man/outlierTest.html"><code>car::outlierTest</code></a>, to otrzymamy uporządkowane malejąco wartości <span class="math inline">\(|e_{i(stud)}|\)</span> oraz p-value.</p>
+<pre class="sourceCode r"><code class="sourceCode r">car<span class="op">::</span><span class="kw">outlierTest</span>(mnk0,<span class="dt">order=</span>T,<span class="dt">cutoff=</span><span class="ot">Inf</span>,<span class="dt">n.max=</span><span class="ot">Inf</span>)</code></pre>
+<pre><code>## Warning in if (order) order(bp) else 1:n: warunek posiada długość &gt; 1 i
+## tylko pierwszy element będzie użyty</code></pre>
+<pre><code>##        rstudent unadjusted p-value Bonferonni p
+## 13  2.425829301           0.029377      0.47004
+## 6   1.702938479           0.110670           NA
+## 10 -1.524648740           0.149610           NA
+## 16 -1.405761385           0.181600           NA
+## 7  -1.202794661           0.249000           NA
+## 5   1.134839609           0.275500           NA
+## 1   0.994454997           0.336880           NA
+## 11 -0.876672700           0.395460           NA
+## 15 -0.497741566           0.626390           NA
+## 8  -0.276280971           0.786370           NA
+## 9  -0.186335919           0.854850           NA
+## 3   0.165166434           0.871170           NA
+## 12  0.147748037           0.884650           NA
+## 14  0.122770528           0.904030           NA
+## 4   0.100105764           0.921680           NA
+## 2  -0.006351306           0.995020           NA</code></pre>
+<p>W dignostyce modelu ekonometrycznego bardzo pomocnym narzędziem są również
+wykresy, które można wygenerować za pomocą komendy:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">1</span>,<span class="dv">1</span>)<span class="op">+</span><span class="fl">0.1</span>, <span class="dt">mgp=</span><span class="kw">c</span>(<span class="dv">3</span>,<span class="fl">0.6</span>,<span class="dv">0</span>),<span class="dt">las=</span><span class="dv">1</span>)
+<span class="kw">par</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">2</span>))
+<span class="kw">plot</span>(mnk0)</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:wy133"></span>
+<img src="NaPrzelajR_files/figure-html/wy133-1.png" alt="Diagnostyka modelu." width="70%" />
+<p class="caption">
+Rysunek 13.3: Diagnostyka modelu.
+</p>
+</div>
+</div>
+<div id="part_13.2.6" class="section level3">
+<h3><span class="header-section-number">13.2.6</span> Metoda najmniejszych wartości bezwzględnych</h3>
+Jeśli w zbiorze danych występują obserwacje odstające to należy je wyeliminować
+lub zastosować regresję kwantylową. Dla parametru <span class="math inline">\(\tau = 0,5\)</span> (mediana) otrzymujemy estymator metody najmniejszego odchylenia bezwzględnego, którego kryterium optymalizacji jest przedstawione poniżej (wzory 13.26a oraz 13.26b).
+
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># model z wyrazem wolnym:</span>
+q &lt;-<span class="st"> </span>quantreg<span class="op">::</span><span class="kw">rq</span>(wyd<span class="op">~</span>doch,<span class="dt">tau=</span><span class="fl">0.5</span>)
+<span class="kw">summary</span>(q, <span class="dt">se=</span><span class="st">&#39;nid&#39;</span>)</code></pre>
+<pre><code>## 
+## Call: quantreg::rq(formula = wyd ~ doch, tau = 0.5)
+## 
+## tau: [1] 0.5
+## 
+## Coefficients:
+##             Value     Std. Error t value   Pr(&gt;|t|) 
+## (Intercept)  18.81043 138.88795    0.13544   0.89420
+## doch          0.84413   0.12837    6.57568   0.00001</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># model bez wyrazu wolnego:</span>
+q0 &lt;-<span class="st"> </span>quantreg<span class="op">::</span><span class="kw">rq</span>(wyd<span class="op">~</span>doch<span class="op">+</span><span class="dv">0</span>,<span class="dt">tau=</span><span class="fl">0.5</span>)
+<span class="kw">summary</span>(q0,<span class="dt">se=</span><span class="st">&#39;nid&#39;</span>)</code></pre>
+<pre><code>## 
+## Call: quantreg::rq(formula = wyd ~ doch + 0, tau = 0.5)
+## 
+## tau: [1] 0.5
+## 
+## Coefficients:
+##      Value    Std. Error t value  Pr(&gt;|t|)
+## doch  0.85720  0.01716   49.95465  0.00000</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">1</span>,<span class="dv">1</span>)<span class="op">+</span><span class="fl">0.1</span>, <span class="dt">mgp=</span><span class="kw">c</span>(<span class="dv">3</span>,<span class="fl">0.6</span>,<span class="dv">0</span>),<span class="dt">las=</span><span class="dv">1</span>)
+<span class="kw">plot</span>(doch,wyd,<span class="dt">cex=</span><span class="fl">1.2</span>,<span class="dt">pch=</span><span class="dv">20</span>)
+<span class="kw">abline</span>(q,<span class="dt">col=</span><span class="st">&#39;red&#39;</span>,<span class="dt">lwd=</span><span class="dv">2</span>,<span class="dt">lty=</span><span class="dv">2</span>); <span class="kw">abline</span>(q0,<span class="dt">col=</span><span class="st">&#39;blue&#39;</span>,<span class="dt">lwd=</span><span class="dv">2</span>)
+<span class="kw">legend</span>(<span class="st">&quot;topleft&quot;</span>,<span class="kw">c</span>(<span class="st">&quot;q&quot;</span>,<span class="st">&quot;q0&quot;</span>),<span class="dt">col=</span><span class="kw">c</span>(<span class="st">&quot;red&quot;</span>,<span class="st">&quot;blue&quot;</span>),<span class="dt">lty=</span><span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">1</span>),<span class="dt">lwd=</span><span class="dv">2</span>)</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:wy134"></span>
+<img src="NaPrzelajR_files/figure-html/wy134-1.png" alt="Regresja kwantylowa." width="70%" />
+<p class="caption">
+Rysunek 13.4: Regresja kwantylowa.
+</p>
+</div>
+
+</div>
+</div>
+<div id="part_13.3" class="section level2">
+<h2><span class="header-section-number">13.3</span> Estymacja modelu nieliniowego</h2>
+<div id="part_13.3.1" class="section level3">
+<h3><span class="header-section-number">13.3.1</span> Model kwadratowy</h3>
+<p>Pierwszą funkcją nieliniową jaką spróbujemy dopasować do naszych danych będzie
+model kwadratowy:
+<span class="math display" id="eq:wz1327">\[\begin{equation}
+y=\alpha_0+\alpha_1x^2
+\tag{13.25}
+\end{equation}\]</span>
+Estymację parametrów funkcji o wzorze <a href="part-13.html#eq:wz1327">(13.25)</a> dokonamy za pomocą poniższej komendy:</p>
+<pre class="sourceCode r"><code class="sourceCode r">k &lt;-<span class="st"> </span><span class="kw">lm</span>(wyd<span class="op">~</span><span class="kw">I</span>(doch<span class="op">^</span><span class="dv">2</span>),<span class="dt">data=</span>t)
+<span class="kw">summary</span>(k)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = wyd ~ I(doch^2), data = t)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -54.857 -27.803   1.452  19.653  93.152 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 5.218e+02  4.206e+01  12.404 6.11e-09 ***
+## I(doch^2)   3.427e-04  3.453e-05   9.924 1.03e-07 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 40.67 on 14 degrees of freedom
+## Multiple R-squared:  0.8755, Adjusted R-squared:  0.8667 
+## F-statistic: 98.49 on 1 and 14 DF,  p-value: 1.026e-07</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">1</span>,<span class="dv">1</span>)<span class="op">+</span><span class="fl">0.1</span>, <span class="dt">mgp=</span><span class="kw">c</span>(<span class="dv">3</span>,<span class="fl">0.6</span>,<span class="dv">0</span>),<span class="dt">las=</span><span class="dv">1</span>)
+<span class="kw">plot</span>(t,<span class="dt">cex=</span><span class="fl">1.2</span>,<span class="dt">pch=</span><span class="dv">20</span>)
+<span class="kw">curve</span>(<span class="kw">coef</span>(k)[<span class="dv">1</span>]<span class="op">+</span><span class="kw">coef</span>(k)[<span class="dv">2</span>]<span class="op">*</span>x<span class="op">^</span><span class="dv">2</span>,<span class="dt">add=</span><span class="ot">TRUE</span>,<span class="dt">col=</span><span class="st">&quot;red&quot;</span>,<span class="dt">lwd=</span><span class="dv">2</span>)
+<span class="kw">abline</span>(mnk0,<span class="dt">col=</span><span class="st">&quot;orange&quot;</span>,<span class="dt">lty=</span><span class="dv">1</span>,<span class="dt">lwd=</span><span class="dv">2</span>)
+<span class="kw">legend</span>(<span class="st">&quot;topleft&quot;</span>,<span class="kw">c</span>(<span class="st">&quot;k&quot;</span>,<span class="st">&quot;mnk0&quot;</span>),<span class="dt">col=</span><span class="kw">c</span>(<span class="st">&quot;red&quot;</span>,<span class="st">&quot;orange&quot;</span>),<span class="dt">lty=</span><span class="dv">1</span>,<span class="dt">lwd=</span><span class="dv">2</span>)</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:wy135"></span>
+<img src="NaPrzelajR_files/figure-html/wy135-1.png" alt="Regresja liniowa i kwadratowa." width="70%" />
+<p class="caption">
+Rysunek 13.5: Regresja liniowa i kwadratowa.
+</p>
+</div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">AIC</span>(mnk0,k)</code></pre>
+<pre><code>##      df      AIC
+## mnk0  2 168.9711
+## k     3 167.8451</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sapply</span>(<span class="kw">c</span>(<span class="dv">900</span>,<span class="dv">1000</span>,<span class="dv">1100</span>,<span class="dv">1200</span>), <span class="cf">function</span>(x) <span class="fl">0.000685408</span><span class="op">*</span>x)</code></pre>
+<pre><code>## [1] 0.6168672 0.6854080 0.7539488 0.8224896</code></pre>
+<p>Otrzymane wartości można zinterpretować w następujący sposób. Wydatki w przeliczeniu na jedną osobę rosły średnio o 0, <span class="math inline">\(62\)</span>zł na jedną złotówkę przyrostu dochodów,
+przy poziomie dochodów równych 900zł. Natomiast prz poziomie dochodów równych
+<span class="math inline">\(1200\)</span>zł wydatki rosły średnio o <span class="math inline">\(0,82\)</span>zł na złotówkę przyrostu dochodów.</p>
+</div>
+<div id="part_13.3.2" class="section level3">
+<h3><span class="header-section-number">13.3.2</span> Model wykładniczy</h3>
+<p>Analityczna postać funkcji wykładniczej jest podana poniżej:
+<span class="math display" id="eq:wz1328">\[\begin{equation}
+y=\alpha_0\alpha_1x^x
+\tag{13.26}
+\end{equation}\]</span>
+gdzie: <span class="math inline">\(\alpha_0&gt;0\)</span> oraz <span class="math inline">\(\alpha_1&gt;0\)</span> i <span class="math inline">\(\alpha_1\neq 1\)</span></p>
+<p>Aby oszacować parametry modelu nieliniowego z wykorzystaniem funkcji <a href="https://rdrr.io/r/stats/nls.html"><code>nls</code></a>
+(nieliniowa metoda najmniejszych kwadratów) należy znaleźć parametry startowe.
+Można je wyznaczyć sprowadzając funkcję nieliniową do postaci liniowej.
+<span class="math display" id="eq:wz1329">\[\begin{equation}
+\ln y = \beta_0 \beta_1 x
+\tag{13.27}
+\end{equation}\]</span></p>
+<pre class="sourceCode r"><code class="sourceCode r">mw &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(wyd)<span class="op">~</span>doch)
+<span class="kw">summary</span>(mw)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = log(wyd) ~ doch)
+## 
+## Residuals:
+##       Min        1Q    Median        3Q       Max 
+## -0.063814 -0.029988  0.003799  0.022039  0.096239 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 5.971e+00  9.313e-02  64.115  &lt; 2e-16 ***
+## doch        7.916e-04  8.566e-05   9.241 2.46e-07 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.04456 on 14 degrees of freedom
+## Multiple R-squared:  0.8591, Adjusted R-squared:  0.8491 
+## F-statistic: 85.39 on 1 and 14 DF,  p-value: 2.462e-07</code></pre>
+<p>W kolejnym kroku obliczymy parametry funkcji wykładniczej według wzorów: <span class="math inline">\(\alpha_0=\exp(\beta_0)\)</span> oraz <span class="math inline">\(\alpha_1=\exp(\beta_1)\)</span>.</p>
+<pre class="sourceCode r"><code class="sourceCode r">b0 &lt;-<span class="st"> </span><span class="kw">exp</span>(<span class="kw">coef</span>(mw)[<span class="dv">1</span>])
+b0</code></pre>
+<pre><code>## (Intercept) 
+##    391.9122</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">b1 &lt;-<span class="st"> </span><span class="kw">exp</span>(<span class="kw">coef</span>(mw)[<span class="dv">2</span>])
+b1</code></pre>
+<pre><code>##     doch 
+## 1.000792</code></pre>
+<p>Otrzymane wartości można wykorzystać jako parametry startowe w nieliniowej metodzie najmniejszych kwadratów.</p>
+<pre class="sourceCode r"><code class="sourceCode r">w &lt;-<span class="st"> </span><span class="kw">nls</span>(wyd<span class="op">~</span>a0<span class="op">*</span>a1<span class="op">^</span>doch,<span class="dt">start=</span><span class="kw">list</span>(<span class="dt">a0=</span>b0,<span class="dt">a1=</span>b1),<span class="dt">data=</span>t)
+<span class="kw">summary</span>(w)</code></pre>
+<pre><code>## 
+## Formula: wyd ~ a0 * a1^doch
+## 
+## Parameters:
+##     Estimate Std. Error  t value Pr(&gt;|t|)    
+## a0 3.873e+02  3.346e+01    11.58 1.48e-08 ***
+## a1 1.001e+00  7.733e-05 12942.47  &lt; 2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 40.84 on 14 degrees of freedom
+## 
+## Number of iterations to convergence: 2 
+## Achieved convergence tolerance: 1.024e-06</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">AIC</span>(k,w)</code></pre>
+<pre><code>##   df      AIC
+## k  3 167.8451
+## w  3 167.9795</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">(<span class="kw">coef</span>(w)[<span class="dv">2</span>]<span class="op">-</span><span class="dv">1</span>)<span class="op">*</span><span class="dv">100</span></code></pre>
+<pre><code>##         a1 
+## 0.08034964</code></pre>
+<p>Interpretacja otrzymanych parametrów jest następująca. Jeżeli dochód wzrośnie o
+<span class="math inline">\(1\)</span>zł to wydatki również wzrosną o <span class="math inline">\(0,08\%\)</span>.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">1</span>,<span class="dv">1</span>)<span class="op">+</span><span class="fl">0.1</span>, <span class="dt">mgp=</span><span class="kw">c</span>(<span class="dv">3</span>,<span class="fl">0.6</span>,<span class="dv">0</span>),<span class="dt">las=</span><span class="dv">1</span>)
+<span class="kw">plot</span>(t,<span class="dt">cex=</span><span class="fl">1.2</span>,<span class="dt">pch=</span><span class="dv">20</span>)
+<span class="kw">curve</span>(<span class="kw">coef</span>(k)[<span class="dv">1</span>]<span class="op">+</span><span class="kw">coef</span>(k)[<span class="dv">2</span>]<span class="op">*</span>x<span class="op">^</span><span class="dv">2</span>,<span class="dt">add=</span><span class="ot">TRUE</span>,<span class="dt">col=</span><span class="st">&quot;red&quot;</span>,<span class="dt">lwd=</span><span class="dv">2</span>)
+<span class="kw">curve</span>(<span class="kw">coef</span>(w)[<span class="dv">1</span>]<span class="op">*</span><span class="kw">coef</span>(w)[<span class="dv">2</span>]<span class="op">^</span>x,<span class="dt">add=</span><span class="ot">TRUE</span>,<span class="dt">col=</span><span class="st">&quot;orange&quot;</span>,<span class="dt">lty=</span><span class="dv">2</span>,<span class="dt">lwd=</span><span class="dv">2</span>)
+<span class="kw">legend</span>(<span class="st">&quot;topleft&quot;</span>,<span class="kw">c</span>(<span class="st">&quot;k&quot;</span>,<span class="st">&quot;w&quot;</span>),<span class="dt">col=</span><span class="kw">c</span>(<span class="st">&quot;red&quot;</span>,<span class="st">&quot;orange&quot;</span>),<span class="dt">lty=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>),<span class="dt">lwd=</span><span class="dv">2</span>)</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:wy136"></span>
+<img src="NaPrzelajR_files/figure-html/wy136-1.png" alt="Regresja kwadratowa i wykładnicza." width="70%" />
+<p class="caption">
+Rysunek 13.6: Regresja kwadratowa i wykładnicza.
+</p>
+</div>
+</div>
+<div id="part_13.3.3" class="section level3">
+<h3><span class="header-section-number">13.3.3</span> Model hiperboliczny</h3>
+<p>Kolejną funkcją jaką będziemy badać to model hiperboliczny o postaci:
+<span class="math display" id="eq:wz1330">\[\begin{equation}
+y=\frac{\alpha_0x^2}{x+\alpha_1}
+\tag{13.28}
+\end{equation}\]</span>
+Parametry startowe wyznaczymy za pomocą następującego wzoru:
+<span class="math display" id="eq:wz1331">\[\begin{equation}
+\frac{1}{y}=\beta_1\frac{1}{x}+\beta_2\frac{1}{x^2}
+\tag{13.29}
+\end{equation}\]</span>
+gdzie: <span class="math inline">\(\alpha_0=\frac{1}{\beta_1}\)</span> oraz <span class="math inline">\(\alpha_1=\frac{\beta_2}{\beta_1}\)</span>.</p>
+<pre class="sourceCode r"><code class="sourceCode r">mh &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">I</span>(<span class="dv">1</span><span class="op">/</span>wyd)<span class="op">~</span><span class="kw">I</span>(<span class="dv">1</span><span class="op">/</span>doch)<span class="op">+</span><span class="kw">I</span>(<span class="dv">1</span><span class="op">/</span>doch<span class="op">^</span><span class="dv">2</span>)<span class="op">+</span><span class="dv">0</span>)
+<span class="kw">summary</span>(mh)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = I(1/wyd) ~ I(1/doch) + I(1/doch^2) + 0)
+## 
+## Residuals:
+##        Min         1Q     Median         3Q        Max 
+## -9.731e-05 -3.285e-05 -1.201e-06  3.315e-05  7.973e-05 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## I(1/doch)      1.4011     0.1151  12.172 7.79e-09 ***
+## I(1/doch^2) -249.8795   118.3491  -2.111   0.0532 .  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 5.116e-05 on 14 degrees of freedom
+## Multiple R-squared:  0.9981, Adjusted R-squared:  0.9978 
+## F-statistic:  3682 on 2 and 14 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">b1 &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">/</span><span class="kw">coef</span>(mh)[<span class="dv">1</span>]
+b1</code></pre>
+<pre><code>## I(1/doch) 
+##  0.713737</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">b2 &lt;-<span class="st"> </span><span class="kw">coef</span>(mh)[<span class="dv">2</span>]<span class="op">/</span><span class="kw">coef</span>(mh)[<span class="dv">1</span>]
+b2</code></pre>
+<pre><code>## I(1/doch^2) 
+##   -178.3482</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">h &lt;-<span class="st"> </span><span class="kw">nls</span>(wyd<span class="op">~</span>(a0<span class="op">*</span>doch<span class="op">^</span><span class="dv">2</span>)<span class="op">/</span>(doch<span class="op">+</span>a1),<span class="dt">start=</span><span class="kw">list</span>(<span class="dt">a0=</span>b1,<span class="dt">a1=</span>b2))
+<span class="kw">summary</span>(h)</code></pre>
+<pre><code>## 
+## Formula: wyd ~ (a0 * doch^2)/(doch + a1)
+## 
+## Parameters:
+##      Estimate Std. Error t value Pr(&gt;|t|)    
+## a0    0.77328    0.06732  11.487 1.63e-08 ***
+## a1 -107.24575   84.78736  -1.265    0.227    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 43 on 14 degrees of freedom
+## 
+## Number of iterations to convergence: 4 
+## Achieved convergence tolerance: 4.685e-06</code></pre>
+<p>Ponieważ parametr <span class="math inline">\(\alpha_1\)</span> jest nieistotny statystycznie, a więc gdy go pominiemy to funkcja hiperboliczna sprowadzi się do modelu liniowego:
+<span class="math display">\[
+y=\frac{\alpha_0x^2}{x+\alpha_1}=\frac{\alpha_0x^2}{x+0}=\frac{\alpha_0x^2}{x}=\frac{\alpha_0x}{1}=\alpha_0x
+\]</span></p>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="part-12.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="part-14.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": ["NaPrzelajR.pdf", "NaPrzelajR.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html  lang="pl">
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Rozdział 6 Analiza korespondencji (odpowiedniości) | Na przełaj przez Data Mining z pakietem R</title>
+  <meta name="description" content="Zbiór przykładów użycia wybranych funkcji statystycznych i Data Mining dostępnych w programie R.">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
+
+  <meta property="og:title" content="Rozdział 6 Analiza korespondencji (odpowiedniości) | Na przełaj przez Data Mining z pakietem R" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Zbiór przykładów użycia wybranych funkcji statystycznych i Data Mining dostępnych w programie R." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Rozdział 6 Analiza korespondencji (odpowiedniości) | Na przełaj przez Data Mining z pakietem R" />
+  
+  <meta name="twitter:description" content="Zbiór przykładów użycia wybranych funkcji statystycznych i Data Mining dostępnych w programie R." />
+  
+
+<meta name="author" content="Przemysław Biecek, Krzysztof Trajkowski">
+
+
+<meta name="date" content="2019-04-08">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="part-5.html">
+<link rel="next" href="part-7.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; position: absolute; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; }
+pre.numberSource a.sourceLine:empty
+  { position: absolute; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Na przełaj przez Data Mining<br/> z pakietem R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Kilka słów zamiast wstępu</a></li>
+<li class="chapter" data-level="2" data-path="part-2.html"><a href="part-2.html"><i class="fa fa-check"></i><b>2</b> Redukcja wymiaru</a><ul>
+<li class="chapter" data-level="2.1" data-path="part-2.html"><a href="part-2.html#part_21"><i class="fa fa-check"></i><b>2.1</b> Analiza składowych głównych (PCA, ang. Principal Components Analysis)</a></li>
+<li class="chapter" data-level="2.2" data-path="part-2.html"><a href="part-2.html#part_22"><i class="fa fa-check"></i><b>2.2</b> Nieliniowe skalowanie wielowymiarowe (Sammon Mapping)</a></li>
+<li class="chapter" data-level="2.3" data-path="part-2.html"><a href="part-2.html#part_23"><i class="fa fa-check"></i><b>2.3</b> Skalowanie wielowymiarowe Kruskalla (MDS, ang. Multidimensional Scaling)</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="part-3.html"><a href="part-3.html"><i class="fa fa-check"></i><b>3</b> Analiza skupień</a><ul>
+<li class="chapter" data-level="3.1" data-path="part-3.html"><a href="part-3.html#part_31"><i class="fa fa-check"></i><b>3.1</b> Metoda k-średnich</a></li>
+<li class="chapter" data-level="3.2" data-path="part-3.html"><a href="part-3.html#part_32"><i class="fa fa-check"></i><b>3.2</b> Metoda grupowania wokół centroidów (PAM, ang. Partitioning Around Medoids)</a></li>
+<li class="chapter" data-level="3.3" data-path="part-3.html"><a href="part-3.html#part_33"><i class="fa fa-check"></i><b>3.3</b> Metoda aglomeracyjnego klastrowania hierarchicznego</a></li>
+<li class="chapter" data-level="3.4" data-path="part-3.html"><a href="part-3.html#part_34"><i class="fa fa-check"></i><b>3.4</b> Ile skupień wybrać?</a></li>
+<li class="chapter" data-level="3.5" data-path="part-3.html"><a href="part-3.html#part_35"><i class="fa fa-check"></i><b>3.5</b> Inne metody analizy skupień</a></li>
+<li class="chapter" data-level="3.6" data-path="part-3.html"><a href="part-3.html#part_36"><i class="fa fa-check"></i><b>3.6</b> Case study</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="part-4.html"><a href="part-4.html"><i class="fa fa-check"></i><b>4</b> Analiza dyskryminacji</a><ul>
+<li class="chapter" data-level="4.1" data-path="part-4.html"><a href="part-4.html#part_41"><i class="fa fa-check"></i><b>4.1</b> Dyskryminacja liniowa i kwadratowa</a></li>
+<li class="chapter" data-level="4.2" data-path="part-4.html"><a href="part-4.html#part_42"><i class="fa fa-check"></i><b>4.2</b> Metoda najbliższych sąsiadów</a></li>
+<li class="chapter" data-level="4.3" data-path="part-4.html"><a href="part-4.html#part_43"><i class="fa fa-check"></i><b>4.3</b> Naiwny klasyfikator Bayesowski</a></li>
+<li class="chapter" data-level="4.4" data-path="part-4.html"><a href="part-4.html#part_44"><i class="fa fa-check"></i><b>4.4</b> Drzewa decyzyjne</a></li>
+<li class="chapter" data-level="4.5" data-path="part-4.html"><a href="part-4.html#part_45"><i class="fa fa-check"></i><b>4.5</b> Lasy losowe</a></li>
+<li class="chapter" data-level="4.6" data-path="part-4.html"><a href="part-4.html#part_46"><i class="fa fa-check"></i><b>4.6</b> Inne klasyfikatory</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="part-5.html"><a href="part-5.html"><i class="fa fa-check"></i><b>5</b> Analiza kanoniczna</a><ul>
+<li class="chapter" data-level="5.1" data-path="part-5.html"><a href="part-5.html#part_51"><i class="fa fa-check"></i><b>5.1</b> Problem</a></li>
+<li class="chapter" data-level="5.2" data-path="part-5.html"><a href="part-5.html#part_52"><i class="fa fa-check"></i><b>5.2</b> Rozwiązanie</a></li>
+<li class="chapter" data-level="5.3" data-path="part-5.html"><a href="part-5.html#part_53"><i class="fa fa-check"></i><b>5.3</b> Założenia</a></li>
+<li class="chapter" data-level="5.4" data-path="part-5.html"><a href="part-5.html#part_54"><i class="fa fa-check"></i><b>5.4</b> Jak to zrobić w R</a></li>
+<li class="chapter" data-level="5.5" data-path="part-5.html"><a href="part-5.html#part_55"><i class="fa fa-check"></i><b>5.5</b> Przykładowe wyniki</a></li>
+<li class="chapter" data-level="5.6" data-path="part-5.html"><a href="part-5.html#part_56"><i class="fa fa-check"></i><b>5.6</b> Studium przypadku</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="part-6.html"><a href="part-6.html"><i class="fa fa-check"></i><b>6</b> Analiza korespondencji (odpowiedniości)</a><ul>
+<li class="chapter" data-level="6.1" data-path="part-6.html"><a href="part-6.html#part_61"><i class="fa fa-check"></i><b>6.1</b> Problem</a></li>
+<li class="chapter" data-level="6.2" data-path="part-6.html"><a href="part-6.html#part_62"><i class="fa fa-check"></i><b>6.2</b> Rozwiązanie</a></li>
+<li class="chapter" data-level="6.3" data-path="part-6.html"><a href="part-6.html#part_63"><i class="fa fa-check"></i><b>6.3</b> Jak to zrobić w R?</a></li>
+<li class="chapter" data-level="6.4" data-path="part-6.html"><a href="part-6.html#part_64"><i class="fa fa-check"></i><b>6.4</b> Studium przypadku</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="part-7.html"><a href="part-7.html"><i class="fa fa-check"></i><b>7</b> Przykład analizy szeregów czasowych</a><ul>
+<li class="chapter" data-level="7.1" data-path="part-7.html"><a href="part-7.html#part_71"><i class="fa fa-check"></i><b>7.1</b> Wprowadzenie</a></li>
+<li class="chapter" data-level="7.2" data-path="part-7.html"><a href="part-7.html#part_72"><i class="fa fa-check"></i><b>7.2</b> Identyfikacja trendu i sezonowości</a><ul>
+<li class="chapter" data-level="7.2.1" data-path="part-7.html"><a href="part-7.html#part_721"><i class="fa fa-check"></i><b>7.2.1</b> Analiza wariancji - ANOVA</a></li>
+<li class="chapter" data-level="7.2.2" data-path="part-7.html"><a href="part-7.html#part_722"><i class="fa fa-check"></i><b>7.2.2</b> Funkcja autokorelacji - ACF</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="part-7.html"><a href="part-7.html#part_73"><i class="fa fa-check"></i><b>7.3</b> Modele autoregresyjne ARIMA</a><ul>
+<li class="chapter" data-level="7.3.1" data-path="part-7.html"><a href="part-7.html#part_731"><i class="fa fa-check"></i><b>7.3.1</b> Estymacja</a></li>
+<li class="chapter" data-level="7.3.2" data-path="part-7.html"><a href="part-7.html#part_732"><i class="fa fa-check"></i><b>7.3.2</b> Weryfikacja</a></li>
+<li class="chapter" data-level="7.3.3" data-path="part-7.html"><a href="part-7.html#part_733"><i class="fa fa-check"></i><b>7.3.3</b> Prognozowanie</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="part-7.html"><a href="part-7.html#part_74"><i class="fa fa-check"></i><b>7.4</b> Modele adaptacyjne</a><ul>
+<li class="chapter" data-level="7.4.1" data-path="part-7.html"><a href="part-7.html#part_741"><i class="fa fa-check"></i><b>7.4.1</b> Estymacja</a></li>
+<li class="chapter" data-level="7.4.2" data-path="part-7.html"><a href="part-7.html#part_742"><i class="fa fa-check"></i><b>7.4.2</b> Prognozowanie</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="part-8.html"><a href="part-8.html"><i class="fa fa-check"></i><b>8</b> Przykład analizy tabel wielodzielczych</a><ul>
+<li class="chapter" data-level="8.1" data-path="part-8.html"><a href="part-8.html#part_81"><i class="fa fa-check"></i><b>8.1</b> Wprowadzenie</a></li>
+<li class="chapter" data-level="8.2" data-path="part-8.html"><a href="part-8.html#part_82"><i class="fa fa-check"></i><b>8.2</b> Test chi-kwadrat</a></li>
+<li class="chapter" data-level="8.3" data-path="part-8.html"><a href="part-8.html#part_83"><i class="fa fa-check"></i><b>8.3</b> Model logitowy</a></li>
+<li class="chapter" data-level="8.4" data-path="part-8.html"><a href="part-8.html#part_84"><i class="fa fa-check"></i><b>8.4</b> Model logitowy</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="part-9.html"><a href="part-9.html"><i class="fa fa-check"></i><b>9</b> Przykład badania rozkładu stopy zwrotu z akcji</a><ul>
+<li class="chapter" data-level="9.1" data-path="part-9.html"><a href="part-9.html#part_9.1"><i class="fa fa-check"></i><b>9.1</b> Wprowadzenie</a></li>
+<li class="chapter" data-level="9.2" data-path="part-9.html"><a href="part-9.html#part_9.2"><i class="fa fa-check"></i><b>9.2</b> Statystyki opisowe</a></li>
+<li class="chapter" data-level="9.3" data-path="part-9.html"><a href="part-9.html#part_9.3"><i class="fa fa-check"></i><b>9.3</b> Rozkład normalny</a></li>
+<li class="chapter" data-level="9.4" data-path="part-9.html"><a href="part-9.html#part_9.4"><i class="fa fa-check"></i><b>9.4</b> Rozkład Cauchy’ego</a></li>
+<li class="chapter" data-level="9.5" data-path="part-9.html"><a href="part-9.html#part_9.5"><i class="fa fa-check"></i><b>9.5</b> Rozkład Laplace’a</a></li>
+<li class="chapter" data-level="9.6" data-path="part-9.html"><a href="part-9.html#part_9.6"><i class="fa fa-check"></i><b>9.6</b> Rozkład Stabilny</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="part-10.html"><a href="part-10.html"><i class="fa fa-check"></i><b>10</b> Przykład budowy dynamicznego modelu liniowego</a><ul>
+<li class="chapter" data-level="10.1" data-path="part-10.html"><a href="part-10.html#part_10.1"><i class="fa fa-check"></i><b>10.1</b> Wprowadzenie</a></li>
+<li class="chapter" data-level="10.2" data-path="part-10.html"><a href="part-10.html#part_10.2"><i class="fa fa-check"></i><b>10.2</b> Badanie wewnętrznej struktury procesu</a><ul>
+<li class="chapter" data-level="10.2.1" data-path="part-10.html"><a href="part-10.html#part_10.2.1"><i class="fa fa-check"></i><b>10.2.1</b> Trend</a></li>
+<li class="chapter" data-level="10.2.2" data-path="part-10.html"><a href="part-10.html#part_10.2.2"><i class="fa fa-check"></i><b>10.2.2</b> Sezonowość</a></li>
+<li class="chapter" data-level="10.2.3" data-path="part-10.html"><a href="part-10.html#part_10.2.3"><i class="fa fa-check"></i><b>10.2.3</b> Stopień autoregresji – funkcja PACF</a></li>
+<li class="chapter" data-level="10.2.4" data-path="part-10.html"><a href="part-10.html#part_10.2.4"><i class="fa fa-check"></i><b>10.2.4</b> Stopień integracji – test ADF/PP</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="part-10.html"><a href="part-10.html#part_10.3"><i class="fa fa-check"></i><b>10.3</b> Weryfikacja modelu</a><ul>
+<li class="chapter" data-level="10.3.1" data-path="part-10.html"><a href="part-10.html#part_10.3.1"><i class="fa fa-check"></i><b>10.3.1</b> Estymacja dynamicznego modelu liniowego</a></li>
+<li class="chapter" data-level="10.3.2" data-path="part-10.html"><a href="part-10.html#part_10.3.2"><i class="fa fa-check"></i><b>10.3.2</b> Ocena jakości modelu</a></li>
+</ul></li>
+<li class="chapter" data-level="10.4" data-path="part-10.html"><a href="part-10.html#part_10.4"><i class="fa fa-check"></i><b>10.4</b> Diagnostyka modelu</a><ul>
+<li class="chapter" data-level="10.4.1" data-path="part-10.html"><a href="part-10.html#part_10.4.1"><i class="fa fa-check"></i><b>10.4.1</b> Normalność procesu resztowego</a></li>
+<li class="chapter" data-level="10.4.2" data-path="part-10.html"><a href="part-10.html#part_10.4.2"><i class="fa fa-check"></i><b>10.4.2</b> Autokorelacja procesu resztowego</a></li>
+<li class="chapter" data-level="10.4.3" data-path="part-10.html"><a href="part-10.html#part_10.4.3"><i class="fa fa-check"></i><b>10.4.3</b> Heteroskedastyczność procesu resztowego</a></li>
+<li class="chapter" data-level="10.4.4" data-path="part-10.html"><a href="part-10.html#part_10.4.4"><i class="fa fa-check"></i><b>10.4.4</b> Stabilność parametrów modelu</a></li>
+<li class="chapter" data-level="10.4.5" data-path="part-10.html"><a href="part-10.html#part_10.4.5"><i class="fa fa-check"></i><b>10.4.5</b> Postać analityczna modelu</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="part-11.html"><a href="part-11.html"><i class="fa fa-check"></i><b>11</b> Przegląd wybranych testów statystycznych</a><ul>
+<li class="chapter" data-level="11.1" data-path="part-11.html"><a href="part-11.html#part_11.1"><i class="fa fa-check"></i><b>11.1</b> Testy normalności</a></li>
+<li class="chapter" data-level="11.2" data-path="part-11.html"><a href="part-11.html#part_11.2"><i class="fa fa-check"></i><b>11.2</b> Testy asymptotyczne</a></li>
+<li class="chapter" data-level="11.3" data-path="part-11.html"><a href="part-11.html#part_11.3"><i class="fa fa-check"></i><b>11.3</b> Testy dla proporcji</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="part-12.html"><a href="part-12.html"><i class="fa fa-check"></i><b>12</b> Przykład analizy liczby przestępstw w Polsce w 2009 r.</a><ul>
+<li class="chapter" data-level="12.1" data-path="part-12.html"><a href="part-12.html#part_12.1"><i class="fa fa-check"></i><b>12.1</b> Wprowadzenie</a></li>
+<li class="chapter" data-level="12.2" data-path="part-12.html"><a href="part-12.html#part_12.2"><i class="fa fa-check"></i><b>12.2</b> Mapy</a></li>
+<li class="chapter" data-level="12.3" data-path="part-12.html"><a href="part-12.html#part_12.3"><i class="fa fa-check"></i><b>12.3</b> Analiza wariancji</a></li>
+<li class="chapter" data-level="12.4" data-path="part-12.html"><a href="part-12.html#part_12.4"><i class="fa fa-check"></i><b>12.4</b> Modele dla liczebności</a></li>
+<li class="chapter" data-level="12.5" data-path="part-12.html"><a href="part-12.html#part_12.5"><i class="fa fa-check"></i><b>12.5</b> Modele dla częstości</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="part-13.html"><a href="part-13.html"><i class="fa fa-check"></i><b>13</b> Modele regresji</a><ul>
+<li class="chapter" data-level="13.1" data-path="part-13.html"><a href="part-13.html#part_13.1"><i class="fa fa-check"></i><b>13.1</b> Wprowadzenie</a></li>
+<li class="chapter" data-level="13.2" data-path="part-13.html"><a href="part-13.html#part_13.2"><i class="fa fa-check"></i><b>13.2</b> Estymacja modelu liniowego</a><ul>
+<li class="chapter" data-level="13.2.1" data-path="part-13.html"><a href="part-13.html#part_13.2.1"><i class="fa fa-check"></i><b>13.2.1</b> Metoda najmniejszych kwadratów</a></li>
+<li class="chapter" data-level="13.2.2" data-path="part-13.html"><a href="part-13.html#part_13.2.2"><i class="fa fa-check"></i><b>13.2.2</b> Poprawność specyfikacji modelu</a></li>
+<li class="chapter" data-level="13.2.3" data-path="part-13.html"><a href="part-13.html#part_13.2.3"><i class="fa fa-check"></i><b>13.2.3</b> Normalność</a></li>
+<li class="chapter" data-level="13.2.4" data-path="part-13.html"><a href="part-13.html#part_13.2.4"><i class="fa fa-check"></i><b>13.2.4</b> Heteroskedastyczność</a></li>
+<li class="chapter" data-level="13.2.5" data-path="part-13.html"><a href="part-13.html#part_13.2.5"><i class="fa fa-check"></i><b>13.2.5</b> Obserwacje odstające</a></li>
+<li class="chapter" data-level="13.2.6" data-path="part-13.html"><a href="part-13.html#part_13.2.6"><i class="fa fa-check"></i><b>13.2.6</b> Metoda najmniejszych wartości bezwzględnych</a></li>
+</ul></li>
+<li class="chapter" data-level="13.3" data-path="part-13.html"><a href="part-13.html#part_13.3"><i class="fa fa-check"></i><b>13.3</b> Estymacja modelu nieliniowego</a><ul>
+<li class="chapter" data-level="13.3.1" data-path="part-13.html"><a href="part-13.html#part_13.3.1"><i class="fa fa-check"></i><b>13.3.1</b> Model kwadratowy</a></li>
+<li class="chapter" data-level="13.3.2" data-path="part-13.html"><a href="part-13.html#part_13.3.2"><i class="fa fa-check"></i><b>13.3.2</b> Model wykładniczy</a></li>
+<li class="chapter" data-level="13.3.3" data-path="part-13.html"><a href="part-13.html#part_13.3.3"><i class="fa fa-check"></i><b>13.3.3</b> Model hiperboliczny</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="part-14.html"><a href="part-14.html"><i class="fa fa-check"></i><b>14</b> Zbiory danych</a><ul>
+<li class="chapter" data-level="14.1" data-path="part-14.html"><a href="part-14.html#part_14.1"><i class="fa fa-check"></i><b>14.1</b> Zbiór danych GUSowskich</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="bibliografia.html"><a href="bibliografia.html"><i class="fa fa-check"></i>Bibliografia</a></li>
+<li class="divider"></li>
+<li><a href="http://www.biecek.pl/NaPrzelajPrzezDataMining/" target="blank">strona projektu</a></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Na przełaj przez Data Mining z pakietem R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="part_6" class="section level1">
+<h1><span class="header-section-number">Rozdział 6</span> Analiza korespondencji (odpowiedniości)</h1>
+
+<div id="part_61" class="section level2">
+<h2><span class="header-section-number">6.1</span> Problem</h2>
+<p>Obserwujemy dwie zmienne jakościowe. Pierwsza zmienna przyjmuje wartości z <span class="math inline">\(n_1\)</span>
+poziomów, druga z <span class="math inline">\(n_2\)</span> poziomów.</p>
+<p>Interesuje nas, czy zmienne te są od siebie niezależne, a jeżeli nie są niezależne
+to które kombinacje poziomów występują ze sobą znacznie częściej.
+Dane z którymi mamy do czynienia to macierz kontyngencji (tabela wielodziel-
+cza) o wymiarach k × l wyznaczona dla dwóch zmiennych o odpowiednio <span class="math inline">\(k\)</span> i <span class="math inline">\(l\)</span> poziomach. Jeżeli <span class="math inline">\(k\)</span> i <span class="math inline">\(l\)</span> są małe, to taką macierz można ogarnąć rzutem oka. Jednak dla zmiennych występujących na wielu poziomach potrzebne są już dodatkowe narzędzia.</p>
+
+</div>
+<div id="part_62" class="section level2">
+<h2><span class="header-section-number">6.2</span> Rozwiązanie</h2>
+<p>Aby ocenić niezależność dwóch zmiennych można wykorzystać test <span class="math inline">\(\chi^2\)</span> z funkcji
+<a href="https://rdrr.io/r/stats/chisq.test.html"><code>chisq.test()</code></a> lub inny test dla macierzy kontyngencji (jeżeli poziomy są uporządkowane to dobrym rozwiązaniem będzie test Cochrana-Armitage). Testem tym zweryfikujemy hipotezę o niezależności częstości występowań poszczególnych zmiennych.
+Jeżeli jednak odrzucimy tę hipotezę zerową, czyli przyjmiemy że jest JAKAŚ
+zależność, to naturalnym pytaniem będzie jaka to zależność i pomiędzy którymi
+poziomami.
+Aby ocenić, które zmienne występują częściej ze sobą można wykonuje się tzw.
+analizę korespondencji. Jeżeli zmienne były by niezależne od siebie, to zachodziło
+by równanie
+<span class="math display">\[
+p_{ij}=p_{i\cdot}p_{\cdot j},\quad i\in \{1\dots k\},\quad j\in \{1\dots l\}.
+\]</span>
+gdzie <span class="math inline">\(p_{ij}\)</span> to prawdopodobieństwo zaobserwowania pierwszej zmiennej na poziomie
+<span class="math inline">\(i\)</span> i jednocześnie drugiej na poziomie <span class="math inline">\(j\)</span>, <span class="math inline">\(p_{i\cdot}\)</span> to prawdopodobieństwo zaobserwowania zmiennej pierwszej na poziomie <span class="math inline">\(i\)</span> a <span class="math inline">\(p_{\cdot j}\)</span> to prawdopodobieństwo zaobserwowania zmiennej drugiej na poziomie <span class="math inline">\(j\)</span>.</p>
+<p>Żeby ocenić, które zmienne występują częściej lub rzadziej niż wynikało by to
+z niezależności, wyznaczymy standaryzowane reszty Pearsonowskie, zastąpimy też
+prawdopodobieństwa ich częstościowymi ocenami (czyli <span class="math inline">\(\hat{p}\)</span>
+to liczba obserwowanych
+zdarzeń podzielona przez liczbę wszystkich obserwowanych zdarzeń)
+<span class="math display">\[
+\hat{e}_{ij}=\frac{\hat{p}_{ij}-\hat{p}_{i\cdot}\hat{p}_{\cdot j}}{\hat{p}_{i\cdot}\hat{p}_{\cdot j}}
+\]</span>
+Duże dodatnie wartości <span class="math inline">\(\hat{e}_{ij}\)</span> odpowiadają wysokiemu współwystępowaniu, ujemne <span class="math inline">\(E=[\hat{e}_{ij}]\)</span> przedstawić w postaci graficznej używając tzw. biplotu. Innymi słowy wyznaczamy dekompozycję SVD macierzy E
+wartości odpowiadają występowaniu rzadszemu niż losowe. Możemy teraz macierz
+<span class="math display">\[
+E_{k\times l}=U_{k\times k}\sum_{k\times k}V_{l \times l}^{T}
+\]</span></p>
+<p>Kolumny macierzy <span class="math inline">\(U_{k \times k}\)</span> to wektory własne macierzy <span class="math inline">\(E^T E\)</span> a kolumny macierzy <span class="math inline">\(V\)</span>
+to wektory własne macierzy <span class="math inline">\(EE^T\)</span>. Na przekątnej macierzy diagonalnej <span class="math inline">\(\sigma\)</span> znajdują
+się tzw. wartości singularne (osobliwe?) równe pierwiastkom z wartości własnych
+macierzy <span class="math inline">\(E^TE\)</span> i EE^T . “Przy okazji”&quot; kolumny macierzy <span class="math inline">\(U\)</span> rozpinają ortonormalną
+bazę na kolumnach macierzy <span class="math inline">\(E\)</span> a kolumny macierzy <span class="math inline">\(V\)</span> rozpinają ortonormlaną bazę
+na wierszach macierzy <span class="math inline">\(E\)</span>. Można więc przedstawić macierz <span class="math inline">\(E\)</span> (lub możliwie dużo
+informacji z tej macierzy) we nowej przestrzeni określonej na bazie współrzędnych
+wierszy i kolumn macierzy <span class="math inline">\(E\)</span>.</p>
+
+</div>
+<div id="part_63" class="section level2">
+<h2><span class="header-section-number">6.3</span> Jak to zrobić w R?</h2>
+<p>Przedstawimy funkcje <code>ca(ca)</code> oraz <code>corresp(MASS)</code>. Obie służą do wykonania analizy
+korespondencji. Wykonują ją jednak w odrobinę odmienny sposób przez co wyniki
+końcowe też są inne.</p>
+
+</div>
+<div id="part_64" class="section level2">
+<h2><span class="header-section-number">6.4</span> Studium przypadku</h2>
+<p>Przedstawmy przykład bazujący na danych o zatrudnieniu w poszczególnych województwach. Zmienne które chcemy porównać to Województwo (16 poziomów) i
+Sektor pracy (4 poziomy: rolnictwo, przemysł, usługi, bezrobotni). Podejrzewamy,
+że struktura zatrudnienia różni się pomiędzy województwami.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;MASS&quot;</span>)
+<span class="kw">library</span>(<span class="st">&quot;ca&quot;</span>)
+<span class="kw">library</span>(<span class="st">&quot;RColorBrewer&quot;</span>)
+<span class="co"># przygotujmy wektor kolorow</span>
+kolory =<span class="st"> </span><span class="kw">rev</span>(<span class="kw">brewer.pal</span>(<span class="dv">11</span>,<span class="st">&quot;Spectral&quot;</span>))
+
+<span class="co"># wybierzmy interesujące nas kolumny</span>
+<span class="co"># konwertujemy tabele na macierz, takiego formatu spodziewa się funkcja heatmap()</span>
+dane =<span class="st"> </span><span class="kw">as.matrix</span>(daneGUS[,<span class="kw">c</span>(<span class="dv">22</span><span class="op">:</span><span class="dv">25</span>)])
+<span class="kw">colSums</span>(dane)</code></pre>
+<pre><code>## pracujacy.rolnictwo  pracujacy.przemysl    pracujacy.uslugi 
+##                2249                4680                8309 
+##          bezrobotni 
+##                 743</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">rowSums</span>(dane)</code></pre>
+<pre><code>##        DOLNOSLASKIE  KUJAWSKO-POMORSKIE             LODZKIE 
+##                1218                 791                1304 
+##           LUBELSKIE            LUBUSKIE         MALOPOLSKIE 
+##                1018                 451                1336 
+##         MAZOWIECKIE            OPOLSKIE        PODKARPACKIE 
+##                2373                 379                 852 
+##           PODLASKIE           POMORSKIE             SLASKIE 
+##                 478                 792                1845 
+##      SWIETOKRZYSKIE WARMINSKO-MAZURSKIE       WIELKOPOLSKIE 
+##                 622                 573                1371 
+##  ZACHODNIOPOMORSKIE 
+##                 578</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># jak wygląda macierz z danymi?</span>
+<span class="kw">head</span>(dane)</code></pre>
+<pre><code>##                    pracujacy.rolnictwo pracujacy.przemysl pracujacy.uslugi
+## DOLNOSLASKIE                        74                415              651
+## KUJAWSKO-POMORSKIE                 128                245              369
+## LODZKIE                            220                384              636
+## LUBELSKIE                          328                197              447
+## LUBUSKIE                            43                151              244
+## MALOPOLSKIE                        205                381              689
+##                    bezrobotni
+## DOLNOSLASKIE               78
+## KUJAWSKO-POMORSKIE         49
+## LODZKIE                    64
+## LUBELSKIE                  46
+## LUBUSKIE                   13
+## MALOPOLSKIE                61</code></pre>
+<p>Macierz 64 liczb jest trudno ogarnąć nieuzborojonym okiem. Możemy zauważyć,
+że biorąc pod uwagę, że najwięcej ludzi pracuje w sektorze usługowym (<span class="math inline">\(8309\)</span> tys.)
+również łatwo zauważyć, że najludniejsze jest województwo Mazowieckie (<span class="math inline">\(2 373\)</span> tys.) ale z tych surowych danych ciężko wyciągnąć głębszy wniosek.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># tę macierz można przedstawić w postaci graficznej</span>
+<span class="co"># czerwony odpowiada dużym liczbom, niebieski małym</span>
+<span class="kw">heatmap</span>(dane,<span class="dt">scale=</span><span class="st">&quot;col&quot;</span>,<span class="dt">Colv=</span><span class="ot">NA</span>, <span class="dt">col=</span> kolory)</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:wy62A"></span>
+<img src="NaPrzelajR_files/figure-html/wy62A-1.png" alt="Mapa ciepła dla danych oryginalnych (kolory normalizowane po kolumnach)." width="70%" />
+<p class="caption">
+Rysunek 6.1: Mapa ciepła dla danych oryginalnych (kolory normalizowane po kolumnach).
+</p>
+</div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># zobaczmy czy sa zaleznosci pomiedzy kolumnami i wierszami, wygląda na to że nie są to niezależne cechy</span>
+<span class="kw">chisq.test</span>(dane)</code></pre>
+<pre><code>## 
+##  Pearson&#39;s Chi-squared test
+## 
+## data:  dane
+## X-squared = 1031.9, df = 45, p-value &lt; 2.2e-16</code></pre>
+<p>Wykonaliśmy test <span class="math inline">\(\chi^2\)</span> i otrzymaliśmy bardzo małą p-wartość, która upewniła nas w przekonaniu, że województwa mają inną strukturę zatrudnienia.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># zobaczmy które kombinacje występują częściej niż w przypadku niezależności</span>
+<span class="co"># policzymy residua Pearsonowskie</span>
+P =<span class="st"> </span>dane<span class="op">/</span><span class="kw">sum</span>(dane)
+<span class="co"># macierz czestosci oczekiwanych</span>
+PP =<span class="st"> </span><span class="kw">outer</span>(<span class="kw">rowSums</span>(P),<span class="kw">colSums</span>(P))
+<span class="co"># macierz residuow Pearsonowskich</span>
+E =<span class="st"> </span>(P<span class="op">-</span>PP)<span class="op">/</span><span class="kw">sqrt</span>(PP)
+<span class="kw">head</span>(E)</code></pre>
+<pre><code>##                    pracujacy.rolnictwo pracujacy.przemysl pracujacy.uslugi
+## DOLNOSLASKIE              -0.058854443        0.024423457      0.005571820
+## KUJAWSKO-POMORSKIE         0.012508000        0.006942431     -0.016485942
+## LODZKIE                    0.021307056        0.000860813     -0.012756112
+## LUBELSKIE                  0.122091621       -0.046327197     -0.028293827
+## LUBUSKIE                  -0.020324264        0.013026864      0.004913504
+## MALOPOLSKIE                0.009798815       -0.004097028     -0.001688693
+##                      bezrobotni
+## DOLNOSLASKIE        0.022465943
+## KUJAWSKO-POMORSKIE  0.015945574
+## LODZKIE             0.003427270
+## LUBELSKIE          -0.001528783
+## LUBUSKIE           -0.013765063
+## MALOPOLSKIE        -0.001118379</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># tę macierz również można przedstawić za pomocą mapy ciepła</span>
+<span class="kw">heatmap</span>(E,<span class="dt">scale=</span><span class="st">&quot;none&quot;</span>,<span class="dt">Colv=</span><span class="ot">NA</span>,<span class="dt">col=</span> kolory)</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:wy63A"></span>
+<img src="NaPrzelajR_files/figure-html/wy63A-1.png" alt="Mapa ciepła dla reszt Pearsonowskich." width="70%" />
+<p class="caption">
+Rysunek 6.2: Mapa ciepła dla reszt Pearsonowskich.
+</p>
+</div>
+<p>Wyznaczyliśmy macierz reszt Pearsonowskich <span class="math inline">\(E\)</span> (którą też przedstawiliśmy graficznie z użyciem mapy ciepła) i z tej macierzy możemy już odczytać w których
+województwach poszczególne sektory są popularniejsze. Największe reszty obserwujemy dla sektora rolnictwa, zarówno duże dodatnie wartości (w województwie lubelskim, podlaskim, podkarpackim i świętokrzyskim) jak i duże (co do modułu) ujemne wartości (w województwie śląskim i dolnośląskim).
+Możemy teraz przedstawić graficznie macierz <span class="math inline">\(E\)</span> z użyciem biplotu (z wykorzystaniem dekompozycji SVD).</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># wykonujemy dekompozycje na wartosci osobliwe (singularne/szczegolne)</span>
+A =<span class="st"> </span><span class="kw">svd</span>(E)
+X =<span class="st"> </span><span class="kw">t</span>(<span class="kw">apply</span>(A<span class="op">$</span>u, <span class="dv">1</span>, <span class="st">&quot;*&quot;</span>, <span class="kw">sqrt</span>(A<span class="op">$</span>d)))
+Y =<span class="st"> </span><span class="kw">t</span>(<span class="kw">apply</span>(A<span class="op">$</span>v, <span class="dv">1</span>, <span class="st">&quot;*&quot;</span>, <span class="kw">sqrt</span>(A<span class="op">$</span>d)))
+<span class="co"># zwykle współrzędne liczone są ze wzorow, w ktorych A jest dekompozycja innej macierzy</span>
+<span class="co"># [</span><span class="al">TODO</span><span class="co">: uzupełnić albo pominąć]</span>
+<span class="co"># A = Dr^(-1/2) A$u A$d</span>
+<span class="co"># B = Dc^(-1/2) A$v a$d</span></code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(<span class="kw">rbind</span>(X[,<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>], Y[,<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>]), <span class="dt">xlab=</span><span class="st">&quot;&quot;</span>, <span class="dt">ylab=</span><span class="st">&quot;&quot;</span>, <span class="dt">main=</span><span class="st">&quot;Bramka nr. 1&quot;</span>, lwd
+=<span class="dv">3</span>)</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:wy64A"></span>
+<img src="NaPrzelajR_files/figure-html/wy64A-1.png" alt="?" width="70%" />
+<p class="caption">
+Rysunek 6.3: ?
+</p>
+</div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># analiza korespondencji z użyciem pakietu MASS</span>
+<span class="kw">biplot</span>(MASS<span class="op">::</span><span class="kw">corresp</span>(dane, <span class="dt">nf =</span> <span class="dv">2</span>))</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:wy65A"></span>
+<img src="NaPrzelajR_files/figure-html/wy65A-1.png" alt="?" width="70%" />
+<p class="caption">
+Rysunek 6.4: ?
+</p>
+</div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># analiza korespondencji z użyciem pakietu ca</span>
+<span class="co"># argument mass powoduje że liczebności komórek odpowiadają wielkościom punktów na wykresie</span>
+<span class="kw">plot</span>(ca<span class="op">::</span><span class="kw">ca</span>(dane), <span class="dt">mass=</span><span class="kw">c</span>(T,T))</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:wy66A"></span>
+<img src="NaPrzelajR_files/figure-html/wy66A-1.png" alt="Przykład analizy korespondencji." width="70%" />
+<p class="caption">
+Rysunek 6.5: Przykład analizy korespondencji.
+</p>
+</div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(ca<span class="op">::</span><span class="kw">ca</span>(dane))</code></pre>
+<pre><code>## 
+## Principal inertias (eigenvalues):
+## 
+##  dim    value      %   cum%   scree plot               
+##  1      0.054859  85.0  85.0  *********************    
+##  2      0.007352  11.4  96.3  ***                      
+##  3      0.002360   3.7 100.0  *                        
+##         -------- -----                                 
+##  Total: 0.064571 100.0                                 
+## 
+## 
+## Rows:
+##      name   mass  qlt  inr    k=1 cor ctr    k=2 cor ctr  
+## 1  | DOLN |   76  918   71 | -225 837  70 |  -70  81  51 |
+## 2  | KUJA |   49  848   11 |   65 286   4 |  -91 563  56 |
+## 3  | LODZ |   82 1000   10 |   80 838  10 |  -35 162  14 |
+## 4  | LUBE |   64 1000  277 |  527 990 322 |   53  10  24 |
+## 5  | LUBU |   28  723   12 | -142 719  10 |  -11   4   0 |
+## 6  | MALO |   84  995    2 |   37 960   2 |    7  34   1 |
+## 7  | MAZO |  148 1000   88 |  -95 238  25 |  171 762 587 |
+## 8  | OPOL |   24  496    3 |   -5   2   0 |  -68 494  15 |
+## 9  | PODK |   53  926   78 |  296 925  85 |  -12   2   1 |
+## 10 | PODL |   30  994   56 |  342 974  64 |   49  20  10 |
+## 11 | POMO |   50  939   24 | -171 919  26 |   25  20   4 |
+## 12 | SLAS |  115  995  187 | -319 970 214 |  -52  25  42 |
+## 13 | SWIE |   39  968  128 |  443 926 139 |  -94  41  47 |
+## 14 | WARM |   36  515    4 |  -42 246   1 |  -44 269  10 |
+## 15 | WIEL |   86  808   15 |   -1   0   0 |  -97 808 109 |
+## 16 | ZACH |   36  806   33 | -203 702  27 |   78 103  30 |
+## 
+## Columns:
+##        name   mass  qlt  inr    k=1 cor ctr    k=2 cor ctr  
+## 1 | prcjcyr |  141  999  720 |  574 999 847 |   -4   0   0 |
+## 2 | prcjcyp |  293  967  128 | -120 509  77 | -114 458 514 |
+## 3 | prcjcys |  520 1000  111 |  -90 587  77 |   75 413 402 |
+## 4 |    bzrb |   46  236   42 |   21   7   0 | -115 228  83 |</code></pre>
+<p>Przy opisie analizy korespondencji często wymienianym czynnikiem jest inercja, nazywana czasem bezwładnością (przez podobieństwo do inercji w fizyce). Aby
+opisać formalnie czym jest ta miara musimy zacząć od kilku innych pojęć.</p>
+<p>Niech masa wiersza i masa kolumny będzie określona jako brzegowe częstości
+macierzy kontyngencji.</p>
+<pre class="sourceCode r"><code class="sourceCode r">(<span class="dt">masa.kolumny =</span> <span class="kw">colSums</span>(<span class="kw">prop.table</span>(dane)))</code></pre>
+<pre><code>## pracujacy.rolnictwo  pracujacy.przemysl    pracujacy.uslugi 
+##          0.14072962          0.29284776          0.51992992 
+##          bezrobotni 
+##          0.04649271</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">(<span class="dt">masa.wiersza =</span> <span class="kw">rowSums</span>(<span class="kw">prop.table</span>(dane)))</code></pre>
+<pre><code>##        DOLNOSLASKIE  KUJAWSKO-POMORSKIE             LODZKIE 
+##          0.07621551          0.04949628          0.08159690 
+##           LUBELSKIE            LUBUSKIE         MALOPOLSKIE 
+##          0.06370064          0.02822101          0.08359927 
+##         MAZOWIECKIE            OPOLSKIE        PODKARPACKIE 
+##          0.14848883          0.02371566          0.05331331 
+##           PODLASKIE           POMORSKIE             SLASKIE 
+##          0.02991052          0.04955885          0.11544960 
+##      SWIETOKRZYSKIE WARMINSKO-MAZURSKIE       WIELKOPOLSKIE 
+##          0.03892122          0.03585508          0.08578937 
+##  ZACHODNIOPOMORSKIE 
+##          0.03616795</code></pre>
+<p>Profilem wiersza (kolumny) będą wartości w wierszu (kolumnie) unormowane
+przez masę kolumny (wiersza).</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(profil.kolumny &lt;-<span class="st"> </span>dane<span class="op">/</span><span class="kw">rowSums</span>(dane))</code></pre>
+<pre><code>##                    pracujacy.rolnictwo pracujacy.przemysl pracujacy.uslugi
+## DOLNOSLASKIE                0.06075534          0.3407225        0.5344828
+## KUJAWSKO-POMORSKIE          0.16182048          0.3097345        0.4664981
+## LODZKIE                     0.16871166          0.2944785        0.4877301
+## LUBELSKIE                   0.32220039          0.1935167        0.4390963
+## LUBUSKIE                    0.09534368          0.3348115        0.5410200
+## MALOPOLSKIE                 0.15344311          0.2851796        0.5157186
+##                    bezrobotni
+## DOLNOSLASKIE       0.06403941
+## KUJAWSKO-POMORSKIE 0.06194690
+## LODZKIE            0.04907975
+## LUBELSKIE          0.04518664
+## LUBUSKIE           0.02882483
+## MALOPOLSKIE        0.04565868</code></pre>
+<p>Tak unormowane profile wierszy i kolumn mogą być ze sobą porównywane. Im
+większa odległość pomiędzy profilami kolumn tym mniejsza zależność pomiędzy
+czynnikami opisanymi w tych kolumnach (oczywiście dla wierszy jest tak samo).
+Średni profil kolumnowy to masa wiersza a średni profil wierszowy to masa kolumn.</p>
+<p>Inercja to odległość (w mierze <span class="math inline">\(\chi^2\)</span> ) pomiędzy daną kolumną (wierszem, punktem)
+a średnią wartością dla kolumn (wierszy). Całkowita inercja to suma odległości dla
+wszystkich kolumn (wierszy). <strong>Im większa inercja tym punkty są oddalone
+dalej od średniego profilu wiersza/kolumny</strong>.</p>
+<p>[TODO: uzupełnić. nawiązać do wyników funkcji summary.ca()]</p>
+<p>Wyniki powyższych instrukcji oglądać można na wykresie <a href="part-6.html#fig:wy62A">6.1</a> i kolejnych.</p>
+<p>Analizując ten wykres można zauważyć ciekawe zróżnicowanie województw. Na
+osi X największą współrzędną ma zmienna <code>pr.rolnictwo</code>, a więc to ta zmienna odpowiada największemu zróżnicowaniu województw. Wysoki wartości na tej osi osiągają województwa gdzie zatrudnienie w rolnictwie było wyższe niż średnie. Druga
+oś rozróżnia województwa w których dominuje zatrudnienie w sektorze usług (dodatnie wartości) versus zatrudnieniu w przemyśle lub braku zatrudnienia (niestety
+profil zatrudnienia w przemyśle i braku zatrudnienia jest podobny).</p>
+<p>Osoby w województwach Mazowieckim i Zachodniopomorskim częściej pracują
+w sektorze usług, w województwach Lubelskim, Podlaskim, Świętokrzyskim i Podkarpackim dominuje zatrudnienie w sektorze rolniczym, w województwach Śląskim i
+Dolnośląskim dominuje zatrudnienie w przemyśle te województwa mają też większe
+problemy z bezrobociem.</p>
+<p>[TODO: opisać podobieństwa i różnice do PCA]</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="part-5.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="part-7.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": ["NaPrzelajR.pdf", "NaPrzelajR.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

@@ -1,0 +1,88 @@
+## Test chi-kwadrat {#part_82}
+
+Do analizy zależności między dwiema zmiennymi zostanie wykorzystamy test $\chi^2$. W
+pakiecie R jest dostępna funkcja [`assocstats::vcd`]() za pomocą której wykonywane
+są dwa testy badające niezależność: test $\chi^2$ oraz test $G$:
+
+\begin{subequations}
+\begin{align}
+\chi^2=\sum_{i=1}^{r} \sum_{j=1}^{c}\frac{(O_{ij}-E_{ij})^2}{E_{ij}} (\#eq:wz81)\\
+G=2\sum_{i}^{r}\sum_{j=1}^{c} O_{ij}\ln\left(\frac{O_{ij}}{E_{ij}}\right) (\#eq:wz82)
+\end{align}
+\end{subequations}
+gdzie:
+
+* $r$ -- liczba wierszy,
+
+* $c$ -- liczba kolumn,
+
+* $O_{ij}$ -- empiryczna liczebność $i$-tego wiersza oraz $j$-tej kolumny,
+
+* $E_{ij}$ -- oczekiwana liczebność $i$-tego wiersza oraz $j$-tej kolumny.
+
+Dodatkowo podawane są również współczynniki korelacji: $\phi$-Yula, $V$-Pearsona i $V$-Cramera. A zatem spróbujmy odpowiedzieć na następujące pytania:
+
+1. Czy na przeżycie katastrofy miała wpływ płeć?
+```{r wy81A, fig.cap='Przeżycie i płeć.',fig.pos= 'h', fig.show='hold', fig.align='center', fig.width=6, fig.height=6,out.width='40%'}
+# tablica kontygencji:
+s <- xtabs(~Survived+Sex, data=t) 
+gplots::balloonplot(s,dotcolor="gray80")
+```
+```{r}
+vcd::assocstats(s)
+```
+
+Na podstawie testu $\chi^2$ oraz wykresu (rys. \@ref(fig:wy81A)) możemy wnioskować, że występuje istotne powiązanie między przeżyciem katastrofy, a płcią pasażerów (p-value= 0, $V = 0,456$).
+```{r}
+ps <- prop.table(s,2);ps
+```
+Obliczenia procentowe wskazują, że przeżyło $73\%$ kobiet oraz tylko $21\%$ mężczyzn.
+```{r}
+ns<-ps/(1-ps);ns # szanse przeżycia
+ns[,1]/ns[,2]    # ilorazy szans przeżycia
+```
+Obliczony iloraz szans $OR = 10,15$ wskazuje, że szansa przeżycia katastrofy na Titanicu wśród kobiet $(2,7301587)$ była ponad dziesięć razy większa niż wśród mężczyzn $(0,2690616)$.
+
+2. Czy na przeżycie katastrofy miała wpływ klasa w której podróżowano?
+
+```{r wy82A, fig.cap='Przeżycie i klasa podróżowania.',fig.pos= 'h', fig.show='hold', fig.align='center', fig.width=6, fig.height=6,out.width='40%'}
+c <- xtabs(~Survived+Class,data=t) # tablica kontygencji
+gplots::balloonplot(c,dotcolor="gray80")
+```
+```{r}
+vcd::assocstats(c)
+```
+Ponieważ p-value = 0 to należy sądzić, że istnieje zależność między przeżyciem a
+klasą w której podróżowali uczestnicy rejsu. O wysokim powiązaniu tych zmiennych
+świdczy także wysoki współczynnik korelacji $V = 0,29$. Dodajmy, że współczynnik zależności $\phi$ jest obliczany tylko dla tabel kontyngencji $2\times2$.
+```{r}
+pc <- prop.table(c,2);pc
+```
+Po obliczeniu wartości procentowych dochodzimy do wniosku, że najwięcej przeżyło
+tych osób, które podróżowały w pierwszej klasie -- $62\%$. Natomiast wśród załogi
+przeżyło najmniej osób, tylko $24\%$. Należy także podkreślić, że im wyższy standard podróży tym większa szansa przeżycia.
+```{r}
+nc <- pc/(1-pc);nc # szanse przeżycia
+nc[,1]/nc[,2]      # porównanie szans 1 z 2 klasą
+nc[,2]/nc[,3]      # porównanie szans 2 z 3 klasą
+nc[,3]/nc[,4]      # porównanie szans 3 z załogą
+```
+
+3. Czy na przeżycie katastrofy miał wpływ wiek?
+
+```{r wy83, fig.cap='Przeżycie i wiek.',fig.pos= 'h', fig.show='hold', fig.align='center', fig.width=6, fig.height=6,out.width='40%'}
+a <- xtabs(~Survived+Age,data=t) # tablica kontygencji
+gplots::balloonplot(a,dotcolor="gray80")
+```
+```{r}
+vcd::assocstats(a)
+```
+Także i w tym przypadku istnieje zależność między zmiennymi przeżycie oraz wiek,
+choć współczynnik korelacji nie jest zbyt wysoki i wynosi $V = 0,098$.
+```{r}
+pa <- prop.table(a,2);pa
+```
+
+Po obliczeniu wartości procentowych należy stwierdzić, że katastrofę przeżyła ponad połowa dzieci $(52\%)$ oraz $13$ osób dorosłych $(31\%)$.
+
+

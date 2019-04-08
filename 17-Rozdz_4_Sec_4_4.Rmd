@@ -1,0 +1,52 @@
+## Drzewa decyzyjne {#part_44}
+
+Inną klasą klasyfikatorów są cieszące się dużą popularnością metody bazujące na
+drzewach decyzyjnych (klasyfikacyjnych). W tym przypadku klasyfikator jest reprezentowany przez drzewo binarne, w którego węzłach znajdują się pytania o wartości
+określonej cechy, a w liściach znajdują się oceny klas. Przykład drzewa klasyfikacyjnego przedstawiamy na rysunku \@ref(fig:Ctree46). Dodatkowo w liściach przedstawiono proporcję
+obiektów z obu klas, które znalazły się w danym węźle, a wiec spełniły warunki
+określone w poszczególnych węzłach drzewa. Jeżeli nowe obiekty będziemy przypisywać do klasy, która w danym liściu występowała najczęściej, to dla trzech liści
+(czwartego, szóstego i siódmego) klasyfikować będziemy do grupy osób chorych, a w
+pozostałych liściach będziemy klasyfikować do grupy osób zdrowych.
+
+W pakiecie R metoda wyznaczania drzew decyzyjnych dostępna jest w wielu różnych funkcjach. Popularnie wykorzystywane są funkcje `tree(tree)`, `rpart(rpart)`
+oraz `cpart(party)`. Poniżej przedstawimy tylko tą ostatnią, ponieważ są dla niej
+opracowane najbardziej atrakcyjne funkcje do prezentacji graficznej. Z wszystkich
+wymienionych funkcji do konstrukcji drzew korzysta się podobnie. Wymienione funkcje mogą służyć zarówno do wyznaczania drzew regresyjnych jak i klasyfikacyjnych, ale w tym miejscu przedstawimy tylko ich klasyfikacyjną naturę. Do wizualizacji drzew klasyfikacyjnych można wykorzystać (w zależności od tego jaką funkcją wyznaczyliśmy drzewo) funkcje `plot.BinaryTree(party)`, `plot.tree(tree)`,
+`text.tree(tree)`, `draw.tree(maptree)`, `plot.rpart(rpart)` oraz `text.rpart(rpart)`.
+
+Aby zbudować drzewo klasyfikacyjne należy określić kryterium podziału, a więc
+na jaka wartość ma być minimalizowana przy tworzeniu kolejnych gałęzi (najczęściej
+jest to błąd klasyfikacji) oraz kryterium stopu (a wiec jak długo drzewo ma być dzielone). Różne warianty drzew umożliwiają kontrolę różnych kryteriów, w przypadku
+metody `ctree()` zarówno kryterium stopu jak i podziału można określić argumentem `control` (patrz opis funkcji `ctree_control(party)`). Poniżej przedstawiamy
+przykładową sesję z budową drzewa klasyfikacyjnego.
+```{r Ctree46, fig.cap='Przykładowe drzewo klasyfikacyjne wyznaczone funkcją ctree().',fig.pos= 'h', fig.show='hold', fig.align='center', fig.width=12, fig.height=7,out.width='80%'}
+# określamy kryteria budowy drzewa klasyfikayjnego
+ustawienia <- party::ctree_control(mincriterion = 0.5, testtype = "Teststatistic")
+# uczymy drzewo
+drzewo <- party::ctree(diabetes~glucose+insulin,
+                       data=dane, subset = zbior.uczacy, controls = ustawienia)
+# narysujmy je
+plot(drzewo)
+```
+```{r}
+# w standardowy sposób przeprowadzamy klasyfikacje
+oceny = predict(drzewo, dane[-zbior.uczacy,])
+table(predykcja = oceny, prawdziwe = dane[-zbior.uczacy,3])
+```
+```{r Ktree47, fig.cap='Przykładowe obszary decyzyjne dla drzewa klasyfikacyjnego.',fig.pos= 'h', fig.show='hold', fig.align='center', fig.width=8, fig.height=6,out.width='70%'}
+drzewo <- party::ctree(dane$diabetes~dane$glucose+dane$insulin, data=dane,
+                       controls = party::ctree_control(
+                         mincriterion = 0.5, teststat = c("max")))
+wub = predict(drzewo, siata)
+plot(siata, col=kol[as.numeric(wub)], pch=15, main="ctree()",
+     xlab="insulin",ylab="glucose", xlim=range(dat[,1]),ylim=range(dat[,2]))
+points(dane[,1:2],pch=c(1,4)[as.numeric(dane[,3])], cex=1,
+       col=kol2[as.numeric(dane[,3])], lwd=2)
+```
+
+Zaletą drzew jest ich łatwość w interpretacji. Narysowany klasyfikator może być
+oceniony i poprawiony, przez eksperta z dziedziny, której problem dotyczy.
+
+Dla drzew zapisanych jako obiekty klasy `tree` lub `rpart` dostępne są dwie przydatne funkcje umożliwiające modyfikację drzewa. Pierwsza to `prune.tree(tree)`
+(`prune.rpart(rpart)`). Pozwala ona na automatyczne przycinanie drzewa, poszczególnymi argumentami tej funkcji możemy ustalić jak drzewo ma być przycięte. Można określić pożądaną liczbę węzłów w drzewie, maksymalny współczynnik błędu
+w liściu drzewa oraz inne kryteria. Nie zawsze przycinanie automatyczne daje satysfakcjonujące rezultaty. W sytuacji gdy drzewo potrzebuje ludzkiej ingerencji można wykorzystać funkcję `snip.tree(tree)` (`snip.rpart(rpart)`) pozwalającą użytkownikowi na wskazanie myszką które węzły drzewa maja być usunięte. Inne ciekawe funkcje to `misclass.tree(tree)` (wyznacza błąd klasyfikacji dla każdego węzła z drzewa) oraz `partition.tree(tree)` (wyznacza obszary decyzyjne dla drzew).

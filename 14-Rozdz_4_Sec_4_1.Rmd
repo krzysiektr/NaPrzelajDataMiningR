@@ -1,0 +1,124 @@
+## Dyskryminacja liniowa i kwadratowa {#part_41}
+
+Dyskryminacja liniowa, a więc metoda wyznaczania (hiper)płaszczyzn separujących
+obiekty różnych klas, jest dostępna w funkcji `lda(MASS)`. Rozszerzeniem tej metody jest dyskryminacja kwadratowa, umożliwiająca dyskryminacje powierzchniami,
+w opisie których mogą pojawić się człony stopnia drugiego. Metoda klasyfikacji kwadratowej jest dostępna w funkcji `qda(MASS)`. Wynikami obu funkcji jest klasyfikator,
+wyznaczony na zbiorze uczącym. Aby użyć go do predykcji klas dla nowych obiektów
+możemy wykorzystać przeciążoną funkcje `predict()`.
+
+Poniżej przedstawiamy przykład użycia funkcji `lda()`. Z funkcji `qda()` korzysta
+się w identyczny sposób. Na potrzeby przykładu wykorzystaliśmy zbiór danych do-
+tyczących występowania cukrzycy u Indian Pima, ten zbiór danych jest dostępny
+w zbiorze `PimaIndiansDiabetes2(mlbench)`. Interesować nas będą dwie zmienne
+z tego zbioru danych, opisujące poziom glukozy i insuliny, w zbiorze danych jest
+znacznie więcej zmiennych, ale na potrzeby wizualizacji wybraliśmy tę parę. Na bazie tych dwóch zmiennych będziemy badać skuteczność oceny czy dana osoba jest
+cukrzykiem z wykorzystaniem obu algorytmów klasyfikacji. Zbiór danych podzielimy na dwie części, uczącą i testową. Klasyfikator zostanie „nauczony” na zbiorze
+uczących, a później będziemy weryfikować jego właściwości na zbiorze testowym.
+Pierwszym argumentem funkcji `lda()` jest zbiór zmiennych na bazie których
+budowany będzie klasyfikator (ramka danych lub macierz). Drugim argumentem
+grouping jest wektor określający klasy kolejnych obiektów. Kolejnym wykorzystanym poniżej argumentem jest subset, określający indeksy obiektów, na bazie których budowany ma być klasyfikator. Jeżeli argument subset nie będzie podany, to
+do konstrukcji klasyfikatora wykorzystane będą wszystkie obiekty. Jako pierwszy
+argument funkcji `lda()` można również podać również formułę, określającą, które
+zmienne mają być użyte do konstrukcji klasyfikatora a która zmienna opisuje klasy.
+
+```{r}
+library("mlbench")
+# wczytujemy zbiór danych z pakietu mlbench, usuwamy brakujące dane i
+# logarytmujemy poziom insuliny
+data(PimaIndiansDiabetes2)
+dane = na.omit(PimaIndiansDiabetes2)[,c(2,5,9)]
+dane[,2] = log(dane[,2])
+# zbiór danych chcemy podzielić na dwie części, uczącą i testową,
+# funkcją sample wylosujemy indeksy obiektów, które trafia do zbioru uczącego
+zbior.uczacy = sample(1:nrow(dane), nrow(dane)/2, FALSE)
+# wywołujemy funkcję lda
+klasyfikatorLDA = lda(dane[,1:2], grouping = dane[,3], subset=zbior.uczacy)
+# jak wygląda wynik w środku?
+str(klasyfikatorLDA)
+```
+Zbudowanie klasyfikatora to dopiero pierwszy krok, kolejnym jest jego ocena.
+Na bazie obserwacji niewykorzystanych do budowania klasyfikatora zbadamy jaka
+była zgodność klasyfikatora z rzeczywistymi danymi (ponieważ zbiór uczący wybraliśmy losowo, to dla różnych powtórzeń otrzymalibyśmy inny błąd klasyfikacji).
+Do klasyfikacji nowych obiektów użyjemy funkcji `predict()`. Jest to funkcja przeciążona, działająca dla większości klasyfikatorów. Wynikiem tej funkcji mogą być
+prognozowane klasy dla nowych obserwacji, lub też prawdopodobieństwa a posteriori przynależności do danej klasy.
+```{r}
+# używając metody predict wykonujemy klasyfikacje obiektów ze zbioru testowego
+oceny = predict(klasyfikatorLDA, newdata=dane[-zbior.uczacy,1:2])
+# jak wyglądają wyniki? Pole $class wskazuje na przewidzianą klasę, pole
+# $posterior określa wyznaczone prawdopodobieństwo przynależności do
+# każdej z klas, na podstawie tej wartości obiekt był przypisywany do
+# bardziej prawdopodobnej dla niego klasy
+str(oceny)
+```
+```{r}
+# porównajmy macierzą kontyngencji oceny i rzeczywiste etykietki dla kolejnych obiektów
+table(predykcja = oceny$class, prawdziwe = dane[-zbior.uczacy,3])
+```
+W powyższym przykładzie w ostatnim poleceniu wyznaczyliśmy tablice kontyngencji dla wyników. Na bazie tak otrzymanej tablicy kontyngencji można wyznaczyć błąd predykcji. Jest wiele wskaźników opisujących błąd predykcji, począwszy
+od popularnych: czułość (ang. sensitivity `TP/(TP+FN)` opisuje jaki procent chorych
+zostanie poprawnie zdiagnozowanych jako chorzy), specyficzność (ang. (Specifity)
+`TN/(TN+FP)` określa jaki procent zdrowych zostanie poprawnie zdiagnozowanych jako zdrowi), przez mniej popularne aż po takie o których mało kto słyszał (np. mutual
+information, współczynnik $\phi$ itp.). Bogata lista takich współczynników wymieniona jest w opisie funkcji `performance(ROCR)` (definiując błąd klasyfikacji używa się
+oznaczeń `TP`, `TN`, `FP`, `FN` określających kolejno liczbę poprawnie wykrytych sygnałów
+pozytywnych, poprawnie wykrytych braków sygnału, fałszywie wykrytych sygnałów
+pozytywnych oraz fałszywie wykrytych braków sygnałów. W powyższym przypadku
+czułość wyniosła $31/(31+29)\approx0,517$ a specyficzność $115/(115+21)\approx 0,846$. 
+
+Jeżeli już jesteśmy przy pakiecie ROCR to na przykładzie przedstawimy w jaki sposób wyznaczać krzywe ROC dla klasyfikatorów. Proszę zauważyć, że funkcja
+`predict()` poza ocenionymi klasami jako wynik przekazuje również prawdopodobieństwo przynależności do jednej z klas (pole `posterior` wyniku funkcji `predict()`).
+Krzywa ROC to zbiór punktów wyznaczonych dla różnych poziomów odcięcia (ang.
+threshold) dla wspomnianego prawdopodobieństwa przynależności do jednej z klas.
+Współrzędne każdego punktu to czułość i specyficzność (dokładniej rzecz biorąc
+1-specyficzność) otrzymana dla zadanego punktu odcięcia.
+
+Poniżej przykład użycia funkcji z pakietu `ROCR`, służącej do rysowania krzywych
+ROC i innych o podobnych właściwościach. Wynik graficzny przedstawiony jest na
+rysunku \@ref(fig:ad41). Na osiach tego wykresu mogą być przedstawiane różne miary dokładności klasyfikacji, w zależności od argumentów funkcji `performance()`.
+
+```{r ad41, fig.cap='Wykres zależności czułości od specyficzności oraz miary prediction od recall dla klasyfikacji z użyciem funkcji lda().',fig.pos= 'h', fig.show='hold', fig.align='center', fig.width=12, fig.height=5,out.width='100%'}
+# wyznaczamy obiekt klasy prediction, zawierający informacje o prawdziwych
+# klasach, i prawdopodobieństwu przynależności do wybranej klasy
+pred <- ROCR::prediction(oceny$posterior[,2], dane[-zbior.uczacy,3])
+# wyznaczamy i wyrysowujemy wybrane miary dobroci klasyfikacji
+perf <- ROCR::performance(pred, "sens", "spec")
+par(mfcol=c(1,2))
+plot(perf@x.values[[1]], perf@y.values[[1]],type="l")
+perf <- ROCR::performance(pred, "prec", "rec")
+plot(perf@x.values[[1]], perf@y.values[[1]],type="l")
+```
+Na rysunku \@ref(fig:ad42) przedstawiamy kształty obszarów decyzyjnych dla obu klasyfikatorów (do wyznaczania obszarów decyzyjnych można się posłużyć funkcją `partimat(klaR)`
+lub `drawparti(klaR)`). Obszary decyzyjne wyznaczane są dla wytrenowanego klasyfikatora, przedstawiają do której klasy zostałby przypisany punkt o określonych
+współrzędnych. Osoby chore na cukrzyce oznaczane są czarnymi krzyżykami, osoby
+zdrowe czerwonymi okręgami. Punkty w których przewidzianą klasą była by cukrzyca zaznaczone są ciemnoszarym kolorem a punkty dla których klasyfikowalibyśmy
+do grona osób zdrowych zaznaczono jaśniejszym szarym kolorem.
+```{r ad42, fig.cap='Przykładowe obszary decyzyjne dla liniowej i kwadratowej dyskryminacji dostępne w funkcjach lda() o qda().',fig.pos= 'h', fig.show='hold', fig.align='center', fig.width=12, fig.height=5,out.width='100%'}
+PimaIndiansDiabetes2 = na.omit(PimaIndiansDiabetes2)
+dat = PimaIndiansDiabetes2[,c(2,5)]
+dat[,2] = log(dat[,2])
+
+colnames(dat) =  c("glucose", "log(insulin)")
+klasa = as.numeric(PimaIndiansDiabetes2$diabetes)
+
+seqx = seq(30,210,2)
+seqy = seq(2.5,7,0.07)
+siata = as.data.frame(expand.grid(seqx, seqy))
+colnames(siata) =c("glucose", "log(insulin)")
+
+kol  = c("grey90", "grey70")
+kol2  = c("red", "black")
+par(mfcol=c(1,2))
+klasyfikatorLDA = MASS::lda(dat, klasa)
+wub = predict(klasyfikatorLDA, newdata=siata)
+
+plot(siata, col=kol[as.numeric(wub$class)],
+     pch=15,xlim=range(dat[,1]),ylim=range(dat[,2]), main="lda()")
+points(dat,pch=c(1,4)[klasa], cex=1, col=kol2[klasa], lwd=2)
+
+klasyfikatorLDA = MASS::qda(dat, klasa)
+wub = predict(klasyfikatorLDA, newdata=siata)
+
+plot(siata, col=kol[as.numeric(wub$class)],
+     pch=15,xlim=range(dat[,1]),ylim=range(dat[,2]), main="qda()")
+points(dat,pch=c(1,4)[klasa], cex=1, col=kol2[klasa], lwd=2)
+```
+

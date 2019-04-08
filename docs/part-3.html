@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html  lang="pl">
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Rozdział 3 Analiza skupień | Na przełaj przez Data Mining z pakietem R</title>
+  <meta name="description" content="Zbiór przykładów użycia wybranych funkcji statystycznych i Data Mining dostępnych w programie R.">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
+
+  <meta property="og:title" content="Rozdział 3 Analiza skupień | Na przełaj przez Data Mining z pakietem R" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Zbiór przykładów użycia wybranych funkcji statystycznych i Data Mining dostępnych w programie R." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Rozdział 3 Analiza skupień | Na przełaj przez Data Mining z pakietem R" />
+  
+  <meta name="twitter:description" content="Zbiór przykładów użycia wybranych funkcji statystycznych i Data Mining dostępnych w programie R." />
+  
+
+<meta name="author" content="Przemysław Biecek, Krzysztof Trajkowski">
+
+
+<meta name="date" content="2019-04-08">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="part-2.html">
+<link rel="next" href="part-4.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; position: absolute; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; }
+pre.numberSource a.sourceLine:empty
+  { position: absolute; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Na przełaj przez Data Mining<br/> z pakietem R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Kilka słów zamiast wstępu</a></li>
+<li class="chapter" data-level="2" data-path="part-2.html"><a href="part-2.html"><i class="fa fa-check"></i><b>2</b> Redukcja wymiaru</a><ul>
+<li class="chapter" data-level="2.1" data-path="part-2.html"><a href="part-2.html#part_21"><i class="fa fa-check"></i><b>2.1</b> Analiza składowych głównych (PCA, ang. Principal Components Analysis)</a></li>
+<li class="chapter" data-level="2.2" data-path="part-2.html"><a href="part-2.html#part_22"><i class="fa fa-check"></i><b>2.2</b> Nieliniowe skalowanie wielowymiarowe (Sammon Mapping)</a></li>
+<li class="chapter" data-level="2.3" data-path="part-2.html"><a href="part-2.html#part_23"><i class="fa fa-check"></i><b>2.3</b> Skalowanie wielowymiarowe Kruskalla (MDS, ang. Multidimensional Scaling)</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="part-3.html"><a href="part-3.html"><i class="fa fa-check"></i><b>3</b> Analiza skupień</a><ul>
+<li class="chapter" data-level="3.1" data-path="part-3.html"><a href="part-3.html#part_31"><i class="fa fa-check"></i><b>3.1</b> Metoda k-średnich</a></li>
+<li class="chapter" data-level="3.2" data-path="part-3.html"><a href="part-3.html#part_32"><i class="fa fa-check"></i><b>3.2</b> Metoda grupowania wokół centroidów (PAM, ang. Partitioning Around Medoids)</a></li>
+<li class="chapter" data-level="3.3" data-path="part-3.html"><a href="part-3.html#part_33"><i class="fa fa-check"></i><b>3.3</b> Metoda aglomeracyjnego klastrowania hierarchicznego</a></li>
+<li class="chapter" data-level="3.4" data-path="part-3.html"><a href="part-3.html#part_34"><i class="fa fa-check"></i><b>3.4</b> Ile skupień wybrać?</a></li>
+<li class="chapter" data-level="3.5" data-path="part-3.html"><a href="part-3.html#part_35"><i class="fa fa-check"></i><b>3.5</b> Inne metody analizy skupień</a></li>
+<li class="chapter" data-level="3.6" data-path="part-3.html"><a href="part-3.html#part_36"><i class="fa fa-check"></i><b>3.6</b> Case study</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="part-4.html"><a href="part-4.html"><i class="fa fa-check"></i><b>4</b> Analiza dyskryminacji</a><ul>
+<li class="chapter" data-level="4.1" data-path="part-4.html"><a href="part-4.html#part_41"><i class="fa fa-check"></i><b>4.1</b> Dyskryminacja liniowa i kwadratowa</a></li>
+<li class="chapter" data-level="4.2" data-path="part-4.html"><a href="part-4.html#part_42"><i class="fa fa-check"></i><b>4.2</b> Metoda najbliższych sąsiadów</a></li>
+<li class="chapter" data-level="4.3" data-path="part-4.html"><a href="part-4.html#part_43"><i class="fa fa-check"></i><b>4.3</b> Naiwny klasyfikator Bayesowski</a></li>
+<li class="chapter" data-level="4.4" data-path="part-4.html"><a href="part-4.html#part_44"><i class="fa fa-check"></i><b>4.4</b> Drzewa decyzyjne</a></li>
+<li class="chapter" data-level="4.5" data-path="part-4.html"><a href="part-4.html#part_45"><i class="fa fa-check"></i><b>4.5</b> Lasy losowe</a></li>
+<li class="chapter" data-level="4.6" data-path="part-4.html"><a href="part-4.html#part_46"><i class="fa fa-check"></i><b>4.6</b> Inne klasyfikatory</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="part-5.html"><a href="part-5.html"><i class="fa fa-check"></i><b>5</b> Analiza kanoniczna</a><ul>
+<li class="chapter" data-level="5.1" data-path="part-5.html"><a href="part-5.html#part_51"><i class="fa fa-check"></i><b>5.1</b> Problem</a></li>
+<li class="chapter" data-level="5.2" data-path="part-5.html"><a href="part-5.html#part_52"><i class="fa fa-check"></i><b>5.2</b> Rozwiązanie</a></li>
+<li class="chapter" data-level="5.3" data-path="part-5.html"><a href="part-5.html#part_53"><i class="fa fa-check"></i><b>5.3</b> Założenia</a></li>
+<li class="chapter" data-level="5.4" data-path="part-5.html"><a href="part-5.html#part_54"><i class="fa fa-check"></i><b>5.4</b> Jak to zrobić w R</a></li>
+<li class="chapter" data-level="5.5" data-path="part-5.html"><a href="part-5.html#part_55"><i class="fa fa-check"></i><b>5.5</b> Przykładowe wyniki</a></li>
+<li class="chapter" data-level="5.6" data-path="part-5.html"><a href="part-5.html#part_56"><i class="fa fa-check"></i><b>5.6</b> Studium przypadku</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="part-6.html"><a href="part-6.html"><i class="fa fa-check"></i><b>6</b> Analiza korespondencji (odpowiedniości)</a><ul>
+<li class="chapter" data-level="6.1" data-path="part-6.html"><a href="part-6.html#part_61"><i class="fa fa-check"></i><b>6.1</b> Problem</a></li>
+<li class="chapter" data-level="6.2" data-path="part-6.html"><a href="part-6.html#part_62"><i class="fa fa-check"></i><b>6.2</b> Rozwiązanie</a></li>
+<li class="chapter" data-level="6.3" data-path="part-6.html"><a href="part-6.html#part_63"><i class="fa fa-check"></i><b>6.3</b> Jak to zrobić w R?</a></li>
+<li class="chapter" data-level="6.4" data-path="part-6.html"><a href="part-6.html#part_64"><i class="fa fa-check"></i><b>6.4</b> Studium przypadku</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="part-7.html"><a href="part-7.html"><i class="fa fa-check"></i><b>7</b> Przykład analizy szeregów czasowych</a><ul>
+<li class="chapter" data-level="7.1" data-path="part-7.html"><a href="part-7.html#part_71"><i class="fa fa-check"></i><b>7.1</b> Wprowadzenie</a></li>
+<li class="chapter" data-level="7.2" data-path="part-7.html"><a href="part-7.html#part_72"><i class="fa fa-check"></i><b>7.2</b> Identyfikacja trendu i sezonowości</a><ul>
+<li class="chapter" data-level="7.2.1" data-path="part-7.html"><a href="part-7.html#part_721"><i class="fa fa-check"></i><b>7.2.1</b> Analiza wariancji - ANOVA</a></li>
+<li class="chapter" data-level="7.2.2" data-path="part-7.html"><a href="part-7.html#part_722"><i class="fa fa-check"></i><b>7.2.2</b> Funkcja autokorelacji - ACF</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="part-7.html"><a href="part-7.html#part_73"><i class="fa fa-check"></i><b>7.3</b> Modele autoregresyjne ARIMA</a><ul>
+<li class="chapter" data-level="7.3.1" data-path="part-7.html"><a href="part-7.html#part_731"><i class="fa fa-check"></i><b>7.3.1</b> Estymacja</a></li>
+<li class="chapter" data-level="7.3.2" data-path="part-7.html"><a href="part-7.html#part_732"><i class="fa fa-check"></i><b>7.3.2</b> Weryfikacja</a></li>
+<li class="chapter" data-level="7.3.3" data-path="part-7.html"><a href="part-7.html#part_733"><i class="fa fa-check"></i><b>7.3.3</b> Prognozowanie</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="part-7.html"><a href="part-7.html#part_74"><i class="fa fa-check"></i><b>7.4</b> Modele adaptacyjne</a><ul>
+<li class="chapter" data-level="7.4.1" data-path="part-7.html"><a href="part-7.html#part_741"><i class="fa fa-check"></i><b>7.4.1</b> Estymacja</a></li>
+<li class="chapter" data-level="7.4.2" data-path="part-7.html"><a href="part-7.html#part_742"><i class="fa fa-check"></i><b>7.4.2</b> Prognozowanie</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="part-8.html"><a href="part-8.html"><i class="fa fa-check"></i><b>8</b> Przykład analizy tabel wielodzielczych</a><ul>
+<li class="chapter" data-level="8.1" data-path="part-8.html"><a href="part-8.html#part_81"><i class="fa fa-check"></i><b>8.1</b> Wprowadzenie</a></li>
+<li class="chapter" data-level="8.2" data-path="part-8.html"><a href="part-8.html#part_82"><i class="fa fa-check"></i><b>8.2</b> Test chi-kwadrat</a></li>
+<li class="chapter" data-level="8.3" data-path="part-8.html"><a href="part-8.html#part_83"><i class="fa fa-check"></i><b>8.3</b> Model logitowy</a></li>
+<li class="chapter" data-level="8.4" data-path="part-8.html"><a href="part-8.html#part_84"><i class="fa fa-check"></i><b>8.4</b> Model logitowy</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="part-9.html"><a href="part-9.html"><i class="fa fa-check"></i><b>9</b> Przykład badania rozkładu stopy zwrotu z akcji</a><ul>
+<li class="chapter" data-level="9.1" data-path="part-9.html"><a href="part-9.html#part_9.1"><i class="fa fa-check"></i><b>9.1</b> Wprowadzenie</a></li>
+<li class="chapter" data-level="9.2" data-path="part-9.html"><a href="part-9.html#part_9.2"><i class="fa fa-check"></i><b>9.2</b> Statystyki opisowe</a></li>
+<li class="chapter" data-level="9.3" data-path="part-9.html"><a href="part-9.html#part_9.3"><i class="fa fa-check"></i><b>9.3</b> Rozkład normalny</a></li>
+<li class="chapter" data-level="9.4" data-path="part-9.html"><a href="part-9.html#part_9.4"><i class="fa fa-check"></i><b>9.4</b> Rozkład Cauchy’ego</a></li>
+<li class="chapter" data-level="9.5" data-path="part-9.html"><a href="part-9.html#part_9.5"><i class="fa fa-check"></i><b>9.5</b> Rozkład Laplace’a</a></li>
+<li class="chapter" data-level="9.6" data-path="part-9.html"><a href="part-9.html#part_9.6"><i class="fa fa-check"></i><b>9.6</b> Rozkład Stabilny</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="part-10.html"><a href="part-10.html"><i class="fa fa-check"></i><b>10</b> Przykład budowy dynamicznego modelu liniowego</a><ul>
+<li class="chapter" data-level="10.1" data-path="part-10.html"><a href="part-10.html#part_10.1"><i class="fa fa-check"></i><b>10.1</b> Wprowadzenie</a></li>
+<li class="chapter" data-level="10.2" data-path="part-10.html"><a href="part-10.html#part_10.2"><i class="fa fa-check"></i><b>10.2</b> Badanie wewnętrznej struktury procesu</a><ul>
+<li class="chapter" data-level="10.2.1" data-path="part-10.html"><a href="part-10.html#part_10.2.1"><i class="fa fa-check"></i><b>10.2.1</b> Trend</a></li>
+<li class="chapter" data-level="10.2.2" data-path="part-10.html"><a href="part-10.html#part_10.2.2"><i class="fa fa-check"></i><b>10.2.2</b> Sezonowość</a></li>
+<li class="chapter" data-level="10.2.3" data-path="part-10.html"><a href="part-10.html#part_10.2.3"><i class="fa fa-check"></i><b>10.2.3</b> Stopień autoregresji – funkcja PACF</a></li>
+<li class="chapter" data-level="10.2.4" data-path="part-10.html"><a href="part-10.html#part_10.2.4"><i class="fa fa-check"></i><b>10.2.4</b> Stopień integracji – test ADF/PP</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="part-10.html"><a href="part-10.html#part_10.3"><i class="fa fa-check"></i><b>10.3</b> Weryfikacja modelu</a><ul>
+<li class="chapter" data-level="10.3.1" data-path="part-10.html"><a href="part-10.html#part_10.3.1"><i class="fa fa-check"></i><b>10.3.1</b> Estymacja dynamicznego modelu liniowego</a></li>
+<li class="chapter" data-level="10.3.2" data-path="part-10.html"><a href="part-10.html#part_10.3.2"><i class="fa fa-check"></i><b>10.3.2</b> Ocena jakości modelu</a></li>
+</ul></li>
+<li class="chapter" data-level="10.4" data-path="part-10.html"><a href="part-10.html#part_10.4"><i class="fa fa-check"></i><b>10.4</b> Diagnostyka modelu</a><ul>
+<li class="chapter" data-level="10.4.1" data-path="part-10.html"><a href="part-10.html#part_10.4.1"><i class="fa fa-check"></i><b>10.4.1</b> Normalność procesu resztowego</a></li>
+<li class="chapter" data-level="10.4.2" data-path="part-10.html"><a href="part-10.html#part_10.4.2"><i class="fa fa-check"></i><b>10.4.2</b> Autokorelacja procesu resztowego</a></li>
+<li class="chapter" data-level="10.4.3" data-path="part-10.html"><a href="part-10.html#part_10.4.3"><i class="fa fa-check"></i><b>10.4.3</b> Heteroskedastyczność procesu resztowego</a></li>
+<li class="chapter" data-level="10.4.4" data-path="part-10.html"><a href="part-10.html#part_10.4.4"><i class="fa fa-check"></i><b>10.4.4</b> Stabilność parametrów modelu</a></li>
+<li class="chapter" data-level="10.4.5" data-path="part-10.html"><a href="part-10.html#part_10.4.5"><i class="fa fa-check"></i><b>10.4.5</b> Postać analityczna modelu</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="part-11.html"><a href="part-11.html"><i class="fa fa-check"></i><b>11</b> Przegląd wybranych testów statystycznych</a><ul>
+<li class="chapter" data-level="11.1" data-path="part-11.html"><a href="part-11.html#part_11.1"><i class="fa fa-check"></i><b>11.1</b> Testy normalności</a></li>
+<li class="chapter" data-level="11.2" data-path="part-11.html"><a href="part-11.html#part_11.2"><i class="fa fa-check"></i><b>11.2</b> Testy asymptotyczne</a></li>
+<li class="chapter" data-level="11.3" data-path="part-11.html"><a href="part-11.html#part_11.3"><i class="fa fa-check"></i><b>11.3</b> Testy dla proporcji</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="part-12.html"><a href="part-12.html"><i class="fa fa-check"></i><b>12</b> Przykład analizy liczby przestępstw w Polsce w 2009 r.</a><ul>
+<li class="chapter" data-level="12.1" data-path="part-12.html"><a href="part-12.html#part_12.1"><i class="fa fa-check"></i><b>12.1</b> Wprowadzenie</a></li>
+<li class="chapter" data-level="12.2" data-path="part-12.html"><a href="part-12.html#part_12.2"><i class="fa fa-check"></i><b>12.2</b> Mapy</a></li>
+<li class="chapter" data-level="12.3" data-path="part-12.html"><a href="part-12.html#part_12.3"><i class="fa fa-check"></i><b>12.3</b> Analiza wariancji</a></li>
+<li class="chapter" data-level="12.4" data-path="part-12.html"><a href="part-12.html#part_12.4"><i class="fa fa-check"></i><b>12.4</b> Modele dla liczebności</a></li>
+<li class="chapter" data-level="12.5" data-path="part-12.html"><a href="part-12.html#part_12.5"><i class="fa fa-check"></i><b>12.5</b> Modele dla częstości</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="part-13.html"><a href="part-13.html"><i class="fa fa-check"></i><b>13</b> Modele regresji</a><ul>
+<li class="chapter" data-level="13.1" data-path="part-13.html"><a href="part-13.html#part_13.1"><i class="fa fa-check"></i><b>13.1</b> Wprowadzenie</a></li>
+<li class="chapter" data-level="13.2" data-path="part-13.html"><a href="part-13.html#part_13.2"><i class="fa fa-check"></i><b>13.2</b> Estymacja modelu liniowego</a><ul>
+<li class="chapter" data-level="13.2.1" data-path="part-13.html"><a href="part-13.html#part_13.2.1"><i class="fa fa-check"></i><b>13.2.1</b> Metoda najmniejszych kwadratów</a></li>
+<li class="chapter" data-level="13.2.2" data-path="part-13.html"><a href="part-13.html#part_13.2.2"><i class="fa fa-check"></i><b>13.2.2</b> Poprawność specyfikacji modelu</a></li>
+<li class="chapter" data-level="13.2.3" data-path="part-13.html"><a href="part-13.html#part_13.2.3"><i class="fa fa-check"></i><b>13.2.3</b> Normalność</a></li>
+<li class="chapter" data-level="13.2.4" data-path="part-13.html"><a href="part-13.html#part_13.2.4"><i class="fa fa-check"></i><b>13.2.4</b> Heteroskedastyczność</a></li>
+<li class="chapter" data-level="13.2.5" data-path="part-13.html"><a href="part-13.html#part_13.2.5"><i class="fa fa-check"></i><b>13.2.5</b> Obserwacje odstające</a></li>
+<li class="chapter" data-level="13.2.6" data-path="part-13.html"><a href="part-13.html#part_13.2.6"><i class="fa fa-check"></i><b>13.2.6</b> Metoda najmniejszych wartości bezwzględnych</a></li>
+</ul></li>
+<li class="chapter" data-level="13.3" data-path="part-13.html"><a href="part-13.html#part_13.3"><i class="fa fa-check"></i><b>13.3</b> Estymacja modelu nieliniowego</a><ul>
+<li class="chapter" data-level="13.3.1" data-path="part-13.html"><a href="part-13.html#part_13.3.1"><i class="fa fa-check"></i><b>13.3.1</b> Model kwadratowy</a></li>
+<li class="chapter" data-level="13.3.2" data-path="part-13.html"><a href="part-13.html#part_13.3.2"><i class="fa fa-check"></i><b>13.3.2</b> Model wykładniczy</a></li>
+<li class="chapter" data-level="13.3.3" data-path="part-13.html"><a href="part-13.html#part_13.3.3"><i class="fa fa-check"></i><b>13.3.3</b> Model hiperboliczny</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="part-14.html"><a href="part-14.html"><i class="fa fa-check"></i><b>14</b> Zbiory danych</a><ul>
+<li class="chapter" data-level="14.1" data-path="part-14.html"><a href="part-14.html#part_14.1"><i class="fa fa-check"></i><b>14.1</b> Zbiór danych GUSowskich</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="bibliografia.html"><a href="bibliografia.html"><i class="fa fa-check"></i>Bibliografia</a></li>
+<li class="divider"></li>
+<li><a href="http://www.biecek.pl/NaPrzelajPrzezDataMining/" target="blank">strona projektu</a></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Na przełaj przez Data Mining z pakietem R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="part_3" class="section level1">
+<h1><span class="header-section-number">Rozdział 3</span> Analiza skupień</h1>
+<p>Analiza skupień to zbiór metod pozwalających na wyróżnienie zbiorów obserwacji
+(nazywanych skupieniami lub klastrami) podobnych do siebie. Proces szukania podziału na grupy, nazywany jest czasem klastrowaniem. W pakiecie R dostępnych
+jest bardzo wiele metod do przeprowadzania analizy skupień. Poniżej omówimy jedynie kilka wybranych funkcji z pakietów <code>cluster</code> i <code>stats</code>. Osoby zainteresowane
+tym tematem powinny przyjrzeć się również funkcjom z pakietów <code>flexclust</code> oraz
+<code>mclust02</code>.</p>
+<p>Wyniki działania wybranych procedur analizy skupień przedstawimy ma przykładzie zbioru danych benchmarkowych. W pakiecie mlbench (skrót od Machine
+Learning Benchmark Problems) umieszczonych jest wiele ciekawych zbiorów danych
+wykorzystywanych do testowania właściwości algorytmów dyskryminacji lub analizy skupień. W tym pakiecie znajdują się zbiory rzeczywistych danych, jak również
+funkcje do generowania zbiorów danych o określonych kształtach lub właściwościach.
+Dwa zbiory wygenerowanych danych na których będziemy testować metody analizy skupień przedstawione są na rysunku 3.1. Zostały one wygenerowane funkcjami
+<code>mlbench.cassini(mlbench)</code> i <code>mlbench.2dnormals(mlbench)</code>.</p>
+<p>Do wyznaczania skupisk wystarczy macierz odległości pomiędzy obiektami. Domyślnie wyznaczane są odległości euklidesowe (może więc warto skalować dane?)
+ale można te odległości liczyć korzystając z innych funkcji <code>dist.BC(clusterSim)</code>,
+<code>dist.GDM(clusterSim)</code>, <code>dist.SM(clusterSim)</code>, <code>dist(stats)</code>, <code>dist.binary(ade4)</code>.</p>
+
+<div id="part_31" class="section level2">
+<h2><span class="header-section-number">3.1</span> Metoda k-średnich</h2>
+<p>Celem tej metody jest podział zbioru danych na <code>k</code> klastrów. Dobry podział to taki,
+w którym suma odległości obserwacji należących do klastra jest znacznie mniejsza
+od sumie odległości obserwacji pomiędzy klastrami. Metoda k-średnich polega na
+wyznaczeniu współrzędnych <code>k</code> punktów, które zostaną uznane za środki klastrów.
+Obserwacja będzie należała do tego klastra, którego środek jest najbliżej niej.</p>
+<p>Metoda k-średnich jest zaimplementowana w funkcji <code>kmeans(stats)</code>. Pierwszym
+argumentem tej funkcji jest ramka danych określająca wartości zmiennych dla kolejnych obserwacji. Drugim argumentem może być pojedyncza liczba określająca ile
+klastrów chcemy identyfikować (w tym przypadku środki klastrów będą wyznaczone
+iteracyjnym algorytmem) lub wektor środków klastrów. Algorytm wyboru środków
+klastrów jest algorytmem zrandomizowanym, może też dawać różne wyniki nawet
+na tym samym zbiorze danych! Dlatego też zalecane jest uruchomienie kilkukrotne
+tego algorytmu oraz wybranie najlepsze go podziału na klastry. Można to zrobić też
+automatycznie, określając argument <code>nstart</code> funkcji <code>kmeans()</code>.</p>
+<p>Algorytm k-średnich minimalizuje $tr(W $ gdzie <span class="math inline">\(W\)</span> to macierz kowariancji wewnątrz klas. Opisuje go poniższa sekwencja</p>
+<ol style="list-style-type: decimal">
+<li><p>wybierany jest wstępny podział (w razie potrzeby można ten wybór powtórzyć
+wielokrotnie by znaleźć globalne maksimum),</p></li>
+<li><p>przypisuje się obiekty do klasy z najbliższym środkiem ciężkości</p></li>
+<li><p>przelicza się środki ciężkości dla nowych klas</p></li>
+<li><p>kroki 2-3 powtarza się tak długo aż nie będą zachodziły żadne zmiany.</p></li>
+</ol>
+<div class="figure" style="text-align: center"><span id="fig:mlbench"></span>
+<img src="mlbench.png" alt="Dane, na których będziemy przedstawiać metody analizy skupień." width="100%" />
+<p class="caption">
+Rysunek 3.1: Dane, na których będziemy przedstawiać metody analizy skupień.
+</p>
+</div>
+<p>Poniżej prezentujemy przykład użycia funkcji <code>kmeans()</code>. Wyniki analizy skupień
+przedstawione są graficznie na rysunku <a href="part-3.html#fig:kmeans">3.2</a>. Różne klastry zaznaczono punktami
+o różnych kształtach. Czarne pełne punkty wskazują na środki znalezionych klastrów. Oczywiście właściwszym byłoby dopasowanie do lewego przykładu 3 klastrów, a do prawego 5 klastrów. Na przedstawionych przykładach możemy prześledzić ci się dzieje, jeżeli źle określimy liczbę klastrów (czytelnik powinien spróbować powtórzyć te analizy, wyniki najprawdopodobniej otrzyma inne!).</p>
+<pre><code># szukamy 5 klastrow, nie trafiło się nam najlepsze dopasowanie
+&gt; klaster = kmeans(zbiorPerla,5)
+# jak wygląda wynik w środku?
+# pole $cluster określa numer klastra dla kolejnych punktów, $centers
+# określa współrzędne środków klastrów
+&gt; str(klaster)
+List of 4
+$ cluster : int [1:1000] 3 3 3 3 3 3 3 3 3 3 ...
+$ centers : num [1:5, 1:2] 0.03203 -0.00749 -0.08380 -0.81601 0.91808
+...
+..- attr(*, &quot;dimnames&quot;)=List of 2
+.. ..$ : chr [1:5] &quot;1&quot; &quot;2&quot; &quot;3&quot; &quot;4&quot; ...
+.. ..$ : NULL
+$ withinss: num [1:5] 22.4 10.9 126.9 11.5
+9.8
+$ size
+: int [1:5] 103 69 197 70 61
+- attr(*, &quot;class&quot;)= chr &quot;kmeans&quot;
+# rysujemy punkty, różne klastry oznaczamy innymi kształtami punktów
+&gt; plot(zbiorPerla, pch=klaster$cluster)
+# dorysujmy środki klastrów
+&gt; points(klaster$centers, cex=2, pch=19)
+&gt; klaster = kmeans(zbiorGwiazda,2)
+&gt; plot(zbiorGwiazda, pch=klaster$cluster)
+&gt; points(klaster$centers, cex=2, pch=19)</code></pre>
+Na powyższym przykładzie przedstawiliśmy pola w obiektach przekazanych przez
+funkcję <code>kmeans()</code>. Pole <code>$cluster</code> określa do jakiego klastra została przyporządkowana dana obserwacja, a pole <code>$centers</code> to współrzędne środków poszczególnych klastrów.
+<div class="figure" style="text-align: center"><span id="fig:kmeans"></span>
+<img src="kmeans.png" alt="Graficzna prezentacja działania funkcji kmeans()." width="100%" />
+<p class="caption">
+Rysunek 3.2: Graficzna prezentacja działania funkcji kmeans().
+</p>
+</div>
+
+</div>
+<div id="part_32" class="section level2">
+<h2><span class="header-section-number">3.2</span> Metoda grupowania wokół centroidów (PAM, ang. Partitioning Around Medoids)</h2>
+<p>Metoda PAM działa na podobnej zasadzie jak k-średnich, z tą różnicą, że środkami klastrów są obserwacje ze zbioru danych (nazywane centroidami lub centrami
+klastrów). W metodzie PAM zbiór możliwych środków klastrów jest więc znacznie
+mniejszy, niż w metodzie k-średnich, zazwyczaj też wyniki działania metody PAM
+są stabilniejsze. Na rysunku <a href="part-3.html#fig:pam">3.3</a> przedstawiony jest wynik działania poniższego przykładowego wywołania tej funkcji. Podobnie jak poprzednio różne klastry zaznaczono
+punktami o różnych kształtach. Czarne pełne punkty to środki klastrów (w tej metodzie odpowiadają przypadkom ze zbioru danych).</p>
+<pre><code># ponownie szukamy 5 klastrow
+&gt; klaster = pam(zbiorPerla,5)
+&gt; # jak wygląda wynik w środku?
+  # pole $medoids określa współrzędne środków klastrów (wybranych
+  # przypadków), $in.med określa indeksy obserwacji, które są środkami
+  # klastrów, $clustering to wektor indeksów kolejnych klastrów, $silinfo
+  # to informacje o dopasowaniu danego obiektu do klastra w którym się
+  # znajduje (wartość silhouette)
+&gt; str(klaster)
+List of 10
+$ medoids
+: num [1:5, 1:2] 6.47e-01 -6.26e-01 -6.38e-01 5.87e-01
+1.59e-05 ...
+$ id.med
+: int [1:5] 24 126 230 267 464
+$ clustering: int [1:1000] 1 1 2 1 1 2 1 1 1 2 ...
+$ objective : Named num [1:2] 0.526 0.461
+..- attr(*, &quot;names&quot;)= chr [1:2] &quot;build&quot; &quot;swap&quot;
+$ isolation : Factor w/ 3 levels &quot;no&quot;,&quot;L&quot;,&quot;L*&quot;: 1 1 1 1 1
+..- attr(*, &quot;names&quot;)= chr [1:5] &quot;1&quot; &quot;2&quot; &quot;3&quot; &quot;4&quot; ...
+$ clusinfo : num [1:5, 1:5] 87 113 101 99 100 ...
+..- attr(*, &quot;dimnames&quot;)=List of 2
+.. ..$ : NULL
+.. ..$ : chr [1:5] &quot;size&quot; &quot;max_diss&quot; &quot;av_diss&quot; &quot;diameter&quot; ...
+$ silinfo
+:List of 3
+..$ widths
+: num [1:1000, 1:3] 1 1 1 1 1 1 1 1 1 1 ...
+.. ..- attr(*, &quot;dimnames&quot;)=List of 2
+.. .. ..$ : chr [1:500] &quot;12&quot; &quot;96&quot; &quot;133&quot; &quot;155&quot; ...
+.. .. ..$ : chr [1:3] &quot;cluster&quot; &quot;neighbor&quot; &quot;sil_width&quot;
+..$ clus.avg.widths: num [1:5] 0.434 0.440 0.482 0.443 0.508
+..$ avg.width
+: num 0.462
+$ diss
+: NULL
+$ call
+: language pam(x = zb1$x, k = 5)
+$ data
+: num [1:1000, 1:2] 0.0964 0.6938 -0.5325 1.2839 0.1743
+...
+- attr(*, &quot;class&quot;)= chr [1:2] &quot;pam&quot; &quot;partition&quot;
+&gt; # rysujemy punkty, różne klastry oznaczamy innymi kształtami punktów
+&gt; plot(zbiorPerla, pch=klaster$clustering)
+&gt; # dorysujmy środki klastrów
+&gt; points(klaster$meoids, cex=2, pch=19)</code></pre>
+Obiekt, będący wynikiem funkcji <code>pam()</code> ma sporo pól, najistotniejsze to <code>$medoids</code>
+ze współrzędnymi medoidów, <code>$id.med</code> z indeksami medoidów i <code>$clustering</code> z indeksami klastrów, do których zostały przypisane kolejne obserwacje.
+<div class="figure" style="text-align: center"><span id="fig:pam"></span>
+<img src="pam.png" alt="Graficzna prezentacja działania funkcji pam()." width="100%" />
+<p class="caption">
+Rysunek 3.3: Graficzna prezentacja działania funkcji pam().
+</p>
+</div>
+<p>Metoda PAM jest obliczeniowo złożona. Może być niemożliwym obliczeniowo
+wykonanie jej na dużym zbiorze danych. Do klastrowania dużych zbiorów polecana jest metoda clara (Clustering Large Applications) zaimplementowana w funkcji
+<code>clara(cluster)</code>. Wykonuje ona wielokrotnie metodę PAM na mniejszych zbiorach
+danych i scala wyniki w jeden podział na klastry.</p>
+<p>Algorytm PAM (k-medoidów) opisuje następująca sekwencja</p>
+<ol style="list-style-type: decimal">
+<li><p>wybiera się początkowy zbiór medoidów,</p></li>
+<li><p>przepisuje się obiekty do klas o najbliższym medoidzie,</p></li>
+<li><p>zmienia się medoidy o ile jest taka potrzeba, w takiej sytuacji wraca się do
+kroku 2.</p></li>
+</ol>
+<p>Minimalizowana jest <span class="math inline">\(\sum_{r=1}^{u}d(r)\)</span>, gdzie <span class="math inline">\(d(r)\)</span> to najmniejsza z sum odległości jednego punktu z klasy <span class="math inline">\(r\)</span> do wszystkich pozostałych punktów z tej klasy.</p>
+
+</div>
+<div id="part_33" class="section level2">
+<h2><span class="header-section-number">3.3</span> Metoda aglomeracyjnego klastrowania hierarchicznego</h2>
+<p>Klastrowanie hierarchiczne różni się od przedstawionych powyżej metod tym, że
+zamiast dzielić obserwacje na określoną liczbę klastrów, określa się stopień podobieństwa poszczególnych obiektów i wyznacza się drzewo odpowiadające tym podobieństwom. Do budowy takich drzew wykorzystywane są różne algorytmy.</p>
+<p>Algorytm AGglomerative NESting (AGNES) jest metodą aglomeracyjną, co oznacza, że w pierwszym kroku każda obserwacja traktowana jest jak osobny klaster.
+W kolejnych krokach klastry najbardziej podobne do siebie są łączone w coraz większe klastry, tak długo aż nie powstanie tylko jeden klaster. Algorytm aglomeracyjnego klastrowania hierarchicznego jest dostępny w funkcji <code>agnes(cluster)</code>. Pierwszym argumentem może być macierz danych (podobnie jak w przypadku innych algorytmów klastrowania) określająca współrzędne poszczególnych obserwacji lub też
+macierz odległości pomiędzy obserwacjami, a więc obiekt klasy <code>dist</code> (jak tworzyć
+takie obiekty pisaliśmy w poprzednim podrozdziale). Duże znaczenie ma metoda
+liczenia odległości pomiędzy obserwacjami. Z reguły zmiana metody liczenia odległości (np. z euklidesowej na taksówkową) prowadzi do otrzymania zupełnie innego wyniku.</p>
+<p>Algorytm grupowania hierarchicznego można opisać następująco:</p>
+<ol style="list-style-type: decimal">
+<li><p>Każdą obserwacje traktujemy jako osobne skupienie.</p></li>
+<li><p>Znajdujemy dwa skupiska najbliższe sobie. Odległość pomiędzy skupiskami
+można wyznaczać na różne sposoby. Trzy najpopularniejsze opisane są poniżej.</p></li>
+<li><p>Łączymy dwa najbliższe skupiska w jedno.</p></li>
+<li><p>Jeżeli pozostało więcej niż jedno skupisko to wracamy do kroku 2.</p></li>
+</ol>
+<p>Kolejnym istotnym argumentem jest argument <code>method</code>. Określa on kolejność łączenia małych klastrów w coraz większe klastry. W każdym kroku łączone są najbliższe klastry, ale odległość pomiędzy dwoma klasterami można liczyć na trzy sposoby:</p>
+<ul>
+<li><p><code>method=&quot;single&quot;</code>, liczona jest odległość pomiędzy najbliższymi punktami każdego z klastrów, do jednego klastra dołączany jest klaster którego dowolny element jest najbliżej. Ta metoda odpowiada zachłannemu dodawania do skupiska
+obiektów bliskich brzegowi skupiska, możliwe jest tworzenie się tzw. łańcuchów
+kolejno dołączanych obiektów, być może już nie tak podobnych do całego skupiska, coś w stylu „przyjaciele naszych przyjaciół są naszymi przyjaciółmi”,</p></li>
+<li><p><code>method=&quot;average&quot;</code>, liczona jest średnia odległość pomiędzy punktami każdego
+z klastrów, łączone są więc klastry średnio podobnych obserwacji, to jedna z
+popularniejszych metod ([unweighted pair-]group average method, UPGMA),</p></li>
+<li><p><code>method=&quot;complete&quot;</code>, liczona jest odległość pomiędzy najdalszymi punktami
+każdego z klastrów, jeżeli dwa skupiska są w odległości <span class="math inline">\(d\)</span> oznacza to, że że
+każda para punktów w tych skupiskach jest nie bardziej odległa niż <span class="math inline">\(d\)</span>.</p></li>
+<li><p><code>method=&quot;ward&quot;</code> skupiska o minimalnej wariancji, w wyniku otrzymuje się zwarte skupiska.</p></li>
+<li><p><code>method=&quot;flexible&quot;</code>, elastyczność tej metody polega na możliwości określenia
+jak liczona ma być odległość pomiędzy łączonymi klastrami. Tą odległość sparametryzowano czterema współczynnikami (więcej informacji znaleźć można w <span class="citation">Kaufman i Rousseeuw (<a href="#ref-KR1990">1990</a>)</span>, p.237 lub w opisie funkcji <code>agnes()</code>). Korzystanie z tej opcji polecane jest
+bardziej doświadczonym użytkownikom, działa zasada: nie wiesz jak to działa
+nie używaj.</p></li>
+<li><p><code>method=&quot;weighted&quot;</code> odpowiada metodzie elastyczne z parametrem <code>par.method = 0.5</code>.</p></li>
+</ul>
+<blockquote>
+<p><em>Dla funkcji <code>agnes()</code> domyślnie stosowana jest metoda <code>average</code>, a dla
+funkcji <code>hclust()</code> domyślnie stosowana jest <code>complete</code>. Funkcja <code>agnes()</code>
+w porównaniu do innych implementacji ma dwie dodatkowe cechy: wyznacza “agglomerative coefficient” i umożliwia rysowanie “banner.plot”.&quot;</em></p>
+</blockquote>
+<p>Użycie każdej z tych metod prowadzi do wygenerowania innego drzewa. Wyniki
+dla każdej z tych trzech wymienionych metod łączenia klastrów oraz dla obu zbiorów danych przedstawiamy na rysunku <a href="part-3.html#fig:agnes">3.4</a>. Na tym rysunku przedstawione są wyniki
+analizy skupień dla 1000 obiektów, jeżeli analizujemy mniejszą liczbę obiektów, to
+na osi poziomej można odczytać nazwy poszczególnych obiektów a tym samym wizualizować, które obiekty są do siebie bardziej, a które mniej podobne (przykład
+takiego drzewa przedstawiliśmy na rysunku <a href="part-3.html#fig:hc35">3.5</a>).</p>
+<p>Wracając do rysunku <a href="part-3.html#fig:agnes">3.4</a> w przypadku zbioru Gwiazda sensowniejsze wyniki
+otrzymuje się dla metod łączenia <code>average</code> i <code>complete</code> (na drzewie można wydzielić
+5 podgałęzi odpowiadającym spodziewanym skupiskom). Dla zbioru Perła najlepiej
+radzi sobie metoda łączenia <code>single</code> wyodrębniająca dosyć szybko trzy rozłączne
+skupiska. Najczęściej wykorzystywaną metodą łączenia jest <code>average</code>, nie oznacza to że zawsze daje najlepsze wyniki.</p>
+<p>Aby na podstawie hierarchicznego klastrowania przypisać obserwacje do określonej liczby klastrów należy drzewo przyciąć na pewnej wysokości. Do przycinania
+drzewa służy funkcja <code>cutree(stats)</code>, jej pierwszym argumentem jest obiekt będący
+wynikiem metody hierarchicznej. Kolejnym argumentem, który należy wskazać jest
+<code>k</code> (określa do ilu klastrów chcemy przyciąć drzewo) lub <code>h</code> (określa na jakiej wysokości
+chcemy przyciąć drzewo). Wysokość drzewa na której chcemy odciąć klastry można
+odczytać z rysunków wygenerowanych dla tego drzewa.</p>
+<p>Poniżej przedstawiamy przykład wywołania funkcji <code>agnes()</code> i <code>cuttree()</code>.</p>
+<pre><code># wywołanie funkcji AGNES
+&gt; klaster = agnes(zbiorPerla, method=&quot;average&quot;)
+# wynik możemy narysować przeciążoną funkcją plot
+&gt; plot(klaster)
+# otrzymane drzewo możęmy przyciąć do określonej liczby klastrów
+&gt; etykietkiKlastrow = cutree(klaster, k=2)</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:agnes"></span>
+<img src="agnes.png" alt="Graficzny przykład wyników funkcji agnes()." width="100%" />
+<p class="caption">
+Rysunek 3.4: Graficzny przykład wyników funkcji agnes().
+</p>
+</div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;MASS&quot;</span>)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;MASS&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:dplyr&#39;:
+## 
+##     select</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(Cars93)
+Cars93<span class="op">$</span>y =<span class="st"> </span><span class="kw">sapply</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">93</span>,<span class="cf">function</span>(i) <span class="kw">paste</span>(Cars93[i,<span class="dv">1</span>],Cars93[i,<span class="dv">2</span>],<span class="dt">sep=</span><span class="st">&quot; &quot;</span>))
+h =<span class="st"> </span>Cars93[,<span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>,<span class="dv">11</span>,<span class="dv">12</span>,<span class="dv">13</span>,<span class="dv">14</span>,<span class="dv">15</span>,<span class="dv">17</span>,<span class="dv">18</span>,<span class="dv">19</span>,<span class="dv">20</span>,<span class="dv">21</span>,<span class="dv">22</span>,<span class="dv">23</span>,<span class="dv">24</span>,<span class="dv">25</span>)]
+<span class="kw">rownames</span>(h) =<span class="st"> </span>Cars93<span class="op">$</span>y
+c =<span class="st"> </span><span class="kw">hclust</span>(<span class="kw">dist</span>(h[<span class="dv">1</span><span class="op">:</span><span class="dv">37</span>,]))
+<span class="kw">plot</span>(c)</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:hc35"></span>
+<img src="NaPrzelajR_files/figure-html/hc35-1.png" alt="Drzewo dla wybranych modeli samochodów na bazie zbioru danych (Cars93(MASS))." width="70%" />
+<p class="caption">
+Rysunek 3.5: Drzewo dla wybranych modeli samochodów na bazie zbioru danych (Cars93(MASS)).
+</p>
+</div>
+
+</div>
+<div id="part_34" class="section level2">
+<h2><span class="header-section-number">3.4</span> Ile skupień wybrać?</h2>
+<p>Krótka odpowiedź na to pytanie brzmi 5. Długa wymaga odpowiedzi na dodatkowe
+pytanie, na czym nam zależy wybierając liczbę skupień? Co chcemy z tymi skupieniami robić i po co je wyznaczmy.</p>
+<p>Popularną techniką wyboru liczby skupień jest rysowanie pewnej statystyki jako
+funkcji liczby skupień i wybór takiej liczby skupień dla której dana statystyka spełnia
+nasze oczekiwania (np. osiąga maksimum lub najszybciej maleje). Wiele przydatnych
+statystyk opisujących jakość podziału na grupy znajduje się w pakiecie <code>clusterSim</code>.</p>
+<p>Popularne indeksy służące do wyboru liczby klastrów to:</p>
+<ul>
+<li><p><span class="math inline">\(tr(B)/tr(W)\)</span> gdzie <span class="math inline">\(B\)</span> to macierz kowariancji wewnątrzklasowej a <span class="math inline">\(W\)</span> to macierz
+kowariancji miedzyklasowej,</p></li>
+<li><p><span class="math inline">\(B_u/(u-1)/W_u(n-u)\)</span> czyli miara zaproponowana przez Calińskiego i Harabasza (viva Poznań),</p></li>
+<li><p>sylwetka (silhouette) <span class="math inline">\(S(u)=1/n\sum_{i=1}^{n}(b(i)-a(i))/max(a(i),b(i))\)</span> średnie podobieństwo obiektów do klastrów w których się znajdują, <span class="math inline">\(a(i)\)</span> to średnia odległość pomiędzy obiektem <span class="math inline">\(i\)</span> a pozostałymi w tym samym klastrze, <span class="math inline">\(b(i)\)</span> to średnia odległość obiektu <span class="math inline">\(i\)</span> od obiektów z najbliższego skupiska do <span class="math inline">\(i\)</span> (do którego <span class="math inline">\(i\)</span> nie należy).</p></li>
+</ul>
+<p>Wiele indeksów wyznaczyć można korzystając z funkcji <code>index.G1(clusterSim)</code>,
+<code>index.G2(clusterSim)</code>, <code>index.G3(clusterSim)</code>, <code>index.S(clusterSim)</code>, <code>index.KL(clusterSim)</code>,
+<code>index.H(clusterSim)</code>, <code>index.Gap(clusterSim)</code>, <code>index.DB(clusterSim)</code>.</p>
+<p>Funkcja <code>index.G1(clusterSim)</code> wyznacza indeks Calińskiego i Harabasza, funkcja <code>index.S(clusterSim)</code> wyznacza średnią sylwetkę (silhouette).</p>
+<p>TODO: opisać funkcję <code>cluster.Description(clusterSim)</code> pozwalającą na opisywanie znalezionych klas.</p>
+
+</div>
+<div id="part_35" class="section level2">
+<h2><span class="header-section-number">3.5</span> Inne metody analizy skupień</h2>
+<p>Poza wymienionymi powyżej trzema metodami, w pakiecie R dostępnych jest wiele
+innych metod do analizy skupień. Poniżej wymienimy inne popularne.</p>
+<ul>
+<li><strong>Metoda hierarchiczej analizy skupień przez dzielenie</strong>. Metoda hierarchicznego klastrowania przez łączenie działała w ten sposób, że zaczynając
+od małych, jednopunktowych klastrów w procesie łączenia klastrów otrzymywało się hierarchiczną zależność. Metoda analizy skupień przez dzielenie
+działa w przeciwnym kierunku. Zaczynając od jednego dużego klastra, w kolejnych krokach ten klaster jest dzielony na mniejsze klastry, aż do otrzymania jednoelementowych klastrów. Ta metoda jest zaimplementowana w funkcji
+<code>diana(cluster)</code>.</li>
+</ul>
+<p>Algorytm działania metody <code>diana()</code> opisany jest poniżej</p>
+<ol style="list-style-type: decimal">
+<li><p>dla każdego skupiska wyznaczamy maksymalną odległość pomiędzy dwo-
+ma obserwacjami w skupisku,</p></li>
+<li><p>wybieramy skupisko o największej średnicy, w tym skupisku szukamy
+obiektu o największej średniej odległości od pozostałych, to będzie zalążek nowego skupiska,</p></li>
+<li><p>dla każdego obiektu sprawdzamy czy nie jest średnio bliżej obiektom z
+klasy nowej niż obiektom z klasy starej, w razie potrzeby zmieniana jest
+klasa</p></li>
+<li><p>punkt 3 powtarzany jest tak długo aż nie będzie potrzeby zmieniać przynależności żadnego punktu</p></li>
+</ol>
+<ul>
+<li><p><strong>Metoda klastrowania rozmytego</strong>. Jeżeli w procesie klastrowania dopuszczamy rozmytą przynależność do klastra (np. obserwacja może z pewnymi
+współczynnikami przynależeć do różnych klastrów) to uzasadnionym jest użycie metody klastrowania rozmytego. Ta metoda jest zaimplementowana w funkcji <code>fanny(cluster)</code>.</p></li>
+<li><p><strong>Inne metody hierarchiczego klastrowania</strong>. Podobna w działaniu do
+<code>agnes()</code> metoda klastrowania hirarchicznego dostępna w funkcji <code>hclust(stats)</code>.
+Umożliwia ona większy wybór metody łączenia klastrów. Argumentem method
+należy wskazać jeden z wielu dostępnych indeksów do określania odległości pomiędzy klastrami, dostępne są indeksy znane z funkcji <code>agnes()</code> oraz <code>&quot;mcquitty&quot;</code>,
+<code>&quot;ward&quot;</code> i <code>&quot;centroid&quot;</code>.</p></li>
+</ul>
+<p>Wykonać klastrowanie jest stosunkowo prosto, jednak to jeszcze nie jest koniec
+pracy, potrzebne są metody oceny jakości podziału na skupiska. Do oceny jakości
+klastrowania można wykorzystać współczynnik silhouette, określający podobieństwo
+obiektu do innych obiektów w tym samym klastrze. Ten indeks jest wyznaczany przez
+funkcje <code>silhouette(cluster)</code>. Poniżej przedstawiamy przykład użycia tej funkcji,
+a na rysunku <a href="part-3.html#fig:silhouette">3.6</a> przedstawiamy dopasowania poszczególnych punktów do klastrów.
+Wiele innych metod do oceny wyników klastrowania oraz badania zgodności dwóch
+podziałów na klastry jest dostępnych w pakiecie <code>clv</code>.</p>
+<pre><code>&gt; kluster &lt;- pam(zbiorPerla, 5)
+&gt; sil &lt;- silhouette(kluster)
+&gt; summary(sil)
+Silhouette of 1000 units in 5 clusters from pam(x = zbiorPerla, k = 5) :
+Cluster sizes and average silhouette widths:
+      198       202       237       163       200
+0.5005513 0.4711742 0.4402300 0.5146160 0.5240964
+Individual silhouette widths:
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.
+-0.1238  0.3895  0.5330  0.4873 0.6111   0.7220
+&gt; plot(sil, col = c(&quot;red&quot;, &quot;green&quot;, &quot;blue&quot;, &quot;purple&quot;,&quot;yellow&quot;))</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:silhouette"></span>
+<img src="silhouette.png" alt="Wykres dopasowania punktów do poszczególnych klastrów z użyciem miary silhouette." width="70%" />
+<p class="caption">
+Rysunek 3.6: Wykres dopasowania punktów do poszczególnych klastrów z użyciem miary silhouette.
+</p>
+</div>
+<div class="figure" style="text-align: center"><span id="fig:silhouetteB"></span>
+<img src="silhouetteB.png" alt="Wartości funkcji silhouette dla różnych liczb klastrów wyznaczonych algorytmem PAM na zbiorze danych Gwiazda." width="70%" />
+<p class="caption">
+Rysunek 3.7: Wartości funkcji silhouette dla różnych liczb klastrów wyznaczonych algorytmem PAM na zbiorze danych Gwiazda.
+</p>
+</div>
+<p>Miara silhouette może użyta do wyznaczeniu liczby klastrów, na które należy
+podzielić dane. Na rysunku <a href="part-3.html#fig:silhouetteB">3.7</a> przedstawiono zależność pomiędzy średnim współczynnikiem silhouette a liczbą klastrów wyznaczonych algorytmem PAN dla zbioru danych Gwiazda. W tym przypadku wyraźnie najlepszym wyborem jest 5 klastrów. Niestety w rzeczywistych problemach wybór klastrów nie jest tak prosty.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># cztery skupiska, dla pewności inicjujemy 25 razy</span>
+<span class="co">#</span>
+dane =<span class="st"> </span>daneGUS[,<span class="kw">c</span>(<span class="dv">22</span><span class="op">:</span><span class="dv">25</span>)]
+gus.k4 =<span class="st"> </span><span class="kw">kmeans</span>(dane, <span class="dv">4</span>, <span class="dt">nstart=</span><span class="dv">25</span>)
+cluster<span class="op">::</span><span class="kw">silhouette</span>(gus.k4<span class="op">$</span>clust, <span class="kw">dist</span>(dane))[,<span class="dv">3</span>]</code></pre>
+<pre><code>##  [1] 0.6668668 0.5333699 0.7582641 0.1737391 0.6816338 0.7810743 0.0000000
+##  [8] 0.6555324 0.4582927 0.6822569 0.2905566 0.0000000 0.6603414 0.6923861
+## [15] 0.7719109 0.6278821</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">gus.p4 =<span class="st"> </span>cluster<span class="op">::</span><span class="kw">pam</span>(dane, <span class="dv">4</span>)</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(gus.p4)</code></pre>
+<p><img src="NaPrzelajR_files/figure-html/gusp4-1.png" width="70%" style="display: block; margin: auto;" /><img src="NaPrzelajR_files/figure-html/gusp4-2.png" width="70%" style="display: block; margin: auto;" /></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># analiza skupień</span>
+<span class="co">#</span></code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">3</span>))
+h =<span class="st"> </span><span class="kw">hclust</span>(<span class="kw">dist</span>(dane), <span class="dt">method=</span><span class="st">&quot;average&quot;</span>)
+<span class="kw">plot</span>(h)
+h =<span class="st"> </span><span class="kw">hclust</span>(<span class="kw">dist</span>(dane), <span class="dt">method=</span><span class="st">&quot;single&quot;</span>)
+<span class="kw">plot</span>(h)
+h =<span class="st"> </span><span class="kw">hclust</span>(<span class="kw">dist</span>(dane), <span class="dt">method=</span><span class="st">&quot;complete&quot;</span>)
+<span class="kw">plot</span>(h)</code></pre>
+<p><img src="NaPrzelajR_files/figure-html/pA-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(cluster)
+<span class="co"># cztery przykładowe indeksy</span>
+mNiep =<span class="st"> </span><span class="kw">daisy</span>(dane)
+clustGrid =<span class="st"> </span><span class="dv">2</span><span class="op">:</span><span class="dv">14</span>
+indeksy =<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">0</span>,<span class="kw">length</span>(clustGrid),<span class="dv">4</span>)
+indeksy[,<span class="dv">1</span>] =<span class="st"> </span><span class="kw">sapply</span>(clustGrid, <span class="cf">function</span>(x) {clusterSim<span class="op">::</span><span class="kw">index.G1</span>(dane, <span class="kw">pam</span>(dane, x)<span class="op">$</span>clustering)})
+indeksy[,<span class="dv">2</span>] =<span class="st"> </span><span class="kw">sapply</span>(clustGrid, <span class="cf">function</span>(x) {clusterSim<span class="op">::</span><span class="kw">index.Gap</span>(dane, <span class="kw">cbind</span>(<span class="kw">pam</span>(
+dane, x)<span class="op">$</span>clustering, <span class="kw">pam</span>(dane, x<span class="op">+</span><span class="dv">1</span>)<span class="op">$</span>clustering))<span class="op">$</span>diffu})
+indeksy[,<span class="dv">3</span>] =<span class="st"> </span><span class="kw">sapply</span>(clustGrid, <span class="cf">function</span>(x) {clusterSim<span class="op">::</span><span class="kw">index.G2</span>(mNiep, <span class="kw">pam</span>(dane, x)<span class="op">$</span>clustering)})
+indeksy[,<span class="dv">4</span>] =<span class="st"> </span><span class="kw">sapply</span>(clustGrid, <span class="cf">function</span>(x) {clusterSim<span class="op">::</span><span class="kw">index.S</span>(mNiep, <span class="kw">pam</span>(dane, x)<span class="op">$</span>clustering)})
+<span class="kw">matplot</span>(clustGrid, <span class="kw">scale</span>(indeksy), <span class="dt">type=</span><span class="st">&quot;l&quot;</span>,<span class="dt">lwd=</span><span class="dv">3</span>)
+<span class="kw">legend</span>(<span class="st">&quot;right&quot;</span>,<span class="kw">c</span>(<span class="st">&quot;G1&quot;</span>,<span class="st">&quot;Gap&quot;</span>,<span class="st">&quot;G2&quot;</span>,<span class="st">&quot;S&quot;</span>),<span class="dt">lwd=</span><span class="dv">3</span>,<span class="dt">bg=</span><span class="st">&quot;white&quot;</span>,<span class="dt">col=</span><span class="dv">1</span><span class="op">:</span><span class="dv">4</span>)</code></pre>
+<p><img src="NaPrzelajR_files/figure-html/pB-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># cztery metody porównane indeksem G1</span>
+<span class="co">#</span>
+clustGrid =<span class="st"> </span><span class="dv">2</span><span class="op">:</span><span class="dv">10</span>
+indeksy =<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">0</span>,<span class="kw">length</span>(clustGrid),<span class="dv">5</span>)
+indeksy[,<span class="dv">1</span>] =<span class="st"> </span><span class="kw">sapply</span>(clustGrid, <span class="cf">function</span>(x) {clusterSim<span class="op">::</span><span class="kw">index.G1</span>(dane,
+              <span class="kw">pam</span>(dane, x)<span class="op">$</span>clustering)})
+indeksy[,<span class="dv">2</span>] =<span class="st"> </span><span class="kw">sapply</span>(clustGrid, <span class="cf">function</span>(x) {clusterSim<span class="op">::</span><span class="kw">index.G1</span>(dane,
+              <span class="kw">kmeans</span>(dane, x)<span class="op">$</span>cluster)})
+indeksy[,<span class="dv">3</span>] =<span class="st"> </span><span class="kw">sapply</span>(clustGrid, <span class="cf">function</span>(x) {clusterSim<span class="op">::</span><span class="kw">index.G1</span>(dane,     
+              <span class="kw">cutree</span>(<span class="kw">hclust</span>(<span class="kw">dist</span>(dane),<span class="st">&quot;average&quot;</span>), <span class="dt">k =</span> x))})
+indeksy[,<span class="dv">4</span>] =<span class="st"> </span><span class="kw">sapply</span>(clustGrid, <span class="cf">function</span>(x) {clusterSim<span class="op">::</span><span class="kw">index.G1</span>(dane,
+              <span class="kw">cutree</span>(<span class="kw">hclust</span>(<span class="kw">dist</span>(dane),<span class="st">&quot;single&quot;</span>), <span class="dt">k =</span> x))})
+indeksy[,<span class="dv">5</span>] =<span class="st"> </span><span class="kw">sapply</span>(clustGrid, <span class="cf">function</span>(x) {clusterSim<span class="op">::</span><span class="kw">index.G1</span>(dane,
+              <span class="kw">cutree</span>(<span class="kw">hclust</span>(<span class="kw">dist</span>(dane),<span class="st">&quot;complete&quot;</span>), <span class="dt">k =</span> x))})
+
+<span class="kw">matplot</span>(clustGrid, indeksy, <span class="dt">type=</span><span class="st">&quot;l&quot;</span>,<span class="dt">lwd=</span><span class="dv">3</span>)
+<span class="kw">legend</span>(<span class="st">&quot;right&quot;</span>,<span class="kw">c</span>(<span class="st">&quot;PAM&quot;</span>,<span class="st">&quot;kmeans&quot;</span>,<span class="st">&quot;hclust av&quot;</span>,<span class="st">&quot;hclust si&quot;</span>,<span class="st">&quot;hclust co&quot;</span>),
+       <span class="dt">lwd=</span><span class="dv">3</span>,<span class="dt">bg=</span><span class="st">&quot;white&quot;</span>,<span class="dt">col=</span><span class="dv">1</span><span class="op">:</span><span class="dv">5</span>)</code></pre>
+<p><img src="NaPrzelajR_files/figure-html/pC-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># profile skupień</span>
+<span class="co">#</span>
+gus.p4 =<span class="st"> </span><span class="kw">pam</span>(dane,<span class="dv">4</span>)<span class="op">$</span>clustering
+desc =<span class="st"> </span>clusterSim<span class="op">::</span><span class="kw">cluster.Description</span>(dane, gus.p4)</code></pre>
+
+</div>
+<div id="part_36" class="section level2">
+<h2><span class="header-section-number">3.6</span> Case study</h2>
+
+</div>
+</div>
+<h3>Bibliografia</h3>
+<div id="refs" class="references">
+<div id="ref-KR1990">
+<p>Kaufman, L., i P. J. Rousseeuw. 1990. <em>Finding Groups in Data: An Introduction to Cluster Analysis</em>. Wiley, New York.</p>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="part-2.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="part-4.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": ["NaPrzelajR.pdf", "NaPrzelajR.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

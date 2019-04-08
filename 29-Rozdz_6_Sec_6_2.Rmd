@@ -1,0 +1,38 @@
+## Rozwiązanie {#part_62}
+
+Aby ocenić niezależność dwóch zmiennych można wykorzystać test $\chi^2$ z funkcji
+[`chisq.test()`](https://rdrr.io/r/stats/chisq.test.html) lub inny test dla macierzy kontyngencji (jeżeli poziomy są uporządkowane to dobrym rozwiązaniem będzie test Cochrana-Armitage). Testem tym zweryfikujemy hipotezę o niezależności częstości występowań poszczególnych zmiennych.
+Jeżeli jednak odrzucimy tę hipotezę zerową, czyli przyjmiemy że jest JAKAŚ
+zależność, to naturalnym pytaniem będzie jaka to zależność i pomiędzy którymi
+poziomami.
+Aby ocenić, które zmienne występują częściej ze sobą można wykonuje się tzw.
+analizę korespondencji. Jeżeli zmienne były by niezależne od siebie, to zachodziło
+by równanie
+$$
+p_{ij}=p_{i\cdot}p_{\cdot j},\quad i\in \{1\dots k\},\quad j\in \{1\dots l\}.
+$$
+gdzie $p_{ij}$ to prawdopodobieństwo zaobserwowania pierwszej zmiennej na poziomie
+$i$ i jednocześnie drugiej na poziomie $j$, $p_{i\cdot}$ to prawdopodobieństwo zaobserwowania zmiennej pierwszej na poziomie $i$ a $p_{\cdot j}$ to prawdopodobieństwo zaobserwowania zmiennej drugiej na poziomie $j$.
+
+Żeby ocenić, które zmienne występują częściej lub rzadziej niż wynikało by to
+z niezależności, wyznaczymy standaryzowane reszty Pearsonowskie, zastąpimy też
+prawdopodobieństwa ich częstościowymi ocenami (czyli $\hat{p}$
+to liczba obserwowanych
+zdarzeń podzielona przez liczbę wszystkich obserwowanych zdarzeń)
+$$
+\hat{e}_{ij}=\frac{\hat{p}_{ij}-\hat{p}_{i\cdot}\hat{p}_{\cdot j}}{\hat{p}_{i\cdot}\hat{p}_{\cdot j}}
+$$
+Duże dodatnie wartości $\hat{e}_{ij}$ odpowiadają wysokiemu współwystępowaniu, ujemne $E=[\hat{e}_{ij}]$ przedstawić w postaci graficznej używając tzw. biplotu. Innymi słowy wyznaczamy dekompozycję SVD macierzy E
+wartości odpowiadają występowaniu rzadszemu niż losowe. Możemy teraz macierz
+$$
+E_{k\times l}=U_{k\times k}\sum_{k\times k}V_{l \times l}^{T}
+$$
+
+Kolumny macierzy $U_{k \times k}$ to wektory własne macierzy $E^T E$ a kolumny macierzy $V$
+to wektory własne macierzy $EE^T$. Na przekątnej macierzy diagonalnej $\sigma$ znajdują
+się tzw. wartości singularne (osobliwe?) równe pierwiastkom z wartości własnych
+macierzy $E^TE$ i EE^T . "Przy okazji"" kolumny macierzy $U$ rozpinają ortonormalną
+bazę na kolumnach macierzy $E$ a kolumny macierzy $V$ rozpinają ortonormlaną bazę
+na wierszach macierzy $E$. Można więc przedstawić macierz $E$ (lub możliwie dużo
+informacji z tej macierzy) we nowej przestrzeni określonej na bazie współrzędnych
+wierszy i kolumn macierzy $E$.

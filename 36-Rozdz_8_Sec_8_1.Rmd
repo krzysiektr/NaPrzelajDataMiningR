@@ -1,0 +1,29 @@
+#  Przykład analizy tabel wielodzielczych {#part_8}
+
+---
+
+## Wprowadzenie {#part_81}
+
+Zbiór danych, który zostanie wykorzystany do przeprowadzenia analiz jest dostępny
+pod nazwą [`Titanic`](https://rdrr.io/r/datasets/Titanic.html). Zawiera on informacje na temat losu 2201 pasażerów
+oceanicznego liniowca "Titanic". Do dyspozycji mamy cztery zmienne nominalne:
+
+* **Class** -- klasy podróżowania: 1st (pierwsza), 2nd (druga), 3rd (trzecia), Crew
+(załoga),
+
+* **Sex** -- płeć: Male (mężczyzna), Female (kobieta),
+
+* **Age** -- wiek: Adult (dorosły), Child (dziecko),
+
+* **Survived** -- przeżycie: No (nie), Yes (tak).
+
+Oryginalny zestaw danych (wielowymiarowa tabela kontyngencji) został przekształcony  o nazwie `t`. Fragment naszych
+danych jest widoczny poniżej:
+```{r}
+t <- DescTools::Untable(Titanic)
+t[1:3,]
+```
+Celem naszych badań będzie próba opisu zależności między przeżyciem, a klasą
+podróżowania, płcią podróżnych oraz ich wiekiem.
+
+

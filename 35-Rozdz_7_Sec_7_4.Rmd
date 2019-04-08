@@ -1,0 +1,49 @@
+## Modele adaptacyjne {#part_74}
+
+### Estymacja {#part_741}
+
+Podobnie jak w przypadku modelu $ARIMA$ także estymacja modelu adaptacyjnego
+może przebiegać w sposób całkowicie automatyczny. Wykorzystamy do tego celu
+funkcje [`forecast::ets`](https://rdrr.io/cran/forecast/man/ets.html).
+```{r}
+n <- forecast::ets(b,model="ZZZ",damped=NULL)
+summary(n)
+```
+```{r}
+logLik(n) # logarytm wiarygodności
+```
+Spośród wszystkich modeli, które były estymowane -- `model="ZZZ"` z wykorzystaniem optymalizacji logarytmu wiarygodności -- `opt.crit="lik"`, został wybrany
+model o najmniejszym kryterium informacyjnym AIC -- `ic="aic"`. Dostępne są
+także inne metody optymalizacyjne do szacowania parametrów: `mse`, `amse`, `nmse`,
+`sigma`. Także wybór kryterium informacyjnego (za pomocą którego dokonujemy
+wyboru najlepszego modelu) możemy wybrać samodzielnie: `aic`, `aicc`, `bic`. Tak
+przeprowadzona estymacja doprowadziła do otrzymania modelu `"AAdA"`, który charakteryzuje się następującymi cechami: `A` -- addytywny składnik losowy (pierwsza
+litera), `Ad` -- trend addytywny (druga litera), gdzie mała litera d oznacza, że została wybrana również opcja `damped=T` czyli "przygaszenie" trendu, `A` -- addytywne
+wachania sezonowe (trzecia litera). Zatem otrzymaliśmy model Wintersa z addytywnymi wahaniami periodycznymi:
+```{r}
+n <- forecast::ets(b, model="AAA")
+n
+```
+Oczywiście korzystając z funkcji [`forecast::ets`](https://rdrr.io/cran/forecast/man/ets.html) oraz opcji `model` możemy od razu zawęzić
+grupę modeli, spośród których zostanie wybrany najlepszy z nich: modele Browna
+-- `model="ZNN"`, modele Browna lub Holta -- `model="ZZN"`, modele Browna, Holta
+lub Wintersa -- `model="ZZZ"`. Jest również możliwość estymacji modeli o ustalonych
+parametrach: `alpha`, `beta`, `gamma`, `phi`. Natomiast gdy ich wartości zawierają się
+w pewnych przedziałach liczbowych, przykładowo jeśli $\alpha = (0,11 - 0,53)$, $\beta = (0,41 - 0,68)$ i $\gamma = (0,65 - 0,78)$ to należy użyć opcji `level=c(0.11,0.41,0.65)` oraz `upper=c(0.53,0.68,0.78)`.
+
+### Prognozowanie {#part_742}
+
+Do procesu prognozowania z wykorzystaniem modelu adaptacyjnego możemy również wykorzystać funkcję [`forecast::forecast`](https://rdrr.io/cran/forecast/man/forecast.html).
+```{r}
+forecast::forecast(n,h=12)
+```
+```{r wy82, fig.cap='Prognoza stopy bezrobocia od 10.2010–09.2011.',fig.pos= 'h', fig.show='hold', fig.align='center', fig.width=8, fig.height=4,out.width='70%'}
+par(mar=c(4,4,1,1)+0.1, mgp=c(3,0.6,0),las=1)
+plot(forecast::forecast(n,h=12))
+```
+W przypadku gdy wykonaliśmy dwie prognozy za pomocą różnych modeli (np.
+modelu $ARIMA$ i adaptacyjnego) warto skorzystać z testu Diebold-Mariano. Hipoteza zerowa tego tesu zakłada, że dokładność predykcyjna dwóch modeli jest jednakowa. Założenie `alt="two.sided"` (test dwustronny) jest opcją domyślną, możemy
+ją zmienić dodając polecenie `alt="g"` (test prawostronny) lub `alt="l"` (test lewostronny).
+```{r}
+forecast::dm.test(resid(m),resid(n))
+```

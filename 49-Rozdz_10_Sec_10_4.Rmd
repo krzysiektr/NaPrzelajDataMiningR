@@ -1,0 +1,120 @@
+## Diagnostyka modelu {#part_10.4}
+
+### Normalność procesu resztowego {#part_10.4.1}
+
+Ocena normalności składnika resztowego została dokonana za pomocą testu Shapiro-
+Wilka oraz testu $\chi^2$ w oparciu o procedurę zaproponowaną przez Doornika oraz
+Hansena.
+```{r}
+r_dyn <- resid(m_dyn)
+shapiro.test(r_dyn)
+```
+Wysoka wartość p-value, która wynosi $0,6382$ pozwala nam wnioskować, że na podstawie testu Shapiro-Wilka reszty mają rozkład normalny.
+```{r}
+normwhn.test::normality.test1(as.matrix(r_dyn))
+```
+Również wynik testu $\chi^2$ wskazuje, że nie ma podstaw do odrzucenia hipotezy zerowej
+przy poziomie istotności $\alpha = 0,05$. Należy więc stwierdzić, że proces resztowy ma
+rozkład normalny. Wyniki obu testów potwierdzają też wykresy (rys. \@ref(fig:wy107)).
+Do badania normalności zmiennych można wykorzystać także inne testy, które
+są dostępne w środowisku R. Oto niektóre z nich: test
+normalności Jarque-Bera -- [`moments::jarque.test`](https://rdrr.io/cran/moments/man/jarque.test.html), test skośności D'Agostino -- [`moments::agostino.test`](https://rdrr.io/cran/moments/man/agostino.test.html), test kurtozy Anscombe-Glynn -- [`moments::anscombe.test`](https://rdrr.io/cran/moments/man/anscombe.test.html).
+
+```{r wy107, fig.cap='Graficzna diagnostyka normalności rozkładu reszt.', fig.show='hold',fig.pos= 'h', fig.align='center', fig.width=12, fig.height=4,out.width='100%'}
+par(mfcol=c(1,2),mar=c(4,4,1,1)+0.1, mgp=c(3,0.6,0),bg="lightgoldenrodyellow",las=1)
+plot(1,axes=F,xlab="",ylab="",main="", col="white")
+u <- par("usr")
+rect(u[1], u[3], u[2], u[4], col="white")
+par(new=plot)
+plot(density(r_dyn),lwd=4,col='SteelBlue')
+curve(dnorm(x,mean(r_dyn),sd(r_dyn)),add=TRUE,lwd=2,col='violetred3')
+legend("topright",bg='white',bty="n",lty=1,lwd=c(4,2),
+c('empiryczna','teoretyczna'),col=c('SteelBlue','violetred3'))
+plot(1,axes=F,xlab="",ylab="",main="", col="white")
+u <- par("usr")
+rect(u[1], u[3], u[2], u[4], col="white")
+par(new=plot)
+qqnorm(r_dyn,col='SteelBlue'); qqline(r_dyn,col='violetred3')
+```
+
+### Autokorelacja procesu resztowego {#part_10.4.2}
+
+Do oceny autokorelacji reszt można wykorzystać test autokorelacji Ljunga-Boxa,
+który jest dostępny w paczce [`tseries`](https://rdrr.io/cran/tseries/). W tym teście dzięki opcji lag możemy badać
+stopień autokorelacji dowolnego rzędu.
+```{r}
+Box.test (r_dyn, lag= 1, type= "Ljung-Box")
+```
+```{r wy108, fig.cap='Funkcja autokorelacji cząstkowej reszt modelu.',fig.pos= 'h', fig.show='hold', fig.align='center', fig.width=8, fig.height=3,out.width='70%'}
+par(mar=c(4,4,1,1)+0.1, mgp=c(3,0.6,0),bg="lightgoldenrodyellow",las=1)
+plot(1,axes=F,xlab="",ylab="",main="", col="white")
+u <- par("usr")
+rect(u[1], u[3], u[2], u[4], col="white")
+par(new=plot)
+pacf(r_dyn,plot=T)
+```
+Także test Quenouille’a na poziomoe istotności $\alpha = 0,05$ (przerywane poziome
+linie -- rys. (\@ref(fig:wy108))) potwierdza brak zjawiska autokorelacji reszt. W oprogramowaniu R dostępne są też inne testy do badania tego zjawiska np. test Breuscha-Godfreya -- [`lmtest::bgtest`](https://rdrr.io/cran/lmtest/man/bgtest.html)
+oraz test Durbina-Watsona -- [`lmtest::dwtest`](https://rdrr.io/cran/lmtest/man/dwtest.html). Jednak
+ten ostatni umożliwia badanie tylko autokorelacji rzędu pierwszego.
+
+### Heteroskedastyczność procesu resztowego {#part_10.4.3}
+
+Ponieważ niejednorodność wariancji jest zjawiskiem nieporządanym należy więc zbadać czy występuje heteroskedastyczność w procesie reszt. Do tego celu można wykorzystać test Breusha-Pagana.
+```{r}
+# test Koenkera:
+lmtest::bptest(m_dyn)
+# test Breusha-Pagana:
+lmtest::bptest(m_dyn,studentize=F)
+# Cook i Weisberg [1983]:
+lmtest::bptest(m_dyn,studentize=F,varformula =~fitted(m_dyn))
+```
+Na podstawie przeprowadzonych testów Breusha-Pagana możemy wnioskować, że
+występuje homoskedastyczność reszt. Dzięki środowisku R mamy możliwość przeprowadzenia także innych testów np. test Harrisona-McCabea -- [`lmtest::hmctest`](https://rdrr.io/cran/lmtest/man/hmctest.html)
+lub test Goldfelda-Quandta -- [`lmtest::gqtest`](https://rdrr.io/cran/lmtest/man/gqtest.html).
+
+```{r wy109, fig.cap='Reszty modelu.',fig.pos= 'h', fig.show='hold', fig.align='center', fig.width=8, fig.height=3,out.width='70%'}
+par(mar=c(4,4,1,1)+0.1, mgp=c(3,0.6,0),bg="lightgoldenrodyellow",las=1)
+plot(1,axes=F,xlab="",ylab="",main="", col="white")
+u <- par("usr")
+rect(u[1], u[3], u[2], u[4], col="white")
+par(new=plot)
+plot(r_dyn,col='SteelBlue')
+```
+
+### Stabilność parametrów modelu {#part_10.4.4}
+
+Do zbadania stabilności parametrów modelu można wykorzystać test Chowa. Jednak aby móc zastosować ten test należy określić punkt zwrotny, który podzieli cały
+analizowany proces na dwie podpróby. Jeśli w tych dwóch podokresach parametry modeli nie będą się różniły, można wtedy przyjąć, że są one stabilne. W teście
+[`strucchange::sctest`](https://rdrr.io/cran/strucchange/man/sctest.html) jako punkt zwrotny należy podać ostatnią datę z pierwszej
+podpróby. Tzn. jeśli za punkt zwrotny przyjmiemy 10.2008 (pierwsza data drugiej
+podpróby) to dla opcji point trzeba podać 09.2008 (ostatnia data pierwszej podpróby).
+```{r}
+# przygotowanie danych:
+d <- cbind(bezrob,t1,t2,t3,month,
+  stats::lag(bezrob,k=-1),stats::lag(bezrob,k=-2),stats::lag(bezrob,k=-3))
+d <- na.omit(d)
+# test Chowa:
+strucchange::sctest(bezrob~., data=d, type="Chow", point=c(2008,9))
+```
+Innym testem, który bada stabilność parametrów modelu jest test CUSUM (cumulated sum of residuals) zwany także testem Harvey'a-Colliera. Jest on dostępny
+w programie R po uprzednim wczytaniu biblioteki [`lmtest`](https://rdrr.io/cran/lmtest/).
+```{r}
+lmtest::harvtest(m_dyn)
+```
+Na podstawie przeprowadzonego testu Chowa należy odrzucić hipotezę zerową o stabilności parametrów modelu. Z kolei na podstawie testu CUSUM należy stwierdzić, że parametry modelu są stabilne.
+
+### Postać analityczna modelu {#part_10.4.5}
+
+Aby zweryfikować hipotezę o poprawnym doborze postaci analitycznej modelu moż-
+na skorzystać z testu RESET -- [`lmtest::resettest`](https://rdrr.io/cran/lmtest/man/resettest.html). Możemy go przeprowadzić w kilku wersjach:
+```{r}
+# wartości wyrównane podniesione do potęgi drugiej i trzeciej:
+lmtest::resettest(m_dyn,power=2:3)
+# wartości wyrównane podniesione do potęgi drugiej:
+lmtest::resettest(m_dyn,power=2)
+# wartości wyrównane podniesione do potęgi trzeciej:
+lmtest::resettest(m_dyn,power=3)
+```
+Otrzymane wartości p-value wskazują, że brak jest podstaw do odrzucenia hipotezy
+zerowej zakładającej poprawną specyfikację modelu.

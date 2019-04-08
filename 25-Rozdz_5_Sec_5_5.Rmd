@@ -1,0 +1,8 @@
+## Przykładowe wyniki {#part_55}
+
+```{r w1, echo=FALSE, fig.align='center', fig.cap="w1", out.width = '100%'}
+knitr::include_graphics("w1.png")
+```
+```{r w2, echo=FALSE, fig.align='center', fig.cap="w2", out.width = '100%'}
+knitr::include_graphics("w2.png")
+```

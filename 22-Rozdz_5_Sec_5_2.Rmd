@@ -1,0 +1,31 @@
+## Rozwiązanie {#part_52}
+
+Wektor współczynników a to wektor własny odpowiadający największej wartości
+własnej macierzy
+$$S^{-1}_{22}S_{21}S^{-1}_{11}S_{12}$$
+a wektor współczynników b to wektor własny odpowiadający największej wartości
+własnej macierzy
+$$S^{-1}_{11}S_{12}S^{-1}_{22}S_{21}$$
+Korelacja $cor(a^{\prime}X,b^{\prime}Y)$ to wartość największa wartość własna z powyższych macierzy.
+
+[Wyprowadzenie na tablicy]
+
+Nowe zmienne $u_1=a^{\prime}X$ i $v_1=b^{\prime}Y$ wyjaśniają największą część korelacji pomiędzy zbiorami wektorów $X$ i $Y$, ale nie całą.
+
+Kolejnym krokiem jest znalezienie kolejnych zmiennych $u_i=a_{i}X$ i $u_i=b_iY$ , tak by:
+
+* wektory $u_i$ są nieskorelowane pomiędzy sobą,
+
+* wektory $v_i$ są nieskorelowane pomiędzy sobą,
+
+* korelacje $cor(u_i,v_i)$ tworzą nierosnący ciąg odpowiadający możliwie największym cząstkowym korelacjom.
+
+Jeżeli obserwacje pochodzą z wielowymiarowego modelu normalnego $N(\mu,\sum)$ to
+możemy testować:
+$$H_0:R_i=0\forall_i$$
+Statystyka testowa dla testu ilorazu wiarogodności
+$$LRT=-n\sum_{i=k+1}^{s}\log(1-R^2_i)$$
+ma asymptotyczny rozkład $\chi^2_{(p-k)(q-k)}$.
+
+Wartość $n$ w statystykach testowych zamienia się czasem na $n - \frac{1}{2} (p + q + 3)$, co poprawia test.
+
