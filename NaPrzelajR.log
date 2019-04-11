@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2019/dev/Debian) (preloaded format=pdflatex 2018.12.16)  8 APR 2019 22:37
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2019/dev/Debian) (preloaded format=pdflatex 2018.12.16)  11 APR 2019 09:30
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1069,7 +1069,7 @@ Rozdzia\l  3.
 [19
 
 ]
-<mlbench.png, id=656, 1806.75pt x 1053.9375pt>
+<mlbench.png, id=658, 1806.75pt x 1053.9375pt>
 File: mlbench.png Graphic file (type png)
 <use mlbench.png>
 Package pdftex.def Info: mlbench.png  used on input line 784.
@@ -1081,7 +1081,7 @@ Package pdftex.def Info: mlbench.png  used on input line 784.
                                                   \fi \fi 
 l.821 \end{verbatim}
                      <./mlbench.png>]
-<kmeans.png, id=666, 1806.75pt x 1053.9375pt>
+<kmeans.png, id=667, 1806.75pt x 1053.9375pt>
 File: kmeans.png Graphic file (type png)
 <use kmeans.png>
 Package pdftex.def Info: kmeans.png  used on input line 828.
@@ -1099,7 +1099,7 @@ G AROUND MEDOIDS) \T1/ppl/m/n/10 21
                                                   \fi \fi 
 l.891 \end{verbatim}
                      <./kmeans.png>]
-<pam.png, id=675, 1806.75pt x 1053.9375pt>
+<pam.png, id=676, 1806.75pt x 1053.9375pt>
 File: pam.png Graphic file (type png)
 <use pam.png>
 Package pdftex.def Info: pam.png  used on input line 898.
@@ -1114,7 +1114,7 @@ e.3.3}) has been already used, duplicate ignored
                                                   \fi \fi 
 l.953 
        <./pam.png>]
-<agnes.png, id=698, 1505.625pt x 1204.5pt>
+<agnes.png, id=699, 1505.625pt x 1204.5pt>
 File: agnes.png Graphic file (type png)
 <use agnes.png>
 Package pdftex.def Info: agnes.png  used on input line 1016.
@@ -1149,7 +1149,7 @@ Package xcolor Warning: Incompatible color definition on input line 1049.
 
 Package xcolor Warning: Incompatible color definition on input line 1049.
 
-<NaPrzelajR_files/figure-latex/hc35-1.pdf, id=712, 810.02625pt x 409.53pt>
+<NaPrzelajR_files/figure-latex/hc35-1.pdf, id=713, 810.02625pt x 409.53pt>
 File: NaPrzelajR_files/figure-latex/hc35-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/hc35-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/hc35-1.pdf  used on inpu
@@ -1184,12 +1184,12 @@ n/10 index.S(clusterSim)
  []
 
 [27]
-<silhouette.png, id=738, 1053.9375pt x 1053.9375pt>
+<silhouette.png, id=739, 1053.9375pt x 1053.9375pt>
 File: silhouette.png Graphic file (type png)
 <use silhouette.png>
 Package pdftex.def Info: silhouette.png  used on input line 1161.
 (pdftex.def)             Requested size: 328.82396pt x 328.82396pt.
-<silhouetteB.png, id=739, 1505.625pt x 903.375pt>
+<silhouetteB.png, id=740, 1505.625pt x 903.375pt>
 File: silhouetteB.png Graphic file (type png)
 <use silhouetteB.png>
 Package pdftex.def Info: silhouetteB.png  used on input line 1169.
@@ -1228,13 +1228,13 @@ Package xcolor Warning: Incompatible color definition on input line 1205.
 
 Package xcolor Warning: Incompatible color definition on input line 1205.
 
-<NaPrzelajR_files/figure-latex/gusp4-1.pdf, id=747, 693.59125pt x 409.53pt>
+<NaPrzelajR_files/figure-latex/gusp4-1.pdf, id=748, 693.59125pt x 409.53pt>
 File: NaPrzelajR_files/figure-latex/gusp4-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/gusp4-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/gusp4-1.pdf  used on inp
 ut line 1209.
 (pdftex.def)             Requested size: 328.83485pt x 194.16008pt.
-<NaPrzelajR_files/figure-latex/gusp4-2.pdf, id=748, 714.67pt x 409.53pt>
+<NaPrzelajR_files/figure-latex/gusp4-2.pdf, id=749, 714.67pt x 409.53pt>
 File: NaPrzelajR_files/figure-latex/gusp4-2.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/gusp4-2.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/gusp4-2.pdf  used on inp
@@ -1261,7 +1261,7 @@ Package xcolor Warning: Incompatible color definition on input line 1232.
 
 Package xcolor Warning: Incompatible color definition on input line 1232.
 
-<NaPrzelajR_files/figure-latex/pA-1.pdf, id=749, 839.135pt x 418.56375pt>
+<NaPrzelajR_files/figure-latex/pA-1.pdf, id=750, 839.135pt x 418.56375pt>
 File: NaPrzelajR_files/figure-latex/pA-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/pA-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/pA-1.pdf  used on input 
@@ -1279,7 +1279,7 @@ Package xcolor Warning: Incompatible color definition on input line 1257.
 
 Package xcolor Warning: Incompatible color definition on input line 1257.
 
-<NaPrzelajR_files/figure-latex/pB-1.pdf, id=750, 834.11626pt x 357.335pt>
+<NaPrzelajR_files/figure-latex/pB-1.pdf, id=751, 834.11626pt x 357.335pt>
 File: NaPrzelajR_files/figure-latex/pB-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/pB-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/pB-1.pdf  used on input 
@@ -1304,7 +1304,7 @@ Package xcolor Warning: Incompatible color definition on input line 1288.
 
 Package xcolor Warning: Incompatible color definition on input line 1288.
 
-<NaPrzelajR_files/figure-latex/pC-1.pdf, id=756, 834.11626pt x 357.335pt>
+<NaPrzelajR_files/figure-latex/pC-1.pdf, id=757, 834.11626pt x 357.335pt>
 File: NaPrzelajR_files/figure-latex/pC-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/pC-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/pC-1.pdf  used on input 
@@ -1367,7 +1367,7 @@ Package xcolor Warning: Incompatible color definition on input line 1470.
 
 Package xcolor Warning: Incompatible color definition on input line 1470.
 
-<NaPrzelajR_files/figure-latex/ad41-1.pdf, id=822, 834.11626pt x 287.0725pt>
+<NaPrzelajR_files/figure-latex/ad41-1.pdf, id=823, 834.11626pt x 287.0725pt>
 File: NaPrzelajR_files/figure-latex/ad41-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/ad41-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/ad41-1.pdf  used on inpu
@@ -1386,7 +1386,7 @@ Package xcolor Warning: Incompatible color definition on input line 1518.
 
 Package xcolor Warning: Incompatible color definition on input line 1518.
 
-<NaPrzelajR_files/figure-latex/ad42-1.pdf, id=831, 834.11626pt x 321.2pt>
+<NaPrzelajR_files/figure-latex/ad42-1.pdf, id=832, 834.11626pt x 321.2pt>
 File: NaPrzelajR_files/figure-latex/ad42-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/ad42-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/ad42-1.pdf  used on inpu
@@ -1454,7 +1454,7 @@ Package xcolor Warning: Incompatible color definition on input line 1634.
 
 Package xcolor Warning: Incompatible color definition on input line 1634.
 
-<NaPrzelajR_files/figure-latex/ad43-1.pdf, id=859, 834.11626pt x 321.2pt>
+<NaPrzelajR_files/figure-latex/ad43-1.pdf, id=860, 834.11626pt x 321.2pt>
 File: NaPrzelajR_files/figure-latex/ad43-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/ad43-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/ad43-1.pdf  used on inpu
@@ -1482,12 +1482,12 @@ Package xcolor Warning: Incompatible color definition on input line 1680.
 
 Package xcolor Warning: Incompatible color definition on input line 1680.
 
-<NaPrzelajR_files/figure-latex/mN-1.pdf, id=867, 836.12375pt x 393.47pt>
+<NaPrzelajR_files/figure-latex/mN-1.pdf, id=868, 834.11626pt x 393.47pt>
 File: NaPrzelajR_files/figure-latex/mN-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/mN-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/mN-1.pdf  used on input 
 line 1684.
-(pdftex.def)             Requested size: 328.82996pt x 154.7435pt.
+(pdftex.def)             Requested size: 328.82957pt x 155.11574pt.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
@@ -1516,7 +1516,7 @@ Package xcolor Warning: Incompatible color definition on input line 1709.
 
 Package xcolor Warning: Incompatible color definition on input line 1709.
 
-<NaPrzelajR_files/figure-latex/NB-1.pdf, id=882, 545.03625pt x 391.4625pt>
+<NaPrzelajR_files/figure-latex/NB-1.pdf, id=883, 545.03625pt x 391.4625pt>
 File: NaPrzelajR_files/figure-latex/NB-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/NB-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/NB-1.pdf  used on input 
@@ -1545,12 +1545,12 @@ Package xcolor Warning: Incompatible color definition on input line 1753.
 
 Package xcolor Warning: Incompatible color definition on input line 1753.
 
-<NaPrzelajR_files/figure-latex/Ctree46-1.pdf, id=905, 829.0975pt x 455.7025pt>
+<NaPrzelajR_files/figure-latex/Ctree46-1.pdf, id=906, 829.0975pt x 463.7325pt>
 File: NaPrzelajR_files/figure-latex/Ctree46-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/Ctree46-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/Ctree46-1.pdf  used on i
 nput line 1757.
-(pdftex.def)             Requested size: 375.79774pt x 206.55226pt.
+(pdftex.def)             Requested size: 375.79774pt x 210.19194pt.
 
 Package xcolor Warning: Incompatible color definition on input line 1764.
 
@@ -1576,7 +1576,7 @@ Package xcolor Warning: Incompatible color definition on input line 1790.
 
 Package xcolor Warning: Incompatible color definition on input line 1790.
 
-<NaPrzelajR_files/figure-latex/Ktree47-1.pdf, id=920, 545.03625pt x 391.4625pt>
+<NaPrzelajR_files/figure-latex/Ktree47-1.pdf, id=921, 545.03625pt x 391.4625pt>
 
 File: NaPrzelajR_files/figure-latex/Ktree47-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/Ktree47-1.pdf>
@@ -1625,7 +1625,7 @@ Package xcolor Warning: Incompatible color definition on input line 1901.
 
 Package xcolor Warning: Incompatible color definition on input line 1901.
 
-<NaPrzelajR_files/figure-latex/RF48-1.pdf, id=940, 545.03625pt x 393.47pt>
+<NaPrzelajR_files/figure-latex/RF48-1.pdf, id=941, 545.03625pt x 393.47pt>
 File: NaPrzelajR_files/figure-latex/RF48-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/RF48-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/RF48-1.pdf  used on inpu
@@ -1647,7 +1647,7 @@ Package xcolor Warning: Incompatible color definition on input line 1929.
 
 Package xcolor Warning: Incompatible color definition on input line 1929.
 
-<NaPrzelajR_files/figure-latex/kl49-1.pdf, id=956, 839.135pt x 404.51125pt>
+<NaPrzelajR_files/figure-latex/kl49-1.pdf, id=957, 839.135pt x 404.51125pt>
 File: NaPrzelajR_files/figure-latex/kl49-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/kl49-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/kl49-1.pdf  used on inpu
@@ -1665,13 +1665,13 @@ atex/kl49-1.pdf>] [46
 ]
 Rozdzia\l  5.
 [47]
-<w1.png, id=980, 1505.625pt x 903.375pt>
+<w1.png, id=981, 1505.625pt x 903.375pt>
 File: w1.png Graphic file (type png)
 <use w1.png>
 Package pdftex.def Info: w1.png  used on input line 2087.
 (pdftex.def)             Requested size: 469.74852pt x 281.8491pt.
 [48]
-<w2.png, id=989, 1505.625pt x 903.375pt>
+<w2.png, id=990, 1505.625pt x 903.375pt>
 File: w2.png Graphic file (type png)
 <use w2.png>
 Package pdftex.def Info: w2.png  used on input line 2095.
@@ -1731,7 +1731,7 @@ Package xcolor Warning: Incompatible color definition on input line 2250.
 
 Package xcolor Warning: Incompatible color definition on input line 2250.
 
-<NaPrzelajR_files/figure-latex/wy62A-1.pdf, id=1018, 554.07pt x 428.60126pt>
+<NaPrzelajR_files/figure-latex/wy62A-1.pdf, id=1019, 554.07pt x 428.60126pt>
 File: NaPrzelajR_files/figure-latex/wy62A-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/wy62A-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/wy62A-1.pdf  used on inp
@@ -1771,7 +1771,7 @@ Package xcolor Warning: Incompatible color definition on input line 2313.
 
 Package xcolor Warning: Incompatible color definition on input line 2313.
 
-<NaPrzelajR_files/figure-latex/wy63A-1.pdf, id=1032, 554.07pt x 428.60126pt>
+<NaPrzelajR_files/figure-latex/wy63A-1.pdf, id=1033, 554.07pt x 428.60126pt>
 File: NaPrzelajR_files/figure-latex/wy63A-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/wy63A-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/wy63A-1.pdf  used on inp
@@ -1798,7 +1798,7 @@ Package xcolor Warning: Incompatible color definition on input line 2346.
 
 Package xcolor Warning: Incompatible color definition on input line 2346.
 
-<NaPrzelajR_files/figure-latex/wy64A-1.pdf, id=1033, 515.9275pt x 362.35374pt>
+<NaPrzelajR_files/figure-latex/wy64A-1.pdf, id=1034, 515.9275pt x 362.35374pt>
 File: NaPrzelajR_files/figure-latex/wy64A-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/wy64A-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/wy64A-1.pdf  used on inp
@@ -1817,7 +1817,7 @@ Package xcolor Warning: Incompatible color definition on input line 2362.
 
 Package xcolor Warning: Incompatible color definition on input line 2362.
 
-<NaPrzelajR_files/figure-latex/wy65A-1.pdf, id=1038, 354.32375pt x 353.32pt>
+<NaPrzelajR_files/figure-latex/wy65A-1.pdf, id=1039, 354.32375pt x 353.32pt>
 File: NaPrzelajR_files/figure-latex/wy65A-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/wy65A-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/wy65A-1.pdf  used on inp
@@ -1835,7 +1835,7 @@ Package xcolor Warning: Incompatible color definition on input line 2379.
 
 Package xcolor Warning: Incompatible color definition on input line 2379.
 
-<NaPrzelajR_files/figure-latex/wy66A-1.pdf, id=1039, 578.16pt x 360.34625pt>
+<NaPrzelajR_files/figure-latex/wy66A-1.pdf, id=1040, 578.16pt x 360.34625pt>
 File: NaPrzelajR_files/figure-latex/wy66A-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/wy66A-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/wy66A-1.pdf  used on inp
@@ -1919,7 +1919,7 @@ Package xcolor Warning: Incompatible color definition on input line 2564.
 
 Package xcolor Warning: Incompatible color definition on input line 2564.
 
-<NaPrzelajR_files/figure-latex/wy71-1.pdf, id=1092, 848.16875pt x 283.0575pt>
+<NaPrzelajR_files/figure-latex/wy71-1.pdf, id=1093, 848.16875pt x 283.0575pt>
 File: NaPrzelajR_files/figure-latex/wy71-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/wy71-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/wy71-1.pdf  used on inpu
@@ -1961,7 +1961,7 @@ Package xcolor Warning: Incompatible color definition on input line 2619.
 
 Package xcolor Warning: Incompatible color definition on input line 2619.
 
-<NaPrzelajR_files/figure-latex/wy72-1.pdf, id=1107, 848.16875pt x 283.0575pt>
+<NaPrzelajR_files/figure-latex/wy72-1.pdf, id=1108, 848.16875pt x 283.0575pt>
 File: NaPrzelajR_files/figure-latex/wy72-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/wy72-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/wy72-1.pdf  used on inpu
@@ -1976,7 +1976,7 @@ Package xcolor Warning: Incompatible color definition on input line 2646.
 
 Package xcolor Warning: Incompatible color definition on input line 2646.
 
-<NaPrzelajR_files/figure-latex/wy73-1.pdf, id=1109, 563.10374pt x 427.5975pt>
+<NaPrzelajR_files/figure-latex/wy73-1.pdf, id=1110, 563.10374pt x 427.5975pt>
 File: NaPrzelajR_files/figure-latex/wy73-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/wy73-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/wy73-1.pdf  used on inpu
@@ -2012,7 +2012,7 @@ Package xcolor Warning: Incompatible color definition on input line 2684.
 
 Package xcolor Warning: Incompatible color definition on input line 2684.
 
-<NaPrzelajR_files/figure-latex/wy74-1.pdf, id=1127, 1137.24875pt x 161.60374pt>
+<NaPrzelajR_files/figure-latex/wy74-1.pdf, id=1128, 1137.24875pt x 161.60374pt>
 
 File: NaPrzelajR_files/figure-latex/wy74-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/wy74-1.pdf>
@@ -2116,7 +2116,7 @@ Package xcolor Warning: Incompatible color definition on input line 2845.
 
 Package xcolor Warning: Incompatible color definition on input line 2845.
 
-<NaPrzelajR_files/figure-latex/wy75-1.pdf, id=1160, 852.18375pt x 270.00874pt>
+<NaPrzelajR_files/figure-latex/wy75-1.pdf, id=1162, 852.18375pt x 270.00874pt>
 File: NaPrzelajR_files/figure-latex/wy75-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/wy75-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/wy75-1.pdf  used on inpu
@@ -2131,7 +2131,7 @@ Package xcolor Warning: Incompatible color definition on input line 2869.
 
 Package xcolor Warning: Incompatible color definition on input line 2869.
 
-<NaPrzelajR_files/figure-latex/wy76-1.pdf, id=1162, 552.0625pt x 401.5pt>
+<NaPrzelajR_files/figure-latex/wy76-1.pdf, id=1164, 552.0625pt x 401.5pt>
 File: NaPrzelajR_files/figure-latex/wy76-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/wy76-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/wy76-1.pdf  used on inpu
@@ -2160,7 +2160,7 @@ Package xcolor Warning: Incompatible color definition on input line 2886.
 
 Package xcolor Warning: Incompatible color definition on input line 2886.
 
-<NaPrzelajR_files/figure-latex/wy77-1.pdf, id=1187, 552.0625pt x 401.5pt>
+<NaPrzelajR_files/figure-latex/wy77-1.pdf, id=1188, 552.0625pt x 401.5pt>
 File: NaPrzelajR_files/figure-latex/wy77-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/wy77-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/wy77-1.pdf  used on inpu
@@ -2175,7 +2175,7 @@ Package xcolor Warning: Incompatible color definition on input line 2910.
 
 Package xcolor Warning: Incompatible color definition on input line 2910.
 
-<NaPrzelajR_files/figure-latex/wy78-1.pdf, id=1191, 521.95pt x 231.86626pt>
+<NaPrzelajR_files/figure-latex/wy78-1.pdf, id=1192, 521.95pt x 231.86626pt>
 File: NaPrzelajR_files/figure-latex/wy78-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/wy78-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/wy78-1.pdf  used on inpu
@@ -2238,7 +2238,7 @@ Package xcolor Warning: Incompatible color definition on input line 3082.
 
 Package xcolor Warning: Incompatible color definition on input line 3082.
 
-<NaPrzelajR_files/figure-latex/wy79-1.pdf, id=1232, 559.08875pt x 270.00874pt>
+<NaPrzelajR_files/figure-latex/wy79-1.pdf, id=1233, 559.08875pt x 270.00874pt>
 File: NaPrzelajR_files/figure-latex/wy79-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/wy79-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/wy79-1.pdf  used on inpu
@@ -2287,7 +2287,7 @@ Package xcolor Warning: Incompatible color definition on input line 3155.
 
 Package xcolor Warning: Incompatible color definition on input line 3155.
 
-<NaPrzelajR_files/figure-latex/wy80-1.pdf, id=1250, 566.115pt x 431.6125pt>
+<NaPrzelajR_files/figure-latex/wy80-1.pdf, id=1251, 566.115pt x 431.6125pt>
 File: NaPrzelajR_files/figure-latex/wy80-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/wy80-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/wy80-1.pdf  used on inpu
@@ -2318,7 +2318,7 @@ Package xcolor Warning: Incompatible color definition on input line 3201.
 
 Package xcolor Warning: Incompatible color definition on input line 3201.
 
-<NaPrzelajR_files/figure-latex/wy81-1.pdf, id=1266, 525.965pt x 248.93pt>
+<NaPrzelajR_files/figure-latex/wy81-1.pdf, id=1267, 525.965pt x 248.93pt>
 File: NaPrzelajR_files/figure-latex/wy81-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/wy81-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/wy81-1.pdf  used on inpu
@@ -2387,7 +2387,7 @@ Package xcolor Warning: Incompatible color definition on input line 3380.
 
 Package xcolor Warning: Incompatible color definition on input line 3380.
 
-<NaPrzelajR_files/figure-latex/wy82-1.pdf, id=1296, 525.965pt x 248.93pt>
+<NaPrzelajR_files/figure-latex/wy82-1.pdf, id=1297, 525.965pt x 248.93pt>
 File: NaPrzelajR_files/figure-latex/wy82-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/wy82-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/wy82-1.pdf  used on inpu
@@ -2436,7 +2436,7 @@ Package xcolor Warning: Incompatible color definition on input line 3497.
 
 Package xcolor Warning: Incompatible color definition on input line 3497.
 
-<NaPrzelajR_files/figure-latex/wy81A-1.pdf, id=1327, 292.09125pt x 330.23375pt>
+<NaPrzelajR_files/figure-latex/wy81A-1.pdf, id=1328, 292.09125pt x 330.23375pt>
 
 File: NaPrzelajR_files/figure-latex/wy81A-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/wy81A-1.pdf>
@@ -2495,7 +2495,7 @@ Package xcolor Warning: Incompatible color definition on input line 3580.
 
 Package xcolor Warning: Incompatible color definition on input line 3580.
 
-<NaPrzelajR_files/figure-latex/wy82A-1.pdf, id=1343, 289.08pt x 336.25626pt>
+<NaPrzelajR_files/figure-latex/wy82A-1.pdf, id=1344, 289.08pt x 336.25626pt>
 File: NaPrzelajR_files/figure-latex/wy82A-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/wy82A-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/wy82A-1.pdf  used on inp
@@ -2571,7 +2571,7 @@ Package xcolor Warning: Incompatible color definition on input line 3687.
 
 Package xcolor Warning: Incompatible color definition on input line 3687.
 
-<NaPrzelajR_files/figure-latex/wy83-1.pdf, id=1358, 293.095pt x 330.23375pt>
+<NaPrzelajR_files/figure-latex/wy83-1.pdf, id=1359, 293.095pt x 330.23375pt>
 File: NaPrzelajR_files/figure-latex/wy83-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/wy83-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/wy83-1.pdf  used on inpu
@@ -2832,7 +2832,7 @@ Package xcolor Warning: Incompatible color definition on input line 4324.
 
 Package xcolor Warning: Incompatible color definition on input line 4324.
 
-<NaPrzelajR_files/figure-latex/wy91-1.pdf, id=1425, 525.965pt x 228.855pt>
+<NaPrzelajR_files/figure-latex/wy91-1.pdf, id=1426, 525.965pt x 228.855pt>
 File: NaPrzelajR_files/figure-latex/wy91-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/wy91-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/wy91-1.pdf  used on inpu
@@ -2863,7 +2863,7 @@ Package xcolor Warning: Incompatible color definition on input line 4369.
 
 Package xcolor Warning: Incompatible color definition on input line 4369.
 
-<NaPrzelajR_files/figure-latex/wy92-1.pdf, id=1442, 560.0925pt x 358.33875pt>
+<NaPrzelajR_files/figure-latex/wy92-1.pdf, id=1443, 560.0925pt x 358.33875pt>
 File: NaPrzelajR_files/figure-latex/wy92-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/wy92-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/wy92-1.pdf  used on inpu
@@ -2949,7 +2949,7 @@ Package xcolor Warning: Incompatible color definition on input line 4490.
 
 Package xcolor Warning: Incompatible color definition on input line 4490.
 
-<NaPrzelajR_files/figure-latex/wy93-1.pdf, id=1470, 559.08875pt x 427.5975pt>
+<NaPrzelajR_files/figure-latex/wy93-1.pdf, id=1471, 559.08875pt x 427.5975pt>
 File: NaPrzelajR_files/figure-latex/wy93-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/wy93-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/wy93-1.pdf  used on inpu
@@ -3100,7 +3100,7 @@ Package xcolor Warning: Incompatible color definition on input line 4868.
 
 Package xcolor Warning: Incompatible color definition on input line 4868.
 
-<NaPrzelajR_files/figure-latex/wy94-1.pdf, id=1520, 848.16875pt x 287.0725pt>
+<NaPrzelajR_files/figure-latex/wy94-1.pdf, id=1521, 848.16875pt x 287.0725pt>
 File: NaPrzelajR_files/figure-latex/wy94-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/wy94-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/wy94-1.pdf  used on inpu
@@ -3168,7 +3168,7 @@ Package xcolor Warning: Incompatible color definition on input line 4988.
 
 Package xcolor Warning: Incompatible color definition on input line 4988.
 
-<NaPrzelajR_files/figure-latex/wy95-1.pdf, id=1545, 848.16875pt x 287.0725pt>
+<NaPrzelajR_files/figure-latex/wy95-1.pdf, id=1546, 848.16875pt x 287.0725pt>
 File: NaPrzelajR_files/figure-latex/wy95-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/wy95-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/wy95-1.pdf  used on inpu
@@ -3254,7 +3254,7 @@ Package xcolor Warning: Incompatible color definition on input line 5115.
 
 Package xcolor Warning: Incompatible color definition on input line 5115.
 
-<NaPrzelajR_files/figure-latex/wy96-1.pdf, id=1569, 848.16875pt x 287.0725pt>
+<NaPrzelajR_files/figure-latex/wy96-1.pdf, id=1570, 848.16875pt x 287.0725pt>
 File: NaPrzelajR_files/figure-latex/wy96-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/wy96-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/wy96-1.pdf  used on inpu
@@ -3310,7 +3310,7 @@ Package xcolor Warning: Incompatible color definition on input line 5191.
 
 Package xcolor Warning: Incompatible color definition on input line 5191.
 
-<NaPrzelajR_files/figure-latex/wy97-1.pdf, id=1588, 848.16875pt x 287.0725pt>
+<NaPrzelajR_files/figure-latex/wy97-1.pdf, id=1589, 848.16875pt x 287.0725pt>
 File: NaPrzelajR_files/figure-latex/wy97-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/wy97-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/wy97-1.pdf  used on inpu
@@ -3334,7 +3334,7 @@ Package xcolor Warning: Incompatible color definition on input line 5239.
 
 Package xcolor Warning: Incompatible color definition on input line 5239.
 
-<NaPrzelajR_files/figure-latex/wy98-1.pdf, id=1590, 563.10374pt x 283.0575pt>
+<NaPrzelajR_files/figure-latex/wy98-1.pdf, id=1591, 563.10374pt x 283.0575pt>
 File: NaPrzelajR_files/figure-latex/wy98-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/wy98-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/wy98-1.pdf  used on inpu
@@ -3368,7 +3368,7 @@ Package xcolor Warning: Incompatible color definition on input line 5281.
 
 Package xcolor Warning: Incompatible color definition on input line 5281.
 
-<NaPrzelajR_files/figure-latex/wy99-1.pdf, id=1604, 563.10374pt x 283.0575pt>
+<NaPrzelajR_files/figure-latex/wy99-1.pdf, id=1605, 563.10374pt x 283.0575pt>
 File: NaPrzelajR_files/figure-latex/wy99-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/wy99-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/wy99-1.pdf  used on inpu
@@ -3406,7 +3406,7 @@ Package xcolor Warning: Incompatible color definition on input line 5324.
 
 Package xcolor Warning: Incompatible color definition on input line 5324.
 
-<NaPrzelajR_files/figure-latex/wy910-1.pdf, id=1628, 563.10374pt x 283.0575pt>
+<NaPrzelajR_files/figure-latex/wy910-1.pdf, id=1629, 563.10374pt x 283.0575pt>
 File: NaPrzelajR_files/figure-latex/wy910-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/wy910-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/wy910-1.pdf  used on inp
@@ -3446,7 +3446,7 @@ Package xcolor Warning: Incompatible color definition on input line 5371.
 
 Package xcolor Warning: Incompatible color definition on input line 5371.
 
-<NaPrzelajR_files/figure-latex/wy911-1.pdf, id=1645, 563.10374pt x 283.0575pt>
+<NaPrzelajR_files/figure-latex/wy911-1.pdf, id=1646, 563.10374pt x 283.0575pt>
 File: NaPrzelajR_files/figure-latex/wy911-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/wy911-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/wy911-1.pdf  used on inp
@@ -3491,7 +3491,7 @@ Package xcolor Warning: Incompatible color definition on input line 5510.
 
 Package xcolor Warning: Incompatible color definition on input line 5510.
 
-<NaPrzelajR_files/figure-latex/wy101-1.pdf, id=1671, 580.1675pt x 289.08pt>
+<NaPrzelajR_files/figure-latex/wy101-1.pdf, id=1672, 580.1675pt x 289.08pt>
 File: NaPrzelajR_files/figure-latex/wy101-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/wy101-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/wy101-1.pdf  used on inp
@@ -3605,7 +3605,7 @@ Package xcolor Warning: Incompatible color definition on input line 5702.
 
 Package xcolor Warning: Incompatible color definition on input line 5702.
 
-<NaPrzelajR_files/figure-latex/wy102-1.pdf, id=1699, 580.1675pt x 216.81pt>
+<NaPrzelajR_files/figure-latex/wy102-1.pdf, id=1700, 580.1675pt x 216.81pt>
 File: NaPrzelajR_files/figure-latex/wy102-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/wy102-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/wy102-1.pdf  used on inp
@@ -3620,7 +3620,7 @@ Package xcolor Warning: Incompatible color definition on input line 5732.
 
 Package xcolor Warning: Incompatible color definition on input line 5732.
 
-<NaPrzelajR_files/figure-latex/wy103-1.pdf, id=1702, 580.1675pt x 289.08pt>
+<NaPrzelajR_files/figure-latex/wy103-1.pdf, id=1703, 580.1675pt x 289.08pt>
 File: NaPrzelajR_files/figure-latex/wy103-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/wy103-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/wy103-1.pdf  used on inp
@@ -3658,7 +3658,7 @@ Package xcolor Warning: Incompatible color definition on input line 5771.
 
 Package xcolor Warning: Incompatible color definition on input line 5771.
 
-<NaPrzelajR_files/figure-latex/wy104-1.pdf, id=1724, 580.1675pt x 289.08pt>
+<NaPrzelajR_files/figure-latex/wy104-1.pdf, id=1725, 580.1675pt x 289.08pt>
 File: NaPrzelajR_files/figure-latex/wy104-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/wy104-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/wy104-1.pdf  used on inp
@@ -3695,7 +3695,7 @@ Package xcolor Warning: Incompatible color definition on input line 5808.
 
 Package xcolor Warning: Incompatible color definition on input line 5808.
 
-<NaPrzelajR_files/figure-latex/wy105-1.pdf, id=1737, 580.1675pt x 289.08pt>
+<NaPrzelajR_files/figure-latex/wy105-1.pdf, id=1738, 580.1675pt x 289.08pt>
 File: NaPrzelajR_files/figure-latex/wy105-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/wy105-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/wy105-1.pdf  used on inp
@@ -3772,7 +3772,7 @@ Package xcolor Warning: Incompatible color definition on input line 5974.
 
 Package xcolor Warning: Incompatible color definition on input line 5974.
 
-<NaPrzelajR_files/figure-latex/wy106-1.pdf, id=1759, 580.1675pt x 289.08pt>
+<NaPrzelajR_files/figure-latex/wy106-1.pdf, id=1760, 580.1675pt x 289.08pt>
 File: NaPrzelajR_files/figure-latex/wy106-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/wy106-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/wy106-1.pdf  used on inp
@@ -3816,7 +3816,7 @@ Package xcolor Warning: Incompatible color definition on input line 6092.
 
 Package xcolor Warning: Incompatible color definition on input line 6092.
 
-<NaPrzelajR_files/figure-latex/wy107-1.pdf, id=1784, 869.2475pt x 289.08pt>
+<NaPrzelajR_files/figure-latex/wy107-1.pdf, id=1785, 869.2475pt x 289.08pt>
 File: NaPrzelajR_files/figure-latex/wy107-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/wy107-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/wy107-1.pdf  used on inp
@@ -3847,7 +3847,7 @@ Package xcolor Warning: Incompatible color definition on input line 6133.
 
 Package xcolor Warning: Incompatible color definition on input line 6133.
 
-<NaPrzelajR_files/figure-latex/wy108-1.pdf, id=1801, 580.1675pt x 216.81pt>
+<NaPrzelajR_files/figure-latex/wy108-1.pdf, id=1802, 580.1675pt x 216.81pt>
 File: NaPrzelajR_files/figure-latex/wy108-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/wy108-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/wy108-1.pdf  used on inp
@@ -3896,7 +3896,7 @@ Package xcolor Warning: Incompatible color definition on input line 6217.
 
 Package xcolor Warning: Incompatible color definition on input line 6217.
 
-<NaPrzelajR_files/figure-latex/wy109-1.pdf, id=1820, 580.1675pt x 216.81pt>
+<NaPrzelajR_files/figure-latex/wy109-1.pdf, id=1821, 580.1675pt x 216.81pt>
 File: NaPrzelajR_files/figure-latex/wy109-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/wy109-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/wy109-1.pdf  used on inp
@@ -4005,7 +4005,7 @@ Package xcolor Warning: Incompatible color definition on input line 6432.
 
 Package xcolor Warning: Incompatible color definition on input line 6432.
 
-<NaPrzelajR_files/figure-latex/wy111-1.pdf, id=1863, 652.4375pt x 433.62pt>
+<NaPrzelajR_files/figure-latex/wy111-1.pdf, id=1864, 652.4375pt x 433.62pt>
 File: NaPrzelajR_files/figure-latex/wy111-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/wy111-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/wy111-1.pdf  used on inp
@@ -4082,7 +4082,7 @@ Package xcolor Warning: Incompatible color definition on input line 6606.
 
 Package xcolor Warning: Incompatible color definition on input line 6606.
 
-<NaPrzelajR_files/figure-latex/wy112-1.pdf, id=1891, 652.4375pt x 433.62pt>
+<NaPrzelajR_files/figure-latex/wy112-1.pdf, id=1892, 652.4375pt x 433.62pt>
 File: NaPrzelajR_files/figure-latex/wy112-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/wy112-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/wy112-1.pdf  used on inp
@@ -4162,7 +4162,7 @@ Package xcolor Warning: Incompatible color definition on input line 6756.
 
 Package xcolor Warning: Incompatible color definition on input line 6756.
 
-<NaPrzelajR_files/figure-latex/wy113-1.pdf, id=1923, 652.4375pt x 361.35pt>
+<NaPrzelajR_files/figure-latex/wy113-1.pdf, id=1924, 652.4375pt x 361.35pt>
 File: NaPrzelajR_files/figure-latex/wy113-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/wy113-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/wy113-1.pdf  used on inp
@@ -4212,7 +4212,7 @@ Package xcolor Warning: Incompatible color definition on input line 6859.
 
 Package xcolor Warning: Incompatible color definition on input line 6859.
 
-<NaPrzelajR_files/figure-latex/wy114-1.pdf, id=1944, 652.4375pt x 361.35pt>
+<NaPrzelajR_files/figure-latex/wy114-1.pdf, id=1945, 652.4375pt x 361.35pt>
 File: NaPrzelajR_files/figure-latex/wy114-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/wy114-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/wy114-1.pdf  used on inp
@@ -4372,7 +4372,7 @@ Package xcolor Warning: Incompatible color definition on input line 7161.
 
 Package xcolor Warning: Incompatible color definition on input line 7161.
 
-<NaPrzelajR_files/figure-latex/wy115-1.pdf, id=1977, 869.2475pt x 289.08pt>
+<NaPrzelajR_files/figure-latex/wy115-1.pdf, id=1978, 869.2475pt x 289.08pt>
 File: NaPrzelajR_files/figure-latex/wy115-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/wy115-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/wy115-1.pdf  used on inp
@@ -4558,7 +4558,7 @@ Package xcolor Warning: Incompatible color definition on input line 7479.
 
 Package xcolor Warning: Incompatible color definition on input line 7479.
 
-<NaPrzelajR_files/figure-latex/wy116-1.pdf, id=2012, 786.94pt x 279.0425pt>
+<NaPrzelajR_files/figure-latex/wy116-1.pdf, id=2013, 786.94pt x 279.0425pt>
 File: NaPrzelajR_files/figure-latex/wy116-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/wy116-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/wy116-1.pdf  used on inp
@@ -4577,7 +4577,7 @@ Package xcolor Warning: Incompatible color definition on input line 7500.
 
 Package xcolor Warning: Incompatible color definition on input line 7500.
 
-<NaPrzelajR_files/figure-latex/wy117-1.pdf, id=2017, 778.91pt x 342.27875pt>
+<NaPrzelajR_files/figure-latex/wy117-1.pdf, id=2018, 778.91pt x 342.27875pt>
 File: NaPrzelajR_files/figure-latex/wy117-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/wy117-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/wy117-1.pdf  used on inp
@@ -4624,7 +4624,7 @@ Package xcolor Warning: Incompatible color definition on input line 7553.
 
 Package xcolor Warning: Incompatible color definition on input line 7553.
 
-<NaPrzelajR_files/figure-latex/wy118-1.pdf, id=2039, 673.51625pt x 216.81pt>
+<NaPrzelajR_files/figure-latex/wy118-1.pdf, id=2040, 673.51625pt x 216.81pt>
 File: NaPrzelajR_files/figure-latex/wy118-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/wy118-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/wy118-1.pdf  used on inp
@@ -4794,7 +4794,7 @@ Package xcolor Warning: Incompatible color definition on input line 7924.
 
 Package xcolor Warning: Incompatible color definition on input line 7924.
 
-<NaPrzelajR_files/figure-latex/wy119-1.pdf, id=2088, 777.90625pt x 261.97874pt>
+<NaPrzelajR_files/figure-latex/wy119-1.pdf, id=2089, 777.90625pt x 261.97874pt>
 
 File: NaPrzelajR_files/figure-latex/wy119-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/wy119-1.pdf>
@@ -4810,7 +4810,7 @@ Package xcolor Warning: Incompatible color definition on input line 7943.
 
 Package xcolor Warning: Incompatible color definition on input line 7943.
 
-<NaPrzelajR_files/figure-latex/wy1110-1.pdf, id=2089, 570.13pt x 297.11pt>
+<NaPrzelajR_files/figure-latex/wy1110-1.pdf, id=2090, 570.13pt x 297.11pt>
 File: NaPrzelajR_files/figure-latex/wy1110-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/wy1110-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/wy1110-1.pdf  used on in
@@ -5042,7 +5042,7 @@ Package xcolor Warning: Incompatible color definition on input line 8504.
 
 Package xcolor Warning: Incompatible color definition on input line 8504.
 
-<NaPrzelajR_files/figure-latex/wy121-1.pdf, id=2162, 369.38pt x 286.06876pt>
+<NaPrzelajR_files/figure-latex/wy121-1.pdf, id=2163, 369.38pt x 286.06876pt>
 File: NaPrzelajR_files/figure-latex/wy121-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/wy121-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/wy121-1.pdf  used on inp
@@ -5061,7 +5061,7 @@ Package xcolor Warning: Incompatible color definition on input line 8527.
 
 Package xcolor Warning: Incompatible color definition on input line 8527.
 
-<NaPrzelajR_files/figure-latex/wy122-1.pdf, id=2170, 362.35374pt x 286.06876pt>
+<NaPrzelajR_files/figure-latex/wy122-1.pdf, id=2171, 362.35374pt x 286.06876pt>
 
 File: NaPrzelajR_files/figure-latex/wy122-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/wy122-1.pdf>
@@ -5100,7 +5100,7 @@ Package xcolor Warning: Incompatible color definition on input line 8575.
 
 Package xcolor Warning: Incompatible color definition on input line 8575.
 
-<NaPrzelajR_files/figure-latex/wy123-1.pdf, id=2199, 580.1675pt x 433.62pt>
+<NaPrzelajR_files/figure-latex/wy123-1.pdf, id=2200, 580.1675pt x 433.62pt>
 File: NaPrzelajR_files/figure-latex/wy123-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/wy123-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/wy123-1.pdf  used on inp
@@ -5131,7 +5131,7 @@ Package xcolor Warning: Incompatible color definition on input line 8617.
 
 Package xcolor Warning: Incompatible color definition on input line 8617.
 
-<NaPrzelajR_files/figure-latex/wy124-1.pdf, id=2211, 580.1675pt x 433.62pt>
+<NaPrzelajR_files/figure-latex/wy124-1.pdf, id=2212, 580.1675pt x 433.62pt>
 File: NaPrzelajR_files/figure-latex/wy124-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/wy124-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/wy124-1.pdf  used on inp
@@ -5162,7 +5162,7 @@ Package xcolor Warning: Incompatible color definition on input line 8666.
 
 Package xcolor Warning: Incompatible color definition on input line 8666.
 
-<NaPrzelajR_files/figure-latex/wy125-1.pdf, id=2227, 852.18375pt x 342.27875pt>
+<NaPrzelajR_files/figure-latex/wy125-1.pdf, id=2228, 852.18375pt x 342.27875pt>
 
 File: NaPrzelajR_files/figure-latex/wy125-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/wy125-1.pdf>
@@ -5213,7 +5213,7 @@ Package xcolor Warning: Incompatible color definition on input line 8762.
 
 Package xcolor Warning: Incompatible color definition on input line 8762.
 
-<NaPrzelajR_files/figure-latex/wy127-1.pdf, id=2247, 549.05125pt x 323.2075pt>
+<NaPrzelajR_files/figure-latex/wy127-1.pdf, id=2248, 549.05125pt x 323.2075pt>
 File: NaPrzelajR_files/figure-latex/wy127-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/wy127-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/wy127-1.pdf  used on inp
@@ -5228,7 +5228,7 @@ Package xcolor Warning: Incompatible color definition on input line 8777.
 
 Package xcolor Warning: Incompatible color definition on input line 8777.
 
-<NaPrzelajR_files/figure-latex/wy128-1.pdf, id=2248, 549.05125pt x 323.2075pt>
+<NaPrzelajR_files/figure-latex/wy128-1.pdf, id=2249, 549.05125pt x 323.2075pt>
 File: NaPrzelajR_files/figure-latex/wy128-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/wy128-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/wy128-1.pdf  used on inp
@@ -5432,7 +5432,7 @@ Package xcolor Warning: Incompatible color definition on input line 9485.
 
 Package xcolor Warning: Incompatible color definition on input line 9485.
 
-<NaPrzelajR_files/figure-latex/wy131-1.pdf, id=2329, 559.08875pt x 270.00874pt>
+<NaPrzelajR_files/figure-latex/wy131-1.pdf, id=2330, 559.08875pt x 270.00874pt>
 
 File: NaPrzelajR_files/figure-latex/wy131-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/wy131-1.pdf>
@@ -5566,7 +5566,7 @@ Package xcolor Warning: Incompatible color definition on input line 9755.
 
 Package xcolor Warning: Incompatible color definition on input line 9755.
 
-<NaPrzelajR_files/figure-latex/wy132-1.pdf, id=2364, 545.03625pt x 285.065pt>
+<NaPrzelajR_files/figure-latex/wy132-1.pdf, id=2365, 545.03625pt x 285.065pt>
 File: NaPrzelajR_files/figure-latex/wy132-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/wy132-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/wy132-1.pdf  used on inp
@@ -5938,7 +5938,7 @@ Package xcolor Warning: Incompatible color definition on input line 10542.
 
 Package xcolor Warning: Incompatible color definition on input line 10542.
 
-<NaPrzelajR_files/figure-latex/wy133-1.pdf, id=2449, 578.16pt x 505.89pt>
+<NaPrzelajR_files/figure-latex/wy133-1.pdf, id=2450, 578.16pt x 505.89pt>
 File: NaPrzelajR_files/figure-latex/wy133-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/wy133-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/wy133-1.pdf  used on inp
@@ -5978,7 +5978,7 @@ Package xcolor Warning: Incompatible color definition on input line 10616.
 
 Package xcolor Warning: Incompatible color definition on input line 10616.
 
-<NaPrzelajR_files/figure-latex/wy134-1.pdf, id=2466, 559.08875pt x 342.27875pt>
+<NaPrzelajR_files/figure-latex/wy134-1.pdf, id=2467, 559.08875pt x 342.27875pt>
 
 File: NaPrzelajR_files/figure-latex/wy134-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/wy134-1.pdf>
@@ -6010,7 +6010,7 @@ Package xcolor Warning: Incompatible color definition on input line 10677.
 
 Package xcolor Warning: Incompatible color definition on input line 10677.
 
-<NaPrzelajR_files/figure-latex/wy135-1.pdf, id=2483, 559.08875pt x 342.27875pt>
+<NaPrzelajR_files/figure-latex/wy135-1.pdf, id=2484, 559.08875pt x 342.27875pt>
 
 File: NaPrzelajR_files/figure-latex/wy135-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/wy135-1.pdf>
@@ -6106,7 +6106,7 @@ Package xcolor Warning: Incompatible color definition on input line 10846.
 
 Package xcolor Warning: Incompatible color definition on input line 10846.
 
-<NaPrzelajR_files/figure-latex/wy136-1.pdf, id=2504, 559.08875pt x 342.27875pt>
+<NaPrzelajR_files/figure-latex/wy136-1.pdf, id=2505, 559.08875pt x 342.27875pt>
 
 File: NaPrzelajR_files/figure-latex/wy136-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/wy136-1.pdf>
@@ -6203,10 +6203,10 @@ per/sftt1000.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/palatino/uplb8a
 .pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb></usr/s
 hare/texlive/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb></usr/share/texlive
 /texmf-dist/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on NaPrzelajR.pdf (191 pages, 2967701 bytes).
+Output written on NaPrzelajR.pdf (191 pages, 2967890 bytes).
 PDF statistics:
- 2760 PDF objects out of 2984 (max. 8388607)
- 2267 compressed objects within 23 object streams
+ 2761 PDF objects out of 2984 (max. 8388607)
+ 2268 compressed objects within 23 object streams
  651 named destinations out of 1000 (max. 500000)
  21717 words of extra memory for PDF output out of 24883 (max. 10000000)
 

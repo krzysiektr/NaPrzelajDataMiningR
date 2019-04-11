@@ -10,7 +10,7 @@ Wyniki działania wybranych procedur analizy skupień przedstawimy ma przykładz
 Learning Benchmark Problems) umieszczonych jest wiele ciekawych zbiorów danych
 wykorzystywanych do testowania właściwości algorytmów dyskryminacji lub analizy skupień. W tym pakiecie znajdują się zbiory rzeczywistych danych, jak również
 funkcje do generowania zbiorów danych o określonych kształtach lub właściwościach.
-Dwa zbiory wygenerowanych danych na których będziemy testować metody analizy skupień przedstawione są na rysunku 3.1. Zostały one wygenerowane funkcjami
+Dwa zbiory wygenerowanych danych na których będziemy testować metody analizy skupień przedstawione są na rysunku \@ref(fig:mlbench). Zostały one wygenerowane funkcjami
 `mlbench.cassini(mlbench)` i `mlbench.2dnormals(mlbench)`.
 
 Do wyznaczania skupisk wystarczy macierz odległości pomiędzy obiektami. Domyślnie wyznaczane są odległości euklidesowe (może więc warto skalować dane?)

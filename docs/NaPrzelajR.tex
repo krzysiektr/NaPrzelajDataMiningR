@@ -129,7 +129,7 @@
   \postauthor{\par}
       \predate{\centering\large\emph}
   \postdate{\par}
-    \date{2019-04-08}
+    \date{2019-04-11}
 
 \usepackage{booktabs}
 \usepackage{booktabs}
@@ -739,7 +739,7 @@ Wyniki działania wybranych procedur analizy skupień przedstawimy ma przykładz
 Learning Benchmark Problems) umieszczonych jest wiele ciekawych zbiorów danych
 wykorzystywanych do testowania właściwości algorytmów dyskryminacji lub analizy skupień. W tym pakiecie znajdują się zbiory rzeczywistych danych, jak również
 funkcje do generowania zbiorów danych o określonych kształtach lub właściwościach.
-Dwa zbiory wygenerowanych danych na których będziemy testować metody analizy skupień przedstawione są na rysunku 3.1. Zostały one wygenerowane funkcjami
+Dwa zbiory wygenerowanych danych na których będziemy testować metody analizy skupień przedstawione są na rysunku \ref{fig:mlbench}. Zostały one wygenerowane funkcjami
 \texttt{mlbench.cassini(mlbench)} i \texttt{mlbench.2dnormals(mlbench)}.
 
 Do wyznaczania skupisk wystarczy macierz odległości pomiędzy obiektami. Domyślnie wyznaczane są odległości euklidesowe (może więc warto skalować dane?)
@@ -764,7 +764,7 @@ na tym samym zbiorze danych! Dlatego też zalecane jest uruchomienie kilkukrotne
 tego algorytmu oraz wybranie najlepsze go podziału na klastry. Można to zrobić też
 automatycznie, określając argument \texttt{nstart} funkcji \texttt{kmeans()}.
 
-Algorytm k-średnich minimalizuje \$tr(W \$ gdzie \(W\) to macierz kowariancji wewnątrz klas. Opisuje go poniższa sekwencja
+Algorytm k-średnich minimalizuje \(tr(W)\) gdzie \(W\) to macierz kowariancji wewnątrz klas. Opisuje go poniższa sekwencja
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
@@ -1370,20 +1370,20 @@ zmienne mają być użyte do konstrukcji klasyfikatora a która zmienna opisuje 
 
 \begin{verbatim}
 ## List of 8
-##  $ prior  : Named num [1:2] 0.663 0.337
+##  $ prior  : Named num [1:2] 0.689 0.311
 ##   ..- attr(*, "names")= chr [1:2] "neg" "pos"
-##  $ counts : Named int [1:2] 130 66
+##  $ counts : Named int [1:2] 135 61
 ##   ..- attr(*, "names")= chr [1:2] "neg" "pos"
-##  $ means  : num [1:2, 1:2] 111.65 146.11 4.65 5.19
+##  $ means  : num [1:2, 1:2] 111.33 144.92 4.67 5.09
 ##   ..- attr(*, "dimnames")=List of 2
 ##   .. ..$ : chr [1:2] "neg" "pos"
 ##   .. ..$ : chr [1:2] "glucose" "insulin"
-##  $ scaling: num [1:2, 1] 0.0328 0.2415
+##  $ scaling: num [1:2, 1] 0.0427 -0.2895
 ##   ..- attr(*, "dimnames")=List of 2
 ##   .. ..$ : chr [1:2] "glucose" "insulin"
 ##   .. ..$ : chr "LD1"
 ##  $ lev    : chr [1:2] "neg" "pos"
-##  $ svd    : num 8.36
+##  $ svd    : num 8.51
 ##  $ N      : int 196
 ##  $ call   : language lda(x = dane[, 1:2], grouping = dane[, 3], subset = zbior.uczacy)
 ##  - attr(*, "class")= chr "lda"
@@ -1409,14 +1409,14 @@ prognozowane klasy dla nowych obserwacji, lub też prawdopodobieństwa a posteri
 
 \begin{verbatim}
 ## List of 3
-##  $ class    : Factor w/ 2 levels "neg","pos": 1 1 1 1 1 1 1 1 1 2 ...
-##  $ posterior: num [1:196, 1:2] 0.569 0.725 0.87 0.653 0.709 ...
+##  $ class    : Factor w/ 2 levels "neg","pos": 1 2 1 1 1 1 2 1 1 2 ...
+##  $ posterior: num [1:196, 1:2] 0.596 0.129 0.756 0.714 0.937 ...
 ##   ..- attr(*, "dimnames")=List of 2
-##   .. ..$ : chr [1:196] "5" "17" "19" "21" ...
+##   .. ..$ : chr [1:196] "5" "14" "21" "26" ...
 ##   .. ..$ : chr [1:2] "neg" "pos"
-##  $ x        : num [1:196, 1] 0.5223 -0.0256 -0.7642 0.2422 0.0368 ...
+##  $ x        : num [1:196, 1] 0.55724 2.31023 -0.00972 0.15444 -1.20702 ...
 ##   ..- attr(*, "dimnames")=List of 2
-##   .. ..$ : chr [1:196] "5" "17" "19" "21" ...
+##   .. ..$ : chr [1:196] "5" "14" "21" "26" ...
 ##   .. ..$ : chr "LD1"
 \end{verbatim}
 
@@ -1430,8 +1430,8 @@ prognozowane klasy dla nowych obserwacji, lub też prawdopodobieństwa a posteri
 \begin{verbatim}
 ##          prawdziwe
 ## predykcja neg pos
-##       neg 116  33
-##       pos  16  31
+##       neg 113  34
+##       pos  14  35
 \end{verbatim}
 
 W powyższym przykładzie w ostatnim poleceniu wyznaczyliśmy tablice kontyngencji dla wyników. Na bazie tak otrzymanej tablicy kontyngencji można wyznaczyć błąd predykcji. Jest wiele wskaźników opisujących błąd predykcji, począwszy
@@ -1554,8 +1554,8 @@ zdrowe i chore na cukrzycę. Ponieważ metoda k-sąsiadów bazuje silnie na odle
 \begin{verbatim}
 ##          prawdziwe
 ## predykcja neg pos
-##       neg 111  33
-##       pos  21  31
+##       neg 114  33
+##       pos  13  36
 \end{verbatim}
 
 Błąd klasyfikacji można liczyć na palcach (powyższą procedurę należało by uśrednić po kilku wstępnych podziałach na zbiór uczący i testowy). Można też błąd klasyfikacji wyznaczyć wykorzystać funkcję \texttt{errorest(ipred)}. Wylicza ona błąd klasyfikacji (okeślony jako procent źle zaklasyfikowanych obiektów) używając różnych
@@ -1586,7 +1586,7 @@ dla metody najbliższych sąsiadów.
 ##   .632+ Bootstrap estimator of misclassification error 
 ##   with 25 bootstrap replications
 ## 
-## Misclassification error:  0.2832
+## Misclassification error:  0.2891
 \end{verbatim}
 
 \begin{Shaded}
@@ -1600,7 +1600,7 @@ dla metody najbliższych sąsiadów.
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 0.2634416
+## [1] 0.2558428
 \end{verbatim}
 
 \begin{Shaded}
@@ -1668,8 +1668,8 @@ obu zmiennych dla każdej z klas, na bazie tych gęstości wykonywana jest kalsy
 \begin{verbatim}
 ##          prawdziwe
 ## predykcja neg pos
-##       neg 112  30
-##       pos  20  34
+##       neg 108  32
+##       pos  19  37
 \end{verbatim}
 
 \begin{Shaded}
@@ -1772,8 +1772,8 @@ przykładową sesję z budową drzewa klasyfikacyjnego.
 \begin{verbatim}
 ##          prawdziwe
 ## predykcja neg pos
-##       neg 102  28
-##       pos  30  36
+##       neg 120  44
+##       pos   7  25
 \end{verbatim}
 
 \begin{Shaded}
@@ -1853,11 +1853,11 @@ skorzystać z funkcji \texttt{set.seed()}.
 ##                      Number of trees: 500
 ## No. of variables tried at each split: 1
 ## 
-##         OOB estimate of  error rate: 32.14%
+##         OOB estimate of  error rate: 31.12%
 ## Confusion matrix:
 ##     neg pos class.error
-## neg 102  28   0.2153846
-## pos  35  31   0.5303030
+## neg 113  22   0.1629630
+## pos  39  22   0.6393443
 \end{verbatim}
 
 \begin{Shaded}
@@ -1873,8 +1873,8 @@ skorzystać z funkcji \texttt{set.seed()}.
 \begin{verbatim}
 ##          prawdziwe
 ## predykcja neg pos
-##       neg 117  37
-##       pos  15  27
+##       neg 114  34
+##       pos  13  35
 \end{verbatim}
 
 \begin{Shaded}
@@ -3104,10 +3104,10 @@ Warto również zaznaczyć, że w programie R mamy możliwość symulowania proc
 ## 
 ## Coefficients:
 ##          ar1     ar2     ma1
-##       0.3532  0.5707  0.1295
-## s.e.  0.0530  0.0475  0.0643
+##       0.2743  0.6217  0.2770
+## s.e.  0.0511  0.0448  0.0626
 ## 
-## sigma^2 estimated as 3.867:  log likelihood = -2096.15,  aic = 4200.3
+## sigma^2 estimated as 4.093:  log likelihood = -2124.49,  aic = 4256.97
 \end{verbatim}
 
 Dzięki zastosowaniu funkcji \href{https://rdrr.io/cran/forecast/man/ndiffs.html}{\texttt{forecast::ndiffs}} mamy możliwość sprawdzenia czy rzeczywiście proces y jest zintegrowany w stopniu pierwszym tzn. \(I(1)\). Za pomocą opcji test możemy wybrać procedurę z jakiej chcemy skorzystać: \texttt{pp} -- test Phillipsa-Perrona, \texttt{adf} -- test Dickeya-Fullera lub \texttt{kpss} -- test Kwiatkowski-Phillips-Schmidt-Shin. Poziom istotności \texttt{alpha} także możemy zmieniać.

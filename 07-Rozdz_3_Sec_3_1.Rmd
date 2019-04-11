@@ -15,7 +15,7 @@ na tym samym zbiorze danych! Dlatego też zalecane jest uruchomienie kilkukrotne
 tego algorytmu oraz wybranie najlepsze go podziału na klastry. Można to zrobić też
 automatycznie, określając argument `nstart` funkcji `kmeans()`.
 
-Algorytm k-średnich minimalizuje $tr(W $ gdzie $W$ to macierz kowariancji wewnątrz klas. Opisuje go poniższa sekwencja
+Algorytm k-średnich minimalizuje $tr(W)$ gdzie $W$ to macierz kowariancji wewnątrz klas. Opisuje go poniższa sekwencja
 
 1. wybierany jest wstępny podział (w razie potrzeby można ten wybór powtórzyć
 wielokrotnie by znaleźć globalne maksimum),

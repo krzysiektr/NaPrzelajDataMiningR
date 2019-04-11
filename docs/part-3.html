@@ -25,7 +25,7 @@
 <meta name="author" content="Przemysław Biecek, Krzysztof Trajkowski">
 
 
-<meta name="date" content="2019-04-08">
+<meta name="date" content="2019-04-11">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -283,7 +283,7 @@ tym tematem powinny przyjrzeć się również funkcjom z pakietów <code>flexclu
 Learning Benchmark Problems) umieszczonych jest wiele ciekawych zbiorów danych
 wykorzystywanych do testowania właściwości algorytmów dyskryminacji lub analizy skupień. W tym pakiecie znajdują się zbiory rzeczywistych danych, jak również
 funkcje do generowania zbiorów danych o określonych kształtach lub właściwościach.
-Dwa zbiory wygenerowanych danych na których będziemy testować metody analizy skupień przedstawione są na rysunku 3.1. Zostały one wygenerowane funkcjami
+Dwa zbiory wygenerowanych danych na których będziemy testować metody analizy skupień przedstawione są na rysunku <a href="part-3.html#fig:mlbench">3.1</a>. Zostały one wygenerowane funkcjami
 <code>mlbench.cassini(mlbench)</code> i <code>mlbench.2dnormals(mlbench)</code>.</p>
 <p>Do wyznaczania skupisk wystarczy macierz odległości pomiędzy obiektami. Domyślnie wyznaczane są odległości euklidesowe (może więc warto skalować dane?)
 ale można te odległości liczyć korzystając z innych funkcji <code>dist.BC(clusterSim)</code>,
@@ -304,7 +304,7 @@ klastrów jest algorytmem zrandomizowanym, może też dawać różne wyniki nawe
 na tym samym zbiorze danych! Dlatego też zalecane jest uruchomienie kilkukrotne
 tego algorytmu oraz wybranie najlepsze go podziału na klastry. Można to zrobić też
 automatycznie, określając argument <code>nstart</code> funkcji <code>kmeans()</code>.</p>
-<p>Algorytm k-średnich minimalizuje $tr(W $ gdzie <span class="math inline">\(W\)</span> to macierz kowariancji wewnątrz klas. Opisuje go poniższa sekwencja</p>
+<p>Algorytm k-średnich minimalizuje <span class="math inline">\(tr(W)\)</span> gdzie <span class="math inline">\(W\)</span> to macierz kowariancji wewnątrz klas. Opisuje go poniższa sekwencja</p>
 <ol style="list-style-type: decimal">
 <li><p>wybierany jest wstępny podział (w razie potrzeby można ten wybór powtórzyć
 wielokrotnie by znaleźć globalne maksimum),</p></li>
