@@ -621,10 +621,10 @@ s</code></pre>
 ## 
 ## Coefficients:
 ##          ar1     ar2     ma1
-##       0.3825  0.5140  0.1682
-## s.e.  0.0636  0.0556  0.0725
+##       0.4114  0.4926  0.0726
+## s.e.  0.0571  0.0500  0.0642
 ## 
-## sigma^2 estimated as 4.127:  log likelihood = -2128.6,  aic = 4265.21</code></pre>
+## sigma^2 estimated as 4.249:  log likelihood = -2143.09,  aic = 4294.18</code></pre>
 <p>Dzięki zastosowaniu funkcji <a href="https://rdrr.io/cran/forecast/man/ndiffs.html"><code>forecast::ndiffs</code></a> mamy możliwość sprawdzenia czy rzeczywiście proces y jest zintegrowany w stopniu pierwszym tzn. <span class="math inline">\(I(1)\)</span>. Za pomocą opcji test możemy wybrać procedurę z jakiej chcemy skorzystać: <code>pp</code> – test Phillipsa-Perrona, <code>adf</code> – test Dickeya-Fullera lub <code>kpss</code> – test Kwiatkowski-Phillips-Schmidt-Shin. Poziom istotności <code>alpha</code> także możemy zmieniać.</p>
 <pre class="sourceCode r"><code class="sourceCode r">forecast<span class="op">::</span><span class="kw">ndiffs</span>(y,<span class="dt">test=</span><span class="st">&quot;pp&quot;</span>,<span class="dt">alpha=</span><span class="fl">0.05</span>)</code></pre>
 <pre><code>## [1] 1</code></pre>

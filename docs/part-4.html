@@ -323,20 +323,20 @@ klasyfikatorLDA =<span class="st"> </span><span class="kw">lda</span>(dane[,<spa
 <span class="co"># jak wygląda wynik w środku?</span>
 <span class="kw">str</span>(klasyfikatorLDA)</code></pre>
 <pre><code>## List of 8
-##  $ prior  : Named num [1:2] 0.668 0.332
+##  $ prior  : Named num [1:2] 0.684 0.316
 ##   ..- attr(*, &quot;names&quot;)= chr [1:2] &quot;neg&quot; &quot;pos&quot;
-##  $ counts : Named int [1:2] 131 65
+##  $ counts : Named int [1:2] 134 62
 ##   ..- attr(*, &quot;names&quot;)= chr [1:2] &quot;neg&quot; &quot;pos&quot;
-##  $ means  : num [1:2, 1:2] 110.42 143.78 4.68 5.15
+##  $ means  : num [1:2, 1:2] 110.84 144 4.65 5.24
 ##   ..- attr(*, &quot;dimnames&quot;)=List of 2
 ##   .. ..$ : chr [1:2] &quot;neg&quot; &quot;pos&quot;
 ##   .. ..$ : chr [1:2] &quot;glucose&quot; &quot;insulin&quot;
-##  $ scaling: num [1:2, 1] 0.0357 0.1713
+##  $ scaling: num [1:2, 1] 0.031 0.449
 ##   ..- attr(*, &quot;dimnames&quot;)=List of 2
 ##   .. ..$ : chr [1:2] &quot;glucose&quot; &quot;insulin&quot;
 ##   .. ..$ : chr &quot;LD1&quot;
 ##  $ lev    : chr [1:2] &quot;neg&quot; &quot;pos&quot;
-##  $ svd    : num 8.39
+##  $ svd    : num 8.4
 ##  $ N      : int 196
 ##  $ call   : language lda(x = dane[, 1:2], grouping = dane[, 3], subset = zbior.uczacy)
 ##  - attr(*, &quot;class&quot;)= chr &quot;lda&quot;</code></pre>
@@ -353,21 +353,21 @@ oceny =<span class="st"> </span><span class="kw">predict</span>(klasyfikatorLDA,
 <span class="co"># bardziej prawdopodobnej dla niego klasy</span>
 <span class="kw">str</span>(oceny)</code></pre>
 <pre><code>## List of 3
-##  $ class    : Factor w/ 2 levels &quot;neg&quot;,&quot;pos&quot;: 1 1 2 2 1 1 2 1 1 2 ...
-##  $ posterior: num [1:196, 1:2] 0.5511 0.9538 0.0585 0.2457 0.7904 ...
+##  $ class    : Factor w/ 2 levels &quot;neg&quot;,&quot;pos&quot;: 1 2 1 1 1 2 1 1 2 1 ...
+##  $ posterior: num [1:196, 1:2] 0.9533 0.0576 0.7029 0.8156 0.5519 ...
 ##   ..- attr(*, &quot;dimnames&quot;)=List of 2
-##   .. ..$ : chr [1:196] &quot;5&quot; &quot;7&quot; &quot;9&quot; &quot;15&quot; ...
+##   .. ..$ : chr [1:196] &quot;7&quot; &quot;9&quot; &quot;17&quot; &quot;20&quot; ...
 ##   .. ..$ : chr [1:2] &quot;neg&quot; &quot;pos&quot;
-##  $ x        : num [1:196, 1] 0.604 -1.614 2.947 1.646 -0.278 ...
+##  $ x        : num [1:196, 1] -1.503 3 0.167 -0.318 0.673 ...
 ##   ..- attr(*, &quot;dimnames&quot;)=List of 2
-##   .. ..$ : chr [1:196] &quot;5&quot; &quot;7&quot; &quot;9&quot; &quot;15&quot; ...
+##   .. ..$ : chr [1:196] &quot;7&quot; &quot;9&quot; &quot;17&quot; &quot;20&quot; ...
 ##   .. ..$ : chr &quot;LD1&quot;</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co"># porównajmy macierzą kontyngencji oceny i rzeczywiste etykietki dla kolejnych obiektów</span>
 <span class="kw">table</span>(<span class="dt">predykcja =</span> oceny<span class="op">$</span>class, <span class="dt">prawdziwe =</span> dane[<span class="op">-</span>zbior.uczacy,<span class="dv">3</span>])</code></pre>
 <pre><code>##          prawdziwe
 ## predykcja neg pos
-##       neg 114  25
-##       pos  17  40</code></pre>
+##       neg 112  32
+##       pos  16  36</code></pre>
 <p>W powyższym przykładzie w ostatnim poleceniu wyznaczyliśmy tablice kontyngencji dla wyników. Na bazie tak otrzymanej tablicy kontyngencji można wyznaczyć błąd predykcji. Jest wiele wskaźników opisujących błąd predykcji, począwszy
 od popularnych: czułość (ang. sensitivity <code>TP/(TP+FN)</code> opisuje jaki procent chorych
 zostanie poprawnie zdiagnozowanych jako chorzy), specyficzność (ang. (Specifity)
@@ -462,8 +462,8 @@ oceny =<span class="st"> </span><span class="kw">predict</span>(klasyfikatorKNN,
 <span class="kw">table</span>(<span class="dt">predykcja =</span> oceny, <span class="dt">prawdziwe =</span> dane[<span class="op">-</span>zbior.uczacy,<span class="dv">3</span>])</code></pre>
 <pre><code>##          prawdziwe
 ## predykcja neg pos
-##       neg 106  31
-##       pos  25  34</code></pre>
+##       neg 109  31
+##       pos  19  37</code></pre>
 <p>Błąd klasyfikacji można liczyć na palcach (powyższą procedurę należało by uśrednić po kilku wstępnych podziałach na zbiór uczący i testowy). Można też błąd klasyfikacji wyznaczyć wykorzystać funkcję <code>errorest(ipred)</code>. Wylicza ona błąd klasyfikacji (okeślony jako procent źle zaklasyfikowanych obiektów) używając różnych
 estymatorów tego błędu, w tym opartego na walidacji skrośnej (ocenie krzyżowej,
 ang. cross validation, domyślnie z podziałem na 10 grup), metodzie bootstrap lub estymatorze 632+. Estymator błędu możemy wybrać określając argument <code>estimator</code>.
@@ -485,13 +485,13 @@ ipred<span class="op">::</span><span class="kw">errorest</span>(diabetes<span cl
 ##   .632+ Bootstrap estimator of misclassification error 
 ##   with 25 bootstrap replications
 ## 
-## Misclassification error:  0.29</code></pre>
+## Misclassification error:  0.2935</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co"># wyznaczmy błąd klasyfikacji dla metody 21 sąsiadów, powinna być stabilniejsza</span>
 blad =<span class="st"> </span>ipred<span class="op">::</span><span class="kw">errorest</span>(diabetes<span class="op">~</span>glucose<span class="op">+</span>insulin, <span class="dt">data =</span> dane, <span class="dt">model=</span>ipred<span class="op">::</span>ipredknn, <span class="dt">k=</span><span class="dv">21</span>,
                 <span class="dt">estimator =</span> <span class="st">&quot;632plus&quot;</span>,
                 <span class="dt">predict=</span> <span class="cf">function</span>(ob, newdata) <span class="kw">predict</span>(ob, newdata, <span class="st">&quot;class&quot;</span>))
 blad<span class="op">$</span>error</code></pre>
-<pre><code>## [1] 0.2612007</code></pre>
+<pre><code>## [1] 0.2539264</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r">dane[,<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>]=<span class="kw">scale</span>(dane[,<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>])
 seqx =<span class="st"> </span><span class="kw">seq</span>(<span class="op">-</span><span class="fl">2.7</span>,<span class="fl">2.7</span>,<span class="fl">0.09</span>)
 seqy =<span class="st"> </span><span class="kw">seq</span>(<span class="op">-</span><span class="fl">3.2</span>,<span class="fl">3.2</span>,<span class="fl">0.09</span>)
@@ -542,8 +542,8 @@ oceny &lt;-<span class="st"> </span><span class="kw">predict</span>(mN, dane[<sp
 <span class="kw">table</span>(<span class="dt">predykcja =</span> oceny, <span class="dt">prawdziwe =</span> dane[<span class="op">-</span>zbior.uczacy,<span class="dv">3</span>])</code></pre>
 <pre><code>##          prawdziwe
 ## predykcja neg pos
-##       neg 110  22
-##       pos  21  43</code></pre>
+##       neg 106  30
+##       pos  22  38</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mfcol=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))
 <span class="kw">plot</span>(mN)</code></pre>
 <div class="figure" style="text-align: center"><span id="fig:mN"></span>
@@ -612,8 +612,8 @@ oceny =<span class="st"> </span><span class="kw">predict</span>(drzewo, dane[<sp
 <span class="kw">table</span>(<span class="dt">predykcja =</span> oceny, <span class="dt">prawdziwe =</span> dane[<span class="op">-</span>zbior.uczacy,<span class="dv">3</span>])</code></pre>
 <pre><code>##          prawdziwe
 ## predykcja neg pos
-##       neg 122  40
-##       pos   9  25</code></pre>
+##       neg  99  24
+##       pos  29  44</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r">drzewo &lt;-<span class="st"> </span>party<span class="op">::</span><span class="kw">ctree</span>(dane<span class="op">$</span>diabetes<span class="op">~</span>dane<span class="op">$</span>glucose<span class="op">+</span>dane<span class="op">$</span>insulin, <span class="dt">data=</span>dane,
                        <span class="dt">controls =</span> party<span class="op">::</span><span class="kw">ctree_control</span>(
                          <span class="dt">mincriterion =</span> <span class="fl">0.5</span>, <span class="dt">teststat =</span> <span class="kw">c</span>(<span class="st">&quot;max&quot;</span>)))
@@ -672,11 +672,11 @@ klasyfikatorRF &lt;-<span class="st"> </span>randomForest<span class="op">::</sp
 ##                      Number of trees: 500
 ## No. of variables tried at each split: 1
 ## 
-##         OOB estimate of  error rate: 29.59%
+##         OOB estimate of  error rate: 30.1%
 ## Confusion matrix:
 ##     neg pos class.error
-## neg 100  31   0.2366412
-## pos  27  38   0.4153846</code></pre>
+## neg 108  26   0.1940299
+## pos  33  29   0.5322581</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co"># podobnie jak dla innych klasyfikatorów funkcją predict() możemy ocenić</span>
 <span class="co"># etykietki na zbiorze testowym i porównać błąd klasyfikacji z błędem z</span>
 <span class="co"># innych metod</span>
@@ -685,7 +685,7 @@ oceny =<span class="st"> </span><span class="kw">predict</span>(klasyfikatorRF, 
 <pre><code>##          prawdziwe
 ## predykcja neg pos
 ##       neg 108  30
-##       pos  23  35</code></pre>
+##       pos  20  38</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r">PimaIndiansDiabetes2 =<span class="st"> </span><span class="kw">na.omit</span>(PimaIndiansDiabetes2)
 dane =<span class="st"> </span>PimaIndiansDiabetes2
 dane[,<span class="dv">5</span>] =<span class="st"> </span><span class="kw">log</span>(dane[,<span class="dv">5</span>])

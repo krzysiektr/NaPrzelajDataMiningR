@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2019/dev/Debian) (preloaded format=pdflatex 2018.12.16)  11 APR 2019 09:30
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2019/dev/Debian) (preloaded format=pdflatex 2018.12.16)  11 APR 2019 22:58
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1545,12 +1545,12 @@ Package xcolor Warning: Incompatible color definition on input line 1753.
 
 Package xcolor Warning: Incompatible color definition on input line 1753.
 
-<NaPrzelajR_files/figure-latex/Ctree46-1.pdf, id=906, 829.0975pt x 463.7325pt>
+<NaPrzelajR_files/figure-latex/Ctree46-1.pdf, id=906, 836.12375pt x 469.755pt>
 File: NaPrzelajR_files/figure-latex/Ctree46-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/Ctree46-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/Ctree46-1.pdf  used on i
 nput line 1757.
-(pdftex.def)             Requested size: 375.79774pt x 210.19194pt.
+(pdftex.def)             Requested size: 375.80566pt x 211.13692pt.
 
 Package xcolor Warning: Incompatible color definition on input line 1764.
 
@@ -6203,7 +6203,7 @@ per/sftt1000.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/palatino/uplb8a
 .pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb></usr/s
 hare/texlive/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb></usr/share/texlive
 /texmf-dist/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on NaPrzelajR.pdf (191 pages, 2967890 bytes).
+Output written on NaPrzelajR.pdf (191 pages, 2969406 bytes).
 PDF statistics:
  2761 PDF objects out of 2984 (max. 8388607)
  2268 compressed objects within 23 object streams

@@ -1370,20 +1370,20 @@ zmienne mają być użyte do konstrukcji klasyfikatora a która zmienna opisuje 
 
 \begin{verbatim}
 ## List of 8
-##  $ prior  : Named num [1:2] 0.689 0.311
+##  $ prior  : Named num [1:2] 0.648 0.352
 ##   ..- attr(*, "names")= chr [1:2] "neg" "pos"
-##  $ counts : Named int [1:2] 135 61
+##  $ counts : Named int [1:2] 127 69
 ##   ..- attr(*, "names")= chr [1:2] "neg" "pos"
-##  $ means  : num [1:2, 1:2] 111.33 144.92 4.67 5.09
+##  $ means  : num [1:2, 1:2] 112.39 142.74 4.63 5.08
 ##   ..- attr(*, "dimnames")=List of 2
 ##   .. ..$ : chr [1:2] "neg" "pos"
 ##   .. ..$ : chr [1:2] "glucose" "insulin"
-##  $ scaling: num [1:2, 1] 0.0427 -0.2895
+##  $ scaling: num [1:2, 1] 0.0366 -0.0169
 ##   ..- attr(*, "dimnames")=List of 2
 ##   .. ..$ : chr [1:2] "glucose" "insulin"
 ##   .. ..$ : chr "LD1"
 ##  $ lev    : chr [1:2] "neg" "pos"
-##  $ svd    : num 8.51
+##  $ svd    : num 7.37
 ##  $ N      : int 196
 ##  $ call   : language lda(x = dane[, 1:2], grouping = dane[, 3], subset = zbior.uczacy)
 ##  - attr(*, "class")= chr "lda"
@@ -1409,14 +1409,14 @@ prognozowane klasy dla nowych obserwacji, lub też prawdopodobieństwa a posteri
 
 \begin{verbatim}
 ## List of 3
-##  $ class    : Factor w/ 2 levels "neg","pos": 1 2 1 1 1 1 2 1 1 2 ...
-##  $ posterior: num [1:196, 1:2] 0.596 0.129 0.756 0.714 0.937 ...
+##  $ class    : Factor w/ 2 levels "neg","pos": 1 1 2 2 1 2 1 1 2 2 ...
+##  $ posterior: num [1:196, 1:2] 0.897 0.931 0.103 0.138 0.831 ...
 ##   ..- attr(*, "dimnames")=List of 2
-##   .. ..$ : chr [1:196] "5" "14" "21" "26" ...
+##   .. ..$ : chr [1:196] "4" "7" "9" "14" ...
 ##   .. ..$ : chr [1:2] "neg" "pos"
-##  $ x        : num [1:196, 1] 0.55724 2.31023 -0.00972 0.15444 -1.20702 ...
+##  $ x        : num [1:196, 1] -1.242 -1.644 2.679 2.378 -0.728 ...
 ##   ..- attr(*, "dimnames")=List of 2
-##   .. ..$ : chr [1:196] "5" "14" "21" "26" ...
+##   .. ..$ : chr [1:196] "4" "7" "9" "14" ...
 ##   .. ..$ : chr "LD1"
 \end{verbatim}
 
@@ -1430,8 +1430,8 @@ prognozowane klasy dla nowych obserwacji, lub też prawdopodobieństwa a posteri
 \begin{verbatim}
 ##          prawdziwe
 ## predykcja neg pos
-##       neg 113  34
-##       pos  14  35
+##       neg 122  27
+##       pos  13  34
 \end{verbatim}
 
 W powyższym przykładzie w ostatnim poleceniu wyznaczyliśmy tablice kontyngencji dla wyników. Na bazie tak otrzymanej tablicy kontyngencji można wyznaczyć błąd predykcji. Jest wiele wskaźników opisujących błąd predykcji, począwszy
@@ -1554,8 +1554,8 @@ zdrowe i chore na cukrzycę. Ponieważ metoda k-sąsiadów bazuje silnie na odle
 \begin{verbatim}
 ##          prawdziwe
 ## predykcja neg pos
-##       neg 114  33
-##       pos  13  36
+##       neg 113  30
+##       pos  22  31
 \end{verbatim}
 
 Błąd klasyfikacji można liczyć na palcach (powyższą procedurę należało by uśrednić po kilku wstępnych podziałach na zbiór uczący i testowy). Można też błąd klasyfikacji wyznaczyć wykorzystać funkcję \texttt{errorest(ipred)}. Wylicza ona błąd klasyfikacji (okeślony jako procent źle zaklasyfikowanych obiektów) używając różnych
@@ -1586,7 +1586,7 @@ dla metody najbliższych sąsiadów.
 ##   .632+ Bootstrap estimator of misclassification error 
 ##   with 25 bootstrap replications
 ## 
-## Misclassification error:  0.2891
+## Misclassification error:  0.297
 \end{verbatim}
 
 \begin{Shaded}
@@ -1600,7 +1600,7 @@ dla metody najbliższych sąsiadów.
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 0.2558428
+## [1] 0.2542249
 \end{verbatim}
 
 \begin{Shaded}
@@ -1668,8 +1668,8 @@ obu zmiennych dla każdej z klas, na bazie tych gęstości wykonywana jest kalsy
 \begin{verbatim}
 ##          prawdziwe
 ## predykcja neg pos
-##       neg 108  32
-##       pos  19  37
+##       neg 112  24
+##       pos  23  37
 \end{verbatim}
 
 \begin{Shaded}
@@ -1772,8 +1772,8 @@ przykładową sesję z budową drzewa klasyfikacyjnego.
 \begin{verbatim}
 ##          prawdziwe
 ## predykcja neg pos
-##       neg 120  44
-##       pos   7  25
+##       neg 121  27
+##       pos  14  34
 \end{verbatim}
 
 \begin{Shaded}
@@ -1853,11 +1853,11 @@ skorzystać z funkcji \texttt{set.seed()}.
 ##                      Number of trees: 500
 ## No. of variables tried at each split: 1
 ## 
-##         OOB estimate of  error rate: 31.12%
+##         OOB estimate of  error rate: 29.08%
 ## Confusion matrix:
 ##     neg pos class.error
-## neg 113  22   0.1629630
-## pos  39  22   0.6393443
+## neg 105  22   0.1732283
+## pos  35  34   0.5072464
 \end{verbatim}
 
 \begin{Shaded}
@@ -1873,8 +1873,8 @@ skorzystać z funkcji \texttt{set.seed()}.
 \begin{verbatim}
 ##          prawdziwe
 ## predykcja neg pos
-##       neg 114  34
-##       pos  13  35
+##       neg 114  29
+##       pos  21  32
 \end{verbatim}
 
 \begin{Shaded}
@@ -3104,10 +3104,10 @@ Warto również zaznaczyć, że w programie R mamy możliwość symulowania proc
 ## 
 ## Coefficients:
 ##          ar1     ar2     ma1
-##       0.2743  0.6217  0.2770
-## s.e.  0.0511  0.0448  0.0626
+##       0.3721  0.5508  0.1155
+## s.e.  0.0542  0.0486  0.0644
 ## 
-## sigma^2 estimated as 4.093:  log likelihood = -2124.49,  aic = 4256.97
+## sigma^2 estimated as 3.975:  log likelihood = -2109.99,  aic = 4227.97
 \end{verbatim}
 
 Dzięki zastosowaniu funkcji \href{https://rdrr.io/cran/forecast/man/ndiffs.html}{\texttt{forecast::ndiffs}} mamy możliwość sprawdzenia czy rzeczywiście proces y jest zintegrowany w stopniu pierwszym tzn. \(I(1)\). Za pomocą opcji test możemy wybrać procedurę z jakiej chcemy skorzystać: \texttt{pp} -- test Phillipsa-Perrona, \texttt{adf} -- test Dickeya-Fullera lub \texttt{kpss} -- test Kwiatkowski-Phillips-Schmidt-Shin. Poziom istotności \texttt{alpha} także możemy zmieniać.
@@ -10716,7 +10716,7 @@ przy poziomie dochodów równych 900zł. Natomiast prz poziomie dochodów równy
 
 Analityczna postać funkcji wykładniczej jest podana poniżej:
 \begin{equation}
-y=\alpha_0\alpha_1x^x
+y=\alpha_0\alpha_1^x
 \label{eq:wz1328}
 \end{equation}
 gdzie: \(\alpha_0>0\) oraz \(\alpha_1>0\) i \(\alpha_1\neq 1\)

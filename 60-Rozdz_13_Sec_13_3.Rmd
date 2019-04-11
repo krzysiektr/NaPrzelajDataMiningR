@@ -34,7 +34,7 @@ $1200$zł wydatki rosły średnio o $0,82$zł na złotówkę przyrostu dochodów
 
 Analityczna postać funkcji wykładniczej jest podana poniżej:
 \begin{equation}
-y=\alpha_0\alpha_1x^x
+y=\alpha_0\alpha_1^x
 (\#eq:wz1328)
 \end{equation}
 gdzie: $\alpha_0>0$ oraz $\alpha_1>0$ i $\alpha_1\neq 1$
