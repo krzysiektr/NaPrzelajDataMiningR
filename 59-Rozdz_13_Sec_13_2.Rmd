@@ -480,8 +480,7 @@ plot(mnk0)
 ### Metoda najmniejszych wartości bezwzględnych {#part_13.2.6}
 
 Jeśli w zbiorze danych występują obserwacje odstające to należy je wyeliminować
-lub zastosować regresję kwantylową. Dla parametru $\tau = 0,5$ (mediana) otrzymujemy estymator metody najmniejszego odchylenia bezwzględnego, którego kryterium optymalizacji jest przedstawione poniżej (wzory 13.26a oraz 13.26b).
-\begin{subequations}
+lub zastosować regresję kwantylową. Dla parametru $\tau = 0,5$ (mediana) otrzymujemy estymator metody najmniejszego odchylenia bezwzględnego, którego kryterium optymalizacji jest przedstawione poniżej (wzory \@ref(eq:wz1326a) oraz \@ref(eq:wz1326b)).
 \begin{equation}
 \sum_{i=1}^{n}|e_i| \longrightarrow\quad\mbox{min}
 (\#eq:wz1326a)
@@ -490,7 +489,6 @@ lub zastosować regresję kwantylową. Dla parametru $\tau = 0,5$ (mediana) otrz
 \sum_{i=1}^{n}|y_i-\alpha_0-\alpha_1x_{1i}| \longrightarrow\quad\mbox{min}
 (\#eq:wz1326b)
 \end{equation}
-\end{subequations}
 ```{r}
 # model z wyrazem wolnym:
 q <- quantreg::rq(wyd~doch,tau=0.5)

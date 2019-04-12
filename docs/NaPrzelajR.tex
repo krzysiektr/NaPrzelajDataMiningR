@@ -129,7 +129,7 @@
   \postauthor{\par}
       \predate{\centering\large\emph}
   \postdate{\par}
-    \date{2019-04-11}
+    \date{2019-04-12}
 
 \usepackage{booktabs}
 \usepackage{booktabs}
@@ -1370,20 +1370,20 @@ zmienne mają być użyte do konstrukcji klasyfikatora a która zmienna opisuje 
 
 \begin{verbatim}
 ## List of 8
-##  $ prior  : Named num [1:2] 0.648 0.352
+##  $ prior  : Named num [1:2] 0.689 0.311
 ##   ..- attr(*, "names")= chr [1:2] "neg" "pos"
-##  $ counts : Named int [1:2] 127 69
+##  $ counts : Named int [1:2] 135 61
 ##   ..- attr(*, "names")= chr [1:2] "neg" "pos"
-##  $ means  : num [1:2, 1:2] 112.39 142.74 4.63 5.08
+##  $ means  : num [1:2, 1:2] 111.35 146.59 4.62 5.14
 ##   ..- attr(*, "dimnames")=List of 2
 ##   .. ..$ : chr [1:2] "neg" "pos"
 ##   .. ..$ : chr [1:2] "glucose" "insulin"
-##  $ scaling: num [1:2, 1] 0.0366 -0.0169
+##  $ scaling: num [1:2, 1] 0.0384 0.017
 ##   ..- attr(*, "dimnames")=List of 2
 ##   .. ..$ : chr [1:2] "glucose" "insulin"
 ##   .. ..$ : chr "LD1"
 ##  $ lev    : chr [1:2] "neg" "pos"
-##  $ svd    : num 7.37
+##  $ svd    : num 8.83
 ##  $ N      : int 196
 ##  $ call   : language lda(x = dane[, 1:2], grouping = dane[, 3], subset = zbior.uczacy)
 ##  - attr(*, "class")= chr "lda"
@@ -1409,14 +1409,14 @@ prognozowane klasy dla nowych obserwacji, lub też prawdopodobieństwa a posteri
 
 \begin{verbatim}
 ## List of 3
-##  $ class    : Factor w/ 2 levels "neg","pos": 1 1 2 2 1 2 1 1 2 2 ...
-##  $ posterior: num [1:196, 1:2] 0.897 0.931 0.103 0.138 0.831 ...
+##  $ class    : Factor w/ 2 levels "neg","pos": 1 1 2 1 1 1 1 1 1 1 ...
+##  $ posterior: num [1:196, 1:2] 0.5912 0.9697 0.0577 0.7949 0.8968 ...
 ##   ..- attr(*, "dimnames")=List of 2
-##   .. ..$ : chr [1:196] "4" "7" "9" "14" ...
+##   .. ..$ : chr [1:196] "5" "7" "9" "17" ...
 ##   .. ..$ : chr [1:2] "neg" "pos"
-##  $ x        : num [1:196, 1] -1.242 -1.644 2.679 2.378 -0.728 ...
+##  $ x        : num [1:196, 1] 0.569 -1.706 2.893 -0.155 -0.748 ...
 ##   ..- attr(*, "dimnames")=List of 2
-##   .. ..$ : chr [1:196] "4" "7" "9" "14" ...
+##   .. ..$ : chr [1:196] "5" "7" "9" "17" ...
 ##   .. ..$ : chr "LD1"
 \end{verbatim}
 
@@ -1430,8 +1430,8 @@ prognozowane klasy dla nowych obserwacji, lub też prawdopodobieństwa a posteri
 \begin{verbatim}
 ##          prawdziwe
 ## predykcja neg pos
-##       neg 122  27
-##       pos  13  34
+##       neg 114  34
+##       pos  13  35
 \end{verbatim}
 
 W powyższym przykładzie w ostatnim poleceniu wyznaczyliśmy tablice kontyngencji dla wyników. Na bazie tak otrzymanej tablicy kontyngencji można wyznaczyć błąd predykcji. Jest wiele wskaźników opisujących błąd predykcji, począwszy
@@ -1554,8 +1554,8 @@ zdrowe i chore na cukrzycę. Ponieważ metoda k-sąsiadów bazuje silnie na odle
 \begin{verbatim}
 ##          prawdziwe
 ## predykcja neg pos
-##       neg 113  30
-##       pos  22  31
+##       neg 105  30
+##       pos  22  39
 \end{verbatim}
 
 Błąd klasyfikacji można liczyć na palcach (powyższą procedurę należało by uśrednić po kilku wstępnych podziałach na zbiór uczący i testowy). Można też błąd klasyfikacji wyznaczyć wykorzystać funkcję \texttt{errorest(ipred)}. Wylicza ona błąd klasyfikacji (okeślony jako procent źle zaklasyfikowanych obiektów) używając różnych
@@ -1586,7 +1586,7 @@ dla metody najbliższych sąsiadów.
 ##   .632+ Bootstrap estimator of misclassification error 
 ##   with 25 bootstrap replications
 ## 
-## Misclassification error:  0.297
+## Misclassification error:  0.2859
 \end{verbatim}
 
 \begin{Shaded}
@@ -1600,7 +1600,7 @@ dla metody najbliższych sąsiadów.
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 0.2542249
+## [1] 0.2559426
 \end{verbatim}
 
 \begin{Shaded}
@@ -1668,8 +1668,8 @@ obu zmiennych dla każdej z klas, na bazie tych gęstości wykonywana jest kalsy
 \begin{verbatim}
 ##          prawdziwe
 ## predykcja neg pos
-##       neg 112  24
-##       pos  23  37
+##       neg 108  29
+##       pos  19  40
 \end{verbatim}
 
 \begin{Shaded}
@@ -1772,8 +1772,8 @@ przykładową sesję z budową drzewa klasyfikacyjnego.
 \begin{verbatim}
 ##          prawdziwe
 ## predykcja neg pos
-##       neg 121  27
-##       pos  14  34
+##       neg  99  25
+##       pos  28  44
 \end{verbatim}
 
 \begin{Shaded}
@@ -1853,11 +1853,11 @@ skorzystać z funkcji \texttt{set.seed()}.
 ##                      Number of trees: 500
 ## No. of variables tried at each split: 1
 ## 
-##         OOB estimate of  error rate: 29.08%
+##         OOB estimate of  error rate: 22.45%
 ## Confusion matrix:
 ##     neg pos class.error
-## neg 105  22   0.1732283
-## pos  35  34   0.5072464
+## neg 118  17   0.1259259
+## pos  27  34   0.4426230
 \end{verbatim}
 
 \begin{Shaded}
@@ -1873,8 +1873,8 @@ skorzystać z funkcji \texttt{set.seed()}.
 \begin{verbatim}
 ##          prawdziwe
 ## predykcja neg pos
-##       neg 114  29
-##       pos  21  32
+##       neg 104  33
+##       pos  23  36
 \end{verbatim}
 
 \begin{Shaded}
@@ -3104,10 +3104,10 @@ Warto również zaznaczyć, że w programie R mamy możliwość symulowania proc
 ## 
 ## Coefficients:
 ##          ar1     ar2     ma1
-##       0.3721  0.5508  0.1155
-## s.e.  0.0542  0.0486  0.0644
+##       0.2567  0.6265  0.2110
+## s.e.  0.0454  0.0388  0.0563
 ## 
-## sigma^2 estimated as 3.975:  log likelihood = -2109.99,  aic = 4227.97
+## sigma^2 estimated as 3.867:  log likelihood = -2096.06,  aic = 4200.12
 \end{verbatim}
 
 Dzięki zastosowaniu funkcji \href{https://rdrr.io/cran/forecast/man/ndiffs.html}{\texttt{forecast::ndiffs}} mamy możliwość sprawdzenia czy rzeczywiście proces y jest zintegrowany w stopniu pierwszym tzn. \(I(1)\). Za pomocą opcji test możemy wybrać procedurę z jakiej chcemy skorzystać: \texttt{pp} -- test Phillipsa-Perrona, \texttt{adf} -- test Dickeya-Fullera lub \texttt{kpss} -- test Kwiatkowski-Phillips-Schmidt-Shin. Poziom istotności \texttt{alpha} także możemy zmieniać.
@@ -10554,9 +10554,7 @@ wykresy, które można wygenerować za pomocą komendy:
 \subsection{Metoda najmniejszych wartości bezwzględnych}\label{part_13.2.6}}
 
 Jeśli w zbiorze danych występują obserwacje odstające to należy je wyeliminować
-lub zastosować regresję kwantylową. Dla parametru \(\tau = 0,5\) (mediana) otrzymujemy estymator metody najmniejszego odchylenia bezwzględnego, którego kryterium optymalizacji jest przedstawione poniżej (wzory 13.26a oraz 13.26b).
-
-\begin{subequations}
+lub zastosować regresję kwantylową. Dla parametru \(\tau = 0,5\) (mediana) otrzymujemy estymator metody najmniejszego odchylenia bezwzględnego, którego kryterium optymalizacji jest przedstawione poniżej (wzory \eqref{eq:wz1326a} oraz \eqref{eq:wz1326b}).
 \begin{equation}
 \sum_{i=1}^{n}|e_i| \longrightarrow\quad\mbox{min}
 \label{eq:wz1326a}
@@ -10565,7 +10563,6 @@ lub zastosować regresję kwantylową. Dla parametru \(\tau = 0,5\) (mediana) ot
 \sum_{i=1}^{n}|y_i-\alpha_0-\alpha_1x_{1i}| \longrightarrow\quad\mbox{min}
 \label{eq:wz1326b}
 \end{equation}
-\end{subequations}
 
 \begin{Shaded}
 \begin{Highlighting}[]

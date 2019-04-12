@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2019/dev/Debian) (preloaded format=pdflatex 2018.12.16)  11 APR 2019 22:58
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2019/dev/Debian) (preloaded format=pdflatex 2018.12.16)  12 APR 2019 09:53
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1482,12 +1482,12 @@ Package xcolor Warning: Incompatible color definition on input line 1680.
 
 Package xcolor Warning: Incompatible color definition on input line 1680.
 
-<NaPrzelajR_files/figure-latex/mN-1.pdf, id=868, 834.11626pt x 393.47pt>
+<NaPrzelajR_files/figure-latex/mN-1.pdf, id=868, 836.12375pt x 393.47pt>
 File: NaPrzelajR_files/figure-latex/mN-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/mN-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/mN-1.pdf  used on input 
 line 1684.
-(pdftex.def)             Requested size: 328.82957pt x 155.11574pt.
+(pdftex.def)             Requested size: 328.82996pt x 154.7435pt.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
@@ -1545,12 +1545,12 @@ Package xcolor Warning: Incompatible color definition on input line 1753.
 
 Package xcolor Warning: Incompatible color definition on input line 1753.
 
-<NaPrzelajR_files/figure-latex/Ctree46-1.pdf, id=906, 836.12375pt x 469.755pt>
+<NaPrzelajR_files/figure-latex/Ctree46-1.pdf, id=906, 848.16875pt x 469.755pt>
 File: NaPrzelajR_files/figure-latex/Ctree46-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/Ctree46-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/Ctree46-1.pdf  used on i
 nput line 1757.
-(pdftex.def)             Requested size: 375.80566pt x 211.13692pt.
+(pdftex.def)             Requested size: 375.80968pt x 208.14075pt.
 
 Package xcolor Warning: Incompatible color definition on input line 1764.
 
@@ -5945,247 +5945,247 @@ Package pdftex.def Info: NaPrzelajR_files/figure-latex/wy133-1.pdf  used on inp
 ut line 10546.
 (pdftex.def)             Requested size: 328.82239pt x 287.71959pt.
 
-Package xcolor Warning: Incompatible color definition on input line 10570.
+Package xcolor Warning: Incompatible color definition on input line 10567.
 
 
-Package xcolor Warning: Incompatible color definition on input line 10576.
+Package xcolor Warning: Incompatible color definition on input line 10573.
 
 
-Package xcolor Warning: Incompatible color definition on input line 10576.
+Package xcolor Warning: Incompatible color definition on input line 10573.
 
 [182pdfTeX warning (ext4): destination with the same identifier (name{figure.13
 .3}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.10588 \end{verbatim}
+l.10585 \end{verbatim}
                        <./NaPrzelajR_files/figure-latex/wy133-1.pdf>]
 
-Package xcolor Warning: Incompatible color definition on input line 10590.
+Package xcolor Warning: Incompatible color definition on input line 10587.
 
 
-Package xcolor Warning: Incompatible color definition on input line 10596.
+Package xcolor Warning: Incompatible color definition on input line 10593.
 
 
-Package xcolor Warning: Incompatible color definition on input line 10596.
+Package xcolor Warning: Incompatible color definition on input line 10593.
 
 
-Package xcolor Warning: Incompatible color definition on input line 10609.
+Package xcolor Warning: Incompatible color definition on input line 10606.
 
 
-Package xcolor Warning: Incompatible color definition on input line 10616.
+Package xcolor Warning: Incompatible color definition on input line 10613.
 
 
-Package xcolor Warning: Incompatible color definition on input line 10616.
+Package xcolor Warning: Incompatible color definition on input line 10613.
 
-<NaPrzelajR_files/figure-latex/wy134-1.pdf, id=2467, 559.08875pt x 342.27875pt>
+<NaPrzelajR_files/figure-latex/wy134-1.pdf, id=2468, 559.08875pt x 342.27875pt>
 
 File: NaPrzelajR_files/figure-latex/wy134-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/wy134-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/wy134-1.pdf  used on inp
-ut line 10620.
+ut line 10617.
 (pdftex.def)             Requested size: 328.83577pt x 201.31596pt.
 
-Package xcolor Warning: Incompatible color definition on input line 10641.
+Package xcolor Warning: Incompatible color definition on input line 10638.
 
 [183pdfTeX warning (ext4): destination with the same identifier (name{figure.13
 .4}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.10641 \begin{Shaded}
+l.10638 \begin{Shaded}
                        <./NaPrzelajR_files/figure-latex/wy134-1.pdf>]
 
-Package xcolor Warning: Incompatible color definition on input line 10646.
+Package xcolor Warning: Incompatible color definition on input line 10643.
 
 
-Package xcolor Warning: Incompatible color definition on input line 10646.
+Package xcolor Warning: Incompatible color definition on input line 10643.
 
 
-Package xcolor Warning: Incompatible color definition on input line 10669.
+Package xcolor Warning: Incompatible color definition on input line 10666.
 
 
-Package xcolor Warning: Incompatible color definition on input line 10677.
+Package xcolor Warning: Incompatible color definition on input line 10674.
 
 
-Package xcolor Warning: Incompatible color definition on input line 10677.
+Package xcolor Warning: Incompatible color definition on input line 10674.
 
-<NaPrzelajR_files/figure-latex/wy135-1.pdf, id=2484, 559.08875pt x 342.27875pt>
+<NaPrzelajR_files/figure-latex/wy135-1.pdf, id=2485, 559.08875pt x 342.27875pt>
 
 File: NaPrzelajR_files/figure-latex/wy135-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/wy135-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/wy135-1.pdf  used on inp
-ut line 10681.
+ut line 10678.
 (pdftex.def)             Requested size: 328.83577pt x 201.31596pt.
 
-Package xcolor Warning: Incompatible color definition on input line 10688.
+Package xcolor Warning: Incompatible color definition on input line 10685.
 
 [184pdfTeX warning (ext4): destination with the same identifier (name{figure.13
 .5}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.10692 \end{Shaded}
+l.10689 \end{Shaded}
                      <./NaPrzelajR_files/figure-latex/wy135-1.pdf>]
 
-Package xcolor Warning: Incompatible color definition on input line 10692.
+Package xcolor Warning: Incompatible color definition on input line 10689.
 
 
-Package xcolor Warning: Incompatible color definition on input line 10692.
+Package xcolor Warning: Incompatible color definition on input line 10689.
 
 
-Package xcolor Warning: Incompatible color definition on input line 10700.
+Package xcolor Warning: Incompatible color definition on input line 10697.
 
 
-Package xcolor Warning: Incompatible color definition on input line 10704.
+Package xcolor Warning: Incompatible color definition on input line 10701.
 
 
-Package xcolor Warning: Incompatible color definition on input line 10704.
+Package xcolor Warning: Incompatible color definition on input line 10701.
 
 
-Package xcolor Warning: Incompatible color definition on input line 10732.
+Package xcolor Warning: Incompatible color definition on input line 10729.
 
 
-Package xcolor Warning: Incompatible color definition on input line 10737.
+Package xcolor Warning: Incompatible color definition on input line 10734.
 
 
-Package xcolor Warning: Incompatible color definition on input line 10737.
+Package xcolor Warning: Incompatible color definition on input line 10734.
 
 
-Package xcolor Warning: Incompatible color definition on input line 10762.
+Package xcolor Warning: Incompatible color definition on input line 10759.
 
 [185]
 
-Package xcolor Warning: Incompatible color definition on input line 10767.
+Package xcolor Warning: Incompatible color definition on input line 10764.
 
 
-Package xcolor Warning: Incompatible color definition on input line 10767.
+Package xcolor Warning: Incompatible color definition on input line 10764.
 
 
-Package xcolor Warning: Incompatible color definition on input line 10774.
+Package xcolor Warning: Incompatible color definition on input line 10771.
 
 
-Package xcolor Warning: Incompatible color definition on input line 10779.
+Package xcolor Warning: Incompatible color definition on input line 10776.
 
 
-Package xcolor Warning: Incompatible color definition on input line 10779.
+Package xcolor Warning: Incompatible color definition on input line 10776.
 
 
-Package xcolor Warning: Incompatible color definition on input line 10788.
+Package xcolor Warning: Incompatible color definition on input line 10785.
 
 
-Package xcolor Warning: Incompatible color definition on input line 10793.
+Package xcolor Warning: Incompatible color definition on input line 10790.
 
 
-Package xcolor Warning: Incompatible color definition on input line 10793.
+Package xcolor Warning: Incompatible color definition on input line 10790.
 
 
-Package xcolor Warning: Incompatible color definition on input line 10812.
+Package xcolor Warning: Incompatible color definition on input line 10809.
 
 
-Package xcolor Warning: Incompatible color definition on input line 10816.
+Package xcolor Warning: Incompatible color definition on input line 10813.
 
 
-Package xcolor Warning: Incompatible color definition on input line 10816.
+Package xcolor Warning: Incompatible color definition on input line 10813.
 
 
-Package xcolor Warning: Incompatible color definition on input line 10824.
+Package xcolor Warning: Incompatible color definition on input line 10821.
 
 
-Package xcolor Warning: Incompatible color definition on input line 10828.
+Package xcolor Warning: Incompatible color definition on input line 10825.
 
 
-Package xcolor Warning: Incompatible color definition on input line 10828.
+Package xcolor Warning: Incompatible color definition on input line 10825.
 
 
-Package xcolor Warning: Incompatible color definition on input line 10838.
+Package xcolor Warning: Incompatible color definition on input line 10835.
 
 
-Package xcolor Warning: Incompatible color definition on input line 10846.
+Package xcolor Warning: Incompatible color definition on input line 10843.
 
 
-Package xcolor Warning: Incompatible color definition on input line 10846.
+Package xcolor Warning: Incompatible color definition on input line 10843.
 
-<NaPrzelajR_files/figure-latex/wy136-1.pdf, id=2505, 559.08875pt x 342.27875pt>
+<NaPrzelajR_files/figure-latex/wy136-1.pdf, id=2506, 559.08875pt x 342.27875pt>
 
 File: NaPrzelajR_files/figure-latex/wy136-1.pdf Graphic file (type pdf)
 <use NaPrzelajR_files/figure-latex/wy136-1.pdf>
 Package pdftex.def Info: NaPrzelajR_files/figure-latex/wy136-1.pdf  used on inp
-ut line 10850.
+ut line 10847.
 (pdftex.def)             Requested size: 328.83577pt x 201.31596pt.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 [186]
 
-Package xcolor Warning: Incompatible color definition on input line 10872.
+Package xcolor Warning: Incompatible color definition on input line 10869.
 
 
-Package xcolor Warning: Incompatible color definition on input line 10877.
+Package xcolor Warning: Incompatible color definition on input line 10874.
 
 
-Package xcolor Warning: Incompatible color definition on input line 10877.
+Package xcolor Warning: Incompatible color definition on input line 10874.
 
 
-Package xcolor Warning: Incompatible color definition on input line 10900.
+Package xcolor Warning: Incompatible color definition on input line 10897.
 
 [187pdfTeX warning (ext4): destination with the same identifier (name{figure.13
 .6}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.10900 \begin{Shaded}
+l.10897 \begin{Shaded}
                        <./NaPrzelajR_files/figure-latex/wy136-1.pdf>]
 
-Package xcolor Warning: Incompatible color definition on input line 10905.
+Package xcolor Warning: Incompatible color definition on input line 10902.
 
 
-Package xcolor Warning: Incompatible color definition on input line 10905.
+Package xcolor Warning: Incompatible color definition on input line 10902.
 
 
-Package xcolor Warning: Incompatible color definition on input line 10912.
+Package xcolor Warning: Incompatible color definition on input line 10909.
 
 
-Package xcolor Warning: Incompatible color definition on input line 10917.
+Package xcolor Warning: Incompatible color definition on input line 10914.
 
 
-Package xcolor Warning: Incompatible color definition on input line 10917.
+Package xcolor Warning: Incompatible color definition on input line 10914.
 
 
-Package xcolor Warning: Incompatible color definition on input line 10924.
+Package xcolor Warning: Incompatible color definition on input line 10921.
 
 
-Package xcolor Warning: Incompatible color definition on input line 10929.
+Package xcolor Warning: Incompatible color definition on input line 10926.
 
 
-Package xcolor Warning: Incompatible color definition on input line 10929.
+Package xcolor Warning: Incompatible color definition on input line 10926.
 
 [188]
 Rozdzia\l  14.
 [189
 
 ] (./NaPrzelajR.bbl [190])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 11039.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 11036.
 [191
 
 ]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 11039.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 11036.
 (./NaPrzelajR.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 11039.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 11036.
 
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 11039
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 11036
 .
 Package rerunfilecheck Info: File `NaPrzelajR.out' has not changed.
 (rerunfilecheck)             Checksum: B0AB9541659660E8949B2EF2FC37B4F8;17418.
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 11039.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 11036.
  ) 
 Here is how much of TeX's memory you used:
- 17060 strings out of 492641
- 251235 string characters out of 6131786
- 381658 words of memory out of 5000000
+ 17059 strings out of 492641
+ 251217 string characters out of 6131786
+ 381654 words of memory out of 5000000
  19769 multiletter control sequences out of 15000+600000
  53808 words of font info for 250 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -6203,10 +6203,10 @@ per/sftt1000.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/palatino/uplb8a
 .pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb></usr/s
 hare/texlive/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb></usr/share/texlive
 /texmf-dist/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on NaPrzelajR.pdf (191 pages, 2969406 bytes).
+Output written on NaPrzelajR.pdf (191 pages, 2972081 bytes).
 PDF statistics:
- 2761 PDF objects out of 2984 (max. 8388607)
- 2268 compressed objects within 23 object streams
- 651 named destinations out of 1000 (max. 500000)
+ 2762 PDF objects out of 2984 (max. 8388607)
+ 2269 compressed objects within 23 object streams
+ 650 named destinations out of 1000 (max. 500000)
  21717 words of extra memory for PDF output out of 24883 (max. 10000000)
 

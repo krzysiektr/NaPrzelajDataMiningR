@@ -25,7 +25,7 @@
 <meta name="author" content="Przemysław Biecek, Krzysztof Trajkowski">
 
 
-<meta name="date" content="2019-04-11">
+<meta name="date" content="2019-04-12">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -905,9 +905,16 @@ Rysunek 13.3: Diagnostyka modelu.
 </div>
 <div id="part_13.2.6" class="section level3">
 <h3><span class="header-section-number">13.2.6</span> Metoda najmniejszych wartości bezwzględnych</h3>
-Jeśli w zbiorze danych występują obserwacje odstające to należy je wyeliminować
-lub zastosować regresję kwantylową. Dla parametru <span class="math inline">\(\tau = 0,5\)</span> (mediana) otrzymujemy estymator metody najmniejszego odchylenia bezwzględnego, którego kryterium optymalizacji jest przedstawione poniżej (wzory 13.26a oraz 13.26b).
-
+<p>Jeśli w zbiorze danych występują obserwacje odstające to należy je wyeliminować
+lub zastosować regresję kwantylową. Dla parametru <span class="math inline">\(\tau = 0,5\)</span> (mediana) otrzymujemy estymator metody najmniejszego odchylenia bezwzględnego, którego kryterium optymalizacji jest przedstawione poniżej (wzory <a href="part-13.html#eq:wz1326a">(13.25)</a> oraz <a href="part-13.html#eq:wz1326b">(13.26)</a>).
+<span class="math display" id="eq:wz1326a">\[\begin{equation}
+\sum_{i=1}^{n}|e_i| \longrightarrow\quad\mbox{min}
+\tag{13.25}
+\end{equation}\]</span>
+<span class="math display" id="eq:wz1326b">\[\begin{equation}
+\sum_{i=1}^{n}|y_i-\alpha_0-\alpha_1x_{1i}| \longrightarrow\quad\mbox{min}
+\tag{13.26}
+\end{equation}\]</span></p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co"># model z wyrazem wolnym:</span>
 q &lt;-<span class="st"> </span>quantreg<span class="op">::</span><span class="kw">rq</span>(wyd<span class="op">~</span>doch,<span class="dt">tau=</span><span class="fl">0.5</span>)
 <span class="kw">summary</span>(q, <span class="dt">se=</span><span class="st">&#39;nid&#39;</span>)</code></pre>
@@ -952,9 +959,9 @@ Rysunek 13.4: Regresja kwantylowa.
 model kwadratowy:
 <span class="math display" id="eq:wz1327">\[\begin{equation}
 y=\alpha_0+\alpha_1x^2
-\tag{13.25}
+\tag{13.27}
 \end{equation}\]</span>
-Estymację parametrów funkcji o wzorze <a href="part-13.html#eq:wz1327">(13.25)</a> dokonamy za pomocą poniższej komendy:</p>
+Estymację parametrów funkcji o wzorze <a href="part-13.html#eq:wz1327">(13.27)</a> dokonamy za pomocą poniższej komendy:</p>
 <pre class="sourceCode r"><code class="sourceCode r">k &lt;-<span class="st"> </span><span class="kw">lm</span>(wyd<span class="op">~</span><span class="kw">I</span>(doch<span class="op">^</span><span class="dv">2</span>),<span class="dt">data=</span>t)
 <span class="kw">summary</span>(k)</code></pre>
 <pre><code>## 
@@ -1001,7 +1008,7 @@ przy poziomie dochodów równych 900zł. Natomiast prz poziomie dochodów równy
 <p>Analityczna postać funkcji wykładniczej jest podana poniżej:
 <span class="math display" id="eq:wz1328">\[\begin{equation}
 y=\alpha_0\alpha_1^x
-\tag{13.26}
+\tag{13.28}
 \end{equation}\]</span>
 gdzie: <span class="math inline">\(\alpha_0&gt;0\)</span> oraz <span class="math inline">\(\alpha_1&gt;0\)</span> i <span class="math inline">\(\alpha_1\neq 1\)</span></p>
 <p>Aby oszacować parametry modelu nieliniowego z wykorzystaniem funkcji <a href="https://rdrr.io/r/stats/nls.html"><code>nls</code></a>
@@ -1009,7 +1016,7 @@ gdzie: <span class="math inline">\(\alpha_0&gt;0\)</span> oraz <span class="math
 Można je wyznaczyć sprowadzając funkcję nieliniową do postaci liniowej.
 <span class="math display" id="eq:wz1329">\[\begin{equation}
 \ln y = \beta_0 \beta_1 x
-\tag{13.27}
+\tag{13.29}
 \end{equation}\]</span></p>
 <pre class="sourceCode r"><code class="sourceCode r">mw &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(wyd)<span class="op">~</span>doch)
 <span class="kw">summary</span>(mw)</code></pre>
@@ -1083,12 +1090,12 @@ Rysunek 13.6: Regresja kwadratowa i wykładnicza.
 <p>Kolejną funkcją jaką będziemy badać to model hiperboliczny o postaci:
 <span class="math display" id="eq:wz1330">\[\begin{equation}
 y=\frac{\alpha_0x^2}{x+\alpha_1}
-\tag{13.28}
+\tag{13.30}
 \end{equation}\]</span>
 Parametry startowe wyznaczymy za pomocą następującego wzoru:
 <span class="math display" id="eq:wz1331">\[\begin{equation}
 \frac{1}{y}=\beta_1\frac{1}{x}+\beta_2\frac{1}{x^2}
-\tag{13.29}
+\tag{13.31}
 \end{equation}\]</span>
 gdzie: <span class="math inline">\(\alpha_0=\frac{1}{\beta_1}\)</span> oraz <span class="math inline">\(\alpha_1=\frac{\beta_2}{\beta_1}\)</span>.</p>
 <pre class="sourceCode r"><code class="sourceCode r">mh &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">I</span>(<span class="dv">1</span><span class="op">/</span>wyd)<span class="op">~</span><span class="kw">I</span>(<span class="dv">1</span><span class="op">/</span>doch)<span class="op">+</span><span class="kw">I</span>(<span class="dv">1</span><span class="op">/</span>doch<span class="op">^</span><span class="dv">2</span>)<span class="op">+</span><span class="dv">0</span>)
