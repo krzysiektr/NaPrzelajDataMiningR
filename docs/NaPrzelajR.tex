@@ -129,7 +129,7 @@
   \postauthor{\par}
       \predate{\centering\large\emph}
   \postdate{\par}
-    \date{2019-04-12}
+    \date{2019-04-13}
 
 \usepackage{booktabs}
 \usepackage{booktabs}
@@ -1370,20 +1370,20 @@ zmienne mają być użyte do konstrukcji klasyfikatora a która zmienna opisuje 
 
 \begin{verbatim}
 ## List of 8
-##  $ prior  : Named num [1:2] 0.689 0.311
+##  $ prior  : Named num [1:2] 0.694 0.306
 ##   ..- attr(*, "names")= chr [1:2] "neg" "pos"
-##  $ counts : Named int [1:2] 135 61
+##  $ counts : Named int [1:2] 136 60
 ##   ..- attr(*, "names")= chr [1:2] "neg" "pos"
-##  $ means  : num [1:2, 1:2] 111.35 146.59 4.62 5.14
+##  $ means  : num [1:2, 1:2] 110.07 140.25 4.63 5.19
 ##   ..- attr(*, "dimnames")=List of 2
 ##   .. ..$ : chr [1:2] "neg" "pos"
 ##   .. ..$ : chr [1:2] "glucose" "insulin"
-##  $ scaling: num [1:2, 1] 0.0384 0.017
+##  $ scaling: num [1:2, 1] 0.0272 0.7621
 ##   ..- attr(*, "dimnames")=List of 2
 ##   .. ..$ : chr [1:2] "glucose" "insulin"
 ##   .. ..$ : chr "LD1"
 ##  $ lev    : chr [1:2] "neg" "pos"
-##  $ svd    : num 8.83
+##  $ svd    : num 8.05
 ##  $ N      : int 196
 ##  $ call   : language lda(x = dane[, 1:2], grouping = dane[, 3], subset = zbior.uczacy)
 ##  - attr(*, "class")= chr "lda"
@@ -1409,14 +1409,14 @@ prognozowane klasy dla nowych obserwacji, lub też prawdopodobieństwa a posteri
 
 \begin{verbatim}
 ## List of 3
-##  $ class    : Factor w/ 2 levels "neg","pos": 1 1 2 1 1 1 1 1 1 1 ...
-##  $ posterior: num [1:196, 1:2] 0.5912 0.9697 0.0577 0.7949 0.8968 ...
+##  $ class    : Factor w/ 2 levels "neg","pos": 1 2 1 1 1 2 1 1 2 1 ...
+##  $ posterior: num [1:196, 1:2] 0.944 0.309 0.636 0.816 0.567 ...
 ##   ..- attr(*, "dimnames")=List of 2
-##   .. ..$ : chr [1:196] "5" "7" "9" "17" ...
+##   .. ..$ : chr [1:196] "7" "15" "17" "20" ...
 ##   .. ..$ : chr [1:2] "neg" "pos"
-##  $ x        : num [1:196, 1] 0.569 -1.706 2.893 -0.155 -0.748 ...
+##  $ x        : num [1:196, 1] -1.369 1.544 0.449 -0.298 0.683 ...
 ##   ..- attr(*, "dimnames")=List of 2
-##   .. ..$ : chr [1:196] "5" "7" "9" "17" ...
+##   .. ..$ : chr [1:196] "7" "15" "17" "20" ...
 ##   .. ..$ : chr "LD1"
 \end{verbatim}
 
@@ -1430,8 +1430,8 @@ prognozowane klasy dla nowych obserwacji, lub też prawdopodobieństwa a posteri
 \begin{verbatim}
 ##          prawdziwe
 ## predykcja neg pos
-##       neg 114  34
-##       pos  13  35
+##       neg 106  30
+##       pos  20  40
 \end{verbatim}
 
 W powyższym przykładzie w ostatnim poleceniu wyznaczyliśmy tablice kontyngencji dla wyników. Na bazie tak otrzymanej tablicy kontyngencji można wyznaczyć błąd predykcji. Jest wiele wskaźników opisujących błąd predykcji, począwszy
@@ -1554,8 +1554,8 @@ zdrowe i chore na cukrzycę. Ponieważ metoda k-sąsiadów bazuje silnie na odle
 \begin{verbatim}
 ##          prawdziwe
 ## predykcja neg pos
-##       neg 105  30
-##       pos  22  39
+##       neg  99  26
+##       pos  27  44
 \end{verbatim}
 
 Błąd klasyfikacji można liczyć na palcach (powyższą procedurę należało by uśrednić po kilku wstępnych podziałach na zbiór uczący i testowy). Można też błąd klasyfikacji wyznaczyć wykorzystać funkcję \texttt{errorest(ipred)}. Wylicza ona błąd klasyfikacji (okeślony jako procent źle zaklasyfikowanych obiektów) używając różnych
@@ -1586,7 +1586,7 @@ dla metody najbliższych sąsiadów.
 ##   .632+ Bootstrap estimator of misclassification error 
 ##   with 25 bootstrap replications
 ## 
-## Misclassification error:  0.2859
+## Misclassification error:  0.2976
 \end{verbatim}
 
 \begin{Shaded}
@@ -1600,7 +1600,7 @@ dla metody najbliższych sąsiadów.
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 0.2559426
+## [1] 0.2623483
 \end{verbatim}
 
 \begin{Shaded}
@@ -1668,8 +1668,8 @@ obu zmiennych dla każdej z klas, na bazie tych gęstości wykonywana jest kalsy
 \begin{verbatim}
 ##          prawdziwe
 ## predykcja neg pos
-##       neg 108  29
-##       pos  19  40
+##       neg 102  29
+##       pos  24  41
 \end{verbatim}
 
 \begin{Shaded}
@@ -1772,8 +1772,8 @@ przykładową sesję z budową drzewa klasyfikacyjnego.
 \begin{verbatim}
 ##          prawdziwe
 ## predykcja neg pos
-##       neg  99  25
-##       pos  28  44
+##       neg  98  33
+##       pos  28  37
 \end{verbatim}
 
 \begin{Shaded}
@@ -1853,11 +1853,11 @@ skorzystać z funkcji \texttt{set.seed()}.
 ##                      Number of trees: 500
 ## No. of variables tried at each split: 1
 ## 
-##         OOB estimate of  error rate: 22.45%
+##         OOB estimate of  error rate: 27.04%
 ## Confusion matrix:
 ##     neg pos class.error
-## neg 118  17   0.1259259
-## pos  27  34   0.4426230
+## neg 113  23   0.1691176
+## pos  30  30   0.5000000
 \end{verbatim}
 
 \begin{Shaded}
@@ -1873,8 +1873,8 @@ skorzystać z funkcji \texttt{set.seed()}.
 \begin{verbatim}
 ##          prawdziwe
 ## predykcja neg pos
-##       neg 104  33
-##       pos  23  36
+##       neg 101  29
+##       pos  25  41
 \end{verbatim}
 
 \begin{Shaded}
@@ -3104,10 +3104,10 @@ Warto również zaznaczyć, że w programie R mamy możliwość symulowania proc
 ## 
 ## Coefficients:
 ##          ar1     ar2     ma1
-##       0.2567  0.6265  0.2110
-## s.e.  0.0454  0.0388  0.0563
+##       0.3206  0.5804  0.2102
+## s.e.  0.0609  0.0529  0.0747
 ## 
-## sigma^2 estimated as 3.867:  log likelihood = -2096.06,  aic = 4200.12
+## sigma^2 estimated as 3.971:  log likelihood = -2109.4,  aic = 4226.79
 \end{verbatim}
 
 Dzięki zastosowaniu funkcji \href{https://rdrr.io/cran/forecast/man/ndiffs.html}{\texttt{forecast::ndiffs}} mamy możliwość sprawdzenia czy rzeczywiście proces y jest zintegrowany w stopniu pierwszym tzn. \(I(1)\). Za pomocą opcji test możemy wybrać procedurę z jakiej chcemy skorzystać: \texttt{pp} -- test Phillipsa-Perrona, \texttt{adf} -- test Dickeya-Fullera lub \texttt{kpss} -- test Kwiatkowski-Phillips-Schmidt-Shin. Poziom istotności \texttt{alpha} także możemy zmieniać.
@@ -9880,7 +9880,7 @@ y_i=\alpha_1x_{1i}+\alpha_2x^3_i
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{lmtest}\OperatorTok{::}\KeywordTok{resettest}\NormalTok{(mnk0, }\DataTypeTok{power=}\DecValTok{3}\NormalTok{, }\DataTypeTok{type=} \StringTok{"fitted"}\NormalTok{)}
+\NormalTok{lmtest}\OperatorTok{::}\KeywordTok{resettest}\NormalTok{(mnk0, }\DataTypeTok{power=}\DecValTok{3}\NormalTok{, }\DataTypeTok{type=} \StringTok{"regressor"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 

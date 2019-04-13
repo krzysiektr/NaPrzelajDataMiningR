@@ -25,7 +25,7 @@
 <meta name="author" content="Przemysław Biecek, Krzysztof Trajkowski">
 
 
-<meta name="date" content="2019-04-12">
+<meta name="date" content="2019-04-13">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -621,10 +621,10 @@ s</code></pre>
 ## 
 ## Coefficients:
 ##          ar1     ar2     ma1
-##       0.2628  0.6446  0.2593
-## s.e.  0.0533  0.0466  0.0700
+##       0.3841  0.5206  0.1553
+## s.e.  0.0581  0.0514  0.0655
 ## 
-## sigma^2 estimated as 4.158:  log likelihood = -2132.41,  aic = 4272.81</code></pre>
+## sigma^2 estimated as 4.128:  log likelihood = -2128.68,  aic = 4265.36</code></pre>
 <p>Dzięki zastosowaniu funkcji <a href="https://rdrr.io/cran/forecast/man/ndiffs.html"><code>forecast::ndiffs</code></a> mamy możliwość sprawdzenia czy rzeczywiście proces y jest zintegrowany w stopniu pierwszym tzn. <span class="math inline">\(I(1)\)</span>. Za pomocą opcji test możemy wybrać procedurę z jakiej chcemy skorzystać: <code>pp</code> – test Phillipsa-Perrona, <code>adf</code> – test Dickeya-Fullera lub <code>kpss</code> – test Kwiatkowski-Phillips-Schmidt-Shin. Poziom istotności <code>alpha</code> także możemy zmieniać.</p>
 <pre class="sourceCode r"><code class="sourceCode r">forecast<span class="op">::</span><span class="kw">ndiffs</span>(y,<span class="dt">test=</span><span class="st">&quot;pp&quot;</span>,<span class="dt">alpha=</span><span class="fl">0.05</span>)</code></pre>
 <pre><code>## [1] 1</code></pre>

@@ -25,7 +25,7 @@
 <meta name="author" content="Przemysław Biecek, Krzysztof Trajkowski">
 
 
-<meta name="date" content="2019-04-12">
+<meta name="date" content="2019-04-13">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -610,10 +610,9 @@ podzielić dane. Na rysunku <a href="part-3.html#fig:silhouetteB">3.7</a> przeds
 dane =<span class="st"> </span>daneGUS[,<span class="kw">c</span>(<span class="dv">22</span><span class="op">:</span><span class="dv">25</span>)]
 gus.k4 =<span class="st"> </span><span class="kw">kmeans</span>(dane, <span class="dv">4</span>, <span class="dt">nstart=</span><span class="dv">25</span>)
 cluster<span class="op">::</span><span class="kw">silhouette</span>(gus.k4<span class="op">$</span>clust, <span class="kw">dist</span>(dane))[,<span class="dv">3</span>]</code></pre>
-<pre><code>##  [1]  0.57968555  0.20297939  0.67003803  0.34886080  0.62228174
-##  [6]  0.71085836  0.41650480  0.60762565  0.39059560  0.58232728
-## [11]  0.22156869 -0.01577002  0.36369877  0.49789450  0.70455857
-## [16]  0.30293513</code></pre>
+<pre><code>##  [1] 0.6668668 0.5333699 0.7582641 0.1737391 0.6816338 0.7810743 0.0000000
+##  [8] 0.6555324 0.4582927 0.6822569 0.2905566 0.0000000 0.6603414 0.6923861
+## [15] 0.7719109 0.6278821</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r">gus.p4 =<span class="st"> </span>cluster<span class="op">::</span><span class="kw">pam</span>(dane, <span class="dv">4</span>)</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(gus.p4)</code></pre>
 <p><img src="NaPrzelajR_files/figure-html/gusp4-1.png" width="70%" style="display: block; margin: auto;" /><img src="NaPrzelajR_files/figure-html/gusp4-2.png" width="70%" style="display: block; margin: auto;" /></p>

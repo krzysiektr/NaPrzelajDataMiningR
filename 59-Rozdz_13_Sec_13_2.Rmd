@@ -156,7 +156,7 @@ y_i=\alpha_1x_{1i}+\alpha_2x^3_i
 (\#eq:wz137)
 \end{equation}
 ```{r}
-lmtest::resettest(mnk0, power=3, type= "fitted")
+lmtest::resettest(mnk0, power=3, type= "regressor")
 ```
 Kolejnym testem który przedstawimy to test Rainbow. Służy on także do badania postaci analitycznej modelu. Poniżej zostanie zaprezentowana jego procedura
 obliczeniowa.

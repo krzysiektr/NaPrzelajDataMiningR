@@ -25,7 +25,7 @@
 <meta name="author" content="Przemysław Biecek, Krzysztof Trajkowski">
 
 
-<meta name="date" content="2019-04-12">
+<meta name="date" content="2019-04-13">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -539,7 +539,7 @@ y_i=\alpha_1x_{1i}+\alpha_2\hat{y}^2_i
 y_i=\alpha_1x_{1i}+\alpha_2x^3_i
 \tag{13.5}
 \end{equation}\]</span></p>
-<pre class="sourceCode r"><code class="sourceCode r">lmtest<span class="op">::</span><span class="kw">resettest</span>(mnk0, <span class="dt">power=</span><span class="dv">3</span>, <span class="dt">type=</span> <span class="st">&quot;fitted&quot;</span>)</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">lmtest<span class="op">::</span><span class="kw">resettest</span>(mnk0, <span class="dt">power=</span><span class="dv">3</span>, <span class="dt">type=</span> <span class="st">&quot;regressor&quot;</span>)</code></pre>
 <pre><code>## 
 ##  RESET test
 ## 
